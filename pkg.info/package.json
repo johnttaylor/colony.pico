@@ -1,0 +1,59 @@
+{
+  "dependencies": {
+    "strong": [
+      {
+        "pkgname": "nqbp",
+        "pkgtype": "foreign",
+        "adoptedDate": "Sun Jul  3 21:10:00 2022",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": "2.2.1",
+          "branch": null,
+          "tag": "OUTCAST2-main-2.2.1"
+        },
+        "repo": {
+          "name": "nqbp",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      },
+      {
+        "pkgname": "colony.core",
+        "pkgtype": "overlay",
+        "adoptedDate": "Sun Jul  3 21:10:46 2022",
+        "parentDir": null,
+        "version": {
+          "semanticVersion": "3.0.0",
+          "branch": null,
+          "tag": "OUTCAST2-main-3.0.0"
+        },
+        "repo": {
+          "name": "colony.core",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      }
+    ],
+    "weak": []
+  },
+  "directories": {
+    "primary": null,
+    "adoptedExtras": null
+  },
+  "info": {
+    "pkgname": null,
+    "desc": null,
+    "owner": null,
+    "email": null,
+    "url": null,
+    "repo": {
+      "name": null,
+      "type": null,
+      "origin": null
+    }
+  },
+  "publish": {
+    "current": null,
+    "history": []
+  }
+}
