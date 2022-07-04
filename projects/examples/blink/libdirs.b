@@ -1,7 +1,4 @@
-# SDK-Multicore
-pico-sdk/src/rp2_common/pico_multicore
-
-# Core SDK
+# SDK
 pico-sdk/src/common/pico_sync
 pico-sdk/src/common/pico_time
 pico-sdk/src/common/pico_util

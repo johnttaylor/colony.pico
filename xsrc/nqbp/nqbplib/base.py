@@ -174,7 +174,6 @@ class ToolChain:
         self._base_release.asminc    = self._base_release.inc
         self._base_release.cflags    = '-c -DBUILD_TIME_UTC={:d} '.format(self._build_time_utc)
         self._base_release.asmflags  = self._base_release.cflags
-        #self._base_release.linklibs  = '-L lib -Wl,-lstdc++'
         self._base_release.linklibs  = '-Wl,-lstdc++ -Wl,-lm'
         
         # Optimized options, flags, etc.

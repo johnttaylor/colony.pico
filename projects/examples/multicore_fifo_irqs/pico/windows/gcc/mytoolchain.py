@@ -27,14 +27,13 @@ import os
 from nqbplib.base import BuildValues
 from nqbplib.my_globals import NQBP_PKG_ROOT
 
-PICO_SUPPORT = os.path.join( NQBP_PKG_ROOT(), "pico" )
 
 #===================================================
 # BEGIN EDITS/CUSTOMIZATIONS
 #---------------------------------------------------
 
 # Set the name for the final output item (with NO file extension)
-FINAL_OUTPUT_NAME = 'blink'
+FINAL_OUTPUT_NAME = 'multicore_fifo_irq'
 
 
 #
@@ -101,5 +100,5 @@ from nqbplib.toolchains.windows.arm_gcc_pi_pico.pico import ToolChain
 
 # Function that instantiates an instance of the toolchain
 def create():
-    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, "pico", PICO_SUPPORT, "pico"  )
+    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, "pico", NQBP_PKG_ROOT(), "pico"  )
     return tc 
