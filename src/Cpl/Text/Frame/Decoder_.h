@@ -31,20 +31,6 @@ namespace Frame {
  */
 class Decoder_ : public Decoder
 {
-protected:
-	/// Current number of characters remaining in my raw input buffer
-	int             m_dataLen;
-
-	/// Pointer to the next unprocessed character in my raw input buffer
-	char*           m_dataPtr;
-
-	/// Raw input buffer for reading characters in 'chunks' from my Input stream (i.e. minimize the calls to read())
-	char*           m_buffer;
-
-	/// Size of my raw input buffer
-	size_t          m_bufSize;
-
-
 public:
 	/** Constructor.  The size of the rawInputBuffer determines how big of
 		'chunks' data is read from the "input source", i.e. it is a working
@@ -58,6 +44,8 @@ public:
 	/// See Cpl::Text::Frame::Decoder
 	bool scan( size_t maxSizeOfFrame, char* frame, size_t& frameSize ) noexcept;
 
+	/// See Cpl::Text::Frame::Decoder
+	bool scan( size_t maxSizeOfFrame, char* frame, size_t& frameSize, bool& isEof ) noexcept;
 
 protected:
 	/// Returns true if at start-of-frame
@@ -83,6 +71,34 @@ protected:
 		default implementation simply returns 'escapedChar'
 	 */
 	virtual char decodeEscapedChar( char escapedChar );
+
+	/// Helper method to initialize frame processing
+	virtual void initializeFrame() noexcept;
+
+protected:
+	/// Current number of characters remaining in my raw input buffer
+	int             m_dataLen;
+
+	/// Pointer to the next unprocessed character in my raw input buffer
+	char*           m_dataPtr;
+
+	/// Raw input buffer for reading characters in 'chunks' from my Input stream (i.e. minimize the calls to read())
+	char*           m_buffer;
+
+	/// Size of my raw input buffer
+	size_t          m_bufSize;
+
+	/// Flag: I am currently in a Frame
+	bool			m_inFrame;
+
+	/// Flag: the next character is an escape character
+	bool			m_escaping;
+
+	/// Pointer to the next decoded frame character
+	char*			m_framePtr;
+
+	/// Number of bytes current decoded for the frame
+	size_t			m_frameSize;
 };
 
 

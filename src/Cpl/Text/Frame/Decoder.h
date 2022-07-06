@@ -80,6 +80,18 @@ public:
 	 */
 	virtual bool scan( size_t maxSizeOfFrame, char* frame, size_t& frameSize ) noexcept = 0;
 
+	/** This method is similar to the above scan() method, except that it does
+		NOT block till a 'frame' has found, instead it indicates when a 'frame' 
+		has been found by setting the 'isEof' flag to true.
+
+		False is returned if a error was encountered while reading the Input 
+		source.
+
+		CAUTION: The returned frame is NOT a null terminated string - it is
+				 ONLY a buffer with 'frameSize' number of characters stored
+				 in it.
+	 */
+	virtual bool scan( size_t maxSizeOfFrame, char* frame, size_t& frameSize, bool& isEof ) noexcept = 0;
 
 public:
 	/// Virtual Destructor

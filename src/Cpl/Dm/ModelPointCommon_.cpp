@@ -10,7 +10,6 @@
 *----------------------------------------------------------------------------*/
 
 #include "ModelPointCommon_.h"
-#include "MailboxServer.h"
 #include "Cpl/Text/strip.h"
 #include "Cpl/Text/atob.h"
 #include "Cpl/System/Assert.h"
