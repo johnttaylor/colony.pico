@@ -91,19 +91,17 @@ class ToolChain( base.ToolChain ):
           
         # 
         mcu                             = '-mcpu=cortex-m0plus'
-        common_flags                    = f' -O3 -DPICO_CONFIG_HEADER={board_header} -Os {mcu} -mthumb -DPICO_TARGET_NAME=\\"{exename}\\" -DPICO_BOARD=\\"{board}\\" -DLIB_PICO_BIT_OPS=1 -DLIB_PICO_BIT_OPS_PICO=1 -DLIB_PICO_DIVIDER=1 -DLIB_PICO_DIVIDER_HARDWARE=1 -DLIB_PICO_DOUBLE=1 -DLIB_PICO_DOUBLE_PICO=1 -DLIB_PICO_FLOAT=1 -DLIB_PICO_FLOAT_PICO=1 -DLIB_PICO_INT64_OPS=1 -DLIB_PICO_INT64_OPS_PICO=1 -DLIB_PICO_MALLOC=1 -DLIB_PICO_MEM_OPS=1 -DLIB_PICO_MEM_OPS_PICO=1 -DLIB_PICO_PLATFORM=1 -DLIB_PICO_PRINTF=1 -DLIB_PICO_PRINTF_PICO=1 -DLIB_PICO_RUNTIME=1 -DLIB_PICO_STANDARD_LINK=1 -DLIB_PICO_STDIO=1 -DLIB_PICO_STDIO_UART=1 -DLIB_PICO_STDLIB=1 -DLIB_PICO_SYNC=1 -DLIB_PICO_SYNC_CORE=1 -DLIB_PICO_SYNC_CRITICAL_SECTION=1 -DLIB_PICO_SYNC_MUTEX=1 -DLIB_PICO_SYNC_SEM=1 -DLIB_PICO_TIME=1 -DLIB_PICO_UTIL=1 -DPICO_BUILD=1'
-        asm_and_compile_flags           = f' '
-        cpp_and_c_flags                 = ' -ffunction-sections -fdata-sections'
-        self._base_release.cflags       = self._base_release.cflags + common_flags + cpp_and_c_flags + asm_and_compile_flags
+        common_flags                    = f' -O3 -DPICO_CONFIG_HEADER={board_header} {mcu} -mthumb -ffunction-sections -fdata-sections -DPICO_TARGET_NAME=\\"{exename}\\" -DPICO_BOARD=\\"{board}\\" -DLIB_PICO_BIT_OPS=1 -DLIB_PICO_BIT_OPS_PICO=1 -DLIB_PICO_DIVIDER=1 -DLIB_PICO_DIVIDER_HARDWARE=1 -DLIB_PICO_DOUBLE=1 -DLIB_PICO_DOUBLE_PICO=1 -DLIB_PICO_FLOAT=1 -DLIB_PICO_FLOAT_PICO=1 -DLIB_PICO_INT64_OPS=1 -DLIB_PICO_INT64_OPS_PICO=1 -DLIB_PICO_MALLOC=1 -DLIB_PICO_MEM_OPS=1 -DLIB_PICO_MEM_OPS_PICO=1 -DLIB_PICO_PLATFORM=1 -DLIB_PICO_PRINTF=1 -DLIB_PICO_PRINTF_PICO=1 -DLIB_PICO_RUNTIME=1 -DLIB_PICO_STANDARD_LINK=1 -DLIB_PICO_STDIO=1 -DLIB_PICO_STDIO_UART=1 -DLIB_PICO_STDLIB=1 -DLIB_PICO_SYNC=1 -DLIB_PICO_SYNC_CORE=1 -DLIB_PICO_SYNC_CRITICAL_SECTION=1 -DLIB_PICO_SYNC_MUTEX=1 -DLIB_PICO_SYNC_SEM=1 -DLIB_PICO_TIME=1 -DLIB_PICO_UTIL=1 -DPICO_BUILD=1'
+        self._base_release.cflags       = self._base_release.cflags + common_flags
         self._base_release.c_only_flags = self._base_release.c_only_flags + ' -std=gnu11'
         self._base_release.cppflags     = self._base_release.cppflags + ' -std=gnu++11 -fno-threadsafe-statics -fno-rtti -fno-exceptions'
         self._base_release.cppflags    += ' -Wno-restrict -Wno-address-of-packed-member -Wno-class-memaccess'
-        self._base_release.asmflags     = asm_and_compile_flags + ' -c -x assembler-with-cpp'
-        self._base_release.asminc       = self._base_release.asminc + common_flags + self._base_release.inc + ' -I ' + sdk_src_path + r'\rp2_common\boot_stage2\asminclude'
+        self._base_release.asmflags     = self._base_release.cflags 
+        self._base_release.asminc       = self._base_release.asminc + self._base_release.inc + ' -I ' + sdk_src_path + r'\rp2_common\boot_stage2\asminclude'
         
         wrapper_funcs                   = '-Wl,--wrap=printf -Wl,--wrap=vprintf -Wl,--wrap=puts -Wl,--wrap=putchar -Wl,--wrap=getchar -Wl,--wrap=sprintf -Wl,--wrap=snprintf -Wl,--wrap=vsnprintf -Wl,--wrap=__clzsi2 -Wl,--wrap=__clzdi2 -Wl,--wrap=__ctzsi2 -Wl,--wrap=__ctzdi2 -Wl,--wrap=__popcountsi2 -Wl,--wrap=__popcountdi2 -Wl,--wrap=__clz -Wl,--wrap=__clzl -Wl,--wrap=__clzll -Wl,--wrap=__aeabi_idiv -Wl,--wrap=__aeabi_idivmod -Wl,--wrap=__aeabi_ldivmod -Wl,--wrap=__aeabi_uidiv -Wl,--wrap=__aeabi_uidivmod -Wl,--wrap=__aeabi_uldivmod -Wl,--wrap=__aeabi_dadd -Wl,--wrap=__aeabi_ddiv -Wl,--wrap=__aeabi_dmul -Wl,--wrap=__aeabi_drsub -Wl,--wrap=__aeabi_dsub -Wl,--wrap=__aeabi_cdcmpeq -Wl,--wrap=__aeabi_cdrcmple -Wl,--wrap=__aeabi_cdcmple -Wl,--wrap=__aeabi_dcmpeq -Wl,--wrap=__aeabi_dcmplt -Wl,--wrap=__aeabi_dcmple -Wl,--wrap=__aeabi_dcmpge -Wl,--wrap=__aeabi_dcmpgt -Wl,--wrap=__aeabi_dcmpun -Wl,--wrap=__aeabi_i2d -Wl,--wrap=__aeabi_l2d -Wl,--wrap=__aeabi_ui2d -Wl,--wrap=__aeabi_ul2d -Wl,--wrap=__aeabi_d2iz -Wl,--wrap=__aeabi_d2lz -Wl,--wrap=__aeabi_d2uiz -Wl,--wrap=__aeabi_d2ulz -Wl,--wrap=__aeabi_d2f -Wl,--wrap=sqrt -Wl,--wrap=cos -Wl,--wrap=sin -Wl,--wrap=tan -Wl,--wrap=atan2 -Wl,--wrap=exp -Wl,--wrap=log -Wl,--wrap=ldexp -Wl,--wrap=copysign -Wl,--wrap=trunc -Wl,--wrap=floor -Wl,--wrap=ceil -Wl,--wrap=round -Wl,--wrap=sincos -Wl,--wrap=asin -Wl,--wrap=acos -Wl,--wrap=atan -Wl,--wrap=sinh -Wl,--wrap=cosh -Wl,--wrap=tanh -Wl,--wrap=asinh -Wl,--wrap=acosh -Wl,--wrap=atanh -Wl,--wrap=exp2 -Wl,--wrap=log2 -Wl,--wrap=exp10 -Wl,--wrap=log10 -Wl,--wrap=pow -Wl,--wrap=powint -Wl,--wrap=hypot -Wl,--wrap=cbrt -Wl,--wrap=fmod -Wl,--wrap=drem -Wl,--wrap=remainder -Wl,--wrap=remquo -Wl,--wrap=expm1 -Wl,--wrap=log1p -Wl,--wrap=fma -Wl,--wrap=__aeabi_lmul -Wl,--wrap=__aeabi_fadd -Wl,--wrap=__aeabi_fdiv -Wl,--wrap=__aeabi_fmul -Wl,--wrap=__aeabi_frsub -Wl,--wrap=__aeabi_fsub -Wl,--wrap=__aeabi_cfcmpeq -Wl,--wrap=__aeabi_cfrcmple -Wl,--wrap=__aeabi_cfcmple -Wl,--wrap=__aeabi_fcmpeq -Wl,--wrap=__aeabi_fcmplt -Wl,--wrap=__aeabi_fcmple -Wl,--wrap=__aeabi_fcmpge -Wl,--wrap=__aeabi_fcmpgt -Wl,--wrap=__aeabi_fcmpun -Wl,--wrap=__aeabi_i2f -Wl,--wrap=__aeabi_l2f -Wl,--wrap=__aeabi_ui2f -Wl,--wrap=__aeabi_ul2f -Wl,--wrap=__aeabi_f2iz -Wl,--wrap=__aeabi_f2lz -Wl,--wrap=__aeabi_f2uiz -Wl,--wrap=__aeabi_f2ulz -Wl,--wrap=__aeabi_f2d -Wl,--wrap=sqrtf -Wl,--wrap=cosf -Wl,--wrap=sinf -Wl,--wrap=tanf -Wl,--wrap=atan2f -Wl,--wrap=expf -Wl,--wrap=logf -Wl,--wrap=ldexpf -Wl,--wrap=copysignf -Wl,--wrap=truncf -Wl,--wrap=floorf -Wl,--wrap=ceilf -Wl,--wrap=roundf -Wl,--wrap=sincosf -Wl,--wrap=asinf -Wl,--wrap=acosf -Wl,--wrap=atanf -Wl,--wrap=sinhf -Wl,--wrap=coshf -Wl,--wrap=tanhf -Wl,--wrap=asinhf -Wl,--wrap=acoshf -Wl,--wrap=atanhf -Wl,--wrap=exp2f -Wl,--wrap=log2f -Wl,--wrap=exp10f -Wl,--wrap=log10f -Wl,--wrap=powf -Wl,--wrap=powintf -Wl,--wrap=hypotf -Wl,--wrap=cbrtf -Wl,--wrap=fmodf -Wl,--wrap=dremf -Wl,--wrap=remainderf -Wl,--wrap=remquof -Wl,--wrap=expm1f -Wl,--wrap=log1pf -Wl,--wrap=fmaf -Wl,--wrap=malloc -Wl,--wrap=calloc -Wl,--wrap=realloc -Wl,--wrap=free -Wl,--wrap=memcpy -Wl,--wrap=memset -Wl,--wrap=__aeabi_memcpy -Wl,--wrap=__aeabi_memset -Wl,--wrap=__aeabi_memcpy4 -Wl,--wrap=__aeabi_memset4 -Wl,--wrap=__aeabi_memcpy8 -Wl,--wrap=__aeabi_memset8'
         linker_script                   = os.path.join( pico_root, 'pico-sdk', "src", "rp2_common", "pico_standard_link", "memmap_default.ld" )
-        self._base_release.linkflags    = f' -Wl,--build-id=none --specs=nosys.specs -Wl,-z,max-page-size=4096 -Wl,--gc-sections {wrapper_funcs} -Wl,--script={linker_script} bs2_default_padded_checksummed.S' 
+        self._base_release.linkflags    = f' {mcu} -mthumb -O3 -Wl,--build-id=none --specs=nosys.specs -Wl,-z,max-page-size=4096 -Wl,--gc-sections {wrapper_funcs} -Wl,--script={linker_script} bs2_default_padded_checksummed.S' 
                                         
         boot_linker_script              = os.path.join( pico_root, 'pico-sdk', "src", "rp2_common", "boot_stage2", "boot_stage2.ld" )
         boot_obj                        = r'..\pico-sdk\src\rp2_common\boot_stage2\compile_time_choice.o'
@@ -117,11 +115,13 @@ class ToolChain( base.ToolChain ):
         self._ar_options                = 'rcs ' + self._ar_library_name
 
         # Optimized options, flags, etc.
-        self._optimized_release.cflags = self._optimized_release.cflags + r' -DNDEBUG -DPICO_CMAKE_BUILD_TYPE=\"Release\"'
+        self._optimized_release.cflags     = self._optimized_release.cflags + r' -DNDEBUG -DPICO_CMAKE_BUILD_TYPE=\"Release\"'
+        self._optimized_release.linkflags  = self._optimized_release.linkflags + ' -DNDEBUG'
 
         # Debug options, flags, etc.
-        self._debug_release.cflags     = self._debug_release.cflags + r' -DPICO_CMAKE_BUILD_TYPE=\"Debug\"'
-
+        self._debug_release.cflags     = self._debug_release.cflags + r' -DDEBUG -DPICO_CMAKE_BUILD_TYPE=\"Debug\"'
+        self._debug_release.linkflags  = self._debug_release.linkflags + ' -DDEBUG'
+        
         #
         # Build Config/Variant: "xyz"
         #
@@ -175,7 +175,7 @@ class ToolChain( base.ToolChain ):
             self._printer.output( objdmp )
         if ( utils.run_shell(self._printer, objdmp) ):
             self._printer.output("=")
-            self._printer.output("= Build Failed: Failed create the dis assembly file for the Boot2" )
+            self._printer.output("= Build Failed: Failed create the disassembly file for the Boot2" )
             self._printer.output("=")
             sys.exit(1)
         objdmp = f'{self._objdmp} -d bs2_default.elf >> bs2_default.dis'
@@ -183,7 +183,7 @@ class ToolChain( base.ToolChain ):
             self._printer.output( objdmp )
         if ( utils.run_shell(self._printer, objdmp) ):
             self._printer.output("=")
-            self._printer.output("= Build Failed: Failed create the dis assembly file for the Boot2" )
+            self._printer.output("= Build Failed: Failed create the disassembly file for the Boot2" )
             self._printer.output("=")
             sys.exit(1)
         script = f'{self._pad_chksum} -s 0xffffffff bs2_default.bin bs2_default_padded_checksummed.S'
@@ -226,6 +226,24 @@ class ToolChain( base.ToolChain ):
         if ( utils.run_shell(self._printer, objcpy) ):
             self._printer.output("=")
             self._printer.output("= Build Failed: Failed to create .HEX file from the .ELF" )
+            self._printer.output("=")
+            sys.exit(1)
+
+        # Generate dissambly file
+        objdmp = f'{self._objdmp} -h {self._final_output_name + ".elf"} > {self._final_output_name + ".dis"}'
+        if ( arguments['-v'] ):
+            self._printer.output( objdmp )
+        if ( utils.run_shell(self._printer, objdmp) ):
+            self._printer.output("=")
+            self._printer.output("= Build Failed: Failed create the disassembly file for the Application" )
+            self._printer.output("=")
+            sys.exit(1)
+        objdmp = f'{self._objdmp} -d {self._final_output_name + ".elf"} >> {self._final_output_name + ".dis"}'
+        if ( arguments['-v'] ):
+            self._printer.output( objdmp )
+        if ( utils.run_shell(self._printer, objdmp) ):
+            self._printer.output("=")
+            self._printer.output("= Build Failed: Failed create the disassembly file for the Application" )
             self._printer.output("=")
             sys.exit(1)
 
