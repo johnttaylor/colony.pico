@@ -1,5 +1,5 @@
 # SDK-Multicore
-pico-sdk/src/rp2_common/pico_multicore
+#pico-sdk/src/rp2_common/pico_multicore
 
 # Core SDK
 pico-sdk/src/common/pico_sync
@@ -21,6 +21,7 @@ pico-sdk/src/rp2_common/hardware_pll
 pico-sdk/src/rp2_common/hardware_vreg
 pico-sdk/src/rp2_common/hardware_watchdog
 pico-sdk/src/rp2_common/hardware_xosc
+pico-sdk/src/rp2_common/hardware_flash
 pico-sdk/src/rp2_common/pico_printf
 pico-sdk/src/rp2_common/pico_bit_ops
 pico-sdk/src/rp2_common/pico_bootrom
@@ -32,4 +33,4 @@ pico-sdk/src/rp2_common/pico_malloc
 pico-sdk/src/rp2_common/pico_mem_ops
 pico-sdk/src/rp2_common/pico_standard_link
 pico-sdk/src/rp2_common/pico_stdio
-pico-sdk/src/rp2_common/pico_stdio_uart
+pico-sdk/src/rp2_common/pico_unique_id

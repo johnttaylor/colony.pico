@@ -95,7 +95,7 @@ prjdir = os.path.dirname(os.path.abspath(__file__))
 
 
 # Select Module that contains the desired toolchain
-from nqbplib.toolchains.windows.arm_gcc_pi_pico.pico import ToolChain
+from nqbplib.toolchains.windows.arm_gcc_pi_pico.pico_stdio_serial import ToolChain
 
 
 # Function that instantiates an instance of the toolchain

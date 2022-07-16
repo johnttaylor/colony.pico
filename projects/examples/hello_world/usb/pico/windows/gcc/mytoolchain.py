@@ -33,19 +33,22 @@ from nqbplib.my_globals import NQBP_PKG_ROOT
 #---------------------------------------------------
 
 # Set the name for the final output item (with NO file extension)
-FINAL_OUTPUT_NAME = 'blink'
+FINAL_OUTPUT_NAME = 'hello_world'
 
 
 #
 # For build config/variant: "Release"
 #
  
+# Link code that is not directly referenced during the link process
+extra_objects = '_BUILT_DIR_.pico-sdk/src/rp2_common/pico_stdio_usb'
 
 # Set project specific 'base' (i.e always used) options
 base_release = BuildValues()        # Do NOT comment out this line
 common_flags           = ' -DPICO_COPY_TO_RAM=0 -DPICO_CXX_ENABLE_EXCEPTIONS=0 -DPICO_NO_FLASH=0 -DPICO_NO_HARDWARE=0 -DPICO_ON_DEVICE=1 -DPICO_USE_BLOCKED_RAM=0 '
-base_release.cflags    = f' -Wall {common_flags}'
+base_release.cflags    = f' -Wall -Wno-array-bounds -Wno-stringop-overflow {common_flags}'
 base_release.asmflags  = f' {common_flags}'
+base_release.firstobjs = extra_objects
 
 
 # Set project specific 'optimized' options
@@ -95,7 +98,7 @@ prjdir = os.path.dirname(os.path.abspath(__file__))
 
 
 # Select Module that contains the desired toolchain
-from nqbplib.toolchains.windows.arm_gcc_pi_pico.pico_stdio_serial import ToolChain
+from nqbplib.toolchains.windows.arm_gcc_pi_pico.pico_stdio_usb import ToolChain
 
 
 # Function that instantiates an instance of the toolchain
