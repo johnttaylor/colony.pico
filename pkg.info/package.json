@@ -69,8 +69,14 @@
     "weak": []
   },
   "directories": {
-    "primary": null,
-    "adoptedExtras": null
+    "primary": [
+      "projects",
+      "src",
+      "tests"
+    ],
+    "adoptedExtras": [
+      "top"
+    ]
   },
   "info": {
     "pkgname": null,
