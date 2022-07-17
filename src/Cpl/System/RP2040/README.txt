@@ -1,28 +1,26 @@
-/** @namespace Cpl::System::BareMetal
+/** @namespace Cpl::System::RP2040
 
 Concrete implementation of the platform specific classes/features of the 
-Cpl::System namespace interfaces for a Baremetal/Singled-threaded system.
+Cpl::System namespace interfaces for the Raspberry RP2040 MCU's dual cores,
+i.e. a maximum of 2 threads - one per core.
 
 Platform Dependent Behaviors:
 
-Thread      - The threading class is stubbed out so that any call to the 
-              interface are benign.  The Thread interface will "report" a 
-              single thread.  The application cannot create threads.
+Thread      - The system also has one thread running on core0.  A SINGLE 
+              additional thread can be created that runs on core1.
 
-Mutex       - The mutex interface is effectively all NOPs
+Mutex       - Fully functional.
 
-GlobalLock  - The GlobalLock can be mapped to a platform's EI/DI calls, or
-              to NOPs (on the Windoze, this mapped to NOPs)
+GlobalLock  - The GlobalLock maps the RP2040 SDK's critical section.  There are
+              some subtle details here - but it effective disables IRQs on 
+              the calling core AND provides mutual exclusion with respect to
+              the other core.
 
-Semaphore   - Fully functional.  However since there is only 'one thread' - if 
-              a semaphore's count is at zero and the wait() method is called the
-              "main thread" will block/busy-wait forever unless the semaphore's
-              su_signal() method is called from an ISR context.
+Semaphore   - Fully functional.  
 
 Tls         - Fully functional.
 
-ElapsedTime - The platform is required to provide the number of milliseconds
-              since power-up.  
+ElapsedTime - Fully functional.  
               
 EventLoop   - Fully functional.  This includes EventFlags and Software Timers.
 
