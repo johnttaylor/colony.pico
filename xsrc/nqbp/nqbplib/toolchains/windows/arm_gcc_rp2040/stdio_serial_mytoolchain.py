@@ -44,7 +44,7 @@ FINAL_OUTPUT_NAME = 'multicore_fifo_irq'
 # Set project specific 'base' (i.e always used) options
 base_release = BuildValues()        # Do NOT comment out this line
 common_flags           = ' -DPICO_COPY_TO_RAM=0 -DPICO_CXX_ENABLE_EXCEPTIONS=0 -DPICO_NO_FLASH=0 -DPICO_NO_HARDWARE=0 -DPICO_ON_DEVICE=1 -DPICO_USE_BLOCKED_RAM=0 '
-base_release.cflags    = f' -Wall -Wno-array-bounds -Wno-stringop-overflow {common_flags}'
+base_release.cflags    = f' -Wall {common_flags}'
 base_release.asmflags  = f' {common_flags}'
 
 
@@ -95,7 +95,7 @@ prjdir = os.path.dirname(os.path.abspath(__file__))
 
 
 # Select Module that contains the desired toolchain
-from nqbplib.toolchains.windows.arm_gcc_pi_pico.pico_stdio_serial import ToolChain
+from nqbplib.toolchains.windows.arm_gcc_rp2040.stdio_serial import ToolChain
 
 
 # Function that instantiates an instance of the toolchain

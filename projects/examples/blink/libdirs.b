@@ -22,9 +22,9 @@ pico-sdk/src/rp2_common/pico_printf
 pico-sdk/src/rp2_common/pico_bit_ops
 pico-sdk/src/rp2_common/pico_bootrom
 pico-sdk/src/rp2_common/pico_divider
-pico-sdk/src/rp2_common/pico_double
+pico-sdk/src/rp2_common/pico_double > double_none.S
 pico-sdk/src/rp2_common/pico_int64_ops
-pico-sdk/src/rp2_common/pico_float
+pico-sdk/src/rp2_common/pico_float > float_none.S
 pico-sdk/src/rp2_common/pico_malloc
 pico-sdk/src/rp2_common/pico_mem_ops
 pico-sdk/src/rp2_common/pico_standard_link
