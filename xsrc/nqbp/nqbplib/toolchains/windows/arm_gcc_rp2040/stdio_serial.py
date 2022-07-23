@@ -80,6 +80,7 @@ class ToolChain( base.ToolChain ):
                 ' -I' + sdk_src_path + r'\rp2_common\pico_stdio\include' + \
                 ' -I' + sdk_src_path + r'\rp2_common\pico_stdio_uart\include' + \
                 ' -I' + sdk_src_path + r'\rp2_common\pico_multicore\include' + \
+                ' -I' + sdk_src_path + r'\rp2_common\pico_unique_id\include ' + \
                 ' -I' + sdk_src_path + r'\rp2040\hardware_regs\include' + \
                 ' -I' + sdk_src_path + r'\rp2040\hardware_structs\include'
 

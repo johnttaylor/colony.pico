@@ -1,3 +1,11 @@
+# Code under test
+src/Cpl/Io/Serial/RP2040/Stdio
+src/Cpl/Io < Input.cpp Output.cpp
+src/Cpl/Io/Serial/RP2040/_0test/_hw_baremetal
+
+# BSP
+src/Bsp/RP2040/Pico/gcc
+
 # SDK-Multicore
 xsrc/pico-sdk/src/rp2_common/pico_multicore
 
@@ -8,7 +16,7 @@ xsrc/pico-sdk/src/common/pico_util
 xsrc/pico-sdk/src/rp2_common/boot_stage2 < compile_time_choice.S
 xsrc/pico-sdk/src/rp2_common/pico_stdlib
 xsrc/pico-sdk/src/rp2_common/hardware_gpio
-xsrc/pico-sdk/src/rp2_common/hardware_claim/
+xsrc/pico-sdk/src/rp2_common/hardware_claim
 xsrc/pico-sdk/src/rp2_common/pico_platform
 xsrc/pico-sdk/src/rp2_common/hardware_sync
 xsrc/pico-sdk/src/rp2_common/hardware_irq

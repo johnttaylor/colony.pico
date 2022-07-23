@@ -67,10 +67,13 @@ int main() {
     // Wait for a bit for things to happen
     sleep_ms(10);
 
-    printf("Irq handlers should have rx'd some stuff - core 0 got %d, core 1 got %d!\n", core0_rx_val, core1_rx_val);
+    //printf("Irq handlers should have rx'd some stuff - core 0 got %d, core 1 got %d!\n", core0_rx_val, core1_rx_val);
 
-    while (1)
-        tight_loop_contents();
+    while ( 1 )
+    {
+        printf( "Irq handlers should have rx'd some stuff - core 0 got %d, core 1 got %d!\n", core0_rx_val, core1_rx_val );
+        sleep_ms( 1000 );
+    }
 }
 
 /// \end::multicore_fifo_irqs[]
