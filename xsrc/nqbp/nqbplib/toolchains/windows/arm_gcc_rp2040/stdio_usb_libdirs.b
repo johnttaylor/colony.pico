@@ -1,56 +1,56 @@
 # SDK-Multicore
-pico-sdk/src/rp2_common/pico_multicore
+xsrc/pico-sdk/src/rp2_common/pico_multicore
 
 # Core SDK
-pico-sdk/src/common/pico_sync
-pico-sdk/src/common/pico_time
-pico-sdk/src/common/pico_util
-pico-sdk/src/rp2_common/boot_stage2 < compile_time_choice.S
-pico-sdk/src/rp2_common/pico_stdlib
-pico-sdk/src/rp2_common/hardware_gpio
-pico-sdk/src/rp2_common/hardware_claim/
-pico-sdk/src/rp2_common/pico_platform
-pico-sdk/src/rp2_common/hardware_sync
-pico-sdk/src/rp2_common/hardware_irq
-pico-sdk/src/rp2_common/hardware_timer
-pico-sdk/src/rp2_common/hardware_uart
-pico-sdk/src/rp2_common/hardware_divider
-pico-sdk/src/rp2_common/pico_runtime
-pico-sdk/src/rp2_common/hardware_clocks
-pico-sdk/src/rp2_common/hardware_pll
-pico-sdk/src/rp2_common/hardware_vreg
-pico-sdk/src/rp2_common/hardware_watchdog
-pico-sdk/src/rp2_common/hardware_xosc
-pico-sdk/src/rp2_common/hardware_flash
-pico-sdk/src/rp2_common/pico_printf
-pico-sdk/src/rp2_common/pico_bit_ops
-pico-sdk/src/rp2_common/pico_bootrom
-pico-sdk/src/rp2_common/pico_divider
-pico-sdk/src/rp2_common/pico_double > double_none.S
-pico-sdk/src/rp2_common/pico_int64_ops
-pico-sdk/src/rp2_common/pico_float > float_none.S
-pico-sdk/src/rp2_common/pico_malloc
-pico-sdk/src/rp2_common/pico_mem_ops
-pico-sdk/src/rp2_common/pico_standard_link
-pico-sdk/src/rp2_common/pico_stdio
-pico-sdk/src/rp2_common/pico_unique_id
+xsrc/pico-sdk/src/common/pico_sync
+xsrc/pico-sdk/src/common/pico_time
+xsrc/pico-sdk/src/common/pico_util
+xsrc/pico-sdk/src/rp2_common/boot_stage2 < compile_time_choice.S
+xsrc/pico-sdk/src/rp2_common/pico_stdlib
+xsrc/pico-sdk/src/rp2_common/hardware_gpio
+xsrc/pico-sdk/src/rp2_common/hardware_claim/
+xsrc/pico-sdk/src/rp2_common/pico_platform
+xsrc/pico-sdk/src/rp2_common/hardware_sync
+xsrc/pico-sdk/src/rp2_common/hardware_irq
+xsrc/pico-sdk/src/rp2_common/hardware_timer
+xsrc/pico-sdk/src/rp2_common/hardware_uart
+xsrc/pico-sdk/src/rp2_common/hardware_divider
+xsrc/pico-sdk/src/rp2_common/pico_runtime
+xsrc/pico-sdk/src/rp2_common/hardware_clocks
+xsrc/pico-sdk/src/rp2_common/hardware_pll
+xsrc/pico-sdk/src/rp2_common/hardware_vreg
+xsrc/pico-sdk/src/rp2_common/hardware_watchdog
+xsrc/pico-sdk/src/rp2_common/hardware_xosc
+xsrc/pico-sdk/src/rp2_common/hardware_flash
+xsrc/pico-sdk/src/rp2_common/pico_printf
+xsrc/pico-sdk/src/rp2_common/pico_bit_ops
+xsrc/pico-sdk/src/rp2_common/pico_bootrom
+xsrc/pico-sdk/src/rp2_common/pico_divider
+xsrc/pico-sdk/src/rp2_common/pico_double > double_none.S
+xsrc/pico-sdk/src/rp2_common/pico_int64_ops
+xsrc/pico-sdk/src/rp2_common/pico_float > float_none.S
+xsrc/pico-sdk/src/rp2_common/pico_malloc
+xsrc/pico-sdk/src/rp2_common/pico_mem_ops
+xsrc/pico-sdk/src/rp2_common/pico_standard_link
+xsrc/pico-sdk/src/rp2_common/pico_stdio
+xsrc/pico-sdk/src/rp2_common/pico_unique_id
 	
 # stdio USB
-pico-sdk/src/rp2_common/pico_stdio_usb
+xsrc/pico-sdk/src/rp2_common/pico_stdio_usb
 
 # USB
-pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040
-pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration
-pico-sdk/lib/tinyusb/src/device
-pico-sdk/lib/tinyusb/src/class/audio
-pico-sdk/lib/tinyusb/src/class/cdc
-pico-sdk/lib/tinyusb/src/class/dfu
-pico-sdk/lib/tinyusb/src/class/hid
-pico-sdk/lib/tinyusb/src/class/midi
-pico-sdk/lib/tinyusb/src/class/msc
-pico-sdk/lib/tinyusb/src/class/net
-pico-sdk/lib/tinyusb/src/class/usbtmc
-pico-sdk/lib/tinyusb/src/class/vendor
-pico-sdk/lib/tinyusb/src/class/video
-pico-sdk/lib/tinyusb/src
-pico-sdk/lib/tinyusb/src/common
+xsrc/pico-sdk/lib/tinyusb/src/portable/raspberrypi/rp2040
+xsrc/pico-sdk/src/rp2_common/pico_fix/rp2040_usb_device_enumeration
+xsrc/pico-sdk/lib/tinyusb/src/device
+xsrc/pico-sdk/lib/tinyusb/src/class/audio
+xsrc/pico-sdk/lib/tinyusb/src/class/cdc
+xsrc/pico-sdk/lib/tinyusb/src/class/dfu
+xsrc/pico-sdk/lib/tinyusb/src/class/hid
+xsrc/pico-sdk/lib/tinyusb/src/class/midi
+xsrc/pico-sdk/lib/tinyusb/src/class/msc
+xsrc/pico-sdk/lib/tinyusb/src/class/net
+xsrc/pico-sdk/lib/tinyusb/src/class/usbtmc
+xsrc/pico-sdk/lib/tinyusb/src/class/vendor
+xsrc/pico-sdk/lib/tinyusb/src/class/video
+xsrc/pico-sdk/lib/tinyusb/src
+xsrc/pico-sdk/lib/tinyusb/src/common

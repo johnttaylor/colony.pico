@@ -9,42 +9,6 @@
 #                       of the NQBP Python package to be used
 #
 #   OPTIONAL:
-#     NQBP_XPKG_MODEL   Used to specified what the 'model' for external handling
-#                       external and/or 3rd party source code.  The options are:
-#
-#                       'legacy'  - Assumes there is single package and external
-#                                   source code is all under the 'xsrc/' directory
-#                                   in the package.  If the environment variable
-#                                   is not set - this is the default model.
-#                               
-#                       'outcast' - Assumes packages are mounted under the
-#                                   'xpgks/' and 'xinc/' directories
-#
-#                       'mixed'   - Mixed mode attempts to support build
-#                                   scripts constructed to use the 'outcast'
-#                                   model to be auto-magically compatible when
-#                                   using the single package + xsrc/ directory
-#                                   structure. This mode is not perfect, but
-#                                   works for all currently tested use cases
-#                                   Rules for Outcast based packages:
-#                                   1) The xpackage's source code and 
-#                                      header files that are under its 'src/'
-#                                      directory are assumed to be mapped' under 
-#                                      the 'src/' directory of the single package 
-#                                   2) Anything in the xpackage that referenced
-#                                      in build scripts using the 'xpkgs/' 
-#                                      directory must be mapped under the
-#                                      'xsrc'/<package-name>' directory
-#
-#                                   NOTE: Sometimes content from a xpackage ends
-#                                         up in two places - under 'src' and
-#                                         'xsrc/'.  Did I mention that mixed
-#                                         was not perfect.
-#
-#                                   NOTE: When using MIXED mode - the developer
-#                                         should ONLY EDIT files that are part
-#                                         of the single package's file set, i.e.
-#                                         do NOT EDIT 'external' files                       
 #=============================================================================
 
 #
@@ -74,9 +38,6 @@ from .my_globals import NQBP_NAME_SOURCES
 from .my_globals import NQBP_PRE_PROCESS_SCRIPT
 from .my_globals import NQBP_PRE_PROCESS_SCRIPT_ARGS
 from .my_globals import NQBP_NAME_LIBDIRS
-from .my_globals import NQBP_XPKG_MODEL
-from .my_globals import NQBP_XPKG_MODEL_OUTCAST
-from .my_globals import NQBP_XPKG_MODEL_MIXED
 
 
 
@@ -153,7 +114,6 @@ Arguments:
                    build variant) referenced in the libdirs.b file.
   --qry-dirs2      Same as --qry-dirs with the addition of the any source file
                    include/exclude info
-  --qry-model      Returns the Outcast vs Legacy model for external packages.
   -h,--help        Display help.
   --version        Display version number.
 
@@ -167,11 +127,6 @@ Notes:
     the crash). The '-1' option will suppress all parallel building.  In addition 
     the environment variable NQBP_CMD_OPTIONS (when set to '-1') can be used to
     apply the '-1' option to every build.
-
-    When the environment variable NQBP_XPKG_MODEL is set to 'outcast' then 
-    NQBP assumes that the Outcast paradigm (of xpkgs/ & xinc/) for external 
-    packages. Values of 'mixed' or 'legacy' NQPB will uses the xsrc/ directory
-    (under the current package) paradigm.
        
 Examples:
 
@@ -202,11 +157,6 @@ def build( argv, toolchain ):
     printer = Printer( multiprocessing.Lock(), logfile, start_new_file=True );
     toolchain.set_printer( printer )
 
-    # Query External Package handling mode
-    if ( arguments['--qry-model'] ):
-        printer.output( "External Package Model: " + NQBP_XPKG_MODEL() )
-        sys.exit()
-        
     # Does the specified variant exist
     if ( arguments['--try'] != None ):
         if ( not arguments['--try'] in toolchain.get_variants() ):
@@ -320,20 +270,9 @@ def do_build( printer, toolchain, arguments, variant ):
         dir_path  = utils.standardize_dir_sep( arguments['-d'] )
         entry     = 'local'
 
-        # Trap directory is relative to the workspace root
-        if ( dir_path.startswith(os.sep+os.sep) ):
-            dir_path = dir_path[2:]
-            entry    = 'xpkg'
-                                              
-        # Trap directory is relative to the package root
-        elif ( dir_path.startswith(os.sep) ):
-            dir_path = dir_path[1:]
-            entry    = 'pkg'
-            
         # special case of relative to the workspace
-        elif ( dir_path.startswith(NQBP_WRKPKGS_DIRNAME()) ):
-            dir_path = dir_path[len(NQBP_WRKPKGS_DIRNAME())+1:]
-            entry    = 'xpkg'
+        if ( dir_path.startswith(NQBP_WRKPKGS_DIRNAME()) ):
+            entry = 'xpkg'
         
        # special case of absolute directory that was already built, e.g. nqbp -d __abs\c\my\absolute\path
         elif ( dir_path.startswith("__abs") ):
@@ -395,12 +334,8 @@ def do_build( printer, toolchain, arguments, variant ):
         if ( arguments['-s'] ):
             startdir = utils.standardize_dir_sep( arguments['-s'] )
             
-            # Trap special case of using 'xpkgs' directory
-            if ( startdir.startswith(NQBP_WRKPKGS_DIRNAME()) ):
-                startdir = os.sep + startdir[len(NQBP_WRKPKGS_DIRNAME())+1:]
-        
            # special case of absolute directory that was already built, e.g. nqbp -s __abs\c\my\absolute\path
-            elif ( startdir.startswith("__abs") ):
+            if ( startdir.startswith("__abs") ):
                 startdir = startdir[len("__abs")+1:]
                 if ( startdir[1] == os.sep ):
                     startdir = startdir[0:1] + ':' + startdir[1:]
@@ -417,12 +352,8 @@ def do_build( printer, toolchain, arguments, variant ):
             stopdir = utils.standardize_dir_sep( arguments['-e'] )
             stopped = True
 
-            # Trap special case of using 'xpkgs' directory
-            if ( stopdir.startswith(NQBP_WRKPKGS_DIRNAME()) ):
-                stopdir = os.sep + stopdir[len(NQBP_WRKPKGS_DIRNAME())+1:]
-            
             # special case of absolute directory that was already built, e.g. nqbp -e __abs\c\my\absolute\path
-            elif ( stopdir.startswith("__abs") ):
+            if ( stopdir.startswith("__abs") ):
                 stopdir = stopdir[len("__abs")+1:]
                 if ( stopdir[1] == os.sep ):
                     stopdir = stopdir[0:1] + ':' + stopdir[1:]     
@@ -652,16 +583,6 @@ def build_single_directory( printer, arguments, toolchain, dir, entry, pkg_root,
    
     srcpath, display, dir = utils.derive_src_path( pkg_root, work_root, pkgs_dirname, entry, dir )
 
-    # Hack for legacy/Mixed model
-    if ( NQBP_XPKG_MODEL() != NQBP_XPKG_MODEL_OUTCAST() ):
-        badpath = pkgs_dirname + os.sep + pkgs_dirname
-        idx = srcpath.find( badpath )
-        if ( idx > 0 ):
-            srcpath = pkg_root + os.sep + pkgs_dirname + srcpath[idx+len(badpath):] 
-        idx = dir[0].find( badpath )
-        if ( idx > 0 ):
-            dir[0] = pkgs_dirname + os.sep + dir[0][idx+len(badpath):] 
-    
     # Banner 
     printer.output( "=====================" )
     printer.output( "= Building Directory: " + display )

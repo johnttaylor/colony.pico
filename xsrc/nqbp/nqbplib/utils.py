@@ -25,9 +25,6 @@ from .my_globals import NQBP_WRKPKGS_DIRNAME
 from .my_globals import NQBP_PRE_PROCESS_SCRIPT
 from .my_globals import NQBP_PRE_PROCESS_SCRIPT_ARGS
 from .my_globals import OUT
-from .my_globals import NQBP_XPKG_MODEL
-from .my_globals import NQBP_XPKG_MODEL_MIXED
-from .my_globals import NQBP_XPKG_MODEL_OUTCAST
 
 # Module globals
 _dirstack = []
@@ -194,28 +191,8 @@ def create_working_libdirs( printer, inf, arguments, libdirs, libnames, local_ex
             # Remove the filter prefix
             line = line.split(']')[1].strip()
             
-            
-        # Attempt cross compatibility between the Legacy and Outcast model with respect to external packages
-        if ( NQBP_XPKG_MODEL() == NQBP_XPKG_MODEL_MIXED() ):
-            if ( line.startswith(os.sep + os.sep) ):
-                path  = NQBP_PKG_ROOT() + os.sep
-                parts = path_split_all(line[2:])
-                if ( len(parts) > 1 ):
-                    if ( parts[1] == 'src' ):
-                        line = os.sep.join( parts[1:] )
-                    else:
-                        line = NQBP_WRKPKGS_DIRNAME() + os.sep + parts[0] + os.sep + os.sep.join( parts[1:] )
-
-
-        # Calc root/leading path    
-        if ( line.startswith(os.sep+os.sep) ):
-            path      = os.path.join(NQBP_WORK_ROOT(), NQBP_WRKPKGS_DIRNAME() ) + os.sep
-            line      = line [2:]
-            entry     = 'xpkg'
-            newparent = line.split(os.sep)[0]
-     
         # Absolute root path via an environment variable
-        elif ( line.startswith('$')):
+        if ( line.startswith('$')):
             line = replace_environ_variable( printer, line )
             entry = 'absolute'
 
@@ -232,19 +209,8 @@ def create_working_libdirs( printer, inf, arguments, libdirs, libnames, local_ex
             
         # within my package...
         else:
-            if ( line.startswith(os.sep) ):
-                path    = NQBP_PKG_ROOT() + os.sep
-                line    = line [1:]
-                entry   = 'pkg'
-               
-            # append 'parent' when there is one, i.e. when I have been include from xpkg libdirs.b    
-            else:
-                # Find external packages when NOT using the Outcast model
-                if ( NQBP_XPKG_MODEL() != NQBP_XPKG_MODEL_OUTCAST() and line.startswith(NQBP_WRKPKGS_DIRNAME()) ):
-                    entry     = 'xpkg'
-
-                if ( newparent != None ):
-                    line = os.path.join(newparent,line)
+            if ( line.startswith(NQBP_WRKPKGS_DIRNAME()) ):
+                entry = 'xpkg'
             
             
         # Expand any/all embedded environments variables (that did NOT start the directory entry)
@@ -540,27 +506,17 @@ def derive_src_path( pkg_root, work_root, pkgs_dirname, entry, dir ):
     display   = dir[0]
     newlibdir = dir[0]
     
-    # directory is local to my package
-    if ( entry == 'local' ):
-        srcpath = pkg_root + os.sep + dir[0]
-        display = dir[0]
-    
-    elif ( entry == 'pkg' ):
-        srcpath = os.path.join( pkg_root, dir[0] )
-        display = dir[0]
-        
     # directory is an absolute path
-    elif ( entry == 'absolute' ):
+    if ( entry == 'absolute' ):
         srcpath   = dir[0]
         display   = dir[0]
         objpath   = dir[0].replace(":",'',1)
         newlibdir = os.path.join( "__abs", objpath.lstrip(os.sep) )
 
-    # directory is an external package
+    # local package and external packages
     else:
-        display   = os.sep + dir[0]
-        srcpath   = work_root + os.sep + pkgs_dirname + os.sep + dir[0]
-        newlibdir = pkgs_dirname + os.sep + dir[0]
+        srcpath = os.path.join( pkg_root, dir[0] )
+        display = dir[0]
 
     return srcpath, display, (newlibdir, dir[1], dir[2])
 
@@ -697,3 +653,4 @@ def set_verbose_mode( newstate ):
 
     global verbose_mode
     verbose_mode = newstate
+

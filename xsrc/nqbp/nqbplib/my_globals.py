@@ -11,7 +11,6 @@ _NQBP_PKG_ROOT                = ''
 _NQBP_PRE_PROCESS_SCRIPT      = None
 _NQBP_PRE_PROCESS_SCRIPT_ARGS = ''
 _NQBP_INITIAL_LIBDIRS         = []
-_NQBP_XPKG_MODEL              = None
 
 # Initialize globals
 OUT = logging.getLogger( 'nqbp' )
@@ -32,27 +31,12 @@ def NQBP_NAME_LIBDIRS():
 def NQBP_NAME_SOURCES():
     return 'sources.b'
 
-def NQBP_XPKG_MODEL_OUTCAST():
-    return 'outcast'
-
-def NQBP_XPKG_MODEL_MIXED():
-    return 'mixed'
-
-def NQBP_XPKG_MODEL_LEGACY():
-    return 'legacy'
-
 def NQBP_WRKPKGS_DIRNAME():
-    if ( NQBP_XPKG_MODEL() == NQBP_XPKG_MODEL_OUTCAST() ):
-        return 'xpkgs' 
-    else:
-        return 'xsrc' 
+    return 'xsrc' 
 
             
-def NQBP_PUBLICAPI_DIRNAME():
-    if NQBP_XPKG_MODEL() == NQBP_XPKG_MODEL_OUTCAST():
-        return NQBP_WORK_ROOT() + os.sep + 'xinc' + os.sep + 'src'
-    else:
-        return NQBP_PKG_ROOT() + os.sep + 'xsrc'
+def NQBP_XPKGS_SRC_ROOT():
+    return NQBP_PKG_ROOT() + os.sep + NQBP_WRKPKGS_DIRNAME()
 #
 def NQBP_PKG_TOP():
     return 'top'
@@ -110,18 +94,4 @@ def NQBP_PRE_PROCESS_SCRIPT_ARGS( newval=None ):
     return _NQBP_PRE_PROCESS_SCRIPT_ARGS   
 
 
-#
-def NQBP_XPKG_MODEL():
-    global _NQBP_XPKG_MODEL
-    if ( _NQBP_XPKG_MODEL == None ):
-        val = os.environ.get('NQBP_XPKG_MODEL')
-        if ( val == NQBP_XPKG_MODEL_OUTCAST() ):
-            _NQBP_XPKG_MODEL = NQBP_XPKG_MODEL_OUTCAST()
-        elif ( val == NQBP_XPKG_MODEL_MIXED() ):
-            _NQBP_XPKG_MODEL = NQBP_XPKG_MODEL_MIXED();
-        else:
-            _NQBP_XPKG_MODEL = NQBP_XPKG_MODEL_LEGACY();
-
-    return _NQBP_XPKG_MODEL
-    
     

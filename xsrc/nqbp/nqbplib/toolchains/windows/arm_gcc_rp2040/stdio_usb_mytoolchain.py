@@ -100,5 +100,5 @@ from nqbplib.toolchains.windows.arm_gcc_rp2040.stdio_serial import ToolChain
 
 # Function that instantiates an instance of the toolchain
 def create():
-    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, "pico", NQBP_PKG_ROOT(), "pico"  )
+    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, "pico", os.path.join(NQBP_PKG_ROOT(),"xsrc"), "pico"  )
     return tc 
