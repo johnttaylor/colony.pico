@@ -2,22 +2,6 @@
   "dependencies": {
     "strong": [
       {
-        "pkgname": "nqbp",
-        "pkgtype": "foreign",
-        "adoptedDate": "Sun Jul  3 21:10:00 2022",
-        "parentDir": "xsrc",
-        "version": {
-          "semanticVersion": "2.2.1",
-          "branch": null,
-          "tag": "OUTCAST2-main-2.2.1"
-        },
-        "repo": {
-          "name": "nqbp",
-          "type": "git",
-          "origin": "https://github.com/johnttaylor"
-        }
-      },
-      {
         "pkgname": "colony.core",
         "pkgtype": "overlay",
         "adoptedDate": "Sun Jul  3 21:10:46 2022",
@@ -50,6 +34,40 @@
         }
       },
       {
+        "pkgname": "pico-sdk",
+        "pkgtype": "readonly",
+        "adoptedDate": "Sat Jul 23 13:29:31 2022",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": "1.4.0",
+          "branch": null,
+          "tag": "OUTCAST2-main-1.4.0"
+        },
+        "repo": {
+          "name": "pico-sdk",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      }
+    ],
+    "weak": [
+      {
+        "pkgname": "nqbp",
+        "pkgtype": "foreign",
+        "adoptedDate": "Sun Jul  3 21:10:00 2022",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": "2.2.1",
+          "branch": null,
+          "tag": "OUTCAST2-main-2.2.1"
+        },
+        "repo": {
+          "name": "nqbp",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      },
+      {
         "pkgname": "catch",
         "pkgtype": "overlay",
         "adoptedDate": "Sun Jul  3 21:13:27 2022",
@@ -65,8 +83,7 @@
           "origin": "https://github.com/johnttaylor"
         }
       }
-    ],
-    "weak": []
+    ]
   },
   "directories": {
     "primary": [
