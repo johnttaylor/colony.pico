@@ -173,5 +173,5 @@ Cpl::System::Thread* Cpl::System::Thread::create( Runnable&   runnable,
 
 void Cpl::System::Thread::destroy( Thread& threadToDestroy )
 {
-    delete &threadToDestroy;
+    // do nothing since there are any 'real threads'
 }

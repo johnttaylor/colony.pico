@@ -14,12 +14,16 @@
 #include <hardware/irq.h>
 #include <hardware/timer.h>
 #include <hardware/regs/intctrl.h>
+#include <pico/sync.h>
 
 ///
 using namespace Cpl::Io::Serial::RP2040::Uart;
 
 InputOutput* InputOutput::m_uart0Instance;
 InputOutput* InputOutput::m_uart1Instance;
+
+static critical_section_t lockUart0_;
+static critical_section_t lockUart1_;
 
 static inline uint8_t* advancePointer( uint8_t* ptrToAdvance, uint8_t* startOfMemPtr, size_t memSize )
 {
@@ -30,7 +34,6 @@ static inline uint8_t* advancePointer( uint8_t* ptrToAdvance, uint8_t* startOfMe
     }
     return newPtr;
 }
-
 
 ////////////////////////////////////
 InputOutput::InputOutput( uint8_t*      memTxBuffer,
@@ -50,6 +53,16 @@ InputOutput::InputOutput( uint8_t*      memTxBuffer,
     , m_rxTail( memRxBuffer )
     , m_started( false )
 {
+    if ( m_uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART0 )
+    {
+        m_lock = &lockUart0_;
+        critical_section_init( m_lock );
+    }
+    else if ( m_uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART1 )
+    {
+        m_lock = &lockUart1_;
+        critical_section_init( m_lock );
+    }
 }
 
 InputOutput::~InputOutput( void )
@@ -152,6 +165,11 @@ void InputOutput::irqHandler()
     // Receive IRQ
     if ( irqFlags & (UART_UARTMIS_RXMIS_BITS | UART_UARTMIS_RTMIS_BITS) )
     {
+        // Need to use a critical section - because we CANNOT guaranteed that 
+        // the core where read/write is being called is the same core as where 
+        // the ISR run
+        critical_section_enter_blocking( m_lock );
+
         // Drain the HW Receive FIFO
         while ( uart_is_readable( m_uartHdl ) )
         {
@@ -168,11 +186,17 @@ void InputOutput::irqHandler()
                 m_rxHead  = newRxHead;
             }
         }
+
+        // Exit the critical section
+        critical_section_exit( m_lock );
     }
 
     // Transmit IRQ
     if ( irqFlags & (UART_UARTMIS_TXMIS_BITS) )
     {
+        // See previous comment about why a Critical section is needed in the ISR
+        critical_section_enter_blocking( m_lock );
+
         // Fill the HW Transmit FIFO
         fillHwTxFifo();
 
@@ -181,6 +205,9 @@ void InputOutput::irqHandler()
         {
             uart_set_irq_enables( m_uartHdl, true, false );
         }
+
+        // Exit the critical section
+        critical_section_exit( m_lock );
     }
 }
 
@@ -204,9 +231,9 @@ bool InputOutput::available()
         return false;
     }
 
-    Bsp_enterCriticalSection();
+    critical_section_enter_blocking( m_lock );
     bool avail = m_rxHead != m_rxTail;
-    Bsp_exitCriticalSection();
+    critical_section_exit( m_lock );
     return avail;
 }
 
@@ -228,7 +255,7 @@ bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
     }
 
     // Drain the SW RX FIFO
-    Bsp_enterCriticalSection();
+    critical_section_enter_blocking( m_lock );
     while ( numBytes && m_rxHead != m_rxTail )
     {
         // Get the next available byte
@@ -239,7 +266,7 @@ bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
         // Calculate a new tail pointer (handling rolling over at the end of the buffer space)
         m_rxTail = advancePointer( m_rxTail, m_rxBuffer, m_rxBufSize );
     }
-    Bsp_exitCriticalSection();
+    critical_section_exit( m_lock );
 
     // If I get here, the read operation succeeded
     return true;
@@ -263,7 +290,7 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     }
 
     // Fill the SW TX FIFO
-    Bsp_enterCriticalSection();
+    critical_section_enter_blocking( m_lock );
     while ( maxBytes )
     {
         // Calculate a new head pointer (handling rolling over at the end of the buffer space)
@@ -285,7 +312,7 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     // Trigger a transmit if the Transmitter has gone had gone idle
     uart_set_irq_enables( m_uartHdl, true, true );
     fillHwTxFifo();
-    Bsp_exitCriticalSection();
+    critical_section_exit( m_lock );
 
     // If I get here, the write operation succeeded
     return true;
@@ -299,12 +326,10 @@ void InputOutput::flush()
     {
         // Busy wait till the SW TX FIFO is drained.  
         // Note: the HW FIFO is not necessarily empty when this method returns
-        Bsp_enterCriticalSection();
         while ( m_txTail != m_txHead )
         {
             busy_wait_us( 100 );
         }
-        Bsp_exitCriticalSection();
     }
 }
 

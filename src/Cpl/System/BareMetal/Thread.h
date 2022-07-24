@@ -46,7 +46,7 @@ public:
      */
     static Runnable& setRunnable( Runnable& newRunnableInstance );
 
-public:
+private:
     /// Private Constructor -->the application can not create threads!
     Thread( Runnable& runnable, const char* name );
 
@@ -56,6 +56,7 @@ public:
     /// Private Constructor -->the application can not create threads!
     Thread( Thread& copy );
 
+public:
     /// Destructor
     ~Thread();
 

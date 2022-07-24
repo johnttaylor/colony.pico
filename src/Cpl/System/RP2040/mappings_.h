@@ -1,5 +1,5 @@
-#ifndef Cpl_System_BareMetal_mappings_x_h_
-#define Cpl_System_BareMetal_mappings_x_h_
+#ifndef Cpl_System_RP2040_mappings_x_h_
+#define Cpl_System_RP2040_mappings_x_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -22,6 +22,8 @@
 #include <stdlib.h>
 #include "colony_config.h"
 #include "Cpl/System/FatalError.h"
+#include "pico/sem.h"
+#include "pico/mutex.h"
 
 /// PRETTY_FUNCTION macro is non-standard
 #if defined(__GNUC__)
@@ -45,29 +47,29 @@
 #define Cpl_System_Thread_NativeHdl_T_MAP           int  
 
 /// BareMetal Mapping
-#define Cpl_System_Mutex_T_MAP                      int
+#define Cpl_System_Mutex_T_MAP                      recursive_mutex_t
 
 /// BareMetal Mapping
-#define Cpl_System_Sema_T_MAP                       volatile unsigned
+#define Cpl_System_Sema_T_MAP                       semaphore_t
 
 /// BareMetal Mapping
 #define Cpl_System_TlsKey_T_MAP                     int
 
 
 
-/// Thread Priorities
+/// Thread Priorities (has no meaning since each thread is one-to-one with a core)
 #define CPL_SYSTEM_THREAD_PRIORITY_HIGHEST_MAP      0
 
-/// Thread Priorities
+/// Thread Priorities (has no meaning since each thread is one-to-one with a core)
 #define CPL_SYSTEM_THREAD_PRIORITY_NORMAL_MAP       0
 
-/// Thread Priorities
+/// Thread Priorities (has no meaning since each thread is one-to-one with a core)
 #define CPL_SYSTEM_THREAD_PRIORITY_LOWEST_MAP       0
 
-/// Thread Priorities
+/// Thread Priorities (has no meaning since each thread is one-to-one with a core) 
 #define CPL_SYSTEM_THREAD_PRIORITY_RAISE_MAP        0
 
-/// Thread Priorities
+/// Thread Priorities (has no meaning since each thread is one-to-one with a core)
 #define CPL_SYSTEM_THREAD_PRIORITY_LOWER_MAP        0
 
 

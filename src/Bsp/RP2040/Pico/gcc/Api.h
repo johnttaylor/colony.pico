@@ -47,16 +47,16 @@
 #define Bsp_Api_nop_MAP()                       __asm("nop")                
 
 /// Generic API
-#define Bsp_Api_disableIrqs_MAP                 Bsp_enterCriticalSection
+#define Bsp_Api_disableIrqs_MAP                 Bsp_saveAndDisableIrqs  // FIXME: Does not 100% meet the semantics of the method definition
 
 /// Generic API
-#define Bsp_Api_enableIrqs_MAP                  Bsp_exitCriticalSection
+#define Bsp_Api_enableIrqs_MAP                  Bsp_restoredIrqs        // FIXME: Does not 100% meet the semantics of the method definition
 
 /// Generic API
-#define Bsp_Api_pushAndDisableIrqs_MAP          Bsp_enterCriticalSection    // FIXME: This NOT the correct way to implement nested 'disables' on the PICO
+#define Bsp_Api_pushAndDisableIrqs_MAP          Bsp_saveAndDisableIrqs
 
 /// Generic API
-#define Bsp_Api_popIrqs_MAP()                   Bsp_exitCriticalSection     // FIXME: This NOT the correct way to implement nested 'disables' on the PICO
+#define Bsp_Api_popIrqs_MAP()                   Bsp_restoredIrqs
 
 
 
@@ -106,30 +106,17 @@
 /// Default UART Settings
 #define BSP_DEFAULT_UART_RX_PIN     1
 
+/// Depth of the UART's HW RX FIFO
+#define BSP_UART_RX_FIFO_DEPTH      32
 
-/// Expose the 'global' critical section (so that mappings can be inlined)
-extern critical_section_t g_bspGlobalCritSec_;
+/// Depth of the UART's HW TX FIFO
+#define BSP_UART_TX_FIFO_DEPTH      32
 
-/** Enter a Critical section as defined by the SDK.  This method can ONLY
-    be called after Bsp_Api_initialize() has been called.
+/// Save the current IRQ-enabled-state and disables interrupts. Only effects the core where the method is called
+void Bsp_saveAndDisableIrqs();
 
-    From the SDK: A critical section is non-reentrant, and provides mutual 
-    exclusion using a spin-lock to prevent access from the other core, and 
-    from (higher priority) interrupts on the same core. It does the former 
-    using a spin lock and the latter by disabling interrupts on the calling 
-    core.
- */
-inline void Bsp_enterCriticalSection()
-{
-    critical_section_enter_blocking( &g_bspGlobalCritSec_ );
-}
+/// Restore the previous saved IRQ-enabled-state. Only effects the core where the method is called
+void Bsp_restoredIrqs();
 
-/** Exits a Critical section.  See description of Bsp_enterCriticalSection()
-    for additional details.
- */
-inline void Bsp_exitCriticalSection()
-{
-    critical_section_exit( &g_bspGlobalCritSec_ );
-}
 
 #endif  // end header latch

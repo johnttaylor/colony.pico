@@ -9,29 +9,23 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "Cpl/System/Mutex.h"
+#include "Cpl/System/GlobalLock.h"
+#include "pico/sync.h"
+
+
+extern critical_section_t g_cplSystemRp2040_globalCritSec_;
 
 
 //////////////////////////////////////////////////////////////////////////////
-Cpl::System::Mutex::Mutex()
+void Cpl::System::GlobalLock::begin( void )
 {
-    recursive_mutex_init( &m_mutex );
+    critical_section_enter_blocking( &g_cplSystemRp2040_globalCritSec_ );
 }
 
-Cpl::System::Mutex::~Mutex()
+void Cpl::System::GlobalLock::end( void )
 {
-    // Nothing needed
+    critical_section_exit_blocking( &g_cplSystemRp2040_globalCritSec_ );
 }
 
-void Cpl::System::Mutex::lock( void )
-{
-    recursive_mutex_enter_blocking( &m_mutex );
-}
-
-
-void Cpl::System::Mutex::unlock( void )
-{
-    recursive_mutex_exit( &m_mutex );
-}
 
 

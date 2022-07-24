@@ -9,12 +9,13 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "Hal_.h"
 #include "Cpl/System/Api.h"
 #include "Cpl/System/Private_.h"
+#include "pico/sync.h"
 
 /// 
 using namespace Cpl::System;
+
 
 ///
 static Mutex systemMutex_;
@@ -28,9 +29,6 @@ void Api::initialize( void )
 {
     // Init the Colony.Core sub-systems
     StartupHook_::notifyStartupClients();
-
-    // Initialize the raw platform
-    BareMetal::initialize();
 }
 
 
@@ -41,12 +39,12 @@ void Api::enableScheduling( void )
 
 bool Api::isSchedulingEnabled( void )
 {
-    return true; // Always return true since scheduling has no meaning in baremetal system
+    return true; // Always return true since scheduling does not has a real meaning for our Dual Thread/Core system
 }
 
 void Api::sleep( unsigned long milliseconds ) noexcept
 {
-    BareMetal::busyWait( milliseconds );
+    busy_wait_ms( milliseconds );
 }
 
 void Api::suspendScheduling(void)

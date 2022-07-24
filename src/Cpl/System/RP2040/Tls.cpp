@@ -27,7 +27,7 @@ Tls::Tls( void )
     m_key = next_index_++;
     if ( next_index_ >= OPTION_CPL_SYSTEM_TLS_DESIRED_MIN_INDEXES )
     {
-        Cpl::System::FatalError::logRaw( "BareMetal::Tls::Tls().  Out of allocated indexes to store TLS variable." );
+        Cpl::System::FatalError::logRaw( "RP2040::Tls::Tls().  Out of allocated indexes to store TLS variable." );
     }
 }
 

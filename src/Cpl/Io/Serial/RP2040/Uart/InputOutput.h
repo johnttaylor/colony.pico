@@ -151,6 +151,8 @@ protected:
     /// Pointer to UART1 instance (if there is one)
     static InputOutput* m_uart1Instance;
 
+    critical_section_t* m_lock;
+
     /// My started/stopped state
     bool                m_started;
 };

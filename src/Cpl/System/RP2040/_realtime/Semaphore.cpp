@@ -10,46 +10,19 @@
 *----------------------------------------------------------------------------*/
 
 #include "Cpl/System/Semaphore.h"
-#include "Cpl/System/GlobalLock.h"
-#include "Cpl/System/ElapsedTime.h"
 
 ///
 using namespace Cpl::System;
 
 
-
 //////////////////////////////////////////////////
-Semaphore::Semaphore( unsigned initialCount )
+bool Semaphore::timedWait( unsigned long timeout ) noexcept
 {
-    sem_init( &m_sema, initialCount, 0x7FFF );
+    return sem_acquire_timeout_ms( &m_sema, timeout );
 }
 
-Semaphore::~Semaphore()
-{
-    // Nothing needed
-}
-
-int Semaphore::signal( void ) noexcept
-{
-    sem_release( &m_sema );
-}
-
-int Semaphore::su_signal( void ) noexcept
-{
-    sem_release( &m_sema );
-}
-
-bool Semaphore::tryWait( void ) noexcept
-{
-    return sem_try_acquire( &m_sema );
-}
-
-void Semaphore::waitInRealTime( void ) noexcept
+void Semaphore::wait( void ) noexcept
 {
     sem_acquire_blocking( &m_sema );
 }
 
-bool Semaphore::timedWaitInRealTime( unsigned long timeout ) noexcept
-{
-    return sem_acquire_timeout_ms( &m_sema, timeout );
-}

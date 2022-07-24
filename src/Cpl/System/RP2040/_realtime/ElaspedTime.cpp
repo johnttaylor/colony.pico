@@ -9,29 +9,26 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "Cpl/System/Mutex.h"
+#include "Cpl/System/ElapsedTime.h"
 
 
-//////////////////////////////////////////////////////////////////////////////
-Cpl::System::Mutex::Mutex()
+/// 
+using namespace Cpl::System;
+
+
+
+///////////////////////////////////////////////////////////////
+unsigned long ElapsedTime::milliseconds( void ) noexcept
 {
-    recursive_mutex_init( &m_mutex );
+    return millisecondsInRealTime();
 }
 
-Cpl::System::Mutex::~Mutex()
+unsigned long ElapsedTime::seconds( void ) noexcept
 {
-    // Nothing needed
+    return secondsInRealTime();
 }
 
-void Cpl::System::Mutex::lock( void )
+ElapsedTime::Precision_T ElapsedTime::precision( void ) noexcept
 {
-    recursive_mutex_enter_blocking( &m_mutex );
+    return precisionInRealTime();
 }
-
-
-void Cpl::System::Mutex::unlock( void )
-{
-    recursive_mutex_exit( &m_mutex );
-}
-
-
