@@ -1,16 +1,18 @@
 #include "Bsp/Api.h"
-#include "Cpl/Io/Serial/RP2040/Stdio/Input.h"
-#include "Cpl/Io/Serial/RP2040/Stdio/Output.h"
+#include "Cpl/Io/Serial/RP2040/Uart/InputOutput.h"
 #include "pico/time.h"
-
-/// Create my streams
-static Cpl::Io::Serial::RP2040::Stdio::Input  infd_;
-static Cpl::Io::Serial::RP2040::Stdio::Output outfd_;
 
 
 
 extern void test( Cpl::Io::Input& infd, Cpl::Io::Output& outfd );
-    
+
+#define TX_FIFO_SIZE    128
+#define RX_FIFO_SIZE    512
+
+static uint8_t txFIFO_[TX_FIFO_SIZE];
+static uint8_t rxFIFO_[RX_FIFO_SIZE];
+
+static Cpl::Io::Serial::RP2040::Uart::InputOutput uartfd_( txFIFO_, sizeof( txFIFO_ ), rxFIFO_, sizeof( rxFIFO_ ) );
 /*-----------------------------------------------------------*/
 int main(void)
 {
@@ -22,7 +24,8 @@ int main(void)
 
     
     // Go run the test(s) (Note: This method should never return)
-    test( infd_, outfd_ );
+    uartfd_.start();    // Accepting the default UART Config parameters, e.g. 115200, 8N1
+    test( uartfd_, uartfd_ );
 
     // I should never get here!
 	for( ;; );

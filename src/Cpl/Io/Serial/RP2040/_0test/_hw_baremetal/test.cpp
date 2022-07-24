@@ -13,6 +13,7 @@
 #include "Cpl/Io/Input.h"
 #include "Cpl/Io/Output.h"
 #include "Bsp/Api.h"
+#include "Cpl/Text/FString.h"
 #include <string.h>
 
 
@@ -31,11 +32,13 @@ extern void test( Cpl::Io::Input& infd, Cpl::Io::Output& outfd );
 #endif
 
 static char  inbuffer[MAX_INPUT + 1];
+static Cpl::Text::FString<128> tmpString;
 
 void test( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
 {
-    printf( "\n== Testing: Cpl::Io stream via a serial device..." );
-    printf( "\n== Board will echo back input character once a newline\nhas been received." );
+    //printf( "\n\n**** THIS SHOULD NOT DISPLAY ***\n\n" );
+    outfd.write( "\n== Testing: Cpl::Io stream via a serial device..." );
+    outfd.write( "\n== Board will echo back input character once a newline\nhas been received." );
     uint32_t startTime = elapsedTimeMs();
     Bsp_Api_turnOn_debug1();
 
@@ -52,7 +55,8 @@ void test( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
         int bytesRead  = 0;
         if ( !infd.read( inbuffer, MAX_INPUT, bytesRead ) )
         {
-            printf( "\n**** ERROR occurred while reading input stream (requested bytes=%d)\n", MAX_INPUT );
+            tmpString.format( "\n**** ERROR occurred while reading input stream (requested bytes=%d)\n", MAX_INPUT );
+            outfd.write( tmpString );
         }
         else
         {
@@ -60,7 +64,8 @@ void test( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
             {
                 // Ensure the input data is null terminated
                 inbuffer[bytesRead] = '\0';
-                printf("\nECHO: len=%d [", bytesRead );
+                tmpString.format( "\nECHO: len=%d [", bytesRead );
+                outfd.write( tmpString );
                 outfd.write( inbuffer );
                 outfd.write( "]\n" );
             }

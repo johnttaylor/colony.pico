@@ -12,6 +12,7 @@
 #include "InputOutput.h"
 #include <hardware/gpio.h>
 #include <hardware/irq.h>
+#include <hardware/timer.h>
 #include <hardware/regs/intctrl.h>
 
 ///
@@ -20,16 +21,23 @@ using namespace Cpl::Io::Serial::RP2040::Uart;
 InputOutput* InputOutput::m_uart0Instance;
 InputOutput* InputOutput::m_uart1Instance;
 
+static inline uint8_t* advancePointer( uint8_t* ptrToAdvance, uint8_t* startOfMemPtr, size_t memSize )
+{
+    uint8_t* newPtr = ptrToAdvance + 1;
+    if ( ((size_t) (newPtr - startOfMemPtr)) >= memSize )
+    {
+        newPtr = startOfMemPtr;
+    }
+    return newPtr;
+}
+
 
 ////////////////////////////////////
-InputOutput::InputOutput( uint8_t       memTxBuffer[],
+InputOutput::InputOutput( uint8_t*      memTxBuffer,
                           size_t        txBufSize,
-                          uint8_t       memRxBuffer[],
+                          uint8_t*      memRxBuffer,
                           size_t        rxBufSize,
-                          uart_inst_t*  uartHdl,
-                          unsigned long baudRate,
-                          unsigned      txPin,
-                          unsigned      rxPin
+                          uart_inst_t*  uartHdl
 )
     : m_uartHdl( uartHdl )
     , m_txBuffer( memTxBuffer )
@@ -40,54 +48,81 @@ InputOutput::InputOutput( uint8_t       memTxBuffer[],
     , m_rxBufSize( rxBufSize )
     , m_rxHead( memRxBuffer )
     , m_rxTail( memRxBuffer )
+    , m_started( false )
 {
-    // Initialize the hardware
-    uart_init( uartHdl, baudRate );
-    uart_set_format( uartHdl, 8, 1, UART_PARITY_NONE );
-    gpio_set_function( txPin, GPIO_FUNC_UART );
-    gpio_set_function( rxPin, GPIO_FUNC_UART );
-    uart_set_fifo_enabled( uartHdl, true );
-
-    // Set up IRQ Handlers
-    if ( uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART0 )
-    {
-        m_uart0Instance = this;
-        irq_clear( UART0_IRQ );
-        irq_set_exclusive_handler( UART0_IRQ, uart0IrqHandler );
-        irq_set_enabled( UART0_IRQ, true );
-        configureInterrupts( true, OPTION_BSP_DEFAULT_UART0_RX_FIFO_IRQ_THRESHOLD, OPTION_BSP_DEFAULT_UART0_TX_FIFO_IRQ_THRESHOLD );
-    }
-    else if ( uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART1 )
-    {
-        m_uart1Instance = this;
-        irq_clear( UART1_IRQ );
-        irq_set_exclusive_handler( UART1_IRQ, uart1IrqHandler );
-        irq_set_enabled( UART1_IRQ, true );
-        configureInterrupts( true, OPTION_BSP_DEFAULT_UART1_RX_FIFO_IRQ_THRESHOLD, OPTION_BSP_DEFAULT_UART1_TX_FIFO_IRQ_THRESHOLD );
-    }
 }
-
-
 
 InputOutput::~InputOutput( void )
 {
-    // Disable the RX/TX interrupts
-    configureInterrupts( false, OPTION_BSP_DEFAULT_UART0_RX_FIFO_IRQ_THRESHOLD, OPTION_BSP_DEFAULT_UART0_TX_FIFO_IRQ_THRESHOLD );
+    stop();
+}
 
-    if ( m_uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART0 )
+void InputOutput::start( unsigned long baudRate,
+                         unsigned      txPin,
+                         unsigned      rxPin,
+                         unsigned      dataBits,
+                         unsigned      stopBits,
+                         uart_parity_t parity )
+{
+    // Ignore if already started
+    if ( !m_started )
     {
-        irq_set_enabled( UART0_IRQ, false );
-        irq_remove_handler( UART0_IRQ, uart0IrqHandler );
-        m_uart0Instance = 0;
-    }
-    else if ( uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART1 )
-    {
-        irq_set_enabled( UART1_IRQ, false );
-        irq_remove_handler( UART1_IRQ, _uart1_IRQ_handler );
-        m_uart1Instance = 0;
-    }
+        // Initialize the hardware
+        m_started = true;
+        m_txHead  = m_txBuffer;
+        m_txTail  = m_txBuffer;
+        m_rxHead  = m_rxBuffer;
+        m_rxTail  = m_rxBuffer;
+        uart_init( m_uartHdl, baudRate );
+        uart_set_format( m_uartHdl, dataBits, stopBits, parity );
+        gpio_set_function( txPin, GPIO_FUNC_UART );
+        gpio_set_function( rxPin, GPIO_FUNC_UART );
+        uart_set_fifo_enabled( m_uartHdl, true );
+        uart_set_hw_flow( m_uartHdl, false, false );  // Disable HW flow control
 
-    uart_deinit( m_uartHdl );
+        // Set up IRQ Handlers
+        if ( m_uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART0 )
+        {
+            m_uart0Instance = this;
+            irq_clear( UART0_IRQ );
+            irq_set_exclusive_handler( UART0_IRQ, uart0IrqHandler );
+            irq_set_enabled( UART0_IRQ, true );
+        }
+        else if ( m_uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART1 )
+        {
+            m_uart1Instance = this;
+            irq_clear( UART1_IRQ );
+            irq_set_exclusive_handler( UART1_IRQ, uart1IrqHandler );
+            irq_set_enabled( UART1_IRQ, true );
+        }
+        uart_set_irq_enables( m_uartHdl, true, false );
+    }
+}
+
+void InputOutput::stop()
+{
+    // Ignore if already stopped
+    if ( m_started )
+    {
+        // Disable the RX/TX interrupts
+        m_started = false;
+        uart_set_irq_enables( m_uartHdl, false, false );
+
+        if ( m_uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART0 )
+        {
+            irq_set_enabled( UART0_IRQ, false );
+            irq_remove_handler( UART0_IRQ, uart0IrqHandler );
+            m_uart0Instance = 0;
+        }
+        else if ( m_uartHdl == CPL_IO_SERIAL_RP2040_UART_HANDLE_UART1 )
+        {
+            irq_set_enabled( UART1_IRQ, false );
+            irq_remove_handler( UART1_IRQ, uart1IrqHandler );
+            m_uart1Instance = 0;
+        }
+
+        uart_deinit( m_uartHdl );
+    }
 }
 
 
@@ -111,16 +146,12 @@ void InputOutput::uart1IrqHandler( void )
 
 void InputOutput::irqHandler()
 {
-    // NOTE: The assumption is made that reading/writing the Tail/Head pointers  
-    //       are atomic operations per the ARM architecture
-
     // Get the IRQ flags
-    uint32_t mis = uart_get_hw( m_uartHdl )->mis;
+    uint32_t irqFlags = uart_get_hw( m_uartHdl )->mis;
 
     // Receive IRQ
-    if ( mis & (UART_UARTMIS_RXMIS_BITS | UART_UARTMIS_RTMIS_BITS) )
+    if ( irqFlags & (UART_UARTMIS_RXMIS_BITS | UART_UARTMIS_RTMIS_BITS) )
     {
-
         // Drain the HW Receive FIFO
         while ( uart_is_readable( m_uartHdl ) )
         {
@@ -128,11 +159,7 @@ void InputOutput::irqHandler()
             uint8_t c = (uint8_t) uart_getc( m_uartHdl );
 
             // Calculate a new head pointer (handling rolling over at the end of the buffer space)
-            uint8_t* newRxHead = (uint8_t*) (m_rxHead + 1);
-            if ( (newRxHead - m_rxBuffer) >= m_rxBufSize )
-            {
-                newRxHead = m_rxBuffer;
-            }
+            uint8_t* newRxHead = advancePointer( m_rxHead, m_rxBuffer, m_rxBufSize );
 
             // Discard the incoming byte if the SW FIFO is full
             if ( newRxHead != m_rxTail )
@@ -144,42 +171,64 @@ void InputOutput::irqHandler()
     }
 
     // Transmit IRQ
-    if ( mis & (UART_UARTMIS_TXMIS_BITS) )
+    if ( irqFlags & (UART_UARTMIS_TXMIS_BITS) )
     {
         // Fill the HW Transmit FIFO
-        while ( uart_is_writable( m_uartHdl ) && m_txTail != m_txHead )
-        {
-            // Write the outgoing byte
-            uart_putc_raw( m_uartHdl, (char) *m_txTail );
-
-            // Calculate a new tail pointer (handling rolling over at the end of the buffer space)
-            uint8_t* newTxTail = (uint8_t*) (m_txTail + 1);
-            if ( (newTxTail - m_txBuffer) >= m_txBufSize )
-            {
-                newTxTail = m_txBuffer;
-            }
-            m_txTail = newTxTail;
-        }
+        fillHwTxFifo();
 
         // Disable TX IRQ for now if we have nothing left to transmit
         if ( m_txTail == m_txHead )
         {
-            uart_get_hw( m_uartHdl )->imsc = (UART_UARTIMSC_RXIM_BITS | UART_UARTIMSC_RTIM_BITS);
+            uart_set_irq_enables( m_uartHdl, true, false );
         }
     }
 }
 
+void InputOutput::fillHwTxFifo()
+{
+    while ( uart_is_writable( m_uartHdl ) && m_txTail != m_txHead )
+    {
+        // Write the outgoing byte
+        uart_putc_raw( m_uartHdl, (char) *m_txTail );
+
+        // Calculate a new tail pointer (handling rolling over at the end of the buffer space)
+        m_txTail = advancePointer( m_txTail, m_txBuffer, m_txBufSize );
+    }
+}
 
 ////////////////////////////////////
+bool InputOutput::available()
+{
+    if ( !m_started )
+    {
+        return false;
+    }
+
+    Bsp_enterCriticalSection();
+    bool avail = m_rxHead != m_rxTail;
+    Bsp_exitCriticalSection();
+    return avail;
+}
+
 bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
 {
-    // NOTE: The assumption is made that reading/writing the Tail/Head pointers  
-    //       are atomic operations per the ARM architecture
-
-    size_t  bytesIn = 0;
+    bytesRead       = 0;
     uint8_t* dstPtr = (uint8_t*) buffer;
 
+    // Fail if not started
+    if ( !m_started )
+    {
+        return false;
+    }
+
+    // Ignore read of zero bytes
+    if ( numBytes == 0 )
+    {
+        return true;
+    }
+
     // Drain the SW RX FIFO
+    Bsp_enterCriticalSection();
     while ( numBytes && m_rxHead != m_rxTail )
     {
         // Get the next available byte
@@ -188,35 +237,75 @@ bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
         bytesRead++;
 
         // Calculate a new tail pointer (handling rolling over at the end of the buffer space)
-        uint8_t* newRxTail = (uint8_t*) (m_rxTail + 1);
-        if ( (newRxTail - m_rxBuffer) >= m_rxBufSize )
-        {
-            newRxTail = m_rxBuffer;
-        }
-        m_rxTail = newRxTail;
-
+        m_rxTail = advancePointer( m_rxTail, m_rxBuffer, m_rxBufSize );
     }
+    Bsp_exitCriticalSection();
 
+    // If I get here, the read operation succeeded
     return true;
 }
 
-bool InputOutput::available()
-{
-    return m_rxHead != m_rxTail;
-}
-
-
-////////////////////////////////////
 bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
 {
-    bytesWritten = maxBytes;
-    return m_tx.write( buffer, (size_t) maxBytes );
+    bytesWritten          = 0;
+    const uint8_t* srcPtr = (const uint8_t*) buffer;
+
+    // Fail if not started
+    if ( !m_started )
+    {
+        return false;
+    }
+
+    // Ignore write of zero bytes
+    if ( maxBytes == 0 )
+    {
+        return true;
+    }
+
+    // Fill the SW TX FIFO
+    Bsp_enterCriticalSection();
+    while ( maxBytes )
+    {
+        // Calculate a new head pointer (handling rolling over at the end of the buffer space)
+        uint8_t* newTxHead = advancePointer( m_txHead, m_txBuffer, m_txBufSize );
+
+        // Stop if the SW TX FIFO is full
+        if ( newTxHead == m_txTail )
+        {
+            break;
+        }
+
+        // Add to the SW TX FIFO
+        *m_txHead = *srcPtr++;
+        m_txHead  = newTxHead;
+        maxBytes--;
+        bytesWritten++;
+    }
+
+    // Trigger a transmit if the Transmitter has gone had gone idle
+    uart_set_irq_enables( m_uartHdl, true, true );
+    fillHwTxFifo();
+    Bsp_exitCriticalSection();
+
+    // If I get here, the write operation succeeded
+    return true;
 }
 
 
 void InputOutput::flush()
 {
-    // Not supported/has no meaning for a serial port
+    // Ignore if not started
+    if ( m_started )
+    {
+        // Busy wait till the SW TX FIFO is drained.  
+        // Note: the HW FIFO is not necessarily empty when this method returns
+        Bsp_enterCriticalSection();
+        while ( m_txTail != m_txHead )
+        {
+            busy_wait_us( 100 );
+        }
+        Bsp_exitCriticalSection();
+    }
 }
 
 bool InputOutput::isEos()
@@ -227,22 +316,7 @@ bool InputOutput::isEos()
 
 void InputOutput::close()
 {
-    m_tx.stop();
-    m_rx.stop();
-}
-
-//////////////////////////////
-void InputOutput::configureInterrupts( bool enabled, unsigned rxFifoThreshold, unsigned txFifoThreshold )
-{
-    if ( !enabled )
-    {
-        uart_get_hw( m_uartHdl )->imsc = ~(UART_UARTIMSC_TXIM_BITS | UART_UARTIMSC_RXIM_BITS | UART_UARTIMSC_RTIM_BITS);
-    }
-    else
-    {
-        uart_get_hw( m_uartHdl )->imsc = (UART_UARTIMSC_RXIM_BITS | UART_UARTIMSC_RTIM_BITS);
-        hw_write_masked( &uart_get_hw( m_uartHdl )->ifls, rxFifoThreshold << UART_UARTIFLS_RXIFLSEL_LSB, UART_UARTIFLS_RXIFLSEL_BITS );
-        hw_write_masked( &uart_get_hw( m_uartHdl )->ifls, txFifoThreshold << UART_UARTIFLS_TXIFLSEL_LSB, UART_UARTIFLS_TXIFLSEL_BITS );
-    }
+    // Does not really have meaning for serial port
+    flush();
 }
 

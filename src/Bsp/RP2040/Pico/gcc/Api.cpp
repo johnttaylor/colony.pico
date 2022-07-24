@@ -18,12 +18,17 @@
 
 critical_section_t g_bspGlobalCritSec_;
 
+#ifdef USE_BSP_NO_STDIO
+#define INIT_STDIO()
+#else
+#define INIT_STDIO  stdio_init_all
+#endif
 
 ///////////////////////////////////////////
 void Bsp_Api_initialize( void )
 {
     // Initialize STDIO
-    stdio_init_all();
+    INIT_STDIO();
 
     // Initialize the global critical section
     critical_section_init( &g_bspGlobalCritSec_ );

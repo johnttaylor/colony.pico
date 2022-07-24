@@ -42,29 +42,40 @@ namespace Uart {
     software TX/RX FIFOs
 
     Notes:
-        1. The implement does NOT support the blocking semantics of the Cpl::Io
+        1. The UART Interrupt service handlers execute on the core that 
+           executing start() method.
+        2. The implement does NOT support the blocking semantics of the Cpl::Io
            streams.  The design decision was for the implementation to be
-           compatible/useful on bare-metal systems, i.e. not threads required.
+           compatible/useful on bare-metal systems, i.e. no threads required.
 
  */
 
 class InputOutput : public Cpl::Io::InputOutput
 {
-protected:
+public:
     /// Constructor.
-    InputOutput(  uint8_t       memTxBuffer[],      //!< Memory for the transmit buffer
-                  size_t        txBufSize,          //!< Size, in bytes, of the transmit buffer   
-                  uint8_t       memRxBuffer[],      //!< Memory for the receive buffer
-                  size_t        rxBufSize,          //!< Size, in bytes, of the receive buffer   
-                  uart_inst_t*  uartHdl  = BSP_DEFAULT_UART_HANDLE,     //!< Which UART to use
-                  unsigned long baudRate = 115200,                      //!< Baud rate in hertz
-                  unsigned      txPin    = BSP_DEFAULT_UART_TX_PIN,     //!< Transmit Pin
-                  unsigned      rxPin    = BSP_DEFAULT_UART_RX_PIN      //!< Receive Pin
-    );
+    InputOutput( uint8_t*      memTxBuffer,        //!< Memory for the transmit buffer
+                 size_t        txBufSize,          //!< Size, in bytes, of the transmit buffer   
+                 uint8_t*      memRxBuffer,        //!< Memory for the receive buffer
+                 size_t        rxBufSize,          //!< Size, in bytes, of the receive buffer   
+                 uart_inst_t*  uartHdl  = BSP_DEFAULT_UART_HANDLE   //!< Which UART to use
+               );
 
     /// Destructor
     ~InputOutput( void );
 
+public:
+    /// This method is used to start the stream/driver
+    void start( unsigned long baudRate  = 115200,                       //!< Baud rate in hertz
+                unsigned      txPin     = BSP_DEFAULT_UART_TX_PIN,      //!< Transmit Pin
+                unsigned      rxPin     = BSP_DEFAULT_UART_RX_PIN,      //!< Receive Pin
+                unsigned      dataBits  = 8,                            //!< Number of data bits.  Range is [5..8]
+                unsigned      stopBits  = 1,                            //!< Number of stop bits.  Range is [1..2]
+                uart_parity_t parity    = UART_PARITY_NONE              //!< Parity setting.  See hardware/uart.h for enumeration
+    );
+
+    /// This method is used to stop the stream/driver. The stream can be restarted after is has been stopped
+    void stop();
 
 public:
     /// Pull in overloaded methods from base class
@@ -103,8 +114,8 @@ protected:
     /// Common ISR handler (does most of the ISR work)
     void irqHandler();
 
-    /// Helper method to configure the IRQs
-    void configureInterrupts( bool enabled, unsigned rxFifoThreshold, unsigned txFifoThreshold );
+    /// Helper method to fill the HW TX FIFO
+    void fillHwTxFifo();
 
 protected:
     /// UART Handle
@@ -117,10 +128,10 @@ protected:
     size_t              m_txBufSize;
     
     /// Tail pointer for TX FIFO
-    volatile uint8_t*   m_txHead;
+    uint8_t*            m_txHead;
 
     /// Head pointer for TX FIFO
-    volatile uint8_t*   m_txTail;
+    uint8_t*            m_txTail;
 
     /// Memory for the receive buffer
     uint8_t*            m_rxBuffer;
@@ -129,19 +140,24 @@ protected:
     size_t              m_rxBufSize;
 
     /// Tail pointer for RX FIFO
-    volatile uint8_t*   m_rxHead;
+    uint8_t*            m_rxHead;
 
     /// Head pointer for RX FIFO
-    volatile uint8_t*   m_rxTail;
+    uint8_t*            m_rxTail;
 
     /// Pointer to UART0 instance (if there is one)
     static InputOutput* m_uart0Instance;
 
     /// Pointer to UART1 instance (if there is one)
     static InputOutput* m_uart1Instance;
+
+    /// My started/stopped state
+    bool                m_started;
 };
 
 };      // end namespaces
+};
+};
 };
 };
 #endif  // end header latch

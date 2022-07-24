@@ -1,7 +1,11 @@
 # Code under test
-src/Cpl/Io/Serial/RP2040/Stdio
+src/Cpl/Io/Serial/RP2040/Uart
 src/Cpl/Io < Input.cpp Output.cpp
 src/Cpl/Io/Serial/RP2040/_0test/_hw_baremetal
+
+# Misc
+src/Cpl/Text
+src/Cpl/Container
 
 # BSP
 src/Bsp/RP2040/Pico/gcc

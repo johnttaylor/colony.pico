@@ -33,7 +33,7 @@ from nqbplib.my_globals import NQBP_PKG_ROOT
 #---------------------------------------------------
 
 # Set the name for the final output item (with NO file extension)
-FINAL_OUTPUT_NAME = 'test-stdio'
+FINAL_OUTPUT_NAME = 'test-uart'
 
 
 #

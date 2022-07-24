@@ -16,7 +16,7 @@ NOTE: The Pico C/C++ SDK does NOT DEFINE any semantics with respect to buffering
 
 Note: The implement does NOT support the blocking semantics of the Cpl::Io
       streams.  The design decision was for the implementation to be compatible/
-      useful on bare-metal systems, i.e. not threads required.
+      useful on bare-metal systems, i.e. no threads required.
 
 */  
 

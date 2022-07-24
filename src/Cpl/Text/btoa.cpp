@@ -22,8 +22,6 @@
 #include <string.h>
 
 
-#include "Cpl/System/Trace.h"
-
 #define SECT_   "_0test"
 
 

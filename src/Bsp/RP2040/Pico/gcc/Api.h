@@ -23,6 +23,12 @@
     interface - src/Bsp/Api.h - and then configure your project's
     'colony_map.h' to include THIS file.
 
+    OPTIONAL Compile switches:
+
+        USE_BSP_NO_STDIO    // Defining this symbol will prevent initializing 
+                            // SDK's stdio sub-system.  This is for when the
+                            // application is supplying its own driver for
+                            // UART0
 *----------------------------------------------------------------------------*/
 
 
@@ -100,25 +106,6 @@
 /// Default UART Settings
 #define BSP_DEFAULT_UART_RX_PIN     1
 
-/// Default RX FIFO IRQ threshold
-#ifndef OPTION_BSP_DEFAULT_UART0_RX_FIFO_IRQ_THRESHOLD
-#define OPTION_BSP_DEFAULT_UART0_RX_FIFO_IRQ_THRESHOLD      2   // 0=1/8 full, 1=1/4 full, 2=1/2 full, 3=3/4 full, 4=7/8 full
-#endif
-
-/// Default RX FIFO IRQ threshold
-#ifndef OPTION_BSP_DEFAULT_UART1_RX_FIFO_IRQ_THRESHOLD
-#define OPTION_BSP_DEFAULT_UART1_RX_FIFO_IRQ_THRESHOLD      2   // 0=1/8 full, 1=1/4 full, 2=1/2 full, 3=3/4 full, 4=7/8 full
-#endif
-
-/// Default TX FIFO IRQ threshold
-#ifndef OPTION_BSP_DEFAULT_UART0_TX_FIFO_IRQ_THRESHOLD
-#define OPTION_BSP_DEFAULT_UART0_TX_FIFO_IRQ_THRESHOLD      3   // 0=1/8 full, 1=1/4 full, 2=1/2 full, 3=3/4 full, 4=7/8 full
-#endif
-
-/// Default TX FIFO IRQ threshold
-#ifndef OPTION_BSP_DEFAULT_UART1_TX_FIFO_IRQ_THRESHOLD
-#define OPTION_BSP_DEFAULT_UART1_TX_FIFO_IRQ_THRESHOLD      3   // 0=1/8 full, 1=1/4 full, 2=1/2 full, 3=3/4 full, 4=7/8 full
-#endif
 
 /// Expose the 'global' critical section (so that mappings can be inlined)
 extern critical_section_t g_bspGlobalCritSec_;

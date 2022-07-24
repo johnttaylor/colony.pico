@@ -35,7 +35,7 @@ namespace Stdio {
     Notes: 
         1. The implement does NOT support the blocking semantics of the Cpl::Io
            streams.  The design decision was for the implementation to be 
-           compatible/useful on bare-metal systems, i.e. not threads required.
+           compatible/useful on bare-metal systems, i.e. no threads required.
         2. The Application is RESPONSIBLE for calling stdio_init_all() on 
            start-up of the application BEFORE any calls to this class (other 
            than the constructor).
