@@ -23,11 +23,22 @@ namespace Cpl {
 ///
 namespace System {
 ///
-namespace BareMetal {
+namespace RP2040 {
 
 /** This concrete class implements 'enough' of a Thread object to support 
     Cpl::System framework on a bare metal system (a system that has only
     ONE thread and potentially ISR contexts).
+
+    First thread is named 'CORE0', second thread is named 'CORE1' -->ifndef OPTION_xxx
+    on init -->convert system thread
+    CreateThread creates CORE1
+        fails if already created
+    DestroyThread
+        calls multicore_reset_core1 (if was started).  Try polite shutdown first??
+    Support setRunnable()
+        only applies to CORE0 - should only be called ONCE!
+        change name to something like: RP2040::Thread::launchThread0( Runnable& myRunnable );
+
  */
 class Thread : public Cpl::System::Thread
 {

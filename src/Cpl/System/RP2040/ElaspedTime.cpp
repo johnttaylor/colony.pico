@@ -11,8 +11,7 @@
 
 #include "Cpl/System/ElapsedTime.h"
 #include "Cpl/System/Private_.h"
-#include "Hal_.h"
-#include <stdlib.h>
+#include <pico/time.h>
 
 
 /// 
@@ -39,7 +38,7 @@ protected:
     void notify( InitLevel_T init_level )
     {
         elapsedMsec_  = 0;
-        lastMsec_     = BareMetal::getElapsedTime();
+        lastMsec_     = to_ms_since_boot( get_absolute_time() );
     }
 
 };
@@ -52,7 +51,7 @@ static RegisterInitHandler_ autoRegister_systemInit_hook_;
 ///////////////////////////////////////////////////////////////
 unsigned long ElapsedTime::millisecondsInRealTime( void ) noexcept
 {
-    unsigned long newTime = BareMetal::getElapsedTime();
+    unsigned long newTime = to_ms_since_boot( get_absolute_time() );
     unsigned long delta   = newTime - lastMsec_;
     elapsedMsec_         += delta;
     lastMsec_             = newTime;
@@ -81,21 +80,4 @@ ElapsedTime::Precision_T ElapsedTime::precisionInRealTime( void ) noexcept
     now.m_seconds      = (unsigned long) result.quot;
     now.m_thousandths  = (uint16_t) result.rem;
     return now;
-}
-
-///////////////////////////////////////////////////////////////
-// NOTE: Simulated Elapsed time has NO meaning on a single threaded system, i.e. there is no-simulate-time thread to generate simulate ticks
-unsigned long ElapsedTime::milliseconds( void ) noexcept
-{
-    return millisecondsInRealTime();
-}
-
-unsigned long ElapsedTime::seconds( void ) noexcept
-{
-    return secondsInRealTime();
-}
-
-ElapsedTime::Precision_T ElapsedTime::precision( void ) noexcept
-{
-    return precisionInRealTime();
 }

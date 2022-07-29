@@ -321,16 +321,9 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
 
 void InputOutput::flush()
 {
-    // Ignore if not started
-    if ( m_started )
-    {
-        // Busy wait till the SW TX FIFO is drained.  
-        // Note: the HW FIFO is not necessarily empty when this method returns
-        while ( m_txTail != m_txHead )
-        {
-            busy_wait_us( 100 );
-        }
-    }
+    // At best the SW TX FIFO could be 'flushed' to the HW TX FIFO, but that 
+    // doesn't guarantee the data was physically transmitted. So the
+    // choice was made to do nothing.
 }
 
 bool InputOutput::isEos()

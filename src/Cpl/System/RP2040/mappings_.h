@@ -40,19 +40,19 @@
 #endif  // end __PRETTY_FUNCTION__
 
 
-/// BareMetal Mapping
+/// RP2040 Mapping
 #define CPL_SYSTEM_ASSERT_MAP(e)                    do { if ( !(e) ) Cpl::System::FatalError::logf( "ASSERT Failed at: file=%s, line=%d, func=%s\n", __FILE__, __LINE__, CPL_SYSTEM_ASSERT_PRETTY_FUNCNAME ); } while(0)
 
-/// BareMetal Mapping
+/// RP2040 Mapping
 #define Cpl_System_Thread_NativeHdl_T_MAP           int  
 
-/// BareMetal Mapping
+/// RP2040 Mapping
 #define Cpl_System_Mutex_T_MAP                      recursive_mutex_t
 
-/// BareMetal Mapping
+/// RP2040 Mapping
 #define Cpl_System_Sema_T_MAP                       semaphore_t
 
-/// BareMetal Mapping
+/// RP2040 Mapping
 #define Cpl_System_TlsKey_T_MAP                     int
 
 

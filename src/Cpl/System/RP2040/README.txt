@@ -6,7 +6,7 @@ i.e. a maximum of 2 threads - one per core.
 
 Platform Dependent Behaviors:
 
-Thread      - The system also has one thread running on core0.  A SINGLE 
+Thread      - The system starts with one thread running on core0.  A SINGLE 
               additional thread can be created that runs on core1.
 
 Mutex       - Fully functional.
@@ -24,6 +24,37 @@ ElapsedTime - Fully functional.
               
 EventLoop   - Fully functional.  This includes EventFlags and Software Timers.
 
+
+Application Start-up sequence:
+==============================
+1. MCU Resets.
+
+2. Core0 begins executing. Core1 is in the sleep state.
+
+3. The bootloader(s) execute and the application is 'loaded' into memory.
+
+3. The Application's C/C++ start-up code executes (e.g. crt0, low-level SDK initialization, etc. ).
+
+4. The Application's C/C++ main() method is called.  
+    - At this point the system is a bare metal system with interrupts disabled.
+    - The application code should call Cpl::System::Api::initialize() ASAP.
+    - The application should complete any required HW/BSP/App initialization 
+      that needs to occur before 'thread scheduling' begins.
+    - The Application needs to call Cpl::System::Thread::Create() to create 
+      at least one 'thread'.  The application can create at most two 'threads'.
+      The first thread created will execute on CORE0, the second thread on CORE1
+
+5. The Application 'starts threading' by calling Cpl::System::Thread::enableScheduling().
+
+6. Once the 'threading' has been enable, the Application can optional create the second
+   thread assuming only 1 thread was created prior to enableScheduling() call. 
+
+Notes: 
+    1. The second thread can be forcibly stopped (i.e. core1 put into the sleep state)
+       by calling Cpl::System::Thread::destroy().  If the second thread terminated itself,
+       i.e. the Runnable object ran to completion, core1 will be put into the sleep state.
+    2. A second thread can be created 'again' after destory() has been called.
+    3. Calling destroy() on the first thread has NO effect.
 */  
 
 
