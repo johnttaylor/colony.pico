@@ -11,13 +11,13 @@
 
 #include "Cpl/System/Tls.h"
 #include "Cpl/System/FatalError.h"
-
+#include "pico/multicore.h"
 
 ///
 using namespace Cpl::System;
 
 ///
-static void* values_[OPTION_CPL_SYSTEM_TLS_DESIRED_MIN_INDEXES];
+static void* values_[CPL_SYSTEM_RP2040_NUM_CORES][OPTION_CPL_SYSTEM_TLS_DESIRED_MIN_INDEXES];
 static int   next_index_ = 0;
 
 
@@ -40,10 +40,12 @@ Tls::~Tls()
 /////////////////////////////////////////////////////////
 void* Tls::get( void )
 {
-    return values_[m_key];
+    unsigned coreIdx = get_core_num();
+    return values_[coreIdx][m_key];
 }
 
 void Tls::set( void* newValue )
 {
-    values_[m_key] = newValue;
+    unsigned coreIdx = get_core_num();
+    values_[coreIdx][m_key] = newValue;
 }

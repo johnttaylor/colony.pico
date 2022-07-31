@@ -39,12 +39,15 @@
 #define CPL_SYSTEM_ASSERT_PRETTY_FUNCNAME    __func__
 #endif  // end __PRETTY_FUNCTION__
 
+/// Number of cores on the RP2040 MCU
+#define CPL_SYSTEM_RP2040_NUM_CORES                 2
+
 
 /// RP2040 Mapping
 #define CPL_SYSTEM_ASSERT_MAP(e)                    do { if ( !(e) ) Cpl::System::FatalError::logf( "ASSERT Failed at: file=%s, line=%d, func=%s\n", __FILE__, __LINE__, CPL_SYSTEM_ASSERT_PRETTY_FUNCNAME ); } while(0)
 
 /// RP2040 Mapping
-#define Cpl_System_Thread_NativeHdl_T_MAP           int  
+#define Cpl_System_Thread_NativeHdl_T_MAP           unsigned  
 
 /// RP2040 Mapping
 #define Cpl_System_Mutex_T_MAP                      recursive_mutex_t
@@ -53,7 +56,7 @@
 #define Cpl_System_Sema_T_MAP                       semaphore_t
 
 /// RP2040 Mapping
-#define Cpl_System_TlsKey_T_MAP                     int
+#define Cpl_System_TlsKey_T_MAP                     unsigned
 
 
 

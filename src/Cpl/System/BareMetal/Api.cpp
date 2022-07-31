@@ -51,12 +51,12 @@ void Api::sleep( unsigned long milliseconds ) noexcept
 
 void Api::suspendScheduling(void)
 {
-    // DO NOT Nothing.  Has no meaning for a bare metal system
+    // DO Nothing.  Has no meaning for a bare metal system
 }
 
 void Api::resumeScheduling(void)
 {
-    // DO NOT Nothing.  See above
+    // DO Nothing.  See above
 }
 
 ////////////////////////////////////////////////////////////////////////////////

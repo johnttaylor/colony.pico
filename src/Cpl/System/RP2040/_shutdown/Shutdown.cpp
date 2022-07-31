@@ -9,15 +9,29 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "Cpl/System/Api.h"
-#include <windows.h>
+
+#include "Cpl/System/Shutdown.h"
+#include "hardware/watchdog.h"
 
 /// 
 using namespace Cpl::System;
 
 
-void Api::sleep( unsigned long milliseconds ) noexcept
+////////////////////////////////////////////////////////////////////////////////
+static int shutdown_application_( int exit_code )
 {
-    Sleep( (DWORD) milliseconds );
+    watchdog_enable( 1, 1 );
+    while ( 1 );
 }
+
+int Shutdown::success( void )
+{
+    return shutdown_application_( notifyShutdownHandlers_( OPTION_CPL_SYSTEM_SHUTDOWN_SUCCESS_ERROR_CODE ) );
+}
+
+int Shutdown::failure( int exit_code )
+{
+    return shutdown_application_( notifyShutdownHandlers_( exit_code ) );
+}
+
 

@@ -9,12 +9,12 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 /*
-    Implementation of the System::FatalError interface using the standard
-    C library.
+    Implementation of the System::FatalError interface using the default Output
+    stream from the Trace engine.  Side effect of this decision is even if
+    Trace is not being used, the application must implement the
+    Cpl::System::Trace::getDefaultOutputStream_() method.
 
     Notes:
-        o The log messages are sent to stderr
-        o The application is exited with an errorcode of '1'
         o 'Extra Info' is limited to a '@@ Fatal Error:' prefix
         o The implementation is NOT thread safe.
 
@@ -22,25 +22,52 @@
 
 #include "Cpl/System/FatalError.h"
 #include "Cpl/System/Shutdown.h"
-#include <stdarg.h> 
-#include <stdio.h>  
-
+#include "Cpl/System/Api.h"
+#include "Cpl/System/Trace.h"
+#include "Cpl/Text/btoa.h"
+#include "Cpl/Text/FString.h"
 
 using namespace Cpl::System;
 
-#define EXTRA_INFO  "@@ Fatal Error: "
+#define EXTRA_INFO      "\n@@ Fatal Error: "
+#define SIZET_SIZE      ((sizeof(size_t) / 4 ) * 10 + 1)
+
+#ifndef CPL_SYSTEM_RP2040_FATAL_ERROR_BUFSIZE
+#define CPL_SYSTEM_RP2040_FATAL_ERROR_BUFSIZE     128
+#endif
+
+static Cpl::Text::FString<CPL_SYSTEM_RP2040_FATAL_ERROR_BUFSIZE> buffer_;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 void FatalError::log( const char* message )
 {
-    fprintf( stderr, "\n%s%s\n", EXTRA_INFO, message );
+    Cpl::Io::Output* ptr = Cpl::System::Trace::getDefaultOutputStream_();
+
+    ptr->write( EXTRA_INFO );
+    ptr->write( message );
+    ptr->write( "\n" );
+
+    // Allow time for the error message to be outputted
+    Cpl::System::Api::sleep( 250 );
+
     Shutdown::failure( OPTION_CPL_SYSTEM_FATAL_ERROR_EXIT_CODE );
 }
 
 void FatalError::log( const char* message, size_t value )
 {
-    fprintf( stderr, "\n%s%s [%p]\n", EXTRA_INFO, message, (void*) value );
+    int              dummy = 0;
+    Cpl::Io::Output* ptr   = Cpl::System::Trace::getDefaultOutputStream_();
+
+    ptr->write( EXTRA_INFO );
+    ptr->write( message );
+    ptr->write( ". v:= " );
+    ptr->write( Cpl::Text::sizetToStr( value, buffer_.getBuffer( dummy ), SIZET_SIZE, 16 ) );
+    ptr->write( "\n" );
+
+    // Allow time for the error message to be outputted
+    Cpl::System::Api::sleep( 250 );
+
     Shutdown::failure( OPTION_CPL_SYSTEM_FATAL_ERROR_EXIT_CODE );
 }
 
@@ -50,9 +77,13 @@ void FatalError::logf( const char* format, ... )
     va_list ap;
     va_start( ap, format );
 
-    fprintf( stderr, "\n%s", EXTRA_INFO );
-    vfprintf( stderr, format, ap );
-    fprintf( stderr, "\n" );
+    buffer_ = EXTRA_INFO;
+    buffer_.vformatAppend( format, ap );
+    Cpl::System::Trace::getDefaultOutputStream_()->write( buffer_ );
+
+    // Allow time for the error message to be outputted
+    Cpl::System::Api::sleep( 250 );
+
     Shutdown::failure( OPTION_CPL_SYSTEM_FATAL_ERROR_EXIT_CODE );
 }
 

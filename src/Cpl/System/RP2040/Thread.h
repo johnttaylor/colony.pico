@@ -1,5 +1,5 @@
-#ifndef Cpl_System_BareMetal_Thread_h_
-#define Cpl_System_BareMetal_Thread_h_
+#ifndef Cpl_System_RP2040_Thread_h_
+#define Cpl_System_RP2040_Thread_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -12,10 +12,18 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
+#include "colony_config.h"
 #include "Cpl/System/Thread.h"
 #include "Cpl/System/Semaphore.h"
+#include "Cpl/System/Tls.h"
 #include "Cpl/Text/FString.h"
 
+
+
+/// Size, in bytes (not including the null terminator), of a thread name
+#ifndef OPTION_CPL_SYSTEM_RP2040_THREAD_NAME_LEN        
+#define OPTION_CPL_SYSTEM_RP2040_THREAD_NAME_LEN        16
+#endif
 
 
 ///
@@ -25,48 +33,45 @@ namespace System {
 ///
 namespace RP2040 {
 
-/** This concrete class implements 'enough' of a Thread object to support 
-    Cpl::System framework on a bare metal system (a system that has only
-    ONE thread and potentially ISR contexts).
+/** This concrete class implements a Thread object that maps 1 to 1 with
+    a processor core on the Raspberry PI RP2040 micro-controller.
 
-    First thread is named 'CORE0', second thread is named 'CORE1' -->ifndef OPTION_xxx
-    on init -->convert system thread
-    CreateThread creates CORE1
-        fails if already created
-    DestroyThread
-        calls multicore_reset_core1 (if was started).  Try polite shutdown first??
-    Support setRunnable()
-        only applies to CORE0 - should only be called ONCE!
-        change name to something like: RP2040::Thread::launchThread0( Runnable& myRunnable );
+    At least one thread must be created and at most only two threads can be
+    created. The first thread created executes on core0.  The second thread
+    created executes on core1.
 
- */
+    The first thread MUST be created before enableScheduling() is called. The
+    second thread that executes on core1 can be created or after enableScheduling()
+    is called. The core1 thread can also be destroyed and recreated after
+    enableScheduling() is called.
+
+    The name of the threads are hard coded to 'CORE0' and 'CORE1'.
+
+    The 'native' thread handle is the core number (i.e. 0 or 1).
+
+    Threads can ONLY be created using the Cpl::System::Thread::create() method.
+    When created threads:
+        - Only the 'runnable' and 'name' should be specified.
+        - The stack sizes are defined by the build symbols: PICO_STACK_SIZE
+          and PICO_CORE1_STACK_SIZE, e.g. -DPICO_STACK_SIZE=4096 -DPICO_CORE1_STACK_SIZE=2048
+        - Thread priority has NO meaning since both threads/cores execute concurrently.
+        - The thread(s) begin executing after enableScheduling() is called.
+
+    NOTES: 
+        1. The threads do NOT 'execute' (i.e. call their Runnable object's run() 
+           method till enableScheduling() is called.  In addition the enableScheduling()
+           method NEVER returns.
+        2. The suspendScheduling() semantics suspends ALL processing on the 'other'
+           core.  This includes interrupt processing on the other core.
+
+  */
 class Thread : public Cpl::System::Thread
 {
 protected:
-    /// Reference to the runnable object for the thread
-    Cpl::System::Runnable*  m_runnable;
-
-    /// The thread synchronized message semaphore.
-    Cpl::System::Semaphore  m_syncSema;
-
+    /// Private Constructor. Application can only create thread using the Cpl::System::Thread::create() method.
+    Thread( Runnable& runnable, const char* name, unsigned coreId );
 
 public:
-    /** This method allows the application to set the Runnable object for
-        for single-thread/execution context.  The method returns a reference
-        to the previous/runnable object being 'replaced'
-     */
-    static Runnable& setRunnable( Runnable& newRunnableInstance );
-
-public:
-    /// Private Constructor -->the application can not create threads!
-    Thread( Runnable& runnable, const char* name );
-
-    /// Private Constructor -->the application can not create threads!
-    Thread();
-
-    /// Private Constructor -->the application can not create threads!
-    Thread( Thread& copy );
-
     /// Destructor
     ~Thread();
 
@@ -96,13 +101,27 @@ public:
 
 
 
-
 public:
-    /** COMPONENT Scoped constructor to "convert" the current execution context
-        to a Cpl Thread. THIS CONSTRUCTOR SHOULD NEVER BE USED BY THE APPLICATION!
-     */
-    Thread( Cpl::System::Runnable& dummyRunnable );
+    /** COMPONENT SCOPED METHOD.  The application should NEVER call this
+        this method.
 
+        Helper method to internally allocate a thread. 
+     */
+    static void createThreadInstance( unsigned coreId, Cpl::System::Runnable& runnable, const char* name ) noexcept;
+
+
+protected:
+    /// The thread synchronized message semaphore.
+    Cpl::System::Semaphore  m_syncSema;
+
+    /// Pointer to the runnable object for the thread
+    Cpl::System::Runnable*  m_runnable;
+
+    /// Thread name
+    Cpl::Text::FString<OPTION_CPL_SYSTEM_RP2040_THREAD_NAME_LEN> m_name;
+
+    /// internal handle
+    unsigned                m_coreId;
 
 public:
     /// Housekeeping

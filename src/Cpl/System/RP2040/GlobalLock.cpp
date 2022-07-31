@@ -46,7 +46,7 @@ void Cpl::System::GlobalLock::begin( void )
 
 void Cpl::System::GlobalLock::end( void )
 {
-    critical_section_exit_blocking( &globalCritSec_ );
+    critical_section_exit( &globalCritSec_ );
 }
 
 

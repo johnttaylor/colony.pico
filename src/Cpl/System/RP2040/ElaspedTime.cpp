@@ -49,7 +49,8 @@ static RegisterInitHandler_ autoRegister_systemInit_hook_;
 
 
 ///////////////////////////////////////////////////////////////
-unsigned long ElapsedTime::millisecondsInRealTime( void ) noexcept
+// Simulated time NOT supported
+unsigned long ElapsedTime::milliseconds( void ) noexcept
 {
     unsigned long newTime = to_ms_since_boot( get_absolute_time() );
     unsigned long delta   = newTime - lastMsec_;
@@ -59,20 +60,19 @@ unsigned long ElapsedTime::millisecondsInRealTime( void ) noexcept
     return elapsedMsec_;
 }
 
-unsigned long ElapsedTime::secondsInRealTime( void ) noexcept
+unsigned long ElapsedTime::seconds( void ) noexcept
 {
     // Update my internal elapsedMsec time
-    millisecondsInRealTime();
+    milliseconds();
 
     // Convert my internal elapsed time to seconds
     return (unsigned long) (elapsedMsec_ / 1000LL);
 }
 
-
-ElapsedTime::Precision_T ElapsedTime::precisionInRealTime( void ) noexcept
+ElapsedTime::Precision_T ElapsedTime::precision( void ) noexcept
 {
     // Update my internal elapsedMsec time
-    millisecondsInRealTime();
+    milliseconds();
 
     // Convert to my Precision format
     Precision_T now;
@@ -81,3 +81,21 @@ ElapsedTime::Precision_T ElapsedTime::precisionInRealTime( void ) noexcept
     now.m_thousandths  = (uint16_t) result.rem;
     return now;
 }
+
+///////////////////////////////////////////////////////////////
+unsigned long ElapsedTime::millisecondsInRealTime( void ) noexcept
+{
+    return milliseconds();
+}
+
+unsigned long ElapsedTime::secondsInRealTime( void ) noexcept
+{
+    return seconds();
+}
+
+
+ElapsedTime::Precision_T ElapsedTime::precisionInRealTime( void ) noexcept
+{
+    return precision();
+}
+

@@ -32,29 +32,29 @@ void Api::initialize( void )
 }
 
 
-void Api::enableScheduling( void )
-{
-    // Nothing needed!
-}
-
-bool Api::isSchedulingEnabled( void )
-{
-    return true; // Always return true since scheduling does not has a real meaning for our Dual Thread/Core system
-}
-
+// NOTE: Simulated time is NOT supported
 void Api::sleep( unsigned long milliseconds ) noexcept
 {
     busy_wait_ms( milliseconds );
 }
 
-void Api::suspendScheduling(void)
+void sleepInRealTime( unsigned long milliseconds ) noexcept
 {
-    // DO NOT Nothing.  Has no meaning for a bare metal system
+    busy_wait_ms( milliseconds );
 }
 
-void Api::resumeScheduling(void)
+////////////////////////////////////////////////////////////////////////////////
+extern void suspend_resume_scheduling_not_supported();
+void Api::suspendScheduling( void )
 {
-    // DO NOT Nothing.  See above
+    // NOT Supported.  Throw a link-time error
+    suspend_resume_scheduling_not_supported();
+}
+
+void Api::resumeScheduling( void )
+{
+    // NOT Supported.  Throw a link-time error
+    suspend_resume_scheduling_not_supported();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

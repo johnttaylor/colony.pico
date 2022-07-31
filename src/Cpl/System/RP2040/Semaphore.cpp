@@ -31,12 +31,12 @@ Semaphore::~Semaphore()
 
 int Semaphore::signal( void ) noexcept
 {
-    sem_release( &m_sema );
+    return sem_release( &m_sema )? 0: 1;    // Return zero on success
 }
 
 int Semaphore::su_signal( void ) noexcept
 {
-    sem_release( &m_sema );
+    return sem_release( &m_sema ) ? 0 : 1;  // Return zero on success
 }
 
 bool Semaphore::tryWait( void ) noexcept
@@ -52,4 +52,16 @@ void Semaphore::waitInRealTime( void ) noexcept
 bool Semaphore::timedWaitInRealTime( unsigned long timeout ) noexcept
 {
     return sem_acquire_timeout_ms( &m_sema, timeout );
+}
+
+//////////////////////////////////////////////////
+// Simulated time NOT supported
+bool Semaphore::timedWait( unsigned long timeout ) noexcept
+{
+    return sem_acquire_timeout_ms( &m_sema, timeout );
+}
+
+void Semaphore::wait( void ) noexcept
+{
+    sem_acquire_blocking( &m_sema );
 }
