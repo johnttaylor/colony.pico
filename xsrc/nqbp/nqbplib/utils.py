@@ -206,7 +206,15 @@ def create_working_libdirs( printer, inf, arguments, libdirs, libnames, local_ex
                 
             path  = NQBP_PRJ_DIR() + os.sep
             
-            
+         
+        # Support for 'older' syntax of directly specifying the package root
+        elif ( line.startswith(os.sep) ):
+            if ( line.startswith(os.sep + NQBP_WRKPKGS_DIRNAME()) ):
+                entry = 'xpkg'
+
+            path = NQBP_PKG_ROOT() + os.sep
+            line = line [1:]
+
         # within my package...
         else:
             if ( line.startswith(NQBP_WRKPKGS_DIRNAME()) ):

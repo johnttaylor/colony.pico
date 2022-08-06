@@ -109,6 +109,9 @@ void Cpl::System::Api::enableScheduling( void )
             Cpl::System::FatalError::log( "The Application has NOT created any threads" );
         }
 
+        // Housekeeping
+        schedulingEnabled_ = true;
+
         // start core1 if it has been created
         if ( states_[1] == THREAD_STATE_CREATED )
         {
@@ -116,9 +119,8 @@ void Cpl::System::Api::enableScheduling( void )
         }
 
         // start core0 
-        schedulingEnabled_ = true;
         multicore_lockout_victim_init();    // Enable SDK support on core0 for 'suspending scheduling'
-        states_[0]         = THREAD_STATE_RUNNING;
+        states_[0] = THREAD_STATE_RUNNING;
         threads_[0]->getRunnable().run();
 
         // If thread0/core0 runs to completion - force a cold boot

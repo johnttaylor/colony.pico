@@ -11,11 +11,18 @@
 
 #include "Cpl/System/Mutex.h"
 
+inline static void lazy_mutex_init( Cpl_System_Mutex_T& mutex )
+{
+    if ( !recursive_mutex_is_initialized( &mutex ) )
+    {
+        recursive_mutex_init( &mutex );
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////////
 Cpl::System::Mutex::Mutex()
 {
-    recursive_mutex_init( &m_mutex );
+    // Nothing needed -- we do a lazy init of the mutex to avoid the mutex initialization in a static instance
 }
 
 Cpl::System::Mutex::~Mutex()
@@ -25,12 +32,13 @@ Cpl::System::Mutex::~Mutex()
 
 void Cpl::System::Mutex::lock( void )
 {
+    lazy_mutex_init( m_mutex );
     recursive_mutex_enter_blocking( &m_mutex );
 }
 
-
 void Cpl::System::Mutex::unlock( void )
 {
+    lazy_mutex_init( m_mutex );
     recursive_mutex_exit( &m_mutex );
 }
 

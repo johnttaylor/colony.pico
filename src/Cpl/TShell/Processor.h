@@ -94,50 +94,6 @@ namespace TShell {
  */
 class Processor : public Context_
 {
-protected:
-	/// Command list
-	Cpl::Container::Map<Command>&       m_commands;
-
-	/// Raw input de-framer
-	Cpl::Text::Frame::StreamDecoder&    m_deframer;
-
-	/// Output framer handle
-	Cpl::Text::Frame::StreamEncoder&    m_framer;
-
-	/// Output lock
-	Cpl::System::Mutex&                 m_outLock;
-
-	/// Comment character
-	char                                m_comment;
-
-	/// Argument Escape character
-	char                                m_esc;
-
-	/// Argument delimiter
-	char                                m_del;
-
-	/// Argument quote character
-	char                                m_quote;
-
-	/// Argument terminator character
-	char                                m_term;
-
-	/// My run state
-	bool                                m_running;
-
-	/// Input Frame buffer
-	char                                m_inputBuffer[OPTION_CPL_TSHELL_PROCESSOR_INPUT_SIZE + 1];
-
-	/// Buffer that is used to construct output messages
-	Cpl::Text::FString<OPTION_CPL_TSHELL_PROCESSOR_OUTPUT_SIZE>  m_outputBuffer;
-
-	/// Shared token work buffer
-	Cpl::Text::FString<OPTION_CPL_TSHELL_PROCESSOR_INPUT_SIZE>   m_tokenBuffer;
-
-	/// Shared token work buffer
-	Cpl::Text::FString<OPTION_CPL_TSHELL_PROCESSOR_INPUT_SIZE>   m_tokenBuffer2;
-
-
 public:
 	/** Constructor.
 
@@ -173,7 +129,10 @@ public:
 
 public:
 	/// See Cpl::TShell::ProcessorApi
-	bool start( Cpl::Io::Input& infd, Cpl::Io::Output& outfd ) noexcept;
+	bool start( Cpl::Io::Input& infd, Cpl::Io::Output& outfd, bool blocking=true ) noexcept;
+
+	/// See Cpl::TShell::ProcessorApi
+	int poll() noexcept;
 
 	/// See Cpl::TShell::ProcessorApi
 	void requestStop() noexcept;
@@ -220,6 +179,66 @@ protected:
 
 	/// Helper method
 	bool outputCommandError( Command::Result_T result, const char* deframedInput ) noexcept;
+
+	/** Helper method that performs a 'single' read cycle of the input stream.
+		Returns 0 if successful. Returns 1 if exiting. Returns -1 on error
+	 */
+	int getAndProcessFrame( Cpl::Io::Output& outfd ) noexcept;
+
+	/** Helper method that executes the decoder, i.e. logic to parse the incoming
+	    text.  Returns 1 if a full/valid frame was found. Returns 0 if input frame
+		is incomplete. Return -1 if an error occurred.
+	 */
+	virtual int readInput( size_t& frameSize ) noexcept;
+
+protected:
+	/// Command list
+	Cpl::Container::Map<Command>&       m_commands;
+
+	/// Raw input de-framer
+	Cpl::Text::Frame::StreamDecoder&    m_deframer;
+
+	/// Output framer handle
+	Cpl::Text::Frame::StreamEncoder&    m_framer;
+
+	/// Output lock
+	Cpl::System::Mutex&                 m_outLock;
+
+	/// Comment character
+	char                                m_comment;
+
+	/// Argument Escape character
+	char                                m_esc;
+
+	/// Argument delimiter
+	char                                m_del;
+
+	/// Argument quote character
+	char                                m_quote;
+
+	/// Argument terminator character
+	char                                m_term;
+
+	/// Set to true when 'command prompt' should be outputted
+	bool								m_writeCommandPrompt;
+
+	/// Current frame size
+	size_t								m_frameSize;
+
+	/// My run state
+	bool                                m_running;
+
+	/// Input Frame buffer
+	char                                m_inputBuffer[OPTION_CPL_TSHELL_PROCESSOR_INPUT_SIZE + 1];
+
+	/// Buffer that is used to construct output messages
+	Cpl::Text::FString<OPTION_CPL_TSHELL_PROCESSOR_OUTPUT_SIZE>  m_outputBuffer;
+
+	/// Shared token work buffer
+	Cpl::Text::FString<OPTION_CPL_TSHELL_PROCESSOR_INPUT_SIZE>   m_tokenBuffer;
+
+	/// Shared token work buffer
+	Cpl::Text::FString<OPTION_CPL_TSHELL_PROCESSOR_INPUT_SIZE>   m_tokenBuffer2;
 };
 
 

@@ -1,5 +1,5 @@
-#ifndef Cpl_TShell_Maker_h_
-#define Cpl_TShell_Maker_h_
+#ifndef Cpl_TShell_PolledMaker_h_
+#define Cpl_TShell_PolledMaker_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -12,7 +12,7 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
-#include "Cpl/TShell/Processor.h"
+#include "Cpl/TShell/PolledProcessor.h"
 #include "Cpl/Text/Frame/LineDecoder.h"
 #include "Cpl/System/Private_.h"
 
@@ -23,9 +23,9 @@ namespace TShell {
 
 
 /** This concrete class is a "Maker" that assembles the objects needed
-	for a 'basic' TShell Processor engine.
+	for a 'basic' TShell Processor engine that has POLLED semantics
  */
-class Maker
+class PolledMaker
 {
 protected:
 
@@ -36,14 +36,14 @@ protected:
 	Cpl::Text::Frame::LineDecoder<OPTION_CPL_TSHELL_PROCESSOR_INPUT_SIZE> m_deframer;
 
 	/// Command Processor
-	Processor                       m_processor;
+	PolledProcessor                 m_processor;
 
 
 public:
 	/** Constructor.  The application is responsible for supplying the set of commands and the mutex to ensure atomic
 		output.
 	 */
-	Maker( Cpl::Container::Map<Command>& cmdlist, Cpl::System::Mutex& lock=Cpl::System::Locks_::tracingOutput() );
+	PolledMaker( Cpl::Container::Map<Command>& cmdlist, Cpl::System::Mutex& lock=Cpl::System::Locks_::tracingOutput() );
 
 
 public:

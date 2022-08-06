@@ -37,7 +37,7 @@ static bool modifyGlobal_( float op1, float op2, float expected )
 
     bool result = true;
     testGlobal_ = (op1 * 2.0) / (op2 + op1);
-    if ( testGlobal_ < (expected - 0.0001) || testGlobal_ > (expected + 0.0001) )
+    if ( testGlobal_ < (expected - 0.0001) || testGlobal_ >( expected + 0.0001 ) )
     {
         result = false;
     }
@@ -52,7 +52,7 @@ static bool testGlobalLock_( float op1, float op2, float expected )
     GlobalLock::begin();
     bool result = true;
     globalLockValue_ = (op1 * 2.0) / (op2 + op1);
-    if ( globalLockValue_ < (expected - 0.0001) || globalLockValue_ > (expected + 0.0001) )
+    if ( globalLockValue_ < (expected - 0.0001) || globalLockValue_ >( expected + 0.0001 ) )
     {
         result = false;
     }
@@ -290,7 +290,7 @@ void runtests( void )
 
     MyRunnable*  appleLed       = new MyRunnable( *tlsKey, 1, 3.14159, 3 );
     Thread*      appleLedThread = Thread::create( *appleLed, "AppleLED" );
-    MyRunnable2* appleTimer     = new MyRunnable2( *appleLedThread, *tlsKey, 1000, 1000, 2.71828, 7 );
+    MyRunnable2* appleTimer     = new MyRunnable2( *appleLedThread, *tlsKey, 250, 250, 2.71828, 7 );
     Thread::create( *appleTimer, "AppleTimer" );
 
     // Run the threads/tests (this method never returns)

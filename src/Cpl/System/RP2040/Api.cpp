@@ -12,6 +12,7 @@
 #include "Cpl/System/Api.h"
 #include "Cpl/System/Private_.h"
 #include "pico/sync.h"
+#include "pico/multicore.h"
 
 /// 
 using namespace Cpl::System;
@@ -48,13 +49,20 @@ extern void suspend_resume_scheduling_not_supported();
 void Api::suspendScheduling( void )
 {
     // NOT Supported.  Throw a link-time error
-    suspend_resume_scheduling_not_supported();
+    //suspend_resume_scheduling_not_supported();
+
+    // FIXME: In theory this call should put the 'other' core into a known/busy-wait
+    // state - but I can't get it to work - the calling core just blocks forever :(. 
+    //multicore_lockout_start_blocking();
 }
 
 void Api::resumeScheduling( void )
 {
     // NOT Supported.  Throw a link-time error
     suspend_resume_scheduling_not_supported();
+
+    // FIXME: See comment above
+    //multicore_lockout_end_blocking();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

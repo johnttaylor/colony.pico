@@ -1,3 +1,4 @@
+#if 0 
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -173,3 +174,4 @@ void EventLoop::su_notify( uint8_t eventNumber ) noexcept
     su_notifyEvents( 1 << eventNumber );
 }
 
+#endif
