@@ -1,4 +1,3 @@
-#if 0 
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -10,11 +9,9 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "EventLoop.h"
-#include "SimTick.h"
+#include "PeriodicScheduler.h"
 #include "Trace.h"
 #include "FatalError.h"
-#include "GlobalLock.h"
 
 #define SECT_ "Cpl::System"
 
@@ -23,155 +20,80 @@
 using namespace Cpl::System;
 
 /////////////////////
-EventLoop::EventLoop( unsigned long          timeOutPeriodInMsec,
-                      SharedEventHandlerApi* eventHandler )
-    : m_myThreadPtr( 0 )
-    , m_eventHandler( eventHandler )
-    , m_sema()
-    , m_timeout( timeOutPeriodInMsec )
-    , m_events( 0 )
-    , m_run( true )
+PeriodicSchedular::PeriodicSchedular( Interval_T           intervals[],
+                                      ReportSlippageFunc_T slippageFunc,
+                                      NowFunc_T            nowFunc )
+    : m_intervals( intervals )
+    , m_reportSlippage( slippageFunc )
+    , m_nowFunc( nowFunc )
+    , m_firstExecution( true )
 {
-    if ( timeOutPeriodInMsec == 0 )
-    {
-        FatalError::logf( "EventLoop(%p): timeOutPeriodInMsec can NOT be set to zero", this );
-    }
-}
-void EventLoop::setThreadOfExecution_( Thread* myThreadPtr )
-{
-    m_myThreadPtr = myThreadPtr;
 }
 
-int EventLoop::signal( void ) noexcept
-{
-    return m_sema.signal();
-}
-
-int EventLoop::su_signal( void ) noexcept
-{
-    return m_sema.su_signal();
-}
-
-void EventLoop::appRun( void )
-{
-    startEventLoop();
-    bool run = true;
-    while( run )
-    {
-        run = waitAndProcessEvents();
-    }
-    stopEventLoop();
-}
-
-void EventLoop::startEventLoop() noexcept
-{
-    // Initialize/start the timer manager
-    startManager();
-}
-
-void EventLoop::stopEventLoop() noexcept
-{
-    // Nothing currently needed
-}
-
-void EventLoop::processEventFlag( uint8_t eventNumber ) noexcept
-{
-    if ( m_eventHandler )
-    {
-        m_eventHandler->processEventFlag( eventNumber );
-    }
-}
-
-bool EventLoop::waitAndProcessEvents() noexcept
-{
-
-    // Trap my exit/please-stop condition
-    GlobalLock::begin();
-    bool stayRunning = m_run;
-    GlobalLock::end();
-    if ( !stayRunning )
-    {
-        return false;
-    }
-
-    // Wait for something to happen...
-    m_sema.timedWait( m_timeout ); // Note: For Tick Simulation: the timedWait() calls topLevelWait() if the semaphore has not been signaled
-
-    // Trap my exit/please-stop condition AGAIN since a lot could have happen while I was waiting....
-    GlobalLock::begin();
-    stayRunning = m_run;
-    GlobalLock::end();
-    if ( !stayRunning )
-    {
-        return false;
-    }
-
-    // Capture the current state of the event flags
-    GlobalLock::begin();
-    Cpl_System_EventFlag_T events = m_events;
-    m_events                      = 0;
-    GlobalLock::end();
-
-    // Process Event Flags
-    if ( events )
-    {
-        Cpl_System_EventFlag_T eventMask   = 1;
-        uint8_t                eventNumber = 0;
-        for ( ; eventMask; eventMask <<= 1, eventNumber++ )
-        {
-            if ( (events & eventMask) )
-            {
-                processEventFlag( eventNumber );
-            }
-        }
-    }
-
-    // Timer Check
-    processTimers();
-    return true;
-}
 
 /////////////////////
-void EventLoop::pleaseStop()
+bool PeriodicSchedular::executeScheduler()
 {
-    CPL_SYSTEM_TRACE_FUNC( SECT_ );
+    bool         atLeastOne   = false;
+    Interval_T*  interval     = m_intervals;
 
-    // Set my flag/state to exit my top level thread loop
-    GlobalLock::begin();
-    m_run = false;
-    GlobalLock::end();
+    // Scan all intervals
+    while ( interval && interval->callbackFunc != 0 )
+    {
+        // Get the current time
+        ElapsedTime::Precision_T currentTick = (m_nowFunc) ();
 
-    // Signal myself in case the thread is blocked waiting for the 'next event'
-    m_sema.signal();
+        // Initialize the interval (but only once)
+        if ( m_firstExecution )
+        {
+            setTimeMarker( *interval, currentTick );
+        }
+
+        // Has the interval expired?
+        if ( ElapsedTime::expiredPrecision( interval->timeMarker, interval->duration, currentTick ) )
+        {
+            atLeastOne            = true;
+            interval->timeMarker += interval->duration;
+            (interval->callbackFunc)(currentTick, interval->timeMarker, interval->context);
+
+            // Check for slippage
+            if ( ElapsedTime::expiredPrecision( interval->timeMarker, interval->duration, currentTick ) )
+            {
+                // Report the slippage to the application
+                if ( m_reportSlippage )
+                {
+                    (m_reportSlippage) (*interval, currentTick, interval->timeMarker);
+                }
+
+                // Re-sync the most recent past interval boundary based on the actual time.
+                // Note: This operation only has a 'effect' if the slipped time is greater than 2 duration times
+                setTimeMarker( *interval, currentTick );
+            }
+        }
+
+        // Get the next interval
+        interval++;
+    }
+
+    // Clear flag now that we have properly initialized each interval
+    m_firstExecution = false;
+
+    // Return result;
+    return atLeastOne;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-void EventLoop::notifyEvents( Cpl_System_EventFlag_T events ) noexcept
+
+
+void PeriodicSchedular::setTimeMarker( Interval_T& interval, ElapsedTime::Precision_T currentTick ) noexcept
 {
-    // Mark that I was signaled
-    GlobalLock::begin();
-    m_events |= events;
-    GlobalLock::end();
+    // Make sure there is no divide by zero error
+    uint64_t duration = interval.duration.getFlatTime();
+    if ( duration == 0 )
+    {
+        interval.timeMarker = currentTick;
+        return;
+    }
 
-    m_sema.signal();
+    // Round down to the nearest interval boundary
+    interval.timeMarker.setFlatTime( (currentTick.getFlatTime() / duration) * duration );
 }
-
-void EventLoop::notify( uint8_t eventNumber ) noexcept
-{
-    notifyEvents( 1 << eventNumber );
-}
-
-// NOTE: Same logic as notifyEvents(), EXCEPT no critical section is used -->this is because su_signal() is called from an ISR and no mutex is required (and mutexes don't work in from ISRs anyway)
-void EventLoop::su_notifyEvents( Cpl_System_EventFlag_T events ) noexcept
-{
-    // Mark that I was signaled 
-    m_events    |= events;
-    m_sema.su_signal();
-}
-
-void EventLoop::su_notify( uint8_t eventNumber ) noexcept
-{
-    su_notifyEvents( 1 << eventNumber );
-}
-
-#endif

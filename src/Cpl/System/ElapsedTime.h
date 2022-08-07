@@ -69,6 +69,16 @@ public:
         /// Assign my value based on total milliseconds
         Precision_T& operator =( uint32_t milliseconds );
 
+        /// Get time - in milliseconds - as a single 'large' integer value
+        uint64_t getFlatTime() { return m_seconds * 1000 + m_thousandths; }
+
+        /// Set time - in milliseconds - from a single 'large' integer value
+        void setFlatTime( uint64_t flatTimeInMs ) 
+        { 
+            m_seconds     = (unsigned long) (flatTimeInMs / 1000);
+            m_thousandths = (uint16_t) (flatTimeInMs % 1000);
+        }
+
 
     public:
         /// Constructor (to ensure any pad bytes get zero'd)
@@ -85,6 +95,13 @@ public:
             m_thousandths = thousandths;
         }
 
+        /// Constructor (to ensure any pad bytes get zero'd)
+        Precision_T( uint64_t flatTimeInMs )
+        {
+            memset( (void*) this, 0, sizeof( Precision_T ) );
+            setFlatTime( flatTimeInMs );
+        }
+        
         /// Copy Constructor (to ensure any pad bytes get zero'd)
         Precision_T( const Precision_T& other )
         {

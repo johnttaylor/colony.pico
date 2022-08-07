@@ -11,7 +11,7 @@
 
 #include "Catch/catch.hpp"
 #include "Cpl/System/Api.h"
-#include "Cpl/System/ElapsedTime.h"
+#include "Cpl/System/PeriodicScheduler.h"
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/_testsupport/Shutdown_TS.h"
 #include <string.h>
@@ -25,122 +25,283 @@ using namespace Cpl::System;
 
 ////////////////////////////////////////////////////////////////////////////////
 
+static inline void displayInfo( const char* label, unsigned count, ElapsedTime::Precision_T currentTick, ElapsedTime::Precision_T intervalTick, void* context )
+{
+    CPL_SYSTEM_TRACE_MSG( SECT_, ("%-7s: %d, tick=%4d.%03d, interval=%4d.%03d, context=%p",
+                                   label,
+                                   count,
+                                   currentTick.m_seconds,
+                                   currentTick.m_thousandths,
+                                   intervalTick.m_seconds,
+                                   intervalTick.m_thousandths,
+                                   context) );
+}
+
+
+static ElapsedTime::Precision_T appleLastCurrentTick_;
+static ElapsedTime::Precision_T appleLastCurrentInterval_;
+static void*                    appleLastContext_;
+static unsigned                 appleCount_;
+
+static void appleProcessInterval( ElapsedTime::Precision_T currentTick, ElapsedTime::Precision_T currentInterval, void* context )
+{
+    appleCount_++;
+    appleLastCurrentTick_     = currentTick;
+    appleLastCurrentInterval_ = currentInterval;
+    appleLastContext_         = context;
+}
+
+static ElapsedTime::Precision_T orangeLastCurrentTick_;
+static ElapsedTime::Precision_T orangeLastCurrentInterval_;
+static void*                    orangeLastContext_;
+static unsigned                 orangeCount_;
+
+static void orangeProcessInterval( ElapsedTime::Precision_T currentTick, ElapsedTime::Precision_T currentInterval, void* context )
+{
+    orangeCount_++;
+    orangeLastCurrentTick_     = currentTick;
+    orangeLastCurrentInterval_ = currentInterval;
+    orangeLastContext_         = context;
+}
+
+static ElapsedTime::Precision_T cherryLastCurrentTick_;
+static ElapsedTime::Precision_T cherryLastCurrentInterval_;
+static void*                    cherryLastContext_;
+static unsigned                 cherryCount_;
+
+static void cherryProcessInterval( ElapsedTime::Precision_T currentTick, ElapsedTime::Precision_T currentInterval, void* context )
+{
+    cherryCount_++;
+    cherryLastCurrentTick_     = currentTick;
+    cherryLastCurrentInterval_ = currentInterval;
+    cherryLastContext_         = context;
+}
+
+static unsigned                 slippageCount_;
+static ElapsedTime::Precision_T slippageLastCurrentTick_;
+static ElapsedTime::Precision_T slippageLastMissedInterval_;
+static void*                    slippageLastContext_;
+static void reportSlippage( PeriodicSchedular::Interval_T& intervalThatSlipped, ElapsedTime::Precision_T currentTick, ElapsedTime::Precision_T missedInterval )
+{
+    slippageCount_++;
+    slippageLastCurrentTick_     = currentTick;
+    slippageLastMissedInterval_  = missedInterval;
+    slippageLastContext_         = intervalThatSlipped.context;
+    displayInfo( "SLIPPAGE", slippageCount_, slippageLastCurrentTick_, slippageLastMissedInterval_, slippageLastContext_ );
+}
+
+
+
+static PeriodicSchedular::Interval_T intervals_[] =
+{
+    { appleProcessInterval, { 0,10 }, (void*) 0xCAFE },
+    { orangeProcessInterval, { 0,20 }, (void*) 0xBEEF },
+    { cherryProcessInterval, { 0,7 }, (void*) 0xFEED },
+    CPL_SYSTEM_PERIODIC_SCHEDULAR_END_INTERVALS
+};
+
+static ElapsedTime::Precision_T currentTick_;
+static ElapsedTime::Precision_T now()
+{
+    return currentTick_;
+}
+
+
 ////////////////////////////////////////////////////////////////////////////////
-TEST_CASE( "elaspedtime", "[elaspedtime]" )
+TEST_CASE( "PeriodicScheduler" )
 {
     CPL_SYSTEM_TRACE_FUNC( SECT_ );
     Shutdown_TS::clearAndUseCounter();
+    appleCount_                 = 0;
+    appleLastCurrentTick_       ={ 0,0 };
+    appleLastCurrentInterval_   ={ 0,0 };
+    appleLastContext_           = 0;
+    orangeCount_                = 0;
+    orangeLastCurrentTick_      ={ 0,0 };
+    orangeLastCurrentInterval_  ={ 0,0 };
+    orangeLastContext_          = 0;
+    cherryCount_                = 0;
+    cherryLastCurrentTick_      ={ 0,0 };
+    cherryLastCurrentInterval_  ={ 0,0 };
+    cherryLastContext_          = 0;
+    slippageCount_              = 0;
+    slippageLastCurrentTick_    ={ 0,0 };
+    slippageLastMissedInterval_ ={ 0,0 };
+    slippageLastContext_        = 0;
 
-    unsigned long            secs;
-    unsigned long            msecs;
-    ElapsedTime::Precision_T precision;
-    ElapsedTime::Precision_T precValue;
+    currentTick_   ={ 0, 0 };
 
-    // Get current time
-    secs      = ElapsedTime::seconds();
-    msecs     = ElapsedTime::milliseconds();
-    precision = ElapsedTime::precision();
-
-    // Sleep at least 1.5 second
-    Api::sleep( 1510 );
-    //unsigned long n = ElapsedTime::milliseconds();
-    //printf( "now=%lu, msec=%lu, delta=%lu\n", n, msecs, n - msecs );
-
-    // Verify delta time
-    REQUIRE( ElapsedTime::expiredMilliseconds( msecs, 1500 ) == true );
-    REQUIRE( ElapsedTime::expiredSeconds( secs, 1 ) == true );
-    precValue.m_seconds     = 1;
-    precValue.m_thousandths = 500;
-    REQUIRE( ElapsedTime::expiredPrecision( precision, precValue ) == true );
-    precision.m_thousandths++;
-    REQUIRE( precValue != precision );
-    precision.m_seconds     = 1;
-    precision.m_thousandths = 500;
-    REQUIRE( precValue == precision );
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("Post verify: sleep = 1.5") );
-
-    // Get current time
-    precision = ElapsedTime::precision();
-    secs      = ElapsedTime::seconds();
-    msecs     = ElapsedTime::milliseconds();
-
-    // Sleep at least 1.0 second
-    Api::sleep( 1010 );
-
-    // Verify delta time
-    REQUIRE( ElapsedTime::expiredMilliseconds( msecs, 1000 ) == true );
-    REQUIRE( ElapsedTime::expiredSeconds( secs, 1 ) == true );
-    precValue.m_seconds     = 1;
-    precValue.m_thousandths = 0;
-    REQUIRE( ElapsedTime::expiredPrecision( precision, precValue ) == true );
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("Post verify: sleep = 1.0") );
-
-    // Get current time
-    msecs     = ElapsedTime::milliseconds();
-    secs      = ElapsedTime::seconds();
-    precision = ElapsedTime::precision();
-
-    // Sleep at least 3.7 second
-    Api::sleep( 3710 );
-
-    // Verify delta time
-    REQUIRE( ElapsedTime::expiredMilliseconds( msecs, 3700 ) == true );
-    REQUIRE( ElapsedTime::expiredSeconds( secs, 3 ) == true );
-    precValue.m_seconds     = 3;
-    precValue.m_thousandths = 700;
-    REQUIRE( ElapsedTime::expiredPrecision( precision, precValue ) == true );
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("Post verify: sleep = 3.7") );
-
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("msec=%lu, secs=%lu, prec.sec=%lu, prec.msec=%u", msecs, secs, precision.m_seconds, precision.m_thousandths) );
-
-    int i;
-    for ( i=0; i < 50; i++ )
+    SECTION( "no slippage reporting" )
     {
-        Api::sleep( 21 );
-        msecs     = ElapsedTime::milliseconds();
-        secs      = ElapsedTime::seconds();
-        precision = ElapsedTime::precision();
+        PeriodicSchedular uut( intervals_, nullptr, now );
+        ElapsedTime::Precision_T intervalTime;
 
-        unsigned long prec_as_ms = precision.m_seconds * 1000 + precision.m_thousandths;
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("msec(%lu) =? prec(%lu)", msecs, prec_as_ms) );
-        REQUIRE( msecs <= prec_as_ms );
-        REQUIRE( secs <= precision.m_seconds );
+        currentTick_ ={ 0, 5 };
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+        REQUIRE( appleCount_ == 0 );
+        REQUIRE( orangeCount_ == 0 );
+        REQUIRE( cherryCount_ == 0 );
+
+        currentTick_ += 5;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        intervalTime ={ 0,10 };
+        REQUIRE( appleCount_ == 1 );
+        REQUIRE( appleLastCurrentTick_ == currentTick_ );
+        REQUIRE( appleLastCurrentInterval_ == intervalTime );
+        REQUIRE( orangeCount_ == 0 );
+        intervalTime ={ 0,7 };
+        REQUIRE( cherryCount_ == 1 );
+        REQUIRE( cherryLastCurrentTick_ == currentTick_ );
+        REQUIRE( cherryLastCurrentInterval_ == intervalTime );
+
+        currentTick_ += 5;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        REQUIRE( appleCount_ == 1 );
+        REQUIRE( orangeCount_ == 0 );
+        intervalTime ={ 0, 14 };
+        REQUIRE( cherryCount_ == 2 );
+        REQUIRE( cherryLastCurrentTick_ == currentTick_ );
+        REQUIRE( cherryLastCurrentInterval_ == intervalTime );
+
+        currentTick_ += 5;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        intervalTime ={ 0,20 };
+        REQUIRE( appleCount_ == 2 );
+        REQUIRE( appleLastCurrentTick_ == currentTick_ );
+        REQUIRE( appleLastCurrentInterval_ == intervalTime );
+        intervalTime ={ 0,20 };
+        REQUIRE( orangeCount_ == 1 );
+        REQUIRE( orangeLastCurrentTick_ == currentTick_ );
+        REQUIRE( orangeLastCurrentInterval_ == intervalTime );
+        REQUIRE( cherryCount_ == 2 );
+
+        currentTick_ += 1;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        REQUIRE( appleCount_ == 2 );
+        REQUIRE( orangeCount_ == 1 );
+        intervalTime ={ 0, 21 };
+        REQUIRE( cherryCount_ == 3 );
+        REQUIRE( cherryLastCurrentTick_ == currentTick_ );
+        REQUIRE( cherryLastCurrentInterval_ == intervalTime );
     }
 
-    // Comparison operators
-    ElapsedTime::Precision_T timeA = { 10, 11 };
-    ElapsedTime::Precision_T timeB = { 10, 12 };
-    REQUIRE( timeA < timeB );
-    REQUIRE( timeA <= timeB );
-    REQUIRE( timeB > timeA );
-    REQUIRE( timeB >= timeA );
-    REQUIRE( timeA != timeB );
-    REQUIRE( (timeA == timeB) == false );
+    SECTION( "Slippage" )
+    {
+        PeriodicSchedular uut( intervals_, reportSlippage, now );
+        ElapsedTime::Precision_T intervalTime;
 
-    timeA = timeB;
-    REQUIRE( (timeA < timeB) == false );
-    REQUIRE( timeA <= timeB );
-    REQUIRE( (timeB > timeA) == false );
-    REQUIRE( timeB >= timeA );
-    REQUIRE( (timeA != timeB) == false );
-    REQUIRE( timeA == timeB  );
+        currentTick_ ={ 0, 5 };
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        REQUIRE( appleCount_ == 0 );
+        REQUIRE( orangeCount_ == 0 );
+        REQUIRE( cherryCount_ == 0 );
+        REQUIRE( slippageCount_ == 0 );
 
-    timeA = { 12, 10 };
-    timeB = { 13, 10 };
-    REQUIRE( timeA < timeB );
-    REQUIRE( timeA <= timeB );
-    REQUIRE( timeB > timeA );
-    REQUIRE( timeB >= timeA );
-    REQUIRE( timeA != timeB );
-    REQUIRE( ( timeA == timeB ) == false );
+        currentTick_ += 5;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        REQUIRE( appleCount_ == 1 );
+        REQUIRE( orangeCount_ == 0 );
+        REQUIRE( cherryCount_ == 1 );
+        REQUIRE( slippageCount_ == 0 );
 
-    timeA = timeB;
-    REQUIRE( ( timeA < timeB ) == false );
-    REQUIRE( timeA <= timeB );
-    REQUIRE( ( timeB > timeA ) == false );
-    REQUIRE( timeB >= timeA );
-    REQUIRE( ( timeA != timeB ) == false );
-    REQUIRE( timeA == timeB );
+        // Slip a single interval
+        currentTick_ += 20;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        intervalTime ={ 0,20 };
+        REQUIRE( appleCount_ == 2 );
+        REQUIRE( appleLastCurrentTick_ == currentTick_ );
+        REQUIRE( appleLastCurrentInterval_ == intervalTime );
+        REQUIRE( orangeCount_ == 1 );
+        intervalTime ={ 0,14 };
+        REQUIRE( cherryCount_ == 2 );
+        REQUIRE( cherryLastCurrentTick_ == currentTick_ );
+        REQUIRE( cherryLastCurrentInterval_ == intervalTime );
+        REQUIRE( slippageCount_ == 2 );
+        REQUIRE( slippageLastContext_ == (void*) 0xFEED );
+
+        currentTick_ += 10;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        intervalTime ={ 0,40 };
+        REQUIRE( appleCount_ == 3 );
+        REQUIRE( appleLastCurrentTick_ == currentTick_ );
+        REQUIRE( appleLastCurrentInterval_ == intervalTime );
+        REQUIRE( orangeCount_ == 2 );
+        intervalTime ={ 0, (40 / 7) * 7 };
+        REQUIRE( cherryCount_ == 3 );
+        REQUIRE( cherryLastCurrentTick_ == currentTick_ );
+        REQUIRE( cherryLastCurrentInterval_ == intervalTime );
+        REQUIRE( slippageCount_ == 2 );
+
+        // Slip multiple intervals
+        currentTick_ += 30;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        intervalTime ={ 0, 40 + 10 };
+        REQUIRE( appleCount_ == 4 );
+        REQUIRE( appleLastCurrentTick_ == currentTick_ );
+        REQUIRE( appleLastCurrentInterval_ == intervalTime );
+        intervalTime ={ 0, (40 / 7 + 1) * 7 };
+        REQUIRE( cherryCount_ == 4 );
+        REQUIRE( cherryLastCurrentTick_ == currentTick_ );
+        REQUIRE( cherryLastCurrentInterval_ == intervalTime );
+
+        // Verify interval boundaries after 'big' slippage
+        currentTick_ += 10;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("== TICK: %04d.%03d", currentTick_.m_seconds, currentTick_.m_thousandths) );
+        uut.executeScheduler();
+        displayInfo( "APPLE", appleCount_, appleLastCurrentTick_, appleLastCurrentInterval_, appleLastContext_ );
+        displayInfo( "ORANGE", orangeCount_, orangeLastCurrentTick_, orangeLastCurrentInterval_, orangeLastContext_ );
+        displayInfo( "CHERRY", cherryCount_, cherryLastCurrentTick_, cherryLastCurrentInterval_, cherryLastContext_ );
+        intervalTime ={ 0, 80 };
+        REQUIRE( appleCount_ == 5 );
+        REQUIRE( appleLastCurrentTick_ == currentTick_ );
+        REQUIRE( appleLastCurrentInterval_ == intervalTime );
+        REQUIRE( orangeCount_ == 4 );
+        intervalTime ={ 0, (80 / 7) * 7 };
+        REQUIRE( cherryCount_ == 5 );
+        REQUIRE( cherryLastCurrentTick_ == currentTick_ );
+        REQUIRE( cherryLastCurrentInterval_ == intervalTime );
+        REQUIRE( slippageCount_ == 4 );
+    }
 
     REQUIRE( Shutdown_TS::getAndClearCounter() == 0u );
 }

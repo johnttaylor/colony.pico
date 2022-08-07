@@ -142,5 +142,20 @@ TEST_CASE( "elaspedtime", "[elaspedtime]" )
     REQUIRE( ( timeA != timeB ) == false );
     REQUIRE( timeA == timeB );
 
+    timeA ={ 12, 10 };
+    timeB ={ 13, 10 };
+    uint64_t flatTimeA = timeA.getFlatTime();
+    uint64_t flatTimeB = timeB.getFlatTime();
+    REQUIRE( flatTimeA == 12010LL );
+    REQUIRE( flatTimeB == 13010LL );
+    timeA.setFlatTime( 123456LL );
+    REQUIRE( timeA.getFlatTime() == 123456LL );
+    REQUIRE( timeA.m_seconds == 123 );
+    REQUIRE( timeA.m_thousandths == 456 );
+    ElapsedTime::Precision_T timeC( 666005LL );
+    REQUIRE( timeC.m_seconds == 666 );
+    REQUIRE( timeC.m_thousandths == 5 );
+    REQUIRE( timeC.getFlatTime() == 666005LL );
+
     REQUIRE( Shutdown_TS::getAndClearCounter() == 0u );
 }

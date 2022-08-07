@@ -46,6 +46,18 @@ void Api::sleepInRealTime( unsigned long milliseconds ) noexcept
     Sleep( (DWORD) milliseconds );
 }
 
+void Api::suspendScheduling( void )
+{
+    // DO NOT Nothing.  
+}
+
+void Api::resumeScheduling( void )
+{
+    // DO NOT Nothing.  See above
+}
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 Mutex& Locks_::system( void )
 {
