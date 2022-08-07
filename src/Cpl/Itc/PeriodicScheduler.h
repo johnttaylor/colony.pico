@@ -1,5 +1,5 @@
-#ifndef Cpl_Dm_PeriodicScheduler_h_
-#define Cpl_Dm_PeriodicScheduler_h_
+#ifndef Cpl_Its_PeriodicScheduler_h_
+#define Cpl_Its_PeriodicScheduler_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -12,16 +12,16 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
-#include "Cpl/Dm/MailboxServer.h"
+#include "Cpl/Itc/MailboxServer.h"
 #include "Cpl/System/PeriodicScheduler.h"
 
 
 ///
 namespace Cpl {
 ///
-namespace Dm {
+namespace Itc {
 
-/** This class extends the Cpl::Dm::MailboxServer class to add periodic scheduling 
+/** This class extends the Cpl::Itc::MailboxServer class to add periodic scheduling 
     to an event based 'thread'.  The timing resolution of the periodic scheduling 
     is a determined by the 'timingTickInMsec' argument value in the class's 
     constructor.  For example if 'timingTickInMsec' is 10ms then no interval 
@@ -33,17 +33,15 @@ namespace Dm {
        2. The timers and their callbacks (if any timers have expired) are
           processed.
        3. The Periodic scheduler's executeScheduler() method is called
-       4. A single Model Point Change notification (if there is one pending) is
-          processed.
-       5. A single ITC message (it there is on pending) is dispatched.
-       6. The optional 'Idle' function is called.
-       7. The loop is repeated until there are no expired timers, no event
+       4. A single ITC message (it there is on pending) is dispatched.
+       5. The optional 'Idle' function is called.
+       6. The loop is repeated until there are no expired timers, no event
           flags, no MP change notifications, and no ITC messages - at which 
           point the thread blocks and wait for any of the above asynchronous 
           actions to wake up the thread.
 
  */
-class PeriodicScheduler : public Cpl::Dm::MailboxServer, public Cpl::System::PeriodicScheduler
+class PeriodicScheduler : public Cpl::Itc::MailboxServer, public Cpl::System::PeriodicScheduler
 {
 public:
     /** Defines an optional method that is called every time the Runnable's

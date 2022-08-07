@@ -13,6 +13,7 @@
 #include "Cpl/System/_testsupport/Shutdown_TS.h"
 #include "common.h"
 #include "Cpl/System/ElapsedTime.h"
+#include "Cpl/Itc/PeriodicScheduler.h"
 
 
 /// 
@@ -27,6 +28,18 @@ using namespace Cpl::Itc;
    - One model thread that 'owns' the data being viewed/written
 */
 
+static unsigned  oakCount_;
+static void oakProcessInterval( Cpl::System::ElapsedTime::Precision_T currentTick, Cpl::System::ElapsedTime::Precision_T currentInterval, void* context )
+{
+    oakCount_++;
+}
+
+static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
+{
+    { oakProcessInterval, { 0,100 }, nullptr },
+    CPL_SYSTEM_PERIODIC_SCHEDULAR_END_INTERVALS
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST_CASE( "mvc", "[mvc]" )
@@ -35,11 +48,11 @@ TEST_CASE( "mvc", "[mvc]" )
     Cpl::System::Shutdown_TS::clearAndUseCounter();
 
 
-    MyMailboxServer   modelMbox(MY_EVENT_MASK);
+    MyMailboxServer   modelMbox( MY_EVENT_MASK );
     Model             myModel( modelMbox );
     ViewRequest::SAP  modelViewSAP( myModel, modelMbox );
 
-    MailboxServer     viewerMbox;
+    PeriodicScheduler viewerMbox( intervals_ );
     Viewer            myViewer( 0, viewerMbox, modelViewSAP );
 
     Master            masterRun( NUM_SEQ_, NUM_WRITES_, myViewer, myModel, myModel, Cpl::System::Thread::getCurrent() );
@@ -48,8 +61,10 @@ TEST_CASE( "mvc", "[mvc]" )
     Cpl::System::Thread* t2 = Cpl::System::Thread::create( modelMbox, "Model" );
     Cpl::System::Thread* t3 = Cpl::System::Thread::create( masterRun, "MASTER" );
 
+    Cpl::System::ElapsedTime::Precision_T schedStartTime = Cpl::System::ElapsedTime::precision();
+
     // Test default signal behavior 
-    Cpl::System::Api::sleep( 50 ); 
+    Cpl::System::Api::sleep( 50 );
     viewerMbox.notify( MY_EVENT_NUMBER );
 
     unsigned long startTime = Cpl::System::ElapsedTime::milliseconds();
@@ -59,17 +74,17 @@ TEST_CASE( "mvc", "[mvc]" )
     for ( i=0; i < NUM_SEQ_; i++ )
     {
         modelMbox.notify( MY_EVENT_NUMBER );
-        modelMbox.notify( MY_EVENT_NUMBER+1 );
-        modelMbox.notify( MY_EVENT_NUMBER+2 );
+        modelMbox.notify( MY_EVENT_NUMBER + 1 );
+        modelMbox.notify( MY_EVENT_NUMBER + 2 );
         Cpl::System::Thread::wait();
         Cpl::System::Api::sleep( 50 );
         REQUIRE( myModel.m_value == (NUM_WRITES_ - 1) * ATOMIC_MODIFY_ );
-        REQUIRE( myViewer.m_attachRspMsg.getPayload().m_value == (NUM_WRITES_ - 1)*ATOMIC_MODIFY_ );
+        REQUIRE( myViewer.m_attachRspMsg.getPayload().m_value == (NUM_WRITES_ - 1) * ATOMIC_MODIFY_ );
         REQUIRE( myViewer.m_ownAttachMsg == true );
         REQUIRE( myViewer.m_ownDetachMsg == true );
         REQUIRE( myViewer.m_pendingCloseMsgPtr == 0 );
         REQUIRE( myViewer.m_opened == false );
-        REQUIRE( modelMbox.m_sigCount == (i + 1)*2 );
+        REQUIRE( modelMbox.m_sigCount == (i + 1) * 2 );
         REQUIRE( modelMbox.m_sigCountUnexpected == i + 1 );
         t3->signal();
     }
@@ -89,6 +104,13 @@ TEST_CASE( "mvc", "[mvc]" )
     unsigned elapsedTime = Cpl::System::ElapsedTime::deltaMilliseconds( startTime );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Viewer Timer count=%lu, max possible value=%lu", myViewer.m_timerExpiredCount, elapsedTime / TIMER_DELAY) );
     REQUIRE( ((myViewer.m_timerExpiredCount > 1) && (myViewer.m_timerExpiredCount < elapsedTime / TIMER_DELAY)) );
+
+    // Get test end time
+    Cpl::System::ElapsedTime::Precision_T deltaTime = Cpl::System::ElapsedTime::deltaPrecision( schedStartTime );
+    uint64_t flatDelta = deltaTime.getFlatTime();
+    unsigned long maxExpectedCount = (unsigned long) (flatDelta / 100);
+    REQUIRE( oakCount_ <= maxExpectedCount );
+    REQUIRE( oakCount_ > maxExpectedCount / 2 );    // Require a minimum count -->but since timing is not guaranteed leave a wide margin of error
 
     Cpl::System::Thread::destroy( *t1 );
     Cpl::System::Thread::destroy( *t2 );
