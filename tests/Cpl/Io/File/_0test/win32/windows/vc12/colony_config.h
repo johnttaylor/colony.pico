@@ -14,6 +14,6 @@
 
 //
 #define POSIX_EOF_SEMANTICS
-
+#define TESTING_POSIX
 
 #endif

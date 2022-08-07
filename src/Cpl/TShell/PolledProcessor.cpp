@@ -41,7 +41,7 @@ int PolledProcessor::poll() noexcept
 bool PolledProcessor::start( Cpl::Io::Input & infd, Cpl::Io::Output & outfd, bool blocking_notUsed ) noexcept
 {
 	m_outFd = &outfd;
-	return start( infd, outfd, false );
+	return Processor::start( infd, outfd, false );
 }
 
 int PolledProcessor::readInput( size_t& frameSize ) noexcept

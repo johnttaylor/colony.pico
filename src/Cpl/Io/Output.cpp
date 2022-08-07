@@ -21,8 +21,7 @@ using namespace Cpl::Io;
 //////////////////////
 bool Output::write( char c )
 {
-    int dummy;
-    return write( &c, sizeof( c ), dummy );
+    return write( (const void*) &c, sizeof( c ) );
 }
 
 

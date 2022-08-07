@@ -19,8 +19,13 @@ using namespace Cpl::Io;
 ///////////////////
 bool Input::read( char& c )
 {
-    int dummy;
-    return read( &c, sizeof( c ), dummy );
+    int bytesRead = 0;
+    bool result   = true;
+    do
+    {
+        result = read( &c, sizeof( c ), bytesRead );
+    } while ( result && bytesRead == 0 );
+    return result;
 }
 
 

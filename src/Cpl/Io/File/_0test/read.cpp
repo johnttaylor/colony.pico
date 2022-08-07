@@ -57,22 +57,28 @@ TEST_CASE( "read", "[read]" )
     reader.readln( line );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("line=[%s]", line.getString()) );
     REQUIRE( line == "line 1" );
+
     REQUIRE( reader.readln( line ) );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("line=[%s]", line.getString()) );
     REQUIRE( line == "line 2" );
+
     REQUIRE( reader.readln( line ) );
-    unsigned long len;
-    REQUIRE( fd.length( len ) == true );
-    REQUIRE( len == TESTINPUT_TXT_FILE_LENGTH );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("line=[%s]", line.getString()) );
     line.removeTrailingSpaces();
     REQUIRE( line.isEmpty() );
+
+    unsigned long len;
+    REQUIRE( fd.length( len ) == true );
+    REQUIRE( len == TESTINPUT_TXT_FILE_LENGTH );
+
     REQUIRE( reader.readln( line ) );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("line=[%s]", line.getString()) );
     REQUIRE( line == "line 4" );
+
     REQUIRE( reader.readln( line ) );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("line=[%s]", line.getString()) );
     REQUIRE( line == "line 5" );
+
     reader.close();
     REQUIRE( fd.isOpened() == false );
     REQUIRE( reader.readln( line ) == false );

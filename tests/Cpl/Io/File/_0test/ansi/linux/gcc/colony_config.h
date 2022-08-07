@@ -3,5 +3,6 @@
 
 //
 #define USE_CPL_SYSTEM_TRACE
+#define TESTING_POSIX
 
 #endif

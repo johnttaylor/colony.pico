@@ -58,6 +58,8 @@
 /// RP2040 Mapping
 #define Cpl_System_TlsKey_T_MAP                     unsigned
 
+/// Mapping
+#define CPL_IO_NEW_LINE_NATIVE_MAP                  "\n"
 
 
 /// Thread Priorities (has no meaning since each thread is one-to-one with a core)

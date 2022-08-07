@@ -36,7 +36,8 @@ namespace Io {
 class Input : virtual public Close, virtual public IsEos
 {
 public:
-    /** Reads a single byte from the stream.  Returns true if successful,
+    /** Reads a single byte from the stream.  This method will block/busy-wait
+        till there is a byte available. Returns true if successful,
         or false if End-of-Stream was encountered.
      */
     virtual bool read( char& c );
