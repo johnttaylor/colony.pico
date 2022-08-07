@@ -44,7 +44,7 @@ namespace System {
     See Cpl::Dm::PeriodicScheduler for example extending an event based Runnable
     object to include periodic scheduling.
  */
-class PeriodicSchedular
+class PeriodicScheduler
 {
 public:
     /** Definition for an interval method.  This method is called when the
@@ -84,8 +84,8 @@ public:
                     ElapsedTime::Precision_T periodTime,
                     void*                    context  = nullptr )
             : callbackFunc( callbackFunc )
-            , duration( periodTime )
             , context( context )
+            , duration( periodTime )
             , timeMarker( { 0,0 } )
         {
         }
@@ -140,12 +140,12 @@ public:
               scheduled Intervals to have period times that are multiples of
               the EventLoop's 'timeOutPeriodInMsec' constructor value.
      */
-    PeriodicSchedular( Interval_T           intervals[],
+    PeriodicScheduler( Interval_T           intervals[],
                        ReportSlippageFunc_T slippageFunc = nullptr,
                        NowFunc_T            nowFunc      = ElapsedTime::precision );
 
     /// Virtual destructor
-    virtual ~PeriodicSchedular() {};
+    virtual ~PeriodicScheduler() {};
 
 
 public:

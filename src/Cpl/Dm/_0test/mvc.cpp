@@ -15,18 +15,31 @@
 #include "Cpl/System/Api.h"
 #include "Cpl/Dm/ModelDatabase.h"
 #include "Cpl/Dm/MailboxServer.h"
+#include "Cpl/Dm/PeriodicScheduler.h"
 
 
 
 ////////////////////////////////////////////////////////////////////////////////
 /* The test app consists of 4 threads:
-   - Three client threads, one contains viewers, the other two contain writers
+   - Two client threads, one contains viewers, the other contain writers
    - One master thread (which the main thread)
 */
+
+static unsigned  oakCount_;
+static void oakProcessInterval( Cpl::System::ElapsedTime::Precision_T currentTick, Cpl::System::ElapsedTime::Precision_T currentInterval, void* context )
+{
+    oakCount_++;
+}
+
+static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
+{
+    { oakProcessInterval, { 0,100 }, nullptr },
+    CPL_SYSTEM_PERIODIC_SCHEDULAR_END_INTERVALS
+};
+
 // Create my Data Model mailboxes
 static MailboxServer     t1Mbox_;
-static MailboxServer     t2Mbox_;
-static MailboxServer     t3Mbox_;
+static PeriodicScheduler t2Mbox_( intervals_ );
 
 // Allocate/create my Model Database
 static ModelDatabase    modelDb_( "ignoreThisParameter_usedToInvokeTheStaticConstructor" );
@@ -81,6 +94,8 @@ TEST_CASE( "mvc" )
     writer_cherry1.open();
     writer_plum1.open();
 
+    // Get test start time
+    Cpl::System::ElapsedTime::Precision_T startTime = Cpl::System::ElapsedTime::precision();
 
     // Wait for everything to finish
     for ( int i=0; i < NUM_INSTANCES; i++ )
@@ -111,13 +126,19 @@ TEST_CASE( "mvc" )
     writer_cherry1.close();
     writer_plum1.close();
 
-
     // Shutdown threads
     t1Mbox_.pleaseStop();
     t2Mbox_.pleaseStop();
     Cpl::System::Api::sleep( 100 ); // allow time for threads to stop
     REQUIRE( t1->isRunning() == false );
     REQUIRE( t2->isRunning() == false );
+
+    // Get test end time
+    Cpl::System::ElapsedTime::Precision_T deltaTime = Cpl::System::ElapsedTime::deltaPrecision( startTime );
+    uint64_t flatDelta = deltaTime.getFlatTime();
+    unsigned long maxExpectedCount = (unsigned long) (flatDelta / 100);
+    REQUIRE( oakCount_ <= maxExpectedCount );
+    REQUIRE( oakCount_ > maxExpectedCount /2  );    // Require a minimum count -->but since timing is not guaranteed leave a wide margin of error
 
     Cpl::System::Thread::destroy( *t1 );
     Cpl::System::Thread::destroy( *t2 );

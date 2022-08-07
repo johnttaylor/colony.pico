@@ -39,7 +39,7 @@ void MailboxServer::appRun()
     bool run = true;
     while ( run )
     {
-        run = waitAndProcessEvents();
+        run = waitAndProcessEvents( isPendingMessage_() );
         if ( run )
         {
             processMessages();

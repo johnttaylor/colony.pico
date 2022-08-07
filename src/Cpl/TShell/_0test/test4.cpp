@@ -10,27 +10,29 @@
 *----------------------------------------------------------------------------*/
 
 #include "colony_config.h"
-#include "Cpl/TShell/Stdio.h"
-
+#include "Cpl/TShell/PolledMaker.h"
+#include "Cpl/System/Thread.h"
 #include "statics.h"
-
-#ifndef OPTION_0TEST_TSHELL_THREAD_PRIORITY
-#define OPTION_0TEST_TSHELL_THREAD_PRIORITY  CPL_SYSTEM_THREAD_PRIORITY_NORMAL
-#endif
 
 
 
 /// 
-extern void shell_test3( Cpl::Io::Input& infd, Cpl::Io::Output& outfd );
+extern void shell_test4( Cpl::Io::Input& infd, Cpl::Io::Output& outfd );
+
+Cpl::Container::Map<Cpl::TShell::Command>           g_cmdlist( "ignore_this_parameter-used to invoke the static constructor" );
+static Cpl::TShell::PolledMaker                     polledCmdProcessor_( g_cmdlist );
 
 
 ////////////////////////////////////////////////////////////////////////////////
-static Cpl::TShell::Stdio shell_( cmdProcessor_, "TShell", OPTION_0TEST_TSHELL_THREAD_PRIORITY );
 
 
-// Assumes that the scheduler is already started!
-void shell_test3( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
+
+void shell_test4( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
 {
+    // Create mock application thread
+    Cpl::System::Thread::create( mockApp, "APP-BOB" );
+
+    // 
     static bool testsHaveBeenStarted = false;
     if ( !testsHaveBeenStarted )
     {

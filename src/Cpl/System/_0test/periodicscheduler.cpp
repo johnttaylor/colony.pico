@@ -81,7 +81,7 @@ static unsigned                 slippageCount_;
 static ElapsedTime::Precision_T slippageLastCurrentTick_;
 static ElapsedTime::Precision_T slippageLastMissedInterval_;
 static void*                    slippageLastContext_;
-static void reportSlippage( PeriodicSchedular::Interval_T& intervalThatSlipped, ElapsedTime::Precision_T currentTick, ElapsedTime::Precision_T missedInterval )
+static void reportSlippage( PeriodicScheduler::Interval_T& intervalThatSlipped, ElapsedTime::Precision_T currentTick, ElapsedTime::Precision_T missedInterval )
 {
     slippageCount_++;
     slippageLastCurrentTick_     = currentTick;
@@ -92,7 +92,7 @@ static void reportSlippage( PeriodicSchedular::Interval_T& intervalThatSlipped, 
 
 
 
-static PeriodicSchedular::Interval_T intervals_[] =
+static PeriodicScheduler::Interval_T intervals_[] =
 {
     { appleProcessInterval, { 0,10 }, (void*) 0xCAFE },
     { orangeProcessInterval, { 0,20 }, (void*) 0xBEEF },
@@ -133,7 +133,7 @@ TEST_CASE( "PeriodicScheduler" )
 
     SECTION( "no slippage reporting" )
     {
-        PeriodicSchedular uut( intervals_, nullptr, now );
+        PeriodicScheduler uut( intervals_, nullptr, now );
         ElapsedTime::Precision_T intervalTime;
 
         currentTick_ ={ 0, 5 };
@@ -207,7 +207,7 @@ TEST_CASE( "PeriodicScheduler" )
 
     SECTION( "Slippage" )
     {
-        PeriodicSchedular uut( intervals_, reportSlippage, now );
+        PeriodicScheduler uut( intervals_, reportSlippage, now );
         ElapsedTime::Precision_T intervalTime;
 
         currentTick_ ={ 0, 5 };

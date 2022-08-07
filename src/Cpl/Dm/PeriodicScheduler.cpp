@@ -9,7 +9,7 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "MailboxServer.h"
+#include "PeriodicScheduler.h"
 
 
 #define SECT_ "Cpl::Dm"
@@ -19,16 +19,21 @@
 using namespace Cpl::Dm;
 
 /////////////////////
-MailboxServer::MailboxServer( unsigned long                       timingTickInMsec,
-                              Cpl::System::SharedEventHandlerApi* eventHandler ) noexcept
-    : Cpl::Dm::EventLoop( timingTickInMsec, eventHandler )
-    , Cpl::Itc::Mailbox( *((Cpl::System::EventLoop*) this) )
+PeriodicScheduler::PeriodicScheduler( Interval_T                          intervals[],
+                                      ReportSlippageFunc_T                slippageFunc,
+                                      NowFunc_T                           nowFunc,
+                                      IdleFunc_T                          idleFunc,
+                                      unsigned long                       timingTickInMsec,
+                                      Cpl::System::SharedEventHandlerApi* eventHandler ) noexcept
+    : MailboxServer( timingTickInMsec, eventHandler )
+    , Cpl::System::PeriodicScheduler( intervals, slippageFunc, nowFunc )
+    , m_idleFunc( idleFunc )
 {
 }
 
 
 /////////////////////
-void MailboxServer::appRun()
+void PeriodicScheduler::appRun()
 {
     startEventLoop();
     bool run = true;
@@ -37,8 +42,13 @@ void MailboxServer::appRun()
         run = waitAndProcessEvents( isPendingMessage_() || isPendingPendingChangingNotifications_() );
         if ( run )
         {
+            bool atLeastOne = executeScheduler();
             processChangeNotifications();
             processMessages();
+            if ( m_idleFunc )
+            {
+                (m_idleFunc)((m_nowFunc)(), atLeastOne);
+            }
         }
     }
     stopEventLoop();

@@ -51,6 +51,16 @@ protected:
     virtual void processMessages() noexcept;
 
 
+    /** This method has PACKAGE Scope, i.e. it is intended to be ONLY accessible
+        by other classes in the Cpl::Itc namespace.  The Application should
+        NEVER call this method.
+
+        This method IS thread safe.
+
+        This method returns true if there is at least one queued ITC message
+     */
+    bool isPendingMessage_() noexcept;
+
 protected:
     /// The EventLoop that I wait-on/dispatch-msgs-from
     Cpl::System::EventLoop& m_eventLoop;

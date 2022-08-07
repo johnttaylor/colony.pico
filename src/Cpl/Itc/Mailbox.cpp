@@ -60,4 +60,12 @@ void Mailbox::processMessages() noexcept
 }
 
 
+bool Mailbox::isPendingMessage_() noexcept
+{
+    // Get the next message
+    Cpl::System::GlobalLock::begin();
+    Message* msgPtr = first();
+    Cpl::System::GlobalLock::end();
+    return msgPtr != nullptr;
+}
 

@@ -20,7 +20,7 @@
 using namespace Cpl::System;
 
 /////////////////////
-PeriodicSchedular::PeriodicSchedular( Interval_T           intervals[],
+PeriodicScheduler::PeriodicScheduler( Interval_T           intervals[],
                                       ReportSlippageFunc_T slippageFunc,
                                       NowFunc_T            nowFunc )
     : m_intervals( intervals )
@@ -32,7 +32,7 @@ PeriodicSchedular::PeriodicSchedular( Interval_T           intervals[],
 
 
 /////////////////////
-bool PeriodicSchedular::executeScheduler()
+bool PeriodicScheduler::executeScheduler()
 {
     bool         atLeastOne   = false;
     Interval_T*  interval     = m_intervals;
@@ -84,7 +84,7 @@ bool PeriodicSchedular::executeScheduler()
 
 
 
-void PeriodicSchedular::setTimeMarker( Interval_T& interval, ElapsedTime::Precision_T currentTick ) noexcept
+void PeriodicScheduler::setTimeMarker( Interval_T& interval, ElapsedTime::Precision_T currentTick ) noexcept
 {
     // Make sure there is no divide by zero error
     uint64_t duration = interval.duration.getFlatTime();

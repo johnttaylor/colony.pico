@@ -38,7 +38,7 @@ void EventLoop::appRun()
     bool run = true;
     while ( run )
     {
-        run = waitAndProcessEvents();
+        run = waitAndProcessEvents( isPendingPendingChangingNotifications_() );
         if ( run )
         {
             processChangeNotifications();
@@ -90,3 +90,10 @@ void EventLoop::removePendingChangingNotification_( SubscriberApi& subscriber ) 
     Cpl::System::GlobalLock::end();
 }
 
+bool EventLoop::isPendingPendingChangingNotifications_() noexcept
+{
+    Cpl::System::GlobalLock::begin();
+    bool pending = m_pendingMpNotifications.first() != nullptr;
+    Cpl::System::GlobalLock::end();
+    return pending;
+}

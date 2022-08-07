@@ -81,9 +81,8 @@ void EventLoop::processEventFlag( uint8_t eventNumber ) noexcept
     }
 }
 
-bool EventLoop::waitAndProcessEvents() noexcept
+bool EventLoop::waitAndProcessEvents( bool skipWait ) noexcept
 {
-
     // Trap my exit/please-stop condition
     GlobalLock::begin();
     bool stayRunning = m_run;
@@ -94,7 +93,10 @@ bool EventLoop::waitAndProcessEvents() noexcept
     }
 
     // Wait for something to happen...
-    m_sema.timedWait( m_timeout ); // Note: For Tick Simulation: the timedWait() calls topLevelWait() if the semaphore has not been signaled
+    if ( !skipWait )
+    {
+        m_sema.timedWait( m_timeout ); // Note: For Tick Simulation: the timedWait() calls topLevelWait() if the semaphore has not been signaled
+    }
 
     // Trap my exit/please-stop condition AGAIN since a lot could have happen while I was waiting....
     GlobalLock::begin();
