@@ -190,6 +190,9 @@ protected:
     /// Timeout period for waiting on the next event
     unsigned long           m_timeout;
 
+    /// Timestamp, in milliseconds, of start of event/wait loop
+    unsigned long           m_timeStartOfLoop;
+
     /// The variable holds the current state of all Event Flags
     Cpl_System_EventFlag_T  m_events;
 

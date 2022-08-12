@@ -34,7 +34,7 @@ void MailboxServer::appRun()
     bool run = true;
     while ( run )
     {
-        run = waitAndProcessEvents( isPendingMessage_() || isPendingPendingChangingNotifications_() );
+        run = waitAndProcessEvents( isPendingMessage() || isPendingPendingChangingNotifications() );
         if ( run )
         {
             processChangeNotifications();

@@ -60,7 +60,7 @@ void Mailbox::processMessages() noexcept
 }
 
 
-bool Mailbox::isPendingMessage_() noexcept
+bool Mailbox::isPendingMessage() noexcept
 {
     // Get the next message
     Cpl::System::GlobalLock::begin();

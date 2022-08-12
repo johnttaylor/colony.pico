@@ -14,6 +14,7 @@
 #include "Trace.h"
 #include "FatalError.h"
 #include "GlobalLock.h"
+#include "ElapsedTime.h"
 
 #define SECT_ "Cpl::System"
 
@@ -28,6 +29,7 @@ EventLoop::EventLoop( unsigned long          timeOutPeriodInMsec,
     , m_eventHandler( eventHandler )
     , m_sema()
     , m_timeout( timeOutPeriodInMsec )
+    , m_timeStartOfLoop( 0 )
     , m_events( 0 )
     , m_run( true )
 {
@@ -55,7 +57,7 @@ void EventLoop::appRun( void )
 {
     startEventLoop();
     bool run = true;
-    while( run )
+    while ( run )
     {
         run = waitAndProcessEvents();
     }
@@ -91,6 +93,14 @@ bool EventLoop::waitAndProcessEvents( bool skipWait ) noexcept
     {
         return false;
     }
+
+    // Skip waiting if it has been a 'long time' since we last processed events
+    unsigned long now = ElapsedTime::milliseconds();
+    if ( ElapsedTime::deltaMilliseconds( m_timeStartOfLoop, now ) > m_timeout )
+    {
+        skipWait = true;
+    }
+    m_timeStartOfLoop = now;
 
     // Wait for something to happen...
     if ( !skipWait )

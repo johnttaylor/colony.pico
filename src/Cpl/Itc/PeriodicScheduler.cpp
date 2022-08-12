@@ -39,7 +39,7 @@ void PeriodicScheduler::appRun()
     bool run = true;
     while ( run )
     {
-        run = waitAndProcessEvents( isPendingMessage_() );
+        run = waitAndProcessEvents( isPendingMessage() );
         if ( run )
         {
             bool atLeastOne = executeScheduler();

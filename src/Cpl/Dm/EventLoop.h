@@ -98,18 +98,15 @@ public:
      */
     void removePendingChangingNotification_( SubscriberApi& subscriber ) noexcept;
 
-    /** This method has PACKAGE Scope, i.e. it is intended to be ONLY accessible
-        by other classes in the Cpl::Dm namespace.  The Application should
-        NEVER call this method.
 
-        This method returns true if there is at least one pending change 
-        notification. 
+protected:
+    /** This method returns true if there is at least one pending change
+        notification.
 
         This method IS thread safe.
      */
-    bool isPendingPendingChangingNotifications_() noexcept;
+    bool isPendingPendingChangingNotifications() noexcept;
 
-protected:
     /// This helper method processes pending change notifications
     virtual void processChangeNotifications() noexcept;
 };
