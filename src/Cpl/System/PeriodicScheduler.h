@@ -124,6 +124,12 @@ public:
       */
     typedef ElapsedTime::Precision_T (*NowFunc_T)();
 
+    /** Defines the optional functions that are used to provide hooks during
+        startup/shutdown of the thread/loop[ to perform application specific 
+        processing. 
+      */
+    typedef void( *Hook_T )(ElapsedTime::Precision_T currentTick );
+
 public:
     /** Constructor. The application provides a variable length array of interval
         definitions that will be scheduled.  The last entry in the
@@ -141,8 +147,10 @@ public:
               the EventLoop's 'timeOutPeriodInMsec' constructor value.
      */
     PeriodicScheduler( Interval_T           intervals[],
-                       ReportSlippageFunc_T slippageFunc = nullptr,
-                       NowFunc_T            nowFunc      = ElapsedTime::precision );
+                       Hook_T               beginThreadProcessing = nullptr,
+                       Hook_T               endThreadProcessing   = nullptr,
+                       ReportSlippageFunc_T slippageFunc          = nullptr,
+                       NowFunc_T            nowFunc               = ElapsedTime::precision );
 
     /// Virtual destructor
     virtual ~PeriodicScheduler() {};
@@ -161,6 +169,16 @@ public:
     virtual bool executeScheduler();
 
 
+    /** This method is expected to be called ONCE when the 'thread' is started and
+        prior to the thread entering its 'forever' loop
+     */
+    virtual void beginLoop();
+
+    /** This method is expected to be called ONCE when the 'thread' has exited
+        its 'forever' loop (but before the thread has actually terminated)
+     */
+    virtual void endLoop();
+
 protected:
     /** Helper method to Round DOWN to the nearest 'interval' boundary.
         A side effect the rounding-down is the FIRST execution of an interval
@@ -177,6 +195,12 @@ protected:
 
     /// Current system callback
     NowFunc_T               m_nowFunc;
+
+    /// Application hook during thread start-up
+    Hook_T                  m_beginThreadFunc;
+
+    /// Application hook during thread shutdown
+    Hook_T                  m_endThreadFunc;
 
     /// Flag to managing the 'first' execution
     bool                    m_firstExecution;

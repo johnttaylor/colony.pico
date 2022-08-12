@@ -40,6 +40,17 @@ static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
     CPL_SYSTEM_PERIODIC_SCHEDULAR_END_INTERVALS
 };
 
+static unsigned startLoopCount_;
+static void loopStart( Cpl::System::ElapsedTime::Precision_T currentTick )
+{
+    startLoopCount_++;
+}
+
+static unsigned endLoopCount_;
+static void loopEnd( Cpl::System::ElapsedTime::Precision_T currentTick )
+{
+    endLoopCount_++;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST_CASE( "mvc", "[mvc]" )
@@ -52,7 +63,7 @@ TEST_CASE( "mvc", "[mvc]" )
     Model             myModel( modelMbox );
     ViewRequest::SAP  modelViewSAP( myModel, modelMbox );
 
-    PeriodicScheduler viewerMbox( intervals_ );
+    PeriodicScheduler viewerMbox( intervals_, loopStart, loopEnd );
     Viewer            myViewer( 0, viewerMbox, modelViewSAP );
 
     Master            masterRun( NUM_SEQ_, NUM_WRITES_, myViewer, myModel, myModel, Cpl::System::Thread::getCurrent() );
@@ -63,8 +74,13 @@ TEST_CASE( "mvc", "[mvc]" )
 
     Cpl::System::ElapsedTime::Precision_T schedStartTime = Cpl::System::ElapsedTime::precision();
 
+    // Allow time for the threads to start
+    Cpl::System::Api::sleep( 300 );
+    REQUIRE( startLoopCount_ == 1 );
+    REQUIRE( endLoopCount_ == 0 );
+    
     // Test default signal behavior 
-    Cpl::System::Api::sleep( 50 );
+    //Cpl::System::Api::sleep( 50 );
     viewerMbox.notify( MY_EVENT_NUMBER );
 
     unsigned long startTime = Cpl::System::ElapsedTime::milliseconds();
@@ -100,6 +116,9 @@ TEST_CASE( "mvc", "[mvc]" )
     REQUIRE( t1->isRunning() == false );
     REQUIRE( t2->isRunning() == false );
     REQUIRE( t3->isRunning() == false );
+
+    REQUIRE( startLoopCount_ == 1 );
+    REQUIRE( endLoopCount_ == 1 );
 
     unsigned elapsedTime = Cpl::System::ElapsedTime::deltaMilliseconds( startTime );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Viewer Timer count=%lu, max possible value=%lu", myViewer.m_timerExpiredCount, elapsedTime / TIMER_DELAY) );

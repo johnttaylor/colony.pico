@@ -37,9 +37,22 @@ static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
     CPL_SYSTEM_PERIODIC_SCHEDULAR_END_INTERVALS
 };
 
+static unsigned startLoopCount_;
+static void loopStart( Cpl::System::ElapsedTime::Precision_T currentTick )
+{
+    startLoopCount_++;
+}
+
+static unsigned endLoopCount_;
+static void loopEnd( Cpl::System::ElapsedTime::Precision_T currentTick )
+{
+    endLoopCount_++;
+}
+
+
 // Create my Data Model mailboxes
 static MailboxServer     t1Mbox_;
-static PeriodicScheduler t2Mbox_( intervals_ );
+static PeriodicScheduler t2Mbox_( intervals_, loopStart, loopEnd );
 
 // Allocate/create my Model Database
 static ModelDatabase    modelDb_( "ignoreThisParameter_usedToInvokeTheStaticConstructor" );
@@ -97,6 +110,9 @@ TEST_CASE( "mvc" )
     // Get test start time
     Cpl::System::ElapsedTime::Precision_T startTime = Cpl::System::ElapsedTime::precision();
 
+    REQUIRE( startLoopCount_ == 1 );
+    REQUIRE( endLoopCount_ == 0 );
+
     // Wait for everything to finish
     for ( int i=0; i < NUM_INSTANCES; i++ )
     {
@@ -132,6 +148,9 @@ TEST_CASE( "mvc" )
     Cpl::System::Api::sleep( 100 ); // allow time for threads to stop
     REQUIRE( t1->isRunning() == false );
     REQUIRE( t2->isRunning() == false );
+
+    REQUIRE( startLoopCount_ == 1 );
+    REQUIRE( endLoopCount_ == 1 );
 
     // Get test end time
     Cpl::System::ElapsedTime::Precision_T deltaTime = Cpl::System::ElapsedTime::deltaPrecision( startTime );

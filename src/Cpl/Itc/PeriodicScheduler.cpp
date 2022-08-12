@@ -20,13 +20,15 @@ using namespace Cpl::Itc;
 
 /////////////////////
 PeriodicScheduler::PeriodicScheduler( Interval_T                          intervals[],
+                                      Hook_T                              beginThreadProcessing,
+                                      Hook_T                              endThreadProcessing,
                                       ReportSlippageFunc_T                slippageFunc,
                                       NowFunc_T                           nowFunc,
                                       IdleFunc_T                          idleFunc,
                                       unsigned long                       timingTickInMsec,
                                       Cpl::System::SharedEventHandlerApi* eventHandler ) noexcept
     : MailboxServer( timingTickInMsec, eventHandler )
-    , Cpl::System::PeriodicScheduler( intervals, slippageFunc, nowFunc )
+    , Cpl::System::PeriodicScheduler( intervals, beginThreadProcessing, endThreadProcessing, slippageFunc, nowFunc )
     , m_idleFunc( idleFunc )
 {
 }
@@ -36,6 +38,8 @@ PeriodicScheduler::PeriodicScheduler( Interval_T                          interv
 void PeriodicScheduler::appRun()
 {
     startEventLoop();
+    beginLoop();
+
     bool run = true;
     while ( run )
     {
@@ -50,5 +54,7 @@ void PeriodicScheduler::appRun()
             }
         }
     }
+
+    endLoop();
     stopEventLoop();
 }

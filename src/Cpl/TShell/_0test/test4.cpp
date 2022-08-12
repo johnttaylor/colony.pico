@@ -33,7 +33,15 @@ static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
     CPL_SYSTEM_PERIODIC_SCHEDULAR_END_INTERVALS // Create an empty set of intervals - actual interval not needed for the test
 };
 
-static Cpl::Itc::PeriodicScheduler scheduler_( intervals_, nullptr, Cpl::System::ElapsedTime::precision, tshellScan_ );
+static Cpl::Io::Input*  infd_;
+static Cpl::Io::Output* outfd_;
+static void initTShellThread( Cpl::System::ElapsedTime::Precision_T currentTick )
+{
+    polledCmdProcessor_.getCommandProcessor().start( *infd_, *outfd_ ); // Note: I don't need to set the 'blocking flag' because the processor knows it is non-blocking processor
+}
+
+static Cpl::Itc::PeriodicScheduler scheduler_( intervals_, initTShellThread, nullptr, nullptr, Cpl::System::ElapsedTime::precision, tshellScan_ );
+
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -42,6 +50,9 @@ static Cpl::Itc::PeriodicScheduler scheduler_( intervals_, nullptr, Cpl::System:
 void shell_test4( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
 {
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Enter: shell_test4" ) );
+
+    infd_  = &infd;
+    outfd_ = &outfd;
 
     // Create mock application thread 
     Cpl::System::Thread::create( mockApp, "APP-BOB" );
@@ -52,7 +63,6 @@ void shell_test4( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
     // Start the shell
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Starting TShell...") );
 
-    polledCmdProcessor_.getCommandProcessor().start( infd, outfd ); // Note: I don't need to set the 'blocking flag' because the processor knows it is non-blocking processor
 
     // Start scheduling
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Enabling scheduling") );

@@ -12,6 +12,7 @@
 #include "PeriodicScheduler.h"
 #include "Trace.h"
 #include "FatalError.h"
+#include "Assert.h"
 
 #define SECT_ "Cpl::System"
 
@@ -21,15 +22,36 @@ using namespace Cpl::System;
 
 /////////////////////
 PeriodicScheduler::PeriodicScheduler( Interval_T           intervals[],
+                                      Hook_T               beginThreadProcessing,
+                                      Hook_T               endThreadProcessing,
                                       ReportSlippageFunc_T slippageFunc,
                                       NowFunc_T            nowFunc )
     : m_intervals( intervals )
     , m_reportSlippage( slippageFunc )
     , m_nowFunc( nowFunc )
+    , m_beginThreadFunc( beginThreadProcessing )
+    , m_endThreadFunc( endThreadProcessing )
     , m_firstExecution( true )
 {
+    CPL_SYSTEM_ASSERT( intervals );
+    CPL_SYSTEM_ASSERT( nowFunc );
 }
 
+void PeriodicScheduler::beginLoop()
+{
+    if ( m_beginThreadFunc )
+    {
+        (m_beginThreadFunc) ((m_nowFunc) ());
+    }
+}
+
+void PeriodicScheduler::endLoop()
+{
+    if ( m_endThreadFunc )
+    {
+        (m_endThreadFunc) ((m_nowFunc) ());
+    }
+}
 
 /////////////////////
 bool PeriodicScheduler::executeScheduler()

@@ -58,11 +58,13 @@ public:
         periodic scheduling.
      */
     PeriodicScheduler( Interval_T                          intervals[],
-                       ReportSlippageFunc_T                slippageFunc     = nullptr,
-                       NowFunc_T                           nowFunc          = Cpl::System::ElapsedTime::precision,
-                       IdleFunc_T                          idleFunc         = nullptr,
-                       unsigned long                       timingTickInMsec = OPTION_CPL_SYSTEM_EVENT_LOOP_TIMEOUT_PERIOD,
-                       Cpl::System::SharedEventHandlerApi* eventHandler     = 0 ) noexcept;
+                       Hook_T                              beginThreadProcessing = nullptr,
+                       Hook_T                              endThreadProcessing   = nullptr,
+                       ReportSlippageFunc_T                slippageFunc          = nullptr,
+                       NowFunc_T                           nowFunc               = Cpl::System::ElapsedTime::precision,
+                       IdleFunc_T                          idleFunc              = nullptr,
+                       unsigned long                       timingTickInMsec      = OPTION_CPL_SYSTEM_EVENT_LOOP_TIMEOUT_PERIOD,
+                       Cpl::System::SharedEventHandlerApi* eventHandler          = 0 ) noexcept;
 
 public:
     /// See Cpl::System::Runnable
