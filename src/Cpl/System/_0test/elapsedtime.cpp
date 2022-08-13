@@ -56,6 +56,7 @@ TEST_CASE( "elaspedtime", "[elaspedtime]" )
     REQUIRE( precValue != precision );
     precision.m_seconds     = 1;
     precision.m_thousandths = 500;
+    REQUIRE( precValue.asMilliseconds() == 1500 );
     REQUIRE( precValue == precision );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Post verify: sleep = 1.5") );
 
@@ -144,18 +145,18 @@ TEST_CASE( "elaspedtime", "[elaspedtime]" )
 
     timeA ={ 12, 10 };
     timeB ={ 13, 10 };
-    uint64_t flatTimeA = timeA.getFlatTime();
-    uint64_t flatTimeB = timeB.getFlatTime();
+    uint64_t flatTimeA = timeA.asFlatTime();
+    uint64_t flatTimeB = timeB.asFlatTime();
     REQUIRE( flatTimeA == 12010LL );
     REQUIRE( flatTimeB == 13010LL );
     timeA.setFlatTime( 123456LL );
-    REQUIRE( timeA.getFlatTime() == 123456LL );
+    REQUIRE( timeA.asFlatTime() == 123456LL );
     REQUIRE( timeA.m_seconds == 123 );
     REQUIRE( timeA.m_thousandths == 456 );
     ElapsedTime::Precision_T timeC( 666005LL );
     REQUIRE( timeC.m_seconds == 666 );
     REQUIRE( timeC.m_thousandths == 5 );
-    REQUIRE( timeC.getFlatTime() == 666005LL );
+    REQUIRE( timeC.asFlatTime() == 666005LL );
 
     REQUIRE( Shutdown_TS::getAndClearCounter() == 0u );
 }

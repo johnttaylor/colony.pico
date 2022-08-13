@@ -126,7 +126,7 @@ TEST_CASE( "mvc", "[mvc]" )
 
     // Get test end time
     Cpl::System::ElapsedTime::Precision_T deltaTime = Cpl::System::ElapsedTime::deltaPrecision( schedStartTime );
-    uint64_t flatDelta = deltaTime.getFlatTime();
+    uint64_t flatDelta = deltaTime.asFlatTime();
     unsigned long maxExpectedCount = (unsigned long) (flatDelta / 100);
     REQUIRE( oakCount_ <= maxExpectedCount );
     REQUIRE( oakCount_ > maxExpectedCount / 2 );    // Require a minimum count -->but since timing is not guaranteed leave a wide margin of error

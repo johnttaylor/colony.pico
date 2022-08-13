@@ -22,8 +22,8 @@
 #include <stdlib.h>
 #include "colony_config.h"
 #include "Cpl/System/FatalError.h"
-#include "pico/sem.h"
-#include "pico/mutex.h"
+#include "Cpl/System/RP2040/mutex_t_.h"
+#include "Cpl/System/RP2040/semaphore_t_.h"
 
 /// PRETTY_FUNCTION macro is non-standard
 #if defined(__GNUC__)
@@ -50,10 +50,10 @@
 #define Cpl_System_Thread_NativeHdl_T_MAP           unsigned  
 
 /// RP2040 Mapping
-#define Cpl_System_Mutex_T_MAP                      recursive_mutex_t
+#define Cpl_System_Mutex_T_MAP                      Cpl::System::RP2040::Mutex_T
 
 /// RP2040 Mapping
-#define Cpl_System_Sema_T_MAP                       semaphore_t
+#define Cpl_System_Sema_T_MAP                       Cpl::System::RP2040::Semaphore_T
 
 /// RP2040 Mapping
 #define Cpl_System_TlsKey_T_MAP                     unsigned

@@ -1,7 +1,16 @@
-
-# supporting infrastructure
-src/Cpl/Container
+# OSAL 
 src/Cpl/System
+src/Cpl/System/_trace
+
+# OSAL - Platform specific
+src/Cpl/System/RP2040
+src/Cpl/System/RP2040/_console
+src/Cpl/System/RP2040/_shutdown
+src/Cpl/System/RP2040/_fatalerror
+src/Cpl/System/RP2040/_trace
+
+# infrastructure
+src/Cpl/Container
 src/Cpl/Text
 src/Cpl/Text/Frame
 src/Cpl/Text/Tokenizer
@@ -9,9 +18,10 @@ src/Cpl/Memory
 src/Cpl/Itc
 src/Cpl/TShell
 src/Cpl/TShell/Cmd
-
-
-
+src/Cpl/Dm
+src/Cpl/Dm/Mp
+src/Cpl/Dm/TShell
+src/Cpl/Io < Input.cpp Output.cpp
 
 # SDK-Multicore
 xsrc/pico-sdk/src/rp2_common/pico_multicore
@@ -47,4 +57,5 @@ xsrc/pico-sdk/src/rp2_common/pico_float > float_none.S
 xsrc/pico-sdk/src/rp2_common/pico_malloc
 xsrc/pico-sdk/src/rp2_common/pico_mem_ops
 xsrc/pico-sdk/src/rp2_common/pico_standard_link
+xsrc/pico-sdk/src/rp2_common/pico_stdio
 xsrc/pico-sdk/src/rp2_common/pico_unique_id

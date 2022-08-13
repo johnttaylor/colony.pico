@@ -65,7 +65,7 @@ protected:
     ///
     void notify( InitLevel_T init_level )
     {
-        // Create a thread object for the native thread
+        // Create a thread objects
         Thread::createThreadInstance( 0, *this, "core0" );
         Thread::createThreadInstance( 1, *this, "core1" );
         states_[0] = THREAD_STATE_ALLOCATED;

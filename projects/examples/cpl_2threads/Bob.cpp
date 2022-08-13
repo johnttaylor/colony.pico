@@ -69,6 +69,8 @@ void Bob::stop()
 ///////////////////////////////////////////////////
 void Bob::delayModelPointChange( Cpl::Dm::Mp::Uint32 & mp )
 {
+    CPL_SYSTEM_TRACE_MSG( "app", ("Bob:delayModelPointChange()") );
+
     uint32_t delayMs;
     if ( mp.read( delayMs ) )
     {
@@ -78,6 +80,7 @@ void Bob::delayModelPointChange( Cpl::Dm::Mp::Uint32 & mp )
 
 void Bob::verboseModelPointChange( Cpl::Dm::Mp::Bool & mp )
 {
+    CPL_SYSTEM_TRACE_MSG( "app", ("Bob:verboseModelPointChange()") );
     bool verbose;
     if ( mp.read( verbose ) )
     {
@@ -89,6 +92,8 @@ void Bob::periodicInterval( Cpl::System::ElapsedTime::Precision_T currentTick,
                             Cpl::System::ElapsedTime::Precision_T currentInterval,
                             void*                                 context )
 {
+    //CPL_SYSTEM_TRACE_MSG( "app", ("Bob:periodicInterval()") );
+
     Bob* self = (Bob*) context;
 
     // Toggle the LED when my delay timing expires

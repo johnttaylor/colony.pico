@@ -109,7 +109,7 @@ bool PeriodicScheduler::executeScheduler()
 void PeriodicScheduler::setTimeMarker( Interval_T& interval, ElapsedTime::Precision_T currentTick ) noexcept
 {
     // Make sure there is no divide by zero error
-    uint64_t duration = interval.duration.getFlatTime();
+    uint64_t duration = interval.duration.asFlatTime();
     if ( duration == 0 )
     {
         interval.timeMarker = currentTick;
@@ -117,5 +117,5 @@ void PeriodicScheduler::setTimeMarker( Interval_T& interval, ElapsedTime::Precis
     }
 
     // Round down to the nearest interval boundary
-    interval.timeMarker.setFlatTime( (currentTick.getFlatTime() / duration) * duration );
+    interval.timeMarker.setFlatTime( (currentTick.asFlatTime() / duration) * duration );
 }

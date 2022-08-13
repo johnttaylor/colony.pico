@@ -4,7 +4,6 @@
 /////////////////////////
 // CPL Stuff....
 
-
 // OSAL mapping
 #include "Cpl/System/RP2040/mappings_.h"
 

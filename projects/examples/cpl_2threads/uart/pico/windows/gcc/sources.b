@@ -1,4 +1,4 @@
 # common main
-../../main.cpp
-../../../../application.cpp
-../../../../Bob.cpp
+..\..\..\..\application.cpp
+..\..\..\..\Bob.cpp
+..\..\main.cpp
