@@ -3,7 +3,7 @@
 The Colony.Pico package is collection of my Raspberry Pico projects that are built using the Raspberry Pi Pico C/C++ SDK and the Colony.Core C++ Class library.
 > The Colony.Core C++ library Package was developed specifcally for embedded software development. And as such, was designed for:
 > * Deterministic memory management (i.e. no heap usage after startup)
-> * The constrained (memory and CPU cycles) environment of embedded programming. 
+> * The constrained (memory and CPU cycles) environment of embedded systems. 
 
 
 See the [Getting Started](#Getting-Started) section for setup and build instructions.
@@ -12,7 +12,7 @@ See the [Threading Example](#Threading-Example) and [Threading Details](#Threadi
 
 Doxygen documentation is located in the `docs/` directory. 
 
-Source code under the `src/Cpl` directory is licensd with a BSD licensing agreement (see the top/ directory).
+Source code under the `src/Cpl` directory is licensd with a BSD licensing agreement (see the `top/` directory).
 
 Individual Pico-SDK packages have their own licenses (see the individual directories).
 
@@ -69,7 +69,7 @@ no direct dependencies between modules.
 3. Clone the `colony.pico` repository to your PC. The repo can be installed
 anywhere on your PC; however, the root path to the repo location
 __cannot__ contain any spaces.
-4. Either modify the `env.sh` script in the repo's root directory or create a new script that sets the compiler toolchain environment for the ARM cross compiler.  The current script only supports setup the compiler toolchain for the native GCC compiler.  _**Sorry** about the missing Linux support for this script, but I use a Windoze box for my open source work._
+4. Either modify the `env.sh` script in the repo's root directory or create a new script that sets the compiler toolchain environment for the ARM cross compiler.  The current script only supports setting up the compiler toolchain for the native GCC compiler.  _**Sorry** about the missing Linux support for this script, but I use a Windoze box for my open source work so I don't spend a lot time streamline developing under Linux._
 5. Run the `env.sh` script using the source shell command to set environment for your targeted toolchain. The `env.sh` script only needs to be run  once per command window per compiler. Here is an example for setting the toolchain to build native Linux executables:
     ```
     ~/work/colony.pico $ source env.sh
@@ -141,7 +141,7 @@ The Colony.Pico repository directory structure separates the source code directo
    To build an application or unit test, simply navigate to a leaf directory inside the `projects/` or `tests/` directories and run the `nqbp.py` script. All projects and unit tests are built by running the `nqbp.py` script.
 
 ### Example (Windows host)
-The following example is the script that builds the example "threads" project. The example starts with running the `env.bat` script. However, the `env.bat` script only needs to be run once per compiler per terminal window.
+The following example terminal session that builds the example "threads" project. The example starts with running the `env.bat` script. However, the `env.bat` script only needs to be run once per compiler per terminal window.
 
     c:\work\colony.pico>env.bat
 
@@ -209,7 +209,7 @@ The following example is the script that builds the example "threads" project. T
 # Threading Example
 
 ### Overview
-The example project located under `projects/example/cpl_2threads/` directory is a simple blinky-LED application with a command shell that uses to threads.
+The example project located under `projects/example/cpl_2threads/` directory is a simple blinky-LED application with a command shell that uses two threads.
 
 The application blinks the Pico board's LED at a runtime settable frequency and optionally outputs a status messages every time the LED state is toggled.  The LED application code executes on core0. The application also contains the Colony.Core's 'TShell' command processor (think Debug console) that runs over the UART0 or stdio-over-USB provided by the SDK. The TShell command processor executes on core1.
 
@@ -321,12 +321,12 @@ i.e. a maximum of 2 threads - one per core.
 
 * [Thread](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/Thread.h) - The first thread created runs on core0.  A SINGLE additional thread can be created that runs on core1.
 * [Mutex](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/Mutex.h) - Fully functional.  Note: The memory for the internal Mutex type is allocated from the Heap.
-* [GlobalLock](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/GlobalLock.h) - The GlobalLock maps the RP2040 SDK's critical section.  There are some subtle details here - but it effective disables IRQs on the calling core AND provides mutual exclusion with respect to the other core.
+* [Global Lock](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/GlobalLock.h) - The GlobalLock maps the RP2040 SDK's critical section.  There are some subtle details here - but it effective disables IRQs on the calling core AND provides mutual exclusion with respect to the other core.
 * [Semaphore](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/Semaphore.h) - Fully functional.  Note: The memory for the internal Semaphore type is allocated from the Heap.
 * [Tls](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/Tls.h) - Fully functional.
 * [ElapsedTime](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/ElapsedTime.h) - Fully functional.  
-* [EventLoop](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/ElapsedTime.h)   - Fully functional.  This includes EventFlags and Software Timers.
-* [PeriodicScheduling](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/PeriodicScheduler.h) - Fully functional.
+* [EventLoop](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/EventLoop.h)   - Fully functional.  This includes EventFlags and Software Timers.
+* [Periodic Scheduling](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/System/PeriodicScheduler.h) - Fully functional.
 
 ### Application Start-up sequence:
 1. MCU Resets.
