@@ -1,0 +1,9 @@
+<map id="Cpl::Text::Frame::StreamDecoder" name="Cpl::Text::Frame::StreamDecoder">
+<area shape="rect" id="node1" title="This partially concrete class defines an interface a Text &quot;Decoder&quot; that has a Cpl::Io::Input stream ..." alt="" coords="107,247,278,288"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_text_1_1_frame_1_1_decoder__.html" title="This private partially concrete class implements the basic/common logic for a frame decoder." alt="" coords="5,157,188,184"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_text_1_1_frame_1_1_decoder.html" title="This class defines an interface for &#39;receiving&#39; (decode) a frame." alt="" coords="9,81,185,108"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_io_1_1_input.html" title="This partially abstract class defines a interface for operating on an input stream (example of a stre..." alt="" coords="212,157,309,184"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_io_1_1_close.html" title="This abstract class defines a close operation that is intended to be used Input and Output streams/fi..." alt="" coords="209,81,310,108"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="190,5,329,32"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_io_1_1_is_eos.html" title="This abstract class defines a isEos() operation that is intended to be used Input and Output streams." alt="" coords="335,81,437,108"/>
+</map>

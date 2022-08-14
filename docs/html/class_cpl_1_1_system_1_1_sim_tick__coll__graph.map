@@ -1,0 +1,6 @@
+<map id="Cpl::System::SimTick" name="Cpl::System::SimTick">
+<area shape="rect" id="node1" title="This class define the interface to provide a simulates system tick (in milliseconds) to the applicati..." alt="" coords="5,247,156,273"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="26,5,165,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_system_1_1_signable.html" title="This abstract class defines the interface by which a client can cause an object that is waiting&#45;on&#45;a&#45;..." alt="" coords="98,81,250,108"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_system_1_1_semaphore.html" title="This semaphore class defines the interface for a Counting Semaphore." alt="" coords="97,157,265,184"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Cpl::Dm::Persistent::Record" name="Cpl::Dm::Persistent::Record">
+<area shape="rect" id="node1" title="This mostly concrete class implements the Cpl::Persistent::Record interface where a Record instance c..." alt="" coords="736,141,872,182"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_record.html" title="This abstract class defines the public interface for a Record instance." alt="" coords="427,5,584,32"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_payload.html" title="This abstract class defines the interface accessing the &#39;data payload&#39; of an individual Record instan..." alt="" coords="424,56,587,83"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_dm_1_1_persistent_1_1_flush_request.html" title="This abstract class define ITC message type and payload for the application to request flushing the R..." alt="" coords="437,107,573,149"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_dm_1_1_persistent_1_1_erase_request.html" title="This abstract class define ITC message type and payload for the application to request invalidating/c..." alt="" coords="437,173,573,214"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_dm_1_1_persistent_1_1_record.html#struct_cpl_1_1_dm_1_1_persistent_1_1_record_1_1_item___t" title="This data structure associates a Data Model subscriber instance with a Model Point instance." alt="" coords="437,238,573,279"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_dm_1_1_model_point.html" title="This mostly abstract class defines the interface for a Model Point." alt="" coords="193,245,336,272"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="5,245,144,272"/>
+<area shape="rect" id="node9" href="$class_cpl_1_1_persistent_1_1_chunk.html" title="This abstract class defines the interface for a Chunk." alt="" coords="429,304,582,331"/>
+</map>

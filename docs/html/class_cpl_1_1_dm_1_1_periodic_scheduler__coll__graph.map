@@ -1,0 +1,23 @@
+<map id="Cpl::Dm::PeriodicScheduler" name="Cpl::Dm::PeriodicScheduler">
+<area shape="rect" id="node1" title="This class extends the Cpl::Dm::MailboxServer class to add periodic scheduling to an event based &#39;thr..." alt="" coords="1691,274,1873,301"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_mailbox_server.html" title="This class extends the Cpl::Dm::EventLoop and Cpl::Itc:Mailbox classes to support the asynchronous ch..." alt="" coords="1458,215,1618,242"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_dm_1_1_event_loop.html" title="This class extends the Cpl::System::EventLoop class to support the asynchronous change notification g..." alt="" coords="1113,215,1251,242"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_system_1_1_event_loop.html" title="This concrete class is a Runnable object that provides a event driven execution model for a thread." alt="" coords="777,190,941,217"/>
+<area shape="rect" id="node15" href="$class_cpl_1_1_itc_1_1_mailbox.html" title="This mailbox class implements an Inter Thread Communications message queue." alt="" coords="1123,139,1241,166"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_system_1_1_runnable.html" title="This is an abstract class defines the interface for an object that is &quot;executed&quot; when a Thread object..." alt="" coords="452,71,608,98"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_system_1_1_event_flag.html" title="This abstract class defines the interface to generated a &#39;Event Flag&#39;." alt="" coords="449,122,611,149"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_system_1_1_signable.html" title="This abstract class defines the interface by which a client can cause an object that is waiting&#45;on&#45;a&#45;..." alt="" coords="215,223,367,250"/>
+<area shape="rect" id="node11" href="$class_cpl_1_1_system_1_1_thread.html" title="This abstract class defines the operations that can be performed on a thread." alt="" coords="459,223,601,250"/>
+<area shape="rect" id="node13" href="$class_cpl_1_1_system_1_1_semaphore.html" title="This semaphore class defines the interface for a Counting Semaphore." alt="" coords="446,274,614,301"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="5,223,144,250"/>
+<area shape="rect" id="node9" href="$class_cpl_1_1_system_1_1_timer_manager.html" title="This mostly concrete class implements manages a list of Software Timers." alt="" coords="437,325,623,351"/>
+<area shape="rect" id="node10" href="$class_cpl_1_1_system_1_1_counter_source__.html" title="This abstract class defines the interface for registering for an Counter object with the Timer Manage..." alt="" coords="193,325,388,351"/>
+<area shape="rect" id="node12" href="$class_cpl_1_1_system_1_1_shared_event_handler_api.html" title="This abstract class defines the interface for a Shared Event Handler." alt="" coords="441,376,619,417"/>
+<area shape="rect" id="node14" href="$class_cpl_1_1_dm_1_1_notification_api__.html" title="This class has PACKAGE Scope, i.e." alt="" coords="775,241,943,267"/>
+<area shape="rect" id="node16" href="$class_cpl_1_1_itc_1_1_post_api.html" title="This abstract class represents the interface used to send messages to a mailbox." alt="" coords="799,70,918,97"/>
+<area shape="rect" id="node17" href="$class_cpl_1_1_container_1_1_s_list.html" title=" " alt="" coords="787,121,930,163"/>
+<area shape="rect" id="node18" href="$class_cpl_1_1_container_1_1_s_list.html" title="This template class implements a singly linked list which maintains the ordering imposed on it by the..." alt="" coords="459,5,601,47"/>
+<area shape="rect" id="node19" href="$class_cpl_1_1_system_1_1_periodic_scheduler.html" title="This concrete class is a &#39;policy&#39; object that is used to add polled based, cooperative monotonic sche..." alt="" coords="1435,355,1641,382"/>
+<area shape="rect" id="node20" href="$struct_cpl_1_1_system_1_1_periodic_scheduler_1_1_interval___t.html" title="Defines an interval." alt="" coords="1079,417,1285,459"/>
+<area shape="rect" id="node21" href="$struct_cpl_1_1_system_1_1_elapsed_time_1_1_precision___t.html" title="Data type for time in seconds with a &#39;fractional&#39; millisecond precision." alt="" coords="769,348,948,389"/>
+</map>

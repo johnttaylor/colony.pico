@@ -1,0 +1,8 @@
+<map id="Cpl::Dm::SubscriberComposer&lt; CONTEXT, MP &gt;" name="Cpl::Dm::SubscriberComposer&lt; CONTEXT, MP &gt;">
+<area shape="rect" id="node1" title="This template class is a composer pattern/class that manages the callback function for a Model Point&#39;..." alt="" coords="5,393,204,435"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_subscriber.html" title="This template class defines a type safe Subscriber." alt="" coords="35,304,174,345"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_dm_1_1_subscriber_base.html" title="This mostly concrete class defines the Subscriber interface &#45; for change notifications &#45; to a Model P..." alt="" coords="20,229,189,256"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_dm_1_1_subscriber_api.html" title="This abstract class defines the Subscriber interface &#45; for change notifications &#45; to a Model Points d..." alt="" coords="25,155,184,181"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_extended_item.html" title="This class is used by the Container classes to implement a various types of DOUBLY linked containers." alt="" coords="8,80,201,107"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="35,5,174,32"/>
+</map>

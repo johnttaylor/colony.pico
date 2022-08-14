@@ -1,0 +1,4 @@
+<map id="Cpl::TShell::Socket" name="Cpl::TShell::Socket">
+<area shape="rect" id="node1" title="This concrete class provides a socket listener/server and &#39;threading wrapper&#39; for running a TShell Co..." alt="" coords="19,95,154,121"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_socket_1_1_listener_1_1_client.html" title="This class defines the callback mechanism used for accepting incoming socket connections." alt="" coords="5,5,168,47"/>
+</map>

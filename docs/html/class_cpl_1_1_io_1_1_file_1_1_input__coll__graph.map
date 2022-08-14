@@ -1,0 +1,11 @@
+<map id="Cpl::Io::File::Input" name="Cpl::Io::File::Input">
+<area shape="rect" id="node1" title="This concrete class provides a platform independent &#39;standard&#39; implementation of a Cpl::Io::File::Inp..." alt="" coords="189,336,316,363"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_file_1_1_input_api.html" title="This abstract class defines the interface for a Random Access Input File." alt="" coords="253,247,399,273"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_io_1_1_input.html" title="This partially abstract class defines a interface for operating on an input stream (example of a stre..." alt="" coords="156,157,253,184"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_io_1_1_stdio_1_1_input__.html" title="This concrete class implements a Input stream using the underlying platform&#39;s native OS &#39;file interfa..." alt="" coords="87,247,229,273"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_io_1_1_close.html" title="This abstract class defines a close operation that is intended to be used Input and Output streams/fi..." alt="" coords="90,81,191,108"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="71,5,210,32"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_io_1_1_is_eos.html" title="This abstract class defines a isEos() operation that is intended to be used Input and Output streams." alt="" coords="216,81,319,108"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_io_1_1_file_1_1_object_api.html" title="This abstract class defines the basic additional functionality, beyond that of a stream,..." alt="" coords="278,157,433,184"/>
+<area shape="rect" id="node9" href="$union_cpl_1_1_io_1_1_descriptor.html" title="This union defines a &#39;IO descriptor&#39; in terms of a an integer and/or a void*." alt="" coords="5,157,132,184"/>
+</map>

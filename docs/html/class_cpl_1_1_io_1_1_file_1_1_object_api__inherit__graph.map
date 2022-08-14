@@ -1,0 +1,10 @@
+<map id="Cpl::Io::File::ObjectApi" name="Cpl::Io::File::ObjectApi">
+<area shape="rect" id="node1" title="This abstract class defines the basic additional functionality, beyond that of a stream,..." alt="" coords="170,5,325,32"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_file_1_1_input_api.html" title="This abstract class defines the interface for a Random Access Input File." alt="" coords="88,80,233,107"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_io_1_1_file_1_1_output_api.html" title="This abstract class defines the interface for a Random Access Input File." alt="" coords="258,80,413,107"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_io_1_1_file_1_1_input.html" title="This concrete class provides a platform independent &#39;standard&#39; implementation of a Cpl::Io::File::Inp..." alt="" coords="5,155,132,181"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_io_1_1_file_1_1_input_output_api.html" title="This abstract class defines the interface for a Random Access Input Output File." alt="" coords="157,155,341,181"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_io_1_1_file_1_1_input_output.html" title="This concrete class provides a platform independent &#39;standard&#39; implementation of an InputOutputFileAp..." alt="" coords="82,229,247,256"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_io_1_1_file_1_1_null.html" title="This concrete class implements a NULL InputOutputApi File that all of its input operations return &#39;En..." alt="" coords="272,229,391,256"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_io_1_1_file_1_1_output.html" title="This concrete class provides a platform independent &#39;standard&#39; implementation of a Cpl::Io::File::Out..." alt="" coords="365,155,501,181"/>
+</map>

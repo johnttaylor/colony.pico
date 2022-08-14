@@ -1,0 +1,5 @@
+<map id="Cpl::Io::Socket::Listener::Client" name="Cpl::Io::Socket::Listener::Client">
+<area shape="rect" id="node1" title="This class defines the callback mechanism used for accepting incoming socket connections." alt="" coords="92,5,255,47"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_socket_1_1_listener_client_sync.html" title="This partially concrete class implements the synchronous ITC open call for the OpenApi." alt="" coords="5,95,168,136"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_t_shell_1_1_socket.html" title="This concrete class provides a socket listener/server and &#39;threading wrapper&#39; for running a TShell Co..." alt="" coords="193,102,327,129"/>
+</map>

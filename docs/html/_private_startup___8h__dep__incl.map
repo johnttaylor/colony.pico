@@ -1,0 +1,9 @@
+<map id="Cpl/System/PrivateStartup_.h" name="Cpl/System/PrivateStartup_.h">
+<area shape="rect" id="node1" title="This file contains a collection of classes, interfaces, etc." alt="" coords="268,5,463,32"/>
+<area shape="rect" id="node2" href="$_system_2_private___8h.html" title="This file contains a collection of classes, interfaces, etc." alt="" coords="83,80,237,107"/>
+<area shape="rect" id="node5" href="$mutex__t___8h.html" title=" " alt="" coords="261,80,470,107"/>
+<area shape="rect" id="node7" href="$semaphore__t___8h.html" title=" " alt="" coords="495,80,732,107"/>
+<area shape="rect" id="node3" href="$_maker_8h.html" title=" " alt="" coords="5,155,139,181"/>
+<area shape="rect" id="node4" href="$_polled_maker_8h.html" title=" " alt="" coords="163,155,333,181"/>
+<area shape="rect" id="node6" href="$_r_p2040_2mappings___8h.html" title="This file provides the mappings for Platform specific types, etc." alt="" coords="387,155,605,181"/>
+</map>

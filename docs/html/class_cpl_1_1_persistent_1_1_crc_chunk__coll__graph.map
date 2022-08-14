@@ -1,0 +1,5 @@
+<map id="Cpl::Persistent::CrcChunk" name="Cpl::Persistent::CrcChunk">
+<area shape="rect" id="node1" title="This concrete class implements the Chunk interface by using a 32Bit CRC for ensuring data integrity." alt="" coords="93,95,266,121"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_chunk.html" title="This abstract class defines the interface for a Chunk." alt="" coords="5,5,159,32"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_region_media.html" title="This mostly abstract class defines the operations that can be performed on a persistent media." alt="" coords="183,5,373,32"/>
+</map>

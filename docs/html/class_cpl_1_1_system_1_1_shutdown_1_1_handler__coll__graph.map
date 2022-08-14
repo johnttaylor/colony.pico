@@ -1,0 +1,4 @@
+<map id="Cpl::System::Shutdown::Handler" name="Cpl::System::Shutdown::Handler">
+<area shape="rect" id="node1" title="This call defines the callback interface that is used when the application is shutdown." alt="" coords="5,80,164,121"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="15,5,154,32"/>
+</map>

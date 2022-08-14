@@ -1,0 +1,8 @@
+<map id="Cpl::Text::Frame::Decoder" name="Cpl::Text::Frame::Decoder">
+<area shape="rect" id="node1" title="This class defines an interface for &#39;receiving&#39; (decode) a frame." alt="" coords="5,78,181,105"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_text_1_1_frame_1_1_decoder__.html" title="This private partially concrete class implements the basic/common logic for a frame decoder." alt="" coords="229,78,412,105"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html" title="This partially concrete class defines an interface a Text &quot;Decoder&quot; that has a Cpl::Io::Input stream ..." alt="" coords="460,37,631,79"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_text_1_1_frame_1_1_string_decoder.html" title="This concrete class defines an interface a Text &quot;Decoder&quot; that accepts a null terminated string as it..." alt="" coords="464,103,627,144"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_text_1_1_frame_1_1_ascii_decoder.html" title="This concrete template class provide a basic implementation of the Frame::Decoder interface that uses..." alt="" coords="679,5,884,47"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_text_1_1_frame_1_1_line_decoder.html" title="This concrete template class provide a basic implementation of the Frame::Decoder interface that uses..." alt="" coords="681,71,881,112"/>
+</map>

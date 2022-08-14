@@ -1,0 +1,9 @@
+<map id="Cpl::Text::String" name="Cpl::Text::String">
+<area shape="rect" id="node1" title="This abstract class defines the operations that can be before on a NULL terminated string." alt="" coords="86,80,203,107"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_text_1_1_string__.html" title="This partially concrete class implements the portions of the String Api that is independent of the in..." alt="" coords="83,155,207,181"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_key.html" title="This abstract class defines the interface that a contained object must support if it has comparable k..." alt="" coords="77,5,212,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_text_1_1_d_string.html" title="This concrete class implements a simple &quot;dynamic storage&quot; String Type." alt="" coords="5,229,132,256"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_text_1_1_f_string__.html" title="This mostly concrete class implements a &quot;fixed storage&quot; String Type." alt="" coords="156,229,288,256"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_text_1_1_d_f_string.html" title="This concrete class is a mix of FString and a DString &#45; the initial memory is dynamically allocated &#45;..." alt="" coords="69,304,204,331"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_text_1_1_f_string.html" title="This template class represents a NULL terminated string of a specific length." alt="" coords="228,304,387,331"/>
+</map>

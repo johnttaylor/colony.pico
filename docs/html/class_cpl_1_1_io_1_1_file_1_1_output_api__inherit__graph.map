@@ -1,0 +1,12 @@
+<map id="Cpl::Io::File::OutputApi" name="Cpl::Io::File::OutputApi">
+<area shape="rect" id="node1" title="This abstract class defines the interface for a Random Access Input File." alt="" coords="185,229,340,256"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_io_1_1_file_1_1_input_output_api.html" title="This abstract class defines the interface for a Random Access Input Output File." alt="" coords="79,304,263,331"/>
+<area shape="rect" id="node10" href="$class_cpl_1_1_io_1_1_file_1_1_output.html" title="This concrete class provides a platform independent &#39;standard&#39; implementation of a Cpl::Io::File::Out..." alt="" coords="287,304,423,331"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_output.html" title="This partially abstract class defines a interface for operating on an output stream (example of a str..." alt="" coords="132,155,239,181"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_io_1_1_close.html" title="This abstract class defines a close operation that is intended to be used Input and Output streams/fi..." alt="" coords="72,80,173,107"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="53,5,192,32"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_io_1_1_is_eos.html" title="This abstract class defines a isEos() operation that is intended to be used Input and Output streams." alt="" coords="198,80,301,107"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_io_1_1_file_1_1_object_api.html" title="This abstract class defines the basic additional functionality, beyond that of a stream,..." alt="" coords="263,155,417,181"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_io_1_1_file_1_1_input_output.html" title="This concrete class provides a platform independent &#39;standard&#39; implementation of an InputOutputFileAp..." alt="" coords="5,379,171,405"/>
+<area shape="rect" id="node9" href="$class_cpl_1_1_io_1_1_file_1_1_null.html" title="This concrete class implements a NULL InputOutputApi File that all of its input operations return &#39;En..." alt="" coords="195,379,314,405"/>
+</map>

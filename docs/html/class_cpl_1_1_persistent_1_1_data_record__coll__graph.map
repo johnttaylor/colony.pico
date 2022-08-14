@@ -1,0 +1,6 @@
+<map id="Cpl::Persistent::DataRecord" name="Cpl::Persistent::DataRecord">
+<area shape="rect" id="node1" title="This mostly concrete class implements the Cpl::Persistent::DataRecord interface where a DataRecord in..." alt="" coords="176,95,360,121"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_record.html" title="This abstract class defines the public interface for a Record instance." alt="" coords="5,5,163,32"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_payload.html" title="This abstract class defines the interface accessing the &#39;data payload&#39; of an individual Record instan..." alt="" coords="187,5,349,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_persistent_1_1_chunk.html" title="This abstract class defines the interface for a Chunk." alt="" coords="374,5,527,32"/>
+</map>

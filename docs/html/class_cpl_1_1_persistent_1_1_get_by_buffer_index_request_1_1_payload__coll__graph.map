@@ -1,0 +1,5 @@
+<map id="Cpl::Persistent::GetByBufferIndexRequest::Payload" name="Cpl::Persistent::GetByBufferIndexRequest::Payload">
+<area shape="rect" id="node1" title="Payload for Message: GetByBufferIndex." alt="" coords="93,109,281,151"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_payload.html" title="This abstract class defines the interface accessing the &#39;data payload&#39; of an individual Record instan..." alt="" coords="5,13,168,39"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_indexed_entry_reader.html#struct_cpl_1_1_persistent_1_1_indexed_entry_reader_1_1_entry_marker___t" title="This structure define an &#39;marker&#39; that identifies an entry&#39;s location in persistent media." alt="" coords="193,5,381,47"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="Cpl::TShell::Socket" name="Cpl::TShell::Socket">
+<area shape="rect" id="node1" title="This concrete class provides a socket listener/server and &#39;threading wrapper&#39; for running a TShell Co..." alt="" coords="1372,122,1507,149"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_socket_1_1_listener_1_1_client.html" title="This class defines the callback mechanism used for accepting incoming socket connections." alt="" coords="1085,5,1247,47"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_t_shell_1_1_processor_api.html" title="This class defines the interface a TShell Command Processor." alt="" coords="1080,71,1252,98"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_system_1_1_thread.html" title="This abstract class defines the operations that can be performed on a thread." alt="" coords="627,122,769,149"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_system_1_1_signable.html" title="This abstract class defines the interface by which a client can cause an object that is waiting&#45;on&#45;a&#45;..." alt="" coords="320,122,472,149"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="5,155,144,182"/>
+<area shape="rect" id="node12" href="$class_cpl_1_1_io_1_1_close.html" title="This abstract class defines a close operation that is intended to be used Input and Output streams/fi..." alt="" coords="194,223,295,250"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_io_1_1_socket_1_1_listener.html" title="This abstract class defines the interface for a SIMPLE socket listener." alt="" coords="1085,173,1247,199"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_system_1_1_runnable.html" title="This is an abstract class defines the interface for an object that is &quot;executed&quot; when a Thread object..." alt="" coords="793,173,949,199"/>
+<area shape="rect" id="node9" href="$class_cpl_1_1_io_1_1_socket_1_1_input_output.html" title="This concrete class provides a platform independent &#39;standard&#39; implementation of an InputOutput strea..." alt="" coords="1073,223,1259,250"/>
+<area shape="rect" id="node10" href="$class_cpl_1_1_io_1_1_input_output.html" title="This abstract class defines a interface for operating on an input&#45;output stream (example of a stream ..." alt="" coords="803,223,939,250"/>
+<area shape="rect" id="node11" href="$class_cpl_1_1_io_1_1_input.html" title="This partially abstract class defines a interface for operating on an input stream (example of a stre..." alt="" coords="501,191,598,218"/>
+<area shape="rect" id="node14" href="$class_cpl_1_1_io_1_1_output.html" title="This partially abstract class defines a interface for operating on an output stream (example of a str..." alt="" coords="496,242,603,269"/>
+<area shape="rect" id="node13" href="$class_cpl_1_1_io_1_1_is_eos.html" title="This abstract class defines a isEos() operation that is intended to be used Input and Output streams." alt="" coords="193,173,296,199"/>
+<area shape="rect" id="node15" href="$union_cpl_1_1_io_1_1_descriptor.html" title="This union defines a &#39;IO descriptor&#39; in terms of a an integer and/or a void*." alt="" coords="808,274,935,301"/>
+</map>

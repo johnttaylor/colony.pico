@@ -1,0 +1,8 @@
+<map id="Cpl::Io::LineReader" name="Cpl::Io::LineReader">
+<area shape="rect" id="node1" title="This concrete class implements a Line Reader stream using a previously opened Input stream." alt="" coords="53,272,187,299"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_line_reader_api.html" title="This abstract class defines a interface for a stream line reader." alt="" coords="5,132,157,159"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="41,5,180,32"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_io_1_1_close.html" title="This abstract class defines a close operation that is intended to be used Input and Output streams/fi..." alt="" coords="119,81,220,108"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_io_1_1_input.html" title="This partially abstract class defines a interface for operating on an input stream (example of a stre..." alt="" coords="129,183,226,209"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_io_1_1_is_eos.html" title="This abstract class defines a isEos() operation that is intended to be used Input and Output streams." alt="" coords="245,81,347,108"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="Cpl::System::Timer" name="Cpl::System::Timer">
+<area shape="rect" id="node1" title="This mostly concrete interface defines the operations that can be performed on a software timer." alt="" coords="171,247,305,273"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_system_1_1_counter_callback__.html" title="This abstract class defines the call&#45;back interface for a Counter object." alt="" coords="5,157,209,184"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_extended_item.html" title="This class is used by the Container classes to implement a various types of DOUBLY linked containers." alt="" coords="11,81,204,108"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="38,5,177,32"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_system_1_1_timer_manager.html" title="This mostly concrete class implements manages a list of Software Timers." alt="" coords="233,157,419,184"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_system_1_1_counter_source__.html" title="This abstract class defines the interface for registering for an Counter object with the Timer Manage..." alt="" coords="229,81,423,108"/>
+</map>

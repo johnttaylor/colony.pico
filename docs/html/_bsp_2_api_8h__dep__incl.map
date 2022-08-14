@@ -1,0 +1,7 @@
+<map id="Bsp/Api.h" name="Bsp/Api.h">
+<area shape="rect" id="node1" title="This file defines the common/generic interfaces that all Colony." alt="" coords="247,5,325,32"/>
+<area shape="rect" id="node2" href="$_execution_8h.html" title="This file defines a common/generic interface for restarting, rebooting, etc." alt="" coords="5,87,124,114"/>
+<area shape="rect" id="node3" href="$_watch_dog_8h.html" title="This file defines a common/generic interface for managing the application&#39;s and/or platform&#39;s watchdo..." alt="" coords="149,87,269,114"/>
+<area shape="rect" id="node4" href="$_serial_2_r_p2040_2_uart_2_input_output_8h.html" title=" " alt="" coords="293,80,436,121"/>
+<area shape="rect" id="node5" href="$_console_8h.html" title="This interface provides a &#39;Console&#39; replacement for SDK&#39;s stdio." alt="" coords="461,87,663,114"/>
+</map>

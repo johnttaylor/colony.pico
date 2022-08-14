@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_cpl_1_1_itc_1_1_return_handler.html" title="This abstract class represents the action that is executed by a server thread in response to the serv..." alt="" coords="5,56,160,83"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_async_return_handler.html" title="This class implements an asynchronous ReturnHandler." alt="" coords="208,5,399,32"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_itc_1_1_null_return_handler.html" title="This class implements a Null ReturnHandler." alt="" coords="215,56,391,83"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_itc_1_1_sync_return_handler.html" title="This class implements a synchronous ReturnHandler." alt="" coords="211,107,395,133"/>
+</map>

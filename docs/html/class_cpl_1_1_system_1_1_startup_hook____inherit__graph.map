@@ -1,0 +1,6 @@
+<map id="Cpl::System::StartupHook_" name="Cpl::System::StartupHook_">
+<area shape="rect" id="node1" title="This class defines a start&#45;up handler/hook that allows a Colony.Core sub&#45;system to register to be cal..." alt="" coords="74,80,255,107"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_system_1_1_r_p2040_1_1_mutex___t.html" title="This class implements a brute force approach to initializing a &#39;pico mutex&#39; when the Cpl C++ library ..." alt="" coords="5,155,153,196"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_system_1_1_r_p2040_1_1_semaphore___t.html" title="This class implements a brute force approach to initializing a &#39;pico semaphore&#39; when the Cpl C++ libr..." alt="" coords="177,155,325,196"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="95,5,234,32"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Driver/Uart/Hal.h" name="Driver/Uart/Hal.h">
+<area shape="rect" id="node1" title="This file defines a hardware abstraction layer (HAL) for accessing a hardware register based UART." alt="" coords="32,5,151,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,80,71,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="95,80,197,107"/>
+</map>

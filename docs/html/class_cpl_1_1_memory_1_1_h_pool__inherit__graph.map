@@ -1,0 +1,5 @@
+<map id="Cpl::Memory::HPool&lt; T &gt;" name="Cpl::Memory::HPool&lt; T &gt;">
+<area shape="rect" id="node1" title="This template class defines a concrete Allocator that allocates its block memory from the HEAP." alt="" coords="5,155,176,181"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_memory_1_1_allocator.html" title="This abstract class defines the interface for a Memory Allocator." alt="" coords="13,80,168,107"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="21,5,160,32"/>
+</map>

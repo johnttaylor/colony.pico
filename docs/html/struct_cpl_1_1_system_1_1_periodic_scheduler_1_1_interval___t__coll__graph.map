@@ -1,0 +1,4 @@
+<map id="Cpl::System::PeriodicScheduler::Interval_T" name="Cpl::System::PeriodicScheduler::Interval_T">
+<area shape="rect" id="node1" title="Defines an interval." alt="" coords="5,139,212,180"/>
+<area shape="rect" id="node2" href="$struct_cpl_1_1_system_1_1_elapsed_time_1_1_precision___t.html" title="Data type for time in seconds with a &#39;fractional&#39; millisecond precision." alt="" coords="19,5,198,47"/>
+</map>

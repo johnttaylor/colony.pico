@@ -1,0 +1,10 @@
+<map id="Cpl::Text::StringItem" name="Cpl::Text::StringItem">
+<area shape="rect" id="node1" title="This partially concrete provides a wrapper class that allows a String object to be stored directly in..." alt="" coords="194,304,337,331"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_text_1_1_d_f_string_item.html" title="This concrete class implements the StringItem class for a &#39;String&#39; using a &#39;DFString&#39; as the internal..." alt="" coords="5,379,165,405"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_text_1_1_d_string_item.html" title="This concrete class implements the StringItem class for a &#39;String&#39; using a &#39;DString&#39; as the internal ..." alt="" coords="189,379,341,405"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_text_1_1_f_string_item.html" title="This template class implements the StringItem class for a &#39;String&#39; using a &#39;FString&#39; as the internal ..." alt="" coords="365,379,549,405"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_map_item.html" title="This abstract class represents a item that can be contained in an Map (aka a sorted list implemented ..." alt="" coords="184,229,347,256"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_dict_item.html" title="This abstract class represents a item that can be contained in Dictionary." alt="" coords="185,155,346,181"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_container_1_1_extended_item.html" title="This class is used by the Container classes to implement a various types of DOUBLY linked containers." alt="" coords="169,80,362,107"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="196,5,335,32"/>
+</map>

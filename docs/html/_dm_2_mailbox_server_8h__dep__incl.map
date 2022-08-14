@@ -1,0 +1,16 @@
+<map id="Cpl/Dm/MailboxServer.h" name="Cpl/Dm/MailboxServer.h">
+<area shape="rect" id="node1" title=" " alt="" coords="265,5,427,32"/>
+<area shape="rect" id="node2" href="$_dm_2_periodic_scheduler_8h.html" title=" " alt="" coords="5,80,191,107"/>
+<area shape="rect" id="node3" href="$_chunk_8h.html" title=" " alt="" coords="503,80,659,107"/>
+<area shape="rect" id="node11" href="$_persistent_2_record_8h.html" title=" " alt="" coords="266,80,426,107"/>
+<area shape="rect" id="node12" href="$_record_server_8h.html" title=" " alt="" coords="57,155,256,181"/>
+<area shape="rect" id="node13" href="$_region_media_8h.html" title=" " alt="" coords="861,80,1055,107"/>
+<area shape="rect" id="node4" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="169,229,353,256"/>
+<area shape="rect" id="node5" href="$_crc_chunk_8h.html" title=" " alt="" coords="870,155,1046,181"/>
+<area shape="rect" id="node6" href="$_data_record_8h.html" title=" " alt="" coords="331,155,518,181"/>
+<area shape="rect" id="node8" href="$_indexed_entry_record_8h.html" title=" " alt="" coords="513,304,699,345"/>
+<area shape="rect" id="node10" href="$_mirrored_chunk_8h.html" title=" " alt="" coords="643,155,846,181"/>
+<area shape="rect" id="node7" href="$_index_record_8h.html" title=" " alt="" coords="377,229,569,256"/>
+<area shape="rect" id="node9" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="513,393,699,435"/>
+<area shape="rect" id="node14" href="$_file_adapter_8h.html" title=" " alt="" coords="1121,155,1307,181"/>
+</map>

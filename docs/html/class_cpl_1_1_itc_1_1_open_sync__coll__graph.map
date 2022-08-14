@@ -1,0 +1,6 @@
+<map id="Cpl::Itc::OpenSync" name="Cpl::Itc::OpenSync">
+<area shape="rect" id="node1" title="This partially concrete class implements the synchronous ITC open call for the OpenApi." alt="" coords="161,95,295,121"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_open_api.html" title="This abstract class defines an open interface." alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_itc_1_1_open_request.html" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="153,5,303,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_itc_1_1_post_api.html" title="This abstract class represents the interface used to send messages to a mailbox." alt="" coords="327,5,446,32"/>
+</map>

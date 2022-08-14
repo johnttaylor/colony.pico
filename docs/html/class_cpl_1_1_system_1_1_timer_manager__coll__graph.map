@@ -1,0 +1,4 @@
+<map id="Cpl::System::TimerManager" name="Cpl::System::TimerManager">
+<area shape="rect" id="node1" title="This mostly concrete class implements manages a list of Software Timers." alt="" coords="10,80,195,107"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_system_1_1_counter_source__.html" title="This abstract class defines the interface for registering for an Counter object with the Timer Manage..." alt="" coords="5,5,200,32"/>
+</map>

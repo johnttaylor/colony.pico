@@ -1,0 +1,4 @@
+<map id="Cpl::Persistent::ClearAllEntriesRequest" name="Cpl::Persistent::ClearAllEntriesRequest">
+<area shape="rect" id="node1" title="This abstract class define ITC message type and payload for the application to clear/delete all entri..." alt="" coords="6,5,167,47"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_indexed_entry_server.html" title="This concrete template class implements the ITC messaging (and Model Point monitoring) needed to prov..." alt="" coords="5,95,168,136"/>
+</map>

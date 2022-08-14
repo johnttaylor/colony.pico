@@ -1,0 +1,4 @@
+<map id="Cpl::Checksum::Crc16CcittFast" name="Cpl::Checksum::Crc16CcittFast">
+<area shape="rect" id="node1" title="This class provides an implementation for the 16 Bit CRC&#45;CCITT standard." alt="" coords="5,80,212,107"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_checksum_1_1_api16.html" title="This class provides an interface for calculate a 16 bit wide Checksum." alt="" coords="33,5,185,32"/>
+</map>

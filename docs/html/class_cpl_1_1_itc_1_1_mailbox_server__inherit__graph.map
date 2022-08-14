@@ -1,0 +1,15 @@
+<map id="Cpl::Itc::MailboxServer" name="Cpl::Itc::MailboxServer">
+<area shape="rect" id="node1" title="This class collects the common functions of a generic server providing a mailbox and Event loop." alt="" coords="777,111,932,137"/>
+<area shape="rect" id="node13" href="$class_cpl_1_1_itc_1_1_periodic_scheduler.html" title="This class extends the Cpl::Itc::MailboxServer class to add periodic scheduling to an event based &#39;th..." alt="" coords="981,111,1159,137"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_mailbox.html" title="This mailbox class implements an Inter Thread Communications message queue." alt="" coords="587,64,705,91"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_itc_1_1_post_api.html" title="This abstract class represents the interface used to send messages to a mailbox." alt="" coords="363,5,481,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_container_1_1_s_list.html" title=" " alt="" coords="351,57,493,98"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_s_list.html" title="This template class implements a singly linked list which maintains the ordering imposed on it by the..." alt="" coords="31,57,174,98"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_system_1_1_event_loop.html" title="This concrete class is a Runnable object that provides a event driven execution model for a thread." alt="" coords="564,173,728,200"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_system_1_1_runnable.html" title="This is an abstract class defines the interface for an object that is &quot;executed&quot; when a Thread object..." alt="" coords="344,123,500,149"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_system_1_1_event_flag.html" title="This abstract class defines the interface to generated a &#39;Event Flag&#39;." alt="" coords="341,173,503,200"/>
+<area shape="rect" id="node9" href="$class_cpl_1_1_system_1_1_signable.html" title="This abstract class defines the interface by which a client can cause an object that is waiting&#45;on&#45;a&#45;..." alt="" coords="346,224,498,251"/>
+<area shape="rect" id="node10" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="33,224,172,251"/>
+<area shape="rect" id="node11" href="$class_cpl_1_1_system_1_1_timer_manager.html" title="This mostly concrete class implements manages a list of Software Timers." alt="" coords="329,275,515,301"/>
+<area shape="rect" id="node12" href="$class_cpl_1_1_system_1_1_counter_source__.html" title="This abstract class defines the interface for registering for an Counter object with the Timer Manage..." alt="" coords="5,275,200,301"/>
+</map>

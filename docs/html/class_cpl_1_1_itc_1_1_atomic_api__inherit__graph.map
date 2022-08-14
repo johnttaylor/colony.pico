@@ -1,0 +1,4 @@
+<map id="Cpl::Itc::AtomicApi&lt; ACCESS_API &gt;" name="Cpl::Itc::AtomicApi&lt; ACCESS_API &gt;">
+<area shape="rect" id="node1" title="This abstract class provides an interface to allow a client to call the server synchronously to have ..." alt="" coords="11,5,143,47"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_atomic_sync.html" title="This concrete class provides the ITC wrapper implementation for calling the &quot;Atomic Api&quot; synchronousl..." alt="" coords="5,95,148,136"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="Cpl::Itc::PostApi" name="Cpl::Itc::PostApi">
+<area shape="rect" id="node1" title="This abstract class represents the interface used to send messages to a mailbox." alt="" coords="5,107,124,133"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_mailbox.html" title="This mailbox class implements an Inter Thread Communications message queue." alt="" coords="202,81,319,108"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_itc_1_1_s_a_p.html" title="This concrete template class represents the interface to a ITC Service Access Point (SAP)." alt="" coords="172,132,349,159"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_dm_1_1_mailbox_server.html" title="This class extends the Cpl::Dm::EventLoop and Cpl::Itc:Mailbox classes to support the asynchronous ch..." alt="" coords="397,56,557,83"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_itc_1_1_mailbox_server.html" title="This class collects the common functions of a generic server providing a mailbox and Event loop." alt="" coords="400,107,555,133"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_dm_1_1_periodic_scheduler.html" title="This class extends the Cpl::Dm::MailboxServer class to add periodic scheduling to an event based &#39;thr..." alt="" coords="611,5,794,32"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_persistent_1_1_record_server.html" title="This concrete class provides an Event driven Runnable object for executing the read/write operation t..." alt="" coords="605,56,800,83"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_itc_1_1_periodic_scheduler.html" title="This class extends the Cpl::Itc::MailboxServer class to add periodic scheduling to an event based &#39;th..." alt="" coords="614,107,791,133"/>
+</map>

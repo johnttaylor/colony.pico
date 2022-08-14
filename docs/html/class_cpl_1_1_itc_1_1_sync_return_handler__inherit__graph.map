@@ -1,0 +1,4 @@
+<map id="Cpl::Itc::SyncReturnHandler" name="Cpl::Itc::SyncReturnHandler">
+<area shape="rect" id="node1" title="This class implements a synchronous ReturnHandler." alt="" coords="5,80,189,107"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_return_handler.html" title="This abstract class represents the action that is executed by a server thread in response to the serv..." alt="" coords="20,5,175,32"/>
+</map>

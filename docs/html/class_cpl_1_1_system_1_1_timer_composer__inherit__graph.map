@@ -1,0 +1,7 @@
+<map id="Cpl::System::TimerComposer&lt; CONTEXT &gt;" name="Cpl::System::TimerComposer&lt; CONTEXT &gt;">
+<area shape="rect" id="node1" title="This template class implements a Software Timer that is context independent and allows for a single c..." alt="" coords="10,304,205,345"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_system_1_1_timer.html" title="This mostly concrete interface defines the operations that can be performed on a software timer." alt="" coords="40,229,175,256"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_system_1_1_counter_callback__.html" title="This abstract class defines the call&#45;back interface for a Counter object." alt="" coords="5,155,209,181"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_container_1_1_extended_item.html" title="This class is used by the Container classes to implement a various types of DOUBLY linked containers." alt="" coords="11,80,204,107"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="38,5,177,32"/>
+</map>

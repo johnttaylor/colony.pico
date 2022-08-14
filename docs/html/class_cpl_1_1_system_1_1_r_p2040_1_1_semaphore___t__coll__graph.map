@@ -1,0 +1,5 @@
+<map id="Cpl::System::RP2040::Semaphore_T" name="Cpl::System::RP2040::Semaphore_T">
+<area shape="rect" id="node1" title="This class implements a brute force approach to initializing a &#39;pico semaphore&#39; when the Cpl C++ libr..." alt="" coords="22,155,170,196"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_system_1_1_startup_hook__.html" title="This class defines a start&#45;up handler/hook that allows a Colony.Core sub&#45;system to register to be cal..." alt="" coords="5,80,187,107"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="27,5,165,32"/>
+</map>

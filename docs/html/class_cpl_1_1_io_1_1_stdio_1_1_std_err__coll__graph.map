@@ -1,0 +1,9 @@
+<map id="Cpl::Io::Stdio::StdErr" name="Cpl::Io::Stdio::StdErr">
+<area shape="rect" id="node1" title="This concrete class represents the C&#45;library &#39;stderr&#39; stream." alt="" coords="203,323,346,349"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_stdio_1_1_output__.html" title="This concrete class implements a Output stream using the underlying platform&#39;s native OS &#39;file interf..." alt="" coords="199,247,351,273"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_io_1_1_output.html" title="This partially abstract class defines a interface for operating on an output stream (example of a str..." alt="" coords="116,157,223,184"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_io_1_1_close.html" title="This abstract class defines a close operation that is intended to be used Input and Output streams/fi..." alt="" coords="24,81,125,108"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="5,5,144,32"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_io_1_1_is_eos.html" title="This abstract class defines a isEos() operation that is intended to be used Input and Output streams." alt="" coords="150,81,253,108"/>
+<area shape="rect" id="node7" href="$union_cpl_1_1_io_1_1_descriptor.html" title="This union defines a &#39;IO descriptor&#39; in terms of a an integer and/or a void*." alt="" coords="247,157,374,184"/>
+</map>

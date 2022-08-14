@@ -1,0 +1,7 @@
+<map id="Cpl::Persistent::Payload" name="Cpl::Persistent::Payload">
+<area shape="rect" id="node1" title="This abstract class defines the interface accessing the &#39;data payload&#39; of an individual Record instan..." alt="" coords="84,5,247,32"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_persistent_1_1_record.html" title="This mostly concrete class implements the Cpl::Persistent::Record interface where a Record instance c..." alt="" coords="5,80,141,121"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_data_record.html" title="This mostly concrete class implements the Cpl::Persistent::DataRecord interface where a DataRecord in..." alt="" coords="165,87,349,114"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_persistent_1_1_index_record.html" title="This concrete class extends the Cpl::Persistent::DataRecord interface to store a latest/oldest &#39;recor..." alt="" coords="63,177,252,203"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_persistent_1_1_indexed_entry_record.html" title="This concrete class implements the Cpl::Persistent::Record interface to store a collection &#39;entries&#39;." alt="" coords="276,169,439,211"/>
+</map>

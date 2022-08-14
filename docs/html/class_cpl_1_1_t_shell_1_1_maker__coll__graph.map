@@ -1,0 +1,18 @@
+<map id="Cpl::TShell::Maker" name="Cpl::TShell::Maker">
+<area shape="rect" id="node1" title="This concrete class is a &quot;Maker&quot; that assembles the objects needed for a &#39;basic&#39; TShell Processor eng..." alt="" coords="1280,84,1411,111"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_text_1_1_frame_1_1_stream_encoder.html" title="This concrete class implements the Encoder API where the Output destination is a Cpl::Io::Output stre..." alt="" coords="707,47,877,89"/>
+<area shape="rect" id="node9" href="$class_cpl_1_1_t_shell_1_1_processor.html" title="This concrete class provides the implementation of Command Processor for a TShell engine." alt="" coords="999,135,1152,161"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_text_1_1_frame_1_1_encoder__.html" title="This Private Namespace partially concrete class implements common/helper method for supporting the En..." alt="" coords="419,5,601,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_text_1_1_frame_1_1_encoder.html" title="This class defines an interface for &#39;transmitted&#39; (encoding) a frame." alt="" coords="193,5,369,32"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_io_1_1_output.html" title="This partially abstract class defines a interface for operating on an output stream (example of a str..." alt="" coords="457,56,563,83"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_io_1_1_close.html" title="This abstract class defines a close operation that is intended to be used Input and Output streams/fi..." alt="" coords="231,60,332,87"/>
+<area shape="rect" id="node15" href="$class_cpl_1_1_io_1_1_input.html" title="This partially abstract class defines a interface for operating on an input stream (example of a stre..." alt="" coords="461,121,559,148"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="5,60,144,87"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_io_1_1_is_eos.html" title="This abstract class defines a isEos() operation that is intended to be used Input and Output streams." alt="" coords="230,117,333,144"/>
+<area shape="rect" id="node10" href="$class_cpl_1_1_t_shell_1_1_context__.html" title="This Private Namespace class defines a &quot;Context&quot; for a TShell command." alt="" coords="719,231,865,257"/>
+<area shape="rect" id="node11" href="$class_cpl_1_1_t_shell_1_1_processor_api.html" title="This class defines the interface a TShell Command Processor." alt="" coords="424,231,596,257"/>
+<area shape="rect" id="node12" href="$class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html" title="This partially concrete class defines an interface a Text &quot;Decoder&quot; that has a Cpl::Io::Input stream ..." alt="" coords="707,114,877,155"/>
+<area shape="rect" id="node13" href="$class_cpl_1_1_text_1_1_frame_1_1_decoder__.html" title="This private partially concrete class implements the basic/common logic for a frame decoder." alt="" coords="419,172,601,199"/>
+<area shape="rect" id="node14" href="$class_cpl_1_1_text_1_1_frame_1_1_decoder.html" title="This class defines an interface for &#39;receiving&#39; (decode) a frame." alt="" coords="193,172,369,199"/>
+<area shape="rect" id="node16" href="$class_cpl_1_1_system_1_1_mutex.html" title="This mutex class defines the interface for a mutex that has &quot;recursive&quot; semantics." alt="" coords="723,180,861,207"/>
+</map>

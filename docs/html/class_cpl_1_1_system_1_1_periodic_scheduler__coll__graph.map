@@ -1,0 +1,5 @@
+<map id="Cpl::System::PeriodicScheduler" name="Cpl::System::PeriodicScheduler">
+<area shape="rect" id="node1" title="This concrete class is a &#39;policy&#39; object that is used to add polled based, cooperative monotonic sche..." alt="" coords="5,260,212,287"/>
+<area shape="rect" id="node2" href="$struct_cpl_1_1_system_1_1_periodic_scheduler_1_1_interval___t.html" title="Defines an interval." alt="" coords="183,140,389,181"/>
+<area shape="rect" id="node3" href="$struct_cpl_1_1_system_1_1_elapsed_time_1_1_precision___t.html" title="Data type for time in seconds with a &#39;fractional&#39; millisecond precision." alt="" coords="19,5,198,47"/>
+</map>

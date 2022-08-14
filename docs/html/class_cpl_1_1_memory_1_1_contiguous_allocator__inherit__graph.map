@@ -1,0 +1,6 @@
+<map id="Cpl::Memory::ContiguousAllocator" name="Cpl::Memory::ContiguousAllocator">
+<area shape="rect" id="node1" title="This abstract class is used &#39;extend&#39; the Memory Allocator to have contiguous semantics." alt="" coords="5,155,225,181"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_memory_1_1_lean_heap.html" title="This class manages an allocate&#45;only&#45;heap." alt="" coords="34,229,197,256"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_memory_1_1_allocator.html" title="This abstract class defines the interface for a Memory Allocator." alt="" coords="38,80,193,107"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="46,5,185,32"/>
+</map>

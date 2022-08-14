@@ -1,0 +1,4 @@
+<map id="Cpl::Io::Socket::Factory" name="Cpl::Io::Socket::Factory">
+<area shape="rect" id="node1" title="This abstract class defines an interface for a Socket factory." alt="" coords="34,5,195,32"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_io_1_1_socket_1_1_stream_pool.html" title="This concrete template class implement a socket factory that is capable of creating N concurrently op..." alt="" coords="5,80,224,107"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Cpl::Itc::CloseApi" name="Cpl::Itc::CloseApi">
+<area shape="rect" id="node1" title="This abstract class defines an close interface." alt="" coords="126,5,250,32"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_close_sync.html" title="This partially concrete class implements the synchronous ITC close call for the CloseApi." alt="" coords="121,80,255,107"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_indexed_entry_server.html" title="This concrete template class implements the ITC messaging (and Model Point monitoring) needed to prov..." alt="" coords="5,155,168,196"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_persistent_1_1_record_server.html" title="This concrete class provides an Event driven Runnable object for executing the read/write operation t..." alt="" coords="192,162,387,189"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Cpl::Container::RingBufferMP&lt; ITEM &gt;" name="Cpl::Container::RingBufferMP&lt; ITEM &gt;">
+<area shape="rect" id="node1" title="This template class implements a THREAD SAFE Ring Buffer AND it maintains/reports the number of eleme..." alt="" coords="5,184,179,225"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_ring_buffer_m_t.html" title="This template class implements a THREAD SAFE Ring Buffer." alt="" coords="5,95,179,136"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_ring_buffer.html" title="This template class implements a Ring Buffer." alt="" coords="5,5,179,47"/>
+</map>

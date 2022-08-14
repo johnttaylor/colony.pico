@@ -1,0 +1,8 @@
+<map id="Cpl::Memory::SPool&lt; T, N &gt;" name="Cpl::Memory::SPool&lt; T, N &gt;">
+<area shape="rect" id="node1" title="This template class defines a concrete Allocator that STATICALLY allocates all of its Memory and can ..." alt="" coords="51,261,189,303"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_memory_1_1_allocator.html" title="This abstract class defines the interface for a Memory Allocator." alt="" coords="5,81,160,108"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_memory_1_1_pool__.html" title="This private concrete class implements a Memory Allocator using a pool of fixed size blocks." alt="" coords="51,165,189,191"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="133,5,272,32"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_extended_item.html" title="This class is used by the Container classes to implement a various types of DOUBLY linked containers." alt="" coords="185,81,378,108"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_memory_1_1_pool___1_1_block_info__.html" title="Helper class so I can put my blocks into to my standard containers." alt="" coords="213,157,350,199"/>
+</map>

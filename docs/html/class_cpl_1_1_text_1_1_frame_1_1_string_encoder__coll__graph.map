@@ -1,0 +1,7 @@
+<map id="Cpl::Text::Frame::StringEncoder" name="Cpl::Text::Frame::StringEncoder">
+<area shape="rect" id="node1" title="This concrete class implements the Encoder API where the Output destination is a Cpl::Text::String." alt="" coords="121,171,283,212"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_text_1_1_frame_1_1_encoder__.html" title="This Private Namespace partially concrete class implements common/helper method for supporting the En..." alt="" coords="5,81,188,108"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_text_1_1_frame_1_1_encoder.html" title="This class defines an interface for &#39;transmitted&#39; (encoding) a frame." alt="" coords="7,5,183,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_text_1_1_string.html" title="This abstract class defines the operations that can be before on a NULL terminated string." alt="" coords="215,81,333,108"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_key.html" title="This abstract class defines the interface that a contained object must support if it has comparable k..." alt="" coords="208,5,343,32"/>
+</map>

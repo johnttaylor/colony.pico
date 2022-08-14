@@ -1,0 +1,4 @@
+<map id="Cpl::Io::Socket::ListenerClientRequest::NewConnectionPayload" name="Cpl::Io::Socket::ListenerClientRequest::NewConnectionPayload">
+<area shape="rect" id="node1" title="Payload for Message: newConnection." alt="" coords="5,95,253,136"/>
+<area shape="rect" id="node2" href="$union_cpl_1_1_io_1_1_descriptor.html" title="This union defines a &#39;IO descriptor&#39; in terms of a an integer and/or a void*." alt="" coords="66,5,193,32"/>
+</map>

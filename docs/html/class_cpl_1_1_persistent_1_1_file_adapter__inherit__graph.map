@@ -1,0 +1,4 @@
+<map id="Cpl::Persistent::FileAdapter" name="Cpl::Persistent::FileAdapter">
+<area shape="rect" id="node1" title="This concrete class implements the RegionMedia interface using the Cpl::Io::File interfaces." alt="" coords="9,80,192,107"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_region_media.html" title="This mostly abstract class defines the operations that can be performed on a persistent media." alt="" coords="5,5,196,32"/>
+</map>

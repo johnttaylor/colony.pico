@@ -1,0 +1,4 @@
+<map id="Cpl::Itc::SAP&lt; SERVER &gt;" name="Cpl::Itc::SAP&lt; SERVER &gt;">
+<area shape="rect" id="node1" title="This concrete template class represents the interface to a ITC Service Access Point (SAP)." alt="" coords="5,80,183,107"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_post_api.html" title="This abstract class represents the interface used to send messages to a mailbox." alt="" coords="35,5,153,32"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Cpl::Dm::ModelDatabase" name="Cpl::Dm::ModelDatabase">
+<area shape="rect" id="node1" title="This concrete class implements a simple Model Database." alt="" coords="109,95,275,121"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_model_database_api.html" title="This class defines the basic operations that can be performed on a Model Base." alt="" coords="5,5,192,32"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_system_1_1_mutex.html" title="This mutex class defines the interface for a mutex that has &quot;recursive&quot; semantics." alt="" coords="216,5,355,32"/>
+</map>

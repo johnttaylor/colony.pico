@@ -1,0 +1,8 @@
+<map id="Cpl::Itc::Message" name="Cpl::Itc::Message">
+<area shape="rect" id="node1" title="This abstract class defines the operations for an ITC message." alt="" coords="165,155,291,181"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_itc_1_1_response_message.html" title="This template class represents a client response message, which is posted to the client&#39;s mailbox aft..." alt="" coords="5,229,229,271"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_itc_1_1_service_message.html" title="This class represents a defined message, which is posted to a mailbox&#45;server as a request." alt="" coords="254,237,423,263"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_extended_item.html" title="This class is used by the Container classes to implement a various types of DOUBLY linked containers." alt="" coords="131,80,325,107"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="159,5,297,32"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_itc_1_1_request_message.html" title="This template class represents a service request message to a particular server." alt="" coords="252,319,425,360"/>
+</map>
