@@ -1,6 +1,6 @@
 ﻿# Colony.Pico
 
-![alt text](https://github.com/johnttaylor/colony.pico/raw/main/top/logo.gif "Logo Title Text 1") The Colony.Pico package is collection of my Raspberry Pico projects that are built using the Raspberry Pi Pico C/C++ SDK and the Colony.Core C++ Class library.
+The Colony.Pico package is collection of my Raspberry Pico projects that are built using the Raspberry Pi Pico C/C++ SDK and the Colony.Core C++ Class library.
 
 See the [Getting Started] section for setup and build instructions.
 
@@ -20,7 +20,7 @@ For more details about the `Colony.*` eco-system see
   * https://github.com/johnttaylor/Outcast
   * http://integerfox.com/
   * And for a dive into the concepts behind the Colony stuff, there is a book: [Patterns in the Machine:A Software Engineering Guide to Embedded Development](https://www.amazon.com/Patterns-Machine-Software-Engineering-Development-dp-1484264398/dp/1484264398/ref=mt_other?_encoding=UTF8&me=&qid=) 
-    ![alt text](https://github.com/johnttaylor/colony.pico/raw/main/top/PIM-image.jpg "Logo Title Text 1")
+    
 
 # Features
 The Colony.Core C++ class library with extensions for the Raspberry RP200 MCU provides the following features. _Note: This is not an exhaustive list of the features_.
