@@ -2,9 +2,9 @@
 
 The Colony.Pico package is collection of my Raspberry Pico projects that are built using the Raspberry Pi Pico C/C++ SDK and the Colony.Core C++ Class library.
 
-See the [Getting Started] section for setup and build instructions.
+See the [Getting Started](#Getting Started) section for setup and build instructions.
 
-See the [Threads Example] section for details of the example application demonstrating the package's Threading model.
+See the [Threads Example](#Threads Example) section for details of the example application demonstrating the package's Threading model.
 
 Doxygen documentation is located in the `docs/` directory. 
 
@@ -19,7 +19,7 @@ For more details about the `Colony.*` eco-system see
   * https://github.com/johnttaylor/pim
   * https://github.com/johnttaylor/Outcast
   * http://integerfox.com/
-  * And for a dive into the concepts behind the Colony stuff, there is a book: [Patterns in the Machine:A Software Engineering Guide to Embedded Development](https://www.amazon.com/Patterns-Machine-Software-Engineering-Development-dp-1484264398/dp/1484264398/ref=mt_other?_encoding=UTF8&me=&qid=) 
+  * And for a dive into the concepts behind the Colony stuff, there is a book: [Patterns in the Machine: A Software Engineering Guide to Embedded Development](https://www.amazon.com/Patterns-Machine-Software-Engineering-Development-dp-1484264398/dp/1484264398/ref=mt_other?_encoding=UTF8&me=&qid=) 
     
 
 # Features
