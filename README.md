@@ -2,9 +2,9 @@
 
 The Colony.Pico package is collection of my Raspberry Pico projects that are built using the Raspberry Pi Pico C/C++ SDK and the Colony.Core C++ Class library.
 
-See the [Getting Started](#Getting Started) section for setup and build instructions.
+See the [Getting Started](#Getting-Started) section for setup and build instructions.
 
-See the [Threads Example](#Threads Example) section for details of the example application demonstrating the package's Threading model.
+See the [Threads Example](#Threads-Example) section for details of the example application demonstrating the package's Threading model.
 
 Doxygen documentation is located in the `docs/` directory. 
 
