@@ -19,10 +19,10 @@ int main(void)
     Bsp_Api_initialize();
 
     // Start the Console/Trace output: Accepting the default UART Config parameters, e.g. 115200, 8N1
-    Cpl::System::RP2040::Console::start();
-    Cpl::System::RP2040::Console::getStream().write( "\n**** APPLICATION START-UP *****\n" );
-    Cpl::System::RP2040::Console::getStream().write( "Cpl and the Bsp have been initialized.\n" );
-    Cpl::System::RP2040::Console::getStream().write( "Launching unit tests...\n" );
+    Cpl::System::RP2040::startConsole();
+    Cpl::System::RP2040::getConsoleStream().write( "\n**** APPLICATION START-UP *****\n" );
+    Cpl::System::RP2040::getConsoleStream().write( "Cpl and the Bsp have been initialized.\n" );
+    Cpl::System::RP2040::getConsoleStream().write( "Launching unit tests...\n" );
 
     // Go run the test(s)
     runtests();         // This method should never return

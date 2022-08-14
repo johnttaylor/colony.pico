@@ -151,6 +151,7 @@ protected:
     /// Pointer to UART1 instance (if there is one)
     static InputOutput* m_uart1Instance;
 
+    /// Critical section for ISR/thread/Core exclusion
     critical_section_t* m_lock;
 
     /// My started/stopped state

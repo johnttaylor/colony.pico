@@ -23,12 +23,12 @@
 #include "Bsp/Api.h"
 
 
- // Size, in bytes, of the Software TX FIFO for the Console's output 
+ /// Size, in bytes, of the Software TX FIFO for the Console's output 
 #ifndef OPTION_CPL_SYSTEM_RP2040_CONSOLE_TX_FIFO_SIZE    
 #define OPTION_CPL_SYSTEM_RP2040_CONSOLE_TX_FIFO_SIZE    256
 #endif
 
-// Size, in bytes, of the Software RX FIFO for the Console's input 
+/// Size, in bytes, of the Software RX FIFO for the Console's input 
 #ifndef OPTION_CPL_SYSTEM_RP2040_CONSOLE_RX_FIFO_SIZE    
 #define OPTION_CPL_SYSTEM_RP2040_CONSOLE_RX_FIFO_SIZE    512
 #endif
@@ -40,26 +40,23 @@ namespace Cpl {
 namespace System {
 ///
 namespace RP2040 {
-///
-namespace Console {
 
 
 /** This method is used to initialize and start the Console.
  */
-void start( unsigned long baudRate  = 115200,                       //!< Baud rate in hertz
-            unsigned      txPin     = BSP_DEFAULT_UART_TX_PIN,      //!< Transmit Pin
-            unsigned      rxPin     = BSP_DEFAULT_UART_RX_PIN,      //!< Receive Pin
-            unsigned      dataBits  = 8,                            //!< Number of data bits.  Range is [5..8]
-            unsigned      stopBits  = 1,                            //!< Number of stop bits.  Range is [1..2]
-            uart_parity_t parity    = UART_PARITY_NONE              //!< Parity setting.  See hardware/uart.h for enumeration
+void startConsole( unsigned long baudRate  = 115200,                       //!< Baud rate in hertz
+                   unsigned      txPin     = BSP_DEFAULT_UART_TX_PIN,      //!< Transmit Pin
+                   unsigned      rxPin     = BSP_DEFAULT_UART_RX_PIN,      //!< Receive Pin
+                   unsigned      dataBits  = 8,                            //!< Number of data bits.  Range is [5..8]
+                   unsigned      stopBits  = 1,                            //!< Number of stop bits.  Range is [1..2]
+                   uart_parity_t parity    = UART_PARITY_NONE              //!< Parity setting.  See hardware/uart.h for enumeration
 );
 
 /** This method returns a handle to the Console's CPL Stream instance
  */
-Cpl::Io::InputOutput& getStream();
+Cpl::Io::InputOutput& getConsoleStream();
 
 }       // end namespace
-}
 }
 }
 #endif  // end header latch

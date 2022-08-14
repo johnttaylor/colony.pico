@@ -6,8 +6,7 @@ src/Cpl/System
 src/Cpl/System/RP2040
 src/Cpl/System/RP2040/_fatalError
 src/Cpl/System/RP2040/_shutdown
-src/Cpl/System/RP2040/_Console
-src/Cpl/System/RP2040/_trace
+src/Cpl/System/RP2040/_console
 src/Cpl/System/_trace
 
 # Infrastructure

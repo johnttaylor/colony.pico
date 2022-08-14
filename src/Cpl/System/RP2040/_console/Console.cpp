@@ -19,17 +19,17 @@ static uint8_t rxFIFO_[OPTION_CPL_SYSTEM_RP2040_CONSOLE_RX_FIFO_SIZE];
 static Cpl::Io::Serial::RP2040::Uart::InputOutput uartfd_( txFIFO_, sizeof( txFIFO_ ), rxFIFO_, sizeof( rxFIFO_ ) );
 
 
-void Cpl::System::RP2040::Console::start( unsigned long baudRate,
-                                          unsigned      txPin,
-                                          unsigned      rxPin,
-                                          unsigned      dataBits,
-                                          unsigned      stopBits,
-                                          uart_parity_t parity )
+void Cpl::System::RP2040::startConsole( unsigned long baudRate,
+                                        unsigned      txPin,
+                                        unsigned      rxPin,
+                                        unsigned      dataBits,
+                                        unsigned      stopBits,
+                                        uart_parity_t parity )
 {
     uartfd_.start( baudRate, txPin, rxPin, dataBits, stopBits, parity );
 }
 
-Cpl::Io::InputOutput& Cpl::System::RP2040::Console::getStream()
+Cpl::Io::InputOutput& Cpl::System::RP2040::getConsoleStream()
 {
     return uartfd_;
 }

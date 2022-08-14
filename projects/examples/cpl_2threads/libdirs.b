@@ -4,10 +4,8 @@ src/Cpl/System/_trace
 
 # OSAL - Platform specific
 src/Cpl/System/RP2040
-src/Cpl/System/RP2040/_console
 src/Cpl/System/RP2040/_shutdown
 src/Cpl/System/RP2040/_fatalerror
-src/Cpl/System/RP2040/_trace
 
 # infrastructure
 src/Cpl/Container

@@ -10,7 +10,7 @@ Thread      - The first thread created runs on core0.  A SINGLE additional
               thread can be created that runs on core1.
 
 Mutex       - Fully functional.  Note: The memory for internal Mutex type 
-              allocated from the Heap.
+              is allocated from the Heap.
 
 GlobalLock  - The GlobalLock maps the RP2040 SDK's critical section.  There are
               some subtle details here - but it effective disables IRQs on 
@@ -18,7 +18,7 @@ GlobalLock  - The GlobalLock maps the RP2040 SDK's critical section.  There are
               the other core.
 
 Semaphore   - Fully functional.  Note: The memory for internal Semaphore type 
-              allocated from the Heap.
+              is allocated from the Heap.
 
 Tls         - Fully functional.
 

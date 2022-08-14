@@ -25,10 +25,10 @@
 
     OPTIONAL Compile switches:
 
-        USE_BSP_NO_STDIO    // Defining this symbol will prevent initializing 
-                            // SDK's stdio sub-system.  This is for when the
-                            // application is supplying its own driver for
-                            // UART0
+        USE_BSP_NO_STDIO    - Defining this symbol will prevent initializing 
+                              SDK's stdio sub-system.  This is for when the
+                              application is supplying its own driver for
+                              UART0
 *----------------------------------------------------------------------------*/
 
 
