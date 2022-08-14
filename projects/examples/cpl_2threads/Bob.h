@@ -24,25 +24,31 @@
 #include "Cpl/System/ElapsedTime.h"
 
 
- /** This class blinks a LED at frequency specified by the 'timing' model point
-     provided in its constructor.  The frequency will be 2 x 'timing'.  The use
-     of the model points provides a thread safe mechanism for other modules to
-     interact with Bob.
+ /** This class blinks a LED at frequency specified by the 'delayTime' model 
+     point provided in its constructor.  The frequency will be 2 x 'timing'.  
+     The use of the model points provides a thread safe mechanism for other 
+     modules to interact with Bob.
 
      The class uses the model point 'verbose' to enable/disable its text output.
      The text output uses the Trace statement to provide thread information and
      time stamps for the output messages.
 
-     The class uses 'periodic scheduling' for the LED timing.  This is NOT the
-     recommended way for 'timing logic' (i.e. a Cpl::System::Timer is recommended),
-     but is done to provide an example of using the Periodic Scheduling with an
-     event based thread.
+     The class uses model point change notifications to set at runtime its 
+     delay time and verbose state.  Specifically, the developer uses the 
+     Console TShell command 'dm' to modify the model points and the Bob object 
+     updates it configuration based on the model point change notifications 
+     (i.e. event driven callbacks).
 
-     At run time - the application is required to call open() and close() on the
-     module instance to start and stop the instance.  Note: the open() and close()
-     MUST be AFTER scheduling has been enabled.  This is because the class's
-     model point change notification subscription MUST be done in the thread context
-     that the callback functions will occur in.
+     The class uses 'periodic scheduling' for the LED timing.  The timing could
+     have been with a Software Timer (i.e. a callback to the Bob class) - but 
+     Periodic Scheduling is used to illustrate both Periodic Scheduling and
+     events handling in a single thread.
+
+     At run time - the application is required to call start() and stop() on 
+     the module instance to start and stop the instance. The start() and stop()
+     MUST be called AFTER scheduling has been enabled.  This is because the 
+     class's model point change notification subscriptions MUST be done in the 
+     thread context that the callback functions will occur in.
   */
 class Bob
 {

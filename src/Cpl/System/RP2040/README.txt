@@ -35,9 +35,9 @@ Application Start-up sequence:
 
 3. The bootloader(s) execute and transfer execution to the Application.
 
-3. The Application's C/C++ start-up code executes (e.g. crt0, low-level SDK initialization, etc. ).
+4. The Application's C/C++ start-up code executes (e.g. crt0, low-level SDK initialization, etc. ).
 
-4. The Application's C/C++ main() method is called.  
+5. The Application's C/C++ main() method is called.  
     - At this point the system is a bare metal system with interrupts disabled.
     - The application code should call Cpl::System::Api::initialize() ASAP.
     - The application should complete any required HW/BSP/App initialization 
@@ -47,9 +47,9 @@ Application Start-up sequence:
       The first thread created will execute on CORE0, the second thread executes
       on CORE1
 
-5. The Application 'starts threading' by calling Cpl::System::Thread::enableScheduling().
+6. The Application 'starts threading' by calling Cpl::System::Thread::enableScheduling().
 
-6. Once the 'threading' has been enable, the Application can optional create the second
+7. Once the 'threading' has been enable, the Application can optional create the second
    thread assuming only 1 thread was created prior to enableScheduling() call. 
 
 Notes: 
