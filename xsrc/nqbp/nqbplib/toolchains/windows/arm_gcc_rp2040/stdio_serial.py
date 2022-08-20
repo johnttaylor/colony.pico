@@ -95,7 +95,7 @@ class ToolChain( base.ToolChain ):
         common_flags                    = common_flags + ' -DLIB_PICO_STDIO_UART=1'  
         self._base_release.cflags       = self._base_release.cflags + common_flags
         self._base_release.c_only_flags = self._base_release.c_only_flags + ' -std=gnu11'
-        self._base_release.cppflags     = self._base_release.cppflags + ' -Wno-restrict -Wno-address-of-packed-member -Wno-class-memaccess -DPICO_CXX_ENABLE_EXCEPTIONS=0 -std=gnu++11 -fno-threadsafe-statics -fno-rtti -fno-exceptions -fno-unwind-tables -fno-use-cxa-atexit'
+        self._base_release.cppflags     = self._base_release.cppflags + ' -Wno-restrict -Wno-address-of-packed-member -Wno-class-memaccess -DPICO_CXX_ENABLE_EXCEPTIONS=0 -fno-threadsafe-statics -fno-rtti -fno-exceptions -fno-unwind-tables -fno-use-cxa-atexit'
         self._base_release.asmflags     = self._base_release.cflags 
         self._base_release.asminc       = self._base_release.asminc + self._base_release.inc + ' -I ' + sdk_src_path + r'\rp2_common\boot_stage2\asminclude'
         
