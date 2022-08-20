@@ -17,7 +17,7 @@ RGBLED led(PicoDisplay::LED_R, PicoDisplay::LED_G, PicoDisplay::LED_B);
 
 
 int main() {
-  st7789.set_backlight(100);
+  st7789.set_backlight(200);
 
   struct pt {
     float      x;

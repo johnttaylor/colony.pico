@@ -48,6 +48,22 @@
           "type": "git",
           "origin": "https://github.com/johnttaylor"
         }
+      },
+      {
+        "pkgname": "pimoroni-pico",
+        "pkgtype": "readonly",
+        "adoptedDate": "Sat Aug 20 21:50:16 2022",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": null,
+          "branch": null,
+          "tag": "OUTCAST2-main-1.19.7"
+        },
+        "repo": {
+          "name": "pimoroni-pico",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
       }
     ],
     "weak": [
