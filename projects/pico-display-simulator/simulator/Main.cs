@@ -44,6 +44,7 @@ namespace Simulator
             m_listener.RegisterCommand(new Simulator.Led(this));
             m_listener.RegisterCommand(new Simulator.Exit());
             m_listener.RegisterCommand(new Simulator.Nop(this));
+            m_listener.RegisterCommand(new Simulator.FillLCD(this));
 
             new Thread(new ParameterizedThreadStart(Simulator.SocketListener.Start)).Start(m_listener);
         }
@@ -80,11 +81,11 @@ namespace Simulator
         {
             if (m_listener.m_socketHandle != null)
             {
-                string buttons = String.Format("^buttons A {0} B {1} X {2} Y {3}\n", 
-                    m_pressedStateA ? "DOWN" : "up", 
-                    m_pressedStateB ? "DOWN" : "up", 
-                    m_pressedStateX ? "DOWN" : "up", 
-                    m_pressedStateY ? "DOWN" : "up");
+                string buttons = String.Format("^buttons A {0} B {1} X {2} Y {3}\n",
+                    m_pressedStateA ? "DN" : "up",
+                    m_pressedStateB ? "DN" : "up",
+                    m_pressedStateX ? "DN" : "up",
+                    m_pressedStateY ? "DN" : "up");
                 byte[] msg = Encoding.ASCII.GetBytes(buttons);
                 m_listener.m_socketHandle.Send(msg);
             }
@@ -176,7 +177,7 @@ namespace Simulator
 
         private void YButton_MouseDown(object sender, MouseEventArgs e)
         {
-            Process_YButtonMouseDown(); 
+            Process_YButtonMouseDown();
         }
         private void YButton_MouseUp(object sender, MouseEventArgs e)
         {
@@ -223,7 +224,7 @@ namespace Simulator
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            switch( e.KeyCode )
+            switch (e.KeyCode)
             {
                 case Keys.A:
                     Process_AButtonMouseUp();
@@ -240,182 +241,6 @@ namespace Simulator
                 default:
                     break;
             }
-        }
-    }
-
-    // Write LCD data command. Writes a 'rectangle' worth of data
-    // Command Format AFTER the leading (without leading/trailing SOF/EOF framing characters)
-    //
-    // <DD> <HH:MM:SS.sss> writeLCDData <x0> <w> <y0> <h> <hexdata>
-    // Where:
-    //      <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    //      <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    //      <x0>                Top/left X coordinate (in pixel coordinates) of the rectangle
-    //      <w>                 Width (in display coordinates) of the rectangle. Note: <w> should always be greater than 0
-    //      <y0>                Top/left Y coordinate (in pixel coordinates) of the rectangle
-    //      <h>                 height (in display coordinates) of the rectangle. Note: <h> should always be greater than 0
-    //      <hexdata>           Pixel data as 'ASCII HEX' String (with no spaces).  Each byte is SINGLE pixel
-    //                          Pixel layout is row, then column:
-    //                              First Byte is:    x0,y0.
-    //                              Byte w is:        x0+w,y0
-    //                              Byte w+1 is:      x0,y0+1
-    //                              Byte (h*w) is:    x1,y1
-    //
-    // NOTE: Color/Pixel size assumes RGB332 color resolution
-    public class Write : ICommand
-    {
-        private MainForm m_ui;
-
-        public Write(MainForm ui)
-        {
-            m_ui = ui;
-        }
-
-        public string GetCommandName() { return "writeLCDData"; }
-        public bool ExecuteCommand(string rawString, List<string> tokenizeString)
-        {
-            Console.WriteLine("PROCESSING: " + rawString);
-            int x = int.Parse(tokenizeString[3]);
-            int w = int.Parse(tokenizeString[4]);
-            int y = int.Parse(tokenizeString[5]);
-            int h = int.Parse(tokenizeString[6]);
-            byte[] pixelBytes = HexStringToByteArray(tokenizeString[7]);
-
-            int numPixels = w * h;
-            int dataIndex = 0;
-            for (int yidx = y; yidx < y + h; yidx++)
-            {
-                for (int xidx = x; xidx < x + w; xidx++)
-                {
-                    m_ui.m_lcd.SetPixel(xidx, yidx, ConvertColor(pixelBytes[dataIndex]));
-                    dataIndex++;
-                }
-            }
-
-            return true;
-        }
-
-        Color ConvertColor(int firmwareColor)
-        {
-            int red = ((firmwareColor & 0b1110000) << 0);
-            int green = ((firmwareColor & 0b00011100) << 3);
-            int blue = ((firmwareColor & 0b00000011) << 6);
-            return Color.FromArgb(red, green, blue);
-        }
-
-        private byte[] HexStringToByteArray(string hexString)
-        {
-            int hexStringLength = hexString.Length;
-            byte[] b = new byte[hexStringLength / 2];
-            for (int i = 0; i < hexStringLength; i += 2)
-            {
-                int topChar = (hexString[i] > 0x40 ? hexString[i] - 0x37 : hexString[i] - 0x30) << 4;
-                int bottomChar = hexString[i + 1] > 0x40 ? hexString[i + 1] - 0x37 : hexString[i + 1] - 0x30;
-                b[i / 2] = Convert.ToByte(topChar + bottomChar);
-            }
-            return b;
-        }
-    }
-
-    // Updates the LCD (i.e. the visible screen) with the latest LCD data
-    // Command Format AFTER the leading (without leading/trailing SOF/EOF framing characters)
-    //
-    // <DD> <HH:MM:SS.sss> updateLCD 
-    // Where:
-    //      <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    //      <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    public class UpdateDisplay : ICommand
-    {
-        private MainForm m_ui;
-
-        public UpdateDisplay(MainForm ui)
-        {
-            m_ui = ui;
-        }
-
-        public string GetCommandName() { return "updateLCD"; }
-
-        public bool ExecuteCommand(string rawString, List<string> tokenizeString)
-        {
-            Console.WriteLine("PROCESSING: " + rawString);
-            m_ui.UpdateLcd();
-            return true;
-        }
-    }
-
-    // Sets the RBG LED state
-    // Command Format AFTER the leading (without leading/trailing SOF/EOF framing characters)
-    //
-    // <DD> <HH:MM:SS.sss> writeRGBLed <r> <g> <b>
-    // Where:
-    //      <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    //      <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    //      <r>                 The 'Red' value (0-255) for the RGB LED
-    //      <g>                 The 'Green' value (0-255) for the RGB LED
-    //      <b>                 The 'Blue' value (0-255) for the RGB LED
-    public class Led : ICommand
-    {
-        private MainForm m_ui;
-
-        public Led(MainForm ui)
-        {
-            m_ui = ui;
-        }
-
-        public string GetCommandName() { return "writeRGBLed"; }
-        public bool ExecuteCommand(string rawString, List<string> tokenizeString)
-        {
-            Console.WriteLine("PROCESSING: " + rawString);
-
-            int r = int.Parse(tokenizeString[3]);
-            int g = int.Parse(tokenizeString[4]);
-            int b = int.Parse(tokenizeString[5]);
-
-            m_ui.FillImage(m_ui.m_rgbLED, Color.FromArgb(r, g, b), m_ui.m_rgbLED.Width, m_ui.m_rgbLED.Height);
-            m_ui.UpdateLcd();
-
-            return true;
-        }
-    }
-
-    // Command terminates the simulator
-    //
-    // <DD> <HH:MM:SS.sss> terminate
-    // Where:
-    //      <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    //      <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    public class Exit : ICommand
-    {
-        public string GetCommandName() { return "terminate"; }
-        public bool ExecuteCommand(string rawString, List<string> tokenizeString)
-        {
-            Console.WriteLine("PROCESSING: " + rawString);
-            return false;
-        }
-    }
-
-    // A Null-Operation command. This command is typically used to update the
-    // simulator with the latest time
-    //
-    // <DD> <HH:MM:SS.sss> no
-    // Where:
-    //      <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    //      <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-    public class Nop : ICommand
-    {
-        private MainForm m_ui;
-
-        public Nop(MainForm ui)
-        {
-            m_ui = ui;
-        }
-
-        public string GetCommandName() { return "nop"; }
-        public bool ExecuteCommand(string rawString, List<string> tokenizeString)
-        {
-            Console.WriteLine("PROCESSING: " + rawString);
-            m_ui.UpdateLcd();
-            return true;
         }
     }
 
