@@ -21,11 +21,6 @@ identify the individual frames/command they process.  The frame handlers execute
 in the Pipe's RX thread.  Each frame handler is responsible for providing 
 thread-safe with respect to the application.
 
-An example usage of the TPipe to provide a TCP Socket connection between
-a simulated firmware application where the socket connection is to external
-program that provides a simulated display and simulated button inputs (to the
-firmware simulation)
-
 */  
 
 
