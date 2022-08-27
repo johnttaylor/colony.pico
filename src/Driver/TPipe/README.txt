@@ -12,13 +12,13 @@ classes.
 
 A Pipe can have many 'transmit' and 'receive' clients.  
 
-Transmitting frames is done using synchronous ITC messages to guarantee the 
-transmission of each frame is done in the Pipe's TX thread, i.e. frames are
-atomic with respect to other frames/TX-clients.
+Transmitting frames is guaranteed to be an atomic operation, i.e. if a frame
+is being transmitted, a requested to transmit a new frame will be blocked
+until the transmission of the current frame has completed.
 
 Incoming frames are processed by Clients registering frame handlers that 
 identify the individual frames/command they process.  The frame handlers execute 
-in the Pipe's RX thread.  Each frame handler is responsible for providing 
+in the Pipe's thread.  Each frame handler is responsible for providing 
 thread-safe with respect to the application.
 
 */  

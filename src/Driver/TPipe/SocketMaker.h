@@ -1,3 +1,5 @@
+#ifndef Driver_Button_RP2040_Hal_h_
+#define Driver_Button_RP2040_Hal_h_
 /*----------------------------------------------------------------------------- 
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an   
 * open source project with a BSD type of licensing agreement.  See the license  
@@ -8,33 +10,22 @@
 *                                                                               
 * Redistributions of the source code must retain the above copyright notice.    
 *----------------------------------------------------------------------------*/ 
-/** @file */
+/** @file 
+    
+    This file defines the concrete implementation for the Butotn HAL running on 
+    Raspberry PI RP2040 MCU
+
+*/
 
 #include "Driver/Button/Hal.h"
-#include "pico/stdlib.h"
 
-void driverButtonHalRP2040_initialize( Driver_Button_Hal_T buttonHdl )
-{
-    gpio_set_function( buttonHdl.pinId, GPIO_FUNC_SIO );
-    gpio_set_dir( buttonHdl.pinId, GPIO_IN );
-    if ( buttonHdl.activeLow ) 
-    {
-        gpio_pull_up( buttonHdl.pinId );
-    }
-    else 
-    {
-        gpio_pull_down( buttonHdl.pinId );
-    }
-}
 
-bool driverButtonHalRP2040_getRawPressState( Driver_Button_Pin_Hal_RP2040_T pinHandle )
-{
-    if ( pinHandle.activeLow )
-    {
-        return !gpio_get( pinHandle.pinId );
-    }
-    else 
-    {
-        return gpio_get( pinHandle.pinId );
-    }
-}
+/*-------------- PUBLIC API ------------------------------------------------*/
+/** This method is used to initialize the GPIO for the pin/configuration specified
+    by 'buttonHdl'
+ */
+void driverButtonHalRP2040_initialize( Driver_Button_Hal_T buttonHdl );
+
+
+/*--------------------------------------------------------------------------*/
+#endif  
