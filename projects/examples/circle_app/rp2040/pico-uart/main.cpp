@@ -4,7 +4,7 @@
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/RP2040/Console.h"
 #include "Driver/Button/RP2040/Hal.h"
-
+#include "Driver/LED/PimoroniPico/RedGreenBlue.h"
 
 
 
@@ -22,6 +22,14 @@ Driver::Button::PolledDebounced g_buttonB( { APP_BUTTON_B_PIN_NUM, true } );
 Driver::Button::PolledDebounced g_buttonX( { APP_BUTTON_X_PIN_NUM, true } );
 Driver::Button::PolledDebounced g_buttonY( { APP_BUTTON_Y_PIN_NUM, true } );
 
+
+#define APP_LED_RGB_R       6
+#define APP_LED_RGB_G       7
+#define APP_LED_RGB_B       8
+
+static Driver::LED::PimoroniPico::RedGreenBlue rgbLEDDriver_( APP_LED_RGB_R , APP_LED_RGB_G, APP_LED_RGB_B );
+Driver::LED::RedGreenBlue*                     g_rgbLEDDriverPtr = &rgbLEDDriver_;
+
 /*-----------------------------------------------------------*/
 int main( void )
 {
@@ -35,11 +43,6 @@ int main( void )
     driverButtonHalRP2040_initialize( g_buttonX.getHandle() );
     driverButtonHalRP2040_initialize( g_buttonY.getHandle() );
 
-    // Enable Tracing
-    CPL_SYSTEM_TRACE_ENABLE();
-    CPL_SYSTEM_TRACE_ENABLE_SECTION( MY_APP_TRACE_SECTION );
-    CPL_SYSTEM_TRACE_SET_INFO_LEVEL( Cpl::System::Trace::eINFO );
-
     // Start the Console/Trace output: Accepting the default UART Config parameters, e.g. 115200, 8N1
     Cpl::System::RP2040::startConsole();
     Cpl::System::RP2040::getConsoleStream().write( "\n**** APPLICATION START-UP *****\n" );
@@ -51,4 +54,5 @@ int main( void )
 
     // Start the application
     runApplication();         // This method should never return
+    return 0;
 }

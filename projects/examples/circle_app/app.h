@@ -18,6 +18,7 @@
  */
 
 #include "Driver/Button/PolledDebounced.h"
+#include "Driver/LED/RedGreenBlue.h"
 
 /// Default Trace section
 #define MY_APP_TRACE_SECTION        "app"
@@ -33,6 +34,9 @@ extern Driver::Button::PolledDebounced g_buttonX;
 
 /// expose the Button Y driver
 extern Driver::Button::PolledDebounced g_buttonY;
+
+/// expose the RGB LED driver
+extern Driver::LED::RedGreenBlue*      g_rgbLEDDriverPtr;
 
 /// Entry function to the application
 void runApplication() noexcept;

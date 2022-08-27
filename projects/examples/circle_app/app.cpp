@@ -42,28 +42,27 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
 {
     if ( g_buttonA.isPressed() )
     {
-        printf( "A pressed\n" );
-        //led.set_rgb( 255, 0, 0 );
+        g_rgbLEDDriverPtr->setRgb( 255, 0, 0 );
     }
     else if ( g_buttonB.isPressed() )
     {
-        printf( "B pressed\n" );
-        //led.set_rgb( 0, 255, 0 );
+        //printf( "B pressed\n" );
+        g_rgbLEDDriverPtr->setRgb( 0, 255, 0 );
     }
     else if ( g_buttonX.isPressed() )
     {
-        printf( "X pressed\n" );
-        //led.set_rgb( 0, 0, 255 );
+        //printf( "X pressed\n" );
+        g_rgbLEDDriverPtr->setRgb( 0, 0, 255 );
     }
     else if ( g_buttonY.isPressed() )
     {
-        printf( "Y pressed\n" );
-        //led.set_rgb( 255, 255, 255 );
+        //printf( "Y pressed\n" );
+        g_rgbLEDDriverPtr->setRgb( 255, 255, 255 );
     }
     else
     {
-        printf( "ALL off\n" );
-        //led.set_rgb( 0, 0, 0 );
+        //printf( "ALL off\n" );
+        g_rgbLEDDriverPtr->setOff();
     }
 }
 
@@ -102,6 +101,10 @@ void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 /*-----------------------------------------------------------*/
 void runApplication() noexcept
 {
+    // Enable Tracing
+    CPL_SYSTEM_TRACE_ENABLE();
+    CPL_SYSTEM_TRACE_ENABLE_SECTION( MY_APP_TRACE_SECTION );
+    CPL_SYSTEM_TRACE_SET_INFO_LEVEL( Cpl::System::Trace::eINFO );
     CPL_SYSTEM_TRACE_MSG( MY_APP_TRACE_SECTION, ("Hello.  I am the Circle application.") );
 
     // Create mock application thread 
