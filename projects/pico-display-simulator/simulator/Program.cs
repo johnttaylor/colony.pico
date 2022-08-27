@@ -139,13 +139,18 @@ namespace Simulator
     // Sets the RBG LED state
     // Command Format AFTER the leading (without leading/trailing SOF/EOF framing characters)
     //
-    // <DD> <HH:MM:SS.sss> writeRGBLed <r> <g> <b>
+    // <DD> <HH:MM:SS.sss> writeRGBLed <led> <r> <g> <b> <bright>
     // Where:
     //      <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
     //      <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
+    //      <led>               LED identifier/label(with no whitespace allowed)
     //      <r>                 The 'Red' value (0-255) for the RGB LED
     //      <g>                 The 'Green' value (0-255) for the RGB LED
     //      <b>                 The 'Blue' value (0-255) for the RGB LED
+    //      <bright>            Overall brightness for the LED(0-255)
+    //
+    // Note: Since we only have one LED and do not support brightness the <led>
+    //       and <bright> arguments are ignored.
     public class Led : ICommand
     {
         private MainForm m_ui;
@@ -160,9 +165,9 @@ namespace Simulator
         {
             Console.WriteLine("PROCESSING: " + rawString);
 
-            int r = int.Parse(tokenizeString[3]);
-            int g = int.Parse(tokenizeString[4]);
-            int b = int.Parse(tokenizeString[5]);
+            int r = int.Parse(tokenizeString[4]);
+            int g = int.Parse(tokenizeString[5]);
+            int b = int.Parse(tokenizeString[6]);
 
             m_ui.FillImage(m_ui.m_rgbLED, Color.FromArgb(r, g, b), m_ui.m_rgbLED.Width, m_ui.m_rgbLED.Height);
             m_ui.UpdateLcd();

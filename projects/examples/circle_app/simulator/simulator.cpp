@@ -24,6 +24,7 @@ Create Thread
 #include "Cpl/System/Thread.h"
 #include "Cpl/Dm/PeriodicScheduler.h"
 #include "Driver/Button/TPipe/Hal.h"
+#include "Driver/LED/TPipe/RedGreenBlue.h"
 
 #ifndef OPTION_MY_APP_SIM_RX_FRAME_HANDLER_SIZE
 #define OPTION_MY_APP_SIM_RX_FRAME_HANDLER_SIZE     256
@@ -41,6 +42,9 @@ Driver::Button::PolledDebounced g_buttonB( "B" );
 Driver::Button::PolledDebounced g_buttonX( "X" );
 Driver::Button::PolledDebounced g_buttonY( "Y" );
 
+// Create RGB LED Driver
+static Driver::LED::TPipe::RedGreeBlue rgbLedDriver_( tpipe_, "theOne" );
+Driver::LED::RedGreenBlue*             g_rgbLEDDriverPtr = &rgbLedDriver_;
 
 /*-----------------------------------------------------------*/
 //
