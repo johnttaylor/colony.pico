@@ -81,7 +81,7 @@ namespace Simulator
         {
             if (m_listener.m_socketHandle != null)
             {
-                string buttons = String.Format("^buttons A {0} B {1} X {2} Y {3}\n",
+                string buttons = String.Format("^buttons A {0} B {1} X {2} Y {3};\n",
                     m_pressedStateA ? "DN" : "up",
                     m_pressedStateB ? "DN" : "up",
                     m_pressedStateX ? "DN" : "up",

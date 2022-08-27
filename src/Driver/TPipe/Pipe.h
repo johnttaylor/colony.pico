@@ -90,9 +90,6 @@ public:
     /** This method performs the in-thread initialization of the TPipe. It
         MUST be called in the 'beginThreadProcessing' for the Periodic Scheduler
         of which the TPipe executes in.
-
-        Note: Until the setStreams() method is called, the TPipe will NOT transmit
-              or accept incoming frames.
      */
     void start( Cpl::Io::Input& inStream, Cpl::Io::Output& outStream ) noexcept;
 
@@ -113,12 +110,6 @@ public:
 public:
     /// See Driver::TPipe::Tx
     bool sendCommand( const char* completeCommandText, size_t numBytes ) noexcept;
-
-public:
-    /** This method is to provide the TPipe with its input/output streams.  This
-        method is thread safe and can be called from any thread
-     */
-    void setStreams( Cpl::Io::Input& inStream, Cpl::Io::Output& outStream ) noexcept;
 
 public:
     /** This method returns the number of received frames that there was no

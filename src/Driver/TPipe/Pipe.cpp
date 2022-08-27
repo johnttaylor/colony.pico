@@ -44,6 +44,8 @@ void Pipe::start( Cpl::Io::Input& inStream, Cpl::Io::Output& outStream ) noexcep
 {
     m_frameBuffer   = new (std::nothrow) char[m_frameBufSize + 1]; // add space for the null terminator
     m_unknownFrames = 0;
+    m_framer.setOutput( outStream );
+    m_deframer.setInput( inStream );
 }
 
 void Pipe::stop() noexcept
@@ -53,13 +55,6 @@ void Pipe::stop() noexcept
         delete[] m_frameBuffer;
         m_frameBuffer = nullptr;
     }
-}
-
-void Pipe::setStreams( Cpl::Io::Input& inStream, Cpl::Io::Output& outStream ) noexcept
-{
-    Cpl::System::Mutex::ScopeBlock lock( m_lock );
-    m_framer.setOutput( outStream );
-    m_deframer.setInput( inStream );
 }
 
 size_t Pipe::getUnknownFrameCount() noexcept

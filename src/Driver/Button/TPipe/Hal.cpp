@@ -1,13 +1,13 @@
-/*----------------------------------------------------------------------------- 
-* This file is part of the Colony.Core Project.  The Colony.Core Project is an   
-* open source project with a BSD type of licensing agreement.  See the license  
-* agreement (license.txt) in the top/ directory or on the Internet at           
+/*-----------------------------------------------------------------------------
+* This file is part of the Colony.Core Project.  The Colony.Core Project is an
+* open source project with a BSD type of licensing agreement.  See the license
+* agreement (license.txt) in the top/ directory or on the Internet at
 * http://integerfox.com/colony.core/license.txt
-*                                                                               
-* Copyright (c) 2014-2022  John T. Taylor                                        
-*                                                                               
-* Redistributions of the source code must retain the above copyright notice.    
-*----------------------------------------------------------------------------*/ 
+*
+* Copyright (c) 2014-2022  John T. Taylor
+*
+* Redistributions of the source code must retain the above copyright notice.
+*----------------------------------------------------------------------------*/
 /** @file */
 
 #include "Driver/Button/Hal.h"
@@ -43,15 +43,28 @@ public:
     {
         Cpl::Text::Tokenizer::Basic tokens( decodedFrameText );
 
+        // Parse the verb
+        const char* curToken = tokens.next();
+        if ( curToken == nullptr )
+        {
+            return;
+        }
+
         // Must have at least 3 tokens - and individual buttons are always 2 tokens
         unsigned buttonIdx = 0;
-        unsigned numTokens = tokens.numTokens() - 1;
-        while( numTokens >= 2 )
+        curToken           = tokens.next();
+        while ( curToken && buttonIdx < OPTION_DRIVER_BUTTON_HAL_TPIPE_MAX_BUTTONS )
         {
-            m_buttons[buttonIdx].buttonName = tokens.getToken( 1 + buttonIdx * 2 );
-            m_buttons[buttonIdx].pressed    = *(tokens.getToken( 1 + buttonIdx * 2 + 1 )) == 'D' ? true : false;
+            m_buttons[buttonIdx].buttonName = curToken;
+            curToken = tokens.next();
+            if ( curToken == nullptr )
+            {
+                m_buttons[buttonIdx].buttonName = "";   // Clear button name since it DID NOT have state!
+                return;
+            }
+            m_buttons[buttonIdx].pressed = *curToken == 'D' ? true : false;
+            curToken = tokens.next();
             buttonIdx++;
-            numTokens -= 2;
         }
     }
 

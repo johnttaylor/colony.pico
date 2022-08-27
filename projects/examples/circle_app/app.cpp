@@ -47,7 +47,7 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
     }
     else if ( g_buttonB.isPressed() )
     {
-        printf( "Y pressed\n" );
+        printf( "B pressed\n" );
         //led.set_rgb( 0, 255, 0 );
     }
     else if ( g_buttonX.isPressed() )
