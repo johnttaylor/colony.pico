@@ -48,7 +48,7 @@ public:
     /// Convenience method to send a command that is a contained in a null terminated string
     inline bool sendCommand( const char* commandString ) noexcept
     {
-        return sendCommand( commandString, strlen( commandString );
+        return sendCommand( commandString, strlen( commandString ) );
     }
 
 public:

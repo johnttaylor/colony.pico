@@ -21,9 +21,13 @@ using namespace Cpl::Text::Frame;
 
 
 ///////////////////////////////////
-StreamDecoder::StreamDecoder( char rawInputBuffer[], size_t sizeOfRawInputBuffer, Cpl::Io::Input* inputSource )
+StreamDecoder::StreamDecoder( char            rawInputBuffer[], 
+							  size_t          sizeOfRawInputBuffer, 
+							  Cpl::Io::Input* inputSource,
+							  bool            blocking )
 	:Decoder_( rawInputBuffer, sizeOfRawInputBuffer )
 	, m_srcPtr( inputSource )
+	, m_blocking( blocking )
 {
 }
 
@@ -43,6 +47,13 @@ bool StreamDecoder::read( void* buffer, int numBytes, int& bytesRead )
 		return false;  // Should never get here! -->but needed for unittests
 	}
 
+	// Do not allow the read() call to block if there is no data available (and non-blocking has been enabled!)
+	if ( !m_blocking && !m_srcPtr->available() )
+	{
+		bytesRead = 0;
+		return true;
+	}
+	
 	return m_srcPtr->read( buffer, numBytes, bytesRead );
 }
 

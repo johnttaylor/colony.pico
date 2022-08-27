@@ -1,5 +1,5 @@
-#ifndef Driver_Tpipe_Rx_h_
-#define Driver_Tpipe_Rx_h_
+#ifndef Driver_Tpipe_RxFrameHandler_h_
+#define Driver_Tpipe_RxFrameHandler_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -12,39 +12,38 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
-#include "Cpl/Container/MapItem.h"
+#include "Driver/TPipe/RxFrameHandlerApi.h"
+#include "Cpl/Container/Map.h"
+#include "Cpl/Container/Key.h"
 
 ///
 namespace Driver {
 ///
 namespace TPipe {
 
-/** This abstract class defines the 'Received Frame Handler' interface for the
-    TPipe. The frame handlers are essentially callback that are executed when
-    a valid frame is received.  The frame handler's execute in the TPipe's thread.
-    It is the Application RESPONSIBLE for ensuring proper thread-safe inside
-    the frame handlers.
+/** This partially concrete class provides functionality that is common to
+    all Frame handlers.  Most notably, this class implements the self-registration
+    of a Frame handler. All concrete Frame Handler classes should inherit
+    from this class.
  */
-class RxFrameHandler: public Cpl::Container::MapItem
+class RxFrameHandler: public RxFrameHandlerApi
 {
-public:
-    /** This method is execute when an valid frame is received AND the frame
-        begins with the frame handler' verb (as defined by its getVerb() method).
-
-        The frame is passed via 'decodedFrameText' - which is a null terminated
-        string.  The frame handler is ALLOWED to modify the frame contents (e.g.
-        destructive tokenizing)
-     */
-    virtual bool execute( char* decodedFrameText ) noexcept = 0;
+protected:
+    /// Constructor
+    RxFrameHandler( Cpl::Container::Map<RxFrameHandlerApi>& handlerList, const char* verb ) noexcept;
 
 
 public:
-    /// This method returns the frame handler's verb string
-    virtual const char* getVerb() const noexcept = 0;
+    /// See Driver::TPipe::RxFrameHandlerApi
+    const char* getVerb() const noexcept;
 
-public:
-    /// Virtual destructor
-    virtual ~RxFrameHandler() {}
+protected:
+    /// See Cpl::Container::Key
+    const Cpl::Container::Key& getKey() const noexcept;
+
+protected:
+    /// Verb 
+    Cpl::Container::KeyLiteralString  m_mapKey;
 };
 
 

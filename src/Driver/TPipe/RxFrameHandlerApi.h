@@ -35,7 +35,7 @@ public:
         string.  The frame handler is ALLOWED to modify the frame contents (e.g.
         destructive tokenizing)
      */
-    virtual bool execute( char* decodedFrameText ) noexcept = 0;
+    virtual void execute( char* decodedFrameText ) noexcept = 0;
 
 
 public:

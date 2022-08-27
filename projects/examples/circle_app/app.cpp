@@ -1,7 +1,7 @@
 #include "app.h"
 //#include "drivers/st7789/st7789.hpp"
 //#include "libraries/pico_graphics/pico_graphics.hpp"
-#include "rgbled.hpp"
+//#include "rgbled.hpp"
 //#include "button.hpp"
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/Api.h"
@@ -18,7 +18,7 @@
 //PicoGraphics_PenRGB332 graphics( st7789.width, st7789.height, nullptr );
 
 // RGB LED
-pimoroni::RGBLED led( 6, 7, 8 );
+//pimoroni::RGBLED led( 6, 7, 8 );
 
 
 /*-----------------------------------------------------------*/
@@ -28,7 +28,7 @@ static void interval_10ms( Cpl::System::ElapsedTime::Precision_T currentTick,
                            Cpl::System::ElapsedTime::Precision_T currentInterval,
                            void*                                 context_notUsed )
 {
-    // Debounce the button Inputs
+    // De-bounce the button Inputs
     g_buttonA.sample();
     g_buttonB.sample();
     g_buttonX.sample();
@@ -42,23 +42,28 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
 {
     if ( g_buttonA.isPressed() )
     {
-        led.set_rgb( 255, 0, 0 );
+        printf( "A pressed\n" );
+        //led.set_rgb( 255, 0, 0 );
     }
     else if ( g_buttonB.isPressed() )
     {
-        led.set_rgb( 0, 255, 0 );
+        printf( "Y pressed\n" );
+        //led.set_rgb( 0, 255, 0 );
     }
     else if ( g_buttonX.isPressed() )
     {
-        led.set_rgb( 0, 0, 255 );
+        printf( "X pressed\n" );
+        //led.set_rgb( 0, 0, 255 );
     }
     else if ( g_buttonY.isPressed() )
     {
-        led.set_rgb( 255, 255, 255 );
+        printf( "Y pressed\n" );
+        //led.set_rgb( 255, 255, 255 );
     }
     else
     {
-        led.set_rgb( 0, 0, 0 );
+        printf( "ALL off\n" );
+        //led.set_rgb( 0, 0, 0 );
     }
 }
 
@@ -84,7 +89,7 @@ Cpl::Dm::PeriodicScheduler core0Mbox_( core0Intervals_, core0Start );
 void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     // Turn the RGB LED off
-    led.set_rgb( 0, 0, 0 );
+    //led.set_rgb( 0, 0, 0 );
 
     // Start the button drivers
     g_buttonA.start();

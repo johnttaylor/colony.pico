@@ -11,6 +11,8 @@
 /** @file */
 
 #include "Pipe.h"
+#include "Cpl/Text/strip.h"
+#include <new>
 
 using namespace Driver::TPipe;
 
@@ -26,8 +28,9 @@ Pipe::Pipe( Cpl::Container::Map<RxFrameHandlerApi>&   rxFrameHdlrs,
     , m_deframer( deframer )
     , m_framer( framer )
     , m_frameBuffer( nullptr )
-    , m_bufSize( rxBufferSize )
+    , m_frameBufSize( rxBufferSize )
     , m_verbDelimiters( verbDelimiters )
+    , m_unknownFrames( 0 )
 {
 }
 
@@ -39,7 +42,8 @@ Pipe::~Pipe()
 //////////////////////////////////////////////////
 void Pipe::start( Cpl::Io::Input& inStream, Cpl::Io::Output& outStream ) noexcept
 {
-    m_frameBuffer = new (std::nothrow) char[m_bufSize + 1]; // add space for the null terminator
+    m_frameBuffer   = new (std::nothrow) char[m_frameBufSize + 1]; // add space for the null terminator
+    m_unknownFrames = 0;
 }
 
 void Pipe::stop() noexcept
@@ -56,6 +60,12 @@ void Pipe::setStreams( Cpl::Io::Input& inStream, Cpl::Io::Output& outStream ) no
     Cpl::System::Mutex::ScopeBlock lock( m_lock );
     m_framer.setOutput( outStream );
     m_deframer.setInput( inStream );
+}
+
+size_t Pipe::getUnknownFrameCount() noexcept
+{
+    Cpl::System::Mutex::ScopeBlock lock( m_lock );
+    return m_unknownFrames;
 }
 
 //////////////////////////////////////////////////
@@ -76,6 +86,49 @@ bool Pipe::sendCommand( const char* completeCommandText, size_t numBytes ) noexc
     return success;
 }
 
-void Pipe::poll() noexcept
+
+bool Pipe::poll() noexcept
 {
+    // Skip processing if the Pipe has not been started
+    if ( m_frameBuffer != nullptr )
+    {
+        // Decode the incoming data
+        size_t sizeOfFrameFound;
+        bool   isEof;
+        if ( !m_deframer.scan( m_frameBufSize, m_frameBuffer, sizeOfFrameFound, isEof ) )
+        {
+            // Error reading raw input
+            return false;
+        }
+
+        // No frame found -->nothing more to do
+        if ( !isEof )
+        {
+            return true;
+        }
+
+        // Null terminate the frame.  By definition sizeOfFrameFound <= m_frameBufSize 
+        // AND the buffer size is m_frameBufSize + 1
+        m_frameBuffer[sizeOfFrameFound] = '\0'; 
+        
+        // Extract the command verb
+        const char* verbToken    = m_frameBuffer;
+        const char* endVerbToken = Cpl::Text::stripNotChars( verbToken, m_verbDelimiters );
+        Cpl::Container::KeyStringBuffer verb( verbToken, endVerbToken - verbToken );
+
+        // Look up the frame handler
+        RxFrameHandlerApi* frameHandlerPtr;
+        if ( (frameHandlerPtr=m_rxHandlers.find( verb )) == 0 )
+        {
+            // Do nothing if no handler was found (well okay we count the number times this happens)
+            Cpl::System::Mutex::ScopeBlock lock( m_lock );
+            m_unknownFrames++;
+            return true;
+        }
+
+        // Execute the frame handler
+        frameHandlerPtr->execute( m_frameBuffer );
+    }
+
+    return true;
 }

@@ -11,30 +11,89 @@
 /** @file */
 
 #include "Driver/Button/Hal.h"
-#include "pico/stdlib.h"
+#include "Hal.h"
+#include "Driver/TPipe/RxFrameHandler.h"
+#include "Cpl/Text/Tokenizer/Basic.h"
+#include "Cpl/Text/FString.h"
+#include "Cpl/System/Mutex.h"
+#include <memory.h>
 
-void driverButtonHalRP2040_initialize( Driver_Button_Hal_T buttonHdl )
+
+class ButtonFrameHandler : public Driver::TPipe::RxFrameHandler
 {
-    gpio_set_function( buttonHdl.pinId, GPIO_FUNC_SIO );
-    gpio_set_dir( buttonHdl.pinId, GPIO_IN );
-    if ( buttonHdl.activeLow ) 
+public:
+    ///
+    struct Button_T
     {
-        gpio_pull_up( buttonHdl.pinId );
-    }
-    else 
+        Cpl::Text::FString<OPTION_DRIVER_BUTTON_HAL_TPIPE_SIZE_BUTTON_NAME> buttonName;
+        bool                                                                pressed;
+    };
+    ///
+    Button_T            m_buttons[OPTION_DRIVER_BUTTON_HAL_TPIPE_MAX_BUTTONS];
+    Cpl::System::Mutex  m_lock;
+
+    ///
+    ButtonFrameHandler( Cpl::Container::Map<Driver::TPipe::RxFrameHandlerApi>& tpipeRxFrameHandlerList )
+        : RxFrameHandler( tpipeRxFrameHandlerList, OPTION_DRIVER_BUTTON_HAL_TPIPE_COMMAND_VERB )
     {
-        gpio_pull_down( buttonHdl.pinId );
     }
+
+    ///
+    void execute( char* decodedFrameText ) noexcept
+    {
+        Cpl::Text::Tokenizer::Basic tokens( decodedFrameText );
+
+        // Must have at least 3 tokens - and individual buttons are always 2 tokens
+        unsigned buttonIdx = 0;
+        unsigned numTokens = tokens.numTokens() - 1;
+        while( numTokens >= 2 )
+        {
+            m_buttons[buttonIdx].buttonName = tokens.getToken( 1 + buttonIdx * 2 );
+            m_buttons[buttonIdx].pressed    = *(tokens.getToken( 1 + buttonIdx * 2 + 1 )) == 'D' ? true : false;
+            buttonIdx++;
+            numTokens -= 2;
+        }
+    }
+
+    /// 
+    bool getButtonState( const char* buttonName )
+    {
+        Cpl::System::Mutex::ScopeBlock lock( m_lock );
+        for ( int i=0; i < OPTION_DRIVER_BUTTON_HAL_TPIPE_MAX_BUTTONS; i++ )
+        {
+
+            // Exit early if the end-of-list is found
+            if ( m_buttons[i].buttonName.length() == 0 )
+            {
+                break;
+            }
+
+            if ( m_buttons[i].buttonName == buttonName )
+            {
+                return m_buttons[i].pressed;
+            }
+        }
+
+        // If I get the button name was found in the List of buttons supplied by the TPipe
+        return false;
+    }
+};
+
+
+///////////////////////////////////////////////////
+static ButtonFrameHandler* rxFrameHandler_;
+
+void driverButtonHalTPipe_initialize( Cpl::Container::Map<Driver::TPipe::RxFrameHandlerApi>& tpipeRxFrameHandlerList )
+{
+    rxFrameHandler_ = new(std::nothrow) ButtonFrameHandler( tpipeRxFrameHandlerList );
 }
 
-bool driverButtonHalRP2040_getRawPressState( Driver_Button_Pin_Hal_RP2040_T pinHandle )
+bool driverButtonHalTPipe_getRawPressState( const char* buttonName )
 {
-    if ( pinHandle.activeLow )
+    if ( rxFrameHandler_ )
     {
-        return !gpio_get( pinHandle.pinId );
+        return rxFrameHandler_->getButtonState( buttonName );
     }
-    else 
-    {
-        return gpio_get( pinHandle.pinId );
-    }
+
+    return false;
 }

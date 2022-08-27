@@ -49,6 +49,9 @@ namespace TPipe {
 
         - The application MUST call the TPipe's poll() method in the 'idleProcessing'
           function for the thread/PeriodicScheduler
+
+        - The concrete Frame decoder class MUST use non-blocking semantics. See 
+          Cpl::Text::Frame::StreamDecoder for more details.
  */
 class Pipe : public Tx
 {
@@ -58,22 +61,25 @@ public:
         @param rxFrameHdlrs     The set of received frame handlers.  Note: frame
                                 handler's self register
         @param deframer         Frame decoder used to identify individual command
-                                strings within the raw Input stream
+                                strings within the raw Input stream. NOTE: The
+                                decoder instance MUST use non-blocking semantics
         @param framer           Frame encoder used to encapsulate the output of
                                 command in the Output stream.
-        @param rxBufferSize     The size, in bytes, of the buffer used to buffer
-                                incoming data.  The behavior of what happens if
-                                the incoming data exceeds the buffer is defined
-                                by the 'deframer' (typically this is to discard the
-                                current frame and being looking for a new SOF)
+        @param rxFrameSize      The size, in bytes, of the buffer used to hold
+                                an incoming Frame.  The behavior of what happens 
+                                if the incoming data exceeds the frame size is 
+                                defined by the 'deframer' (typically this is to 
+                                discard the in-progress frame and being looking 
+                                for a new SOF).
         @param verbDelimiters   The delimiter characters used to separate the
                                 command verb from the rest of commands tokens/data.
-                                This string must stay in scope for of TPipe instance.
+                                This string must stay in scope for the life of the
+                                Pipe instance.
      */
     Pipe( Cpl::Container::Map<RxFrameHandlerApi>&   rxFrameHdlrs,
           Cpl::Text::Frame::StreamDecoder&          deframer,
           Cpl::Text::Frame::StreamEncoder&          framer,
-          size_t                                    rxBufferSize,
+          size_t                                    rxFrameSize,
           const char*                               verbDelimiters=" "
     );
 
@@ -99,8 +105,10 @@ public:
     /** This method provides the TPipe CPU/Execution time.  It MUST be called
         in the 'idleFunction' for the Periodic Scheduler of which the TPipe
         executes in.
+
+        Return false if a Stream IO error occurred; else true is returned
      */
-    void poll() noexcept;
+    bool poll() noexcept;
 
 public:
     /// See Driver::TPipe::Tx
@@ -111,6 +119,14 @@ public:
         method is thread safe and can be called from any thread
      */
     void setStreams( Cpl::Io::Input& inStream, Cpl::Io::Output& outStream ) noexcept;
+
+public:
+    /** This method returns the number of received frames that there was no
+        registered frame handler to process the incoming frame.
+
+        This method is thread safe.
+     */
+    size_t getUnknownFrameCount() noexcept;
 
 protected:
     /// List of Frame handlers
@@ -129,10 +145,13 @@ protected:
     Cpl::System::Mutex                      m_lock;
 
     /// Frame buffer size (not including the null terminator)
-    size_t                                  m_bufSize;
+    size_t                                  m_frameBufSize;
 
     /// Delimiter(s) to find the end of the command verb
     const char*                             m_verbDelimiters;
+
+    /// Track the number of unknown frames (i.e. frame received with no register frame handler)
+    size_t                                  m_unknownFrames;
 };
 
 };      // end namespaces

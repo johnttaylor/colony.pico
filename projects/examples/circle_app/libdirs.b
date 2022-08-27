@@ -14,7 +14,7 @@ src/Cpl/TShell/Cmd
 src/Cpl/Dm
 src/Cpl/Dm/Mp
 src/Cpl/Dm/TShell
-src/Cpl/Io < Input.cpp Output.cpp
+src/Cpl/Io 
 
 # Platform independent driver(s)
 src/Driver/Button
