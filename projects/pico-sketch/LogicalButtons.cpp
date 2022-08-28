@@ -108,8 +108,7 @@ void processLogicalButtons( Cpl::System::ElapsedTime::Precision_T currentTick,
         break;
 
     case STATE_WAITING_ALL_RELEASED:
-        if ( !g_buttonA.isPressed() &&
-             !g_buttonB.isPressed() &&
+        if ( !g_buttonB.isPressed() &&
              !g_buttonX.isPressed() &&
              !g_buttonY.isPressed() )
         {

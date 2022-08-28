@@ -29,11 +29,11 @@ R"(Pico-sketch Simulation.
       pico-sketch [options]
 
     Options:
-      -H HOST       Hostname for the Display Simulation. [Default: 127.0.0.1]
+      -h HOST       Hostname for the Display Simulation. [Default: 127.0.0.1]
       -p PORT       The Display Simulation's Port number [Default: 5010]
 
       -v            Be verbose
-      -h,--help     Show this screen.
+      --help        Show this screen.
 
 )";
 
@@ -59,10 +59,10 @@ int main( int argc, char* argv[] )
     // Platform specific sockets: Connect to the Display simulation
     Cpl::Io::Descriptor                 socketFd;
     Cpl::Io::Socket::Win32::Connector   connector;
-    if ( connector.establish( args_["-H"].asString().c_str(), args_["-p"].asLong(), socketFd ) != Cpl::Io::Socket::Connector::eSUCCESS )
+    if ( connector.establish( args_["-h"].asString().c_str(), args_["-p"].asLong(), socketFd ) != Cpl::Io::Socket::Connector::eSUCCESS )
     {
         printf( "\nERROR. Failed to connected to the Display Simulation. (host=%s, port=%d).\n",
-                args_["-H"].asString().c_str(), 
+                args_["-h"].asString().c_str(), 
                 args_["-p"].asLong() );
         return 1;
     }
@@ -75,7 +75,7 @@ int main( int argc, char* argv[] )
     runApplication();
     for ( ;;)
     {
-        Cpl::System::Api::sleep( 1000 );
+        Cpl::System::Api::sleep( 1000000 );
     }
 
     // If I get here something BAD happen!

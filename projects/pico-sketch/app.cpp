@@ -189,7 +189,7 @@ void runApplication() noexcept
     CPL_SYSTEM_TRACE_ENABLE();
     CPL_SYSTEM_TRACE_ENABLE_SECTION( MY_APP_TRACE_SECTION );
     CPL_SYSTEM_TRACE_SET_INFO_LEVEL( Cpl::System::Trace::eINFO );
-    CPL_SYSTEM_TRACE_MSG( MY_APP_TRACE_SECTION, ("Hello.  I am the Circle application.") );
+    CPL_SYSTEM_TRACE_MSG( MY_APP_TRACE_SECTION, ("Hello.  I am the Pico-Sketch App.") );
 
     // Create main application thread 
     Cpl::System::Thread::create( core0Mbox_, "APP" );

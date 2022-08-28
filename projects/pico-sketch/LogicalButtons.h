@@ -41,14 +41,14 @@
     a pressed button generates a repeat event
  */
 #ifndef OPTION_MY_APP_LOGICAL_BUTTON_HOLD_COUNT
-#define OPTION_MY_APP_LOGICAL_BUTTON_HOLD_COUNT     200  // 2 sec @100Hz
+#define OPTION_MY_APP_LOGICAL_BUTTON_HOLD_COUNT     150  // 1.5 sec @100Hz
 #endif
 
 /** Specifies the repeat hold time, in interval counts, between
      a pressed button repeat events
   */
 #ifndef OPTION_MY_APP_LOGICAL_BUTTON_REPEAT_COUNT
-#define OPTION_MY_APP_LOGICAL_BUTTON_REPEAT_COUNT   50  // 0.5 sec @100Hz
+#define OPTION_MY_APP_LOGICAL_BUTTON_REPEAT_COUNT   10  // 0.1 sec @100Hz
 #endif
 
 /*-------------------------------------------------------*/

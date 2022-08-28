@@ -19,6 +19,8 @@
 
 static void drawStartScreen();
 static void clearTheCanvas( uint8_t bgColorRed, uint8_t bgColorGreen, uint8_t bgColorBlue );
+static void movePencil( int deltaX, int deltaY );
+static void setPencilColor( uint8_t red, uint8_t green, uint8_t blue );
 
 /*-----------------------------------------------------------*/
 class EventMonitor
@@ -72,6 +74,7 @@ public:
         bool pressed;
         if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
+            movePencil( 1, 0 );
         }
     }
 
@@ -81,6 +84,7 @@ public:
         bool pressed;
         if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
+            movePencil( -1, 0 );
         }
     }
 
@@ -90,6 +94,7 @@ public:
         bool pressed;
         if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
+            movePencil( 0, -1 );
         }
     }
 
@@ -99,6 +104,7 @@ public:
         bool pressed;
         if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
+            movePencil( 0, 1 );
         }
     }
 
@@ -126,6 +132,8 @@ public:
         bool pressed;
         if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
+            drawStartScreen();
+            m_waitingAnyKey = true;
         }
     }
 
@@ -133,8 +141,6 @@ public:
     /// Helper function to the first keypess when on the start screen
     bool consumeAnyKeyWhenWaiting()
     {
-        printf( "consumeAnyKeyWhenWaiting: m_waitingAnyKey=%d\n", m_waitingAnyKey );
-
         if ( m_waitingAnyKey )
         {
             clearTheCanvas( 255, 255, 255 );
@@ -198,8 +204,46 @@ pimoroni::PicoGraphics_PenRGB565 graphics_( MY_APP_DISPLAY_WIDTH, MY_APP_DISPLAY
 #endif
 
 
+static unsigned pencilSize_;
+static int pencilX0_;
+static int pencilY0_;
 
 /*---------------------------------------------------------------------------*/
+void setPencilColor( int red, int green, int blue )
+{
+    graphics_.set_pen( red, green, blue );
+};
+
+void movePencil( int deltaX, int deltaY )
+{
+    // Move the X coordinate
+    pencilX0_ += deltaX;
+    if ( pencilX0_ < 0 )
+    {
+        pencilX0_ = 0;
+    }
+    else if ( pencilX0_ >= MY_APP_DISPLAY_WIDTH )
+    {
+        pencilX0_ = MY_APP_DISPLAY_WIDTH - 1;
+    }
+
+    // Move the Y coordinate
+    pencilY0_ += deltaY;
+    if ( pencilY0_ < 0 )
+    {
+        pencilY0_ = 0;
+    }
+    else if ( pencilY0_ >= MY_APP_DISPLAY_HEIGHT )
+    {
+        pencilY0_ = MY_APP_DISPLAY_HEIGHT - 1;
+    }
+
+    // now update the screen
+    pimoroni::Rect box( pencilX0_, pencilY0_, pencilSize_, pencilSize_ );
+    graphics_.rectangle( box );
+    platform_updateLcd( graphics_ );
+}
+
 void clearTheCanvas( uint8_t bgColorRed, uint8_t bgColorGreen, uint8_t bgColorBlue )
 {
     // set the colour of the pen
@@ -207,6 +251,12 @@ void clearTheCanvas( uint8_t bgColorRed, uint8_t bgColorGreen, uint8_t bgColorBl
 
     // fill the screen with the current pen colour
     graphics_.clear();
+
+    // Leave the Pencil color at black
+    graphics_.set_pen( 0, 0, 0 );
+    pencilX0_   = MY_APP_DISPLAY_WIDTH / 2;
+    pencilY0_   = MY_APP_DISPLAY_HEIGHT / 2;
+    pencilSize_ = 1;
 
     // now we've done our drawing let's update the screen
     platform_updateLcd( graphics_ );
