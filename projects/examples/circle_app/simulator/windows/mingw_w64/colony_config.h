@@ -1,8 +1,10 @@
 #ifndef COLONY_CONFIG_H_
 #define COLONY_CONFIG_H_
 
-// Enable Trace
+// Enable Trace (but NOT on code coverage builds)
+#ifndef BUILD_VARIANT_WIN32
 #define USE_CPL_SYSTEM_TRACE
+#endif
 
 // Force DOS newline
 #define USE_CPL_IO_NEW_LINE_STANDARD   CPL_IO_NEW_LINE_NATIVE

@@ -56,3 +56,18 @@ int main( void )
     runApplication();         // This method should never return
     return 0;
 }
+
+#include "drivers/st7789/st7789.hpp"
+#include "pico/stdlib.h"
+
+// Display driver
+pimoroni::ST7789 st7789_( MY_APP_DISPLAY_WIDTH, MY_APP_DISPLAY_HEIGHT, pimoroni::ROTATE_0, false, get_spi_pins( pimoroni::BG_SPI_FRONT ) );
+void platform_updateLcd( pimoroni::PicoGraphics& graphics )
+{
+    st7789_.update( &graphics );
+}
+
+void platform_setLcdBacklight( uint8_t value )
+{
+    st7789_.set_backlight( value );
+}

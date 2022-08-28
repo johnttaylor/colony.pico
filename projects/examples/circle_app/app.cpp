@@ -1,6 +1,5 @@
 #include "app.h"
 //#include "drivers/st7789/st7789.hpp"
-//#include "libraries/pico_graphics/pico_graphics.hpp"
 //#include "rgbled.hpp"
 //#include "button.hpp"
 #include "Cpl/System/Trace.h"
@@ -35,6 +34,9 @@ static void interval_10ms( Cpl::System::ElapsedTime::Precision_T currentTick,
     g_buttonY.sample();
 }
 
+// Graphics library - in RGB332 mode you get 256 colours and optional dithering for 75K RAM.
+pimoroni::PicoGraphics_PenRGB332 graphics( 240, 135, nullptr );
+
 /// 10Hz
 static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
                             Cpl::System::ElapsedTime::Precision_T currentInterval,
@@ -64,6 +66,30 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
         //printf( "ALL off\n" );
         g_rgbLEDDriverPtr->setOff();
     }
+
+    // set the colour of the pen
+    // parameters are red, green, blue all between 0 and 255
+    graphics.set_pen( 30, 40, 50 );
+
+    // fill the screen with the current pen colour
+    graphics.clear();
+
+    // draw a box to put some text in
+    graphics.set_pen( 10, 20, 30 );
+    pimoroni::Rect text_rect( 10, 10, 150, 150 );
+    graphics.rectangle( text_rect );
+
+    // write some text inside the box with 10 pixels of margin
+    // automatically word wrapping
+    text_rect.deflate( 10 );
+    graphics.set_pen( 110, 120, 130 );
+    graphics.text( "This is a message", pimoroni::Point( text_rect.x, text_rect.y ), text_rect.w );
+
+    // now we've done our drawing let's update the screen
+    platform_updateLcd( graphics );
+
+    //st7789.update( &graphics );
+
 }
 
 /*-----------------------------------------------------------*/
@@ -95,6 +121,8 @@ void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
     g_buttonB.start();
     g_buttonX.start();
     g_buttonY.start();
+
+    platform_setLcdBacklight( 220 );
 }
 
 

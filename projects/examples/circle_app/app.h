@@ -17,8 +17,16 @@
 
  */
 
+#include "libraries/pico_graphics/pico_graphics.hpp"
 #include "Driver/Button/PolledDebounced.h"
 #include "Driver/LED/RedGreenBlue.h"
+
+
+/// Width, in pixels, of the display
+#define MY_APP_DISPLAY_WIDTH        240
+
+/// Height, in pixels, of the display
+#define MY_APP_DISPLAY_HEIGHT       135
 
 /// Default Trace section
 #define MY_APP_TRACE_SECTION        "app"
@@ -37,6 +45,12 @@ extern Driver::Button::PolledDebounced g_buttonY;
 
 /// expose the RGB LED driver
 extern Driver::LED::RedGreenBlue*      g_rgbLEDDriverPtr;
+
+/// This function is called by the Application to update/refresh the LCD contents
+void platform_updateLcd( pimoroni::PicoGraphics& graphics );
+
+/// This function is called by the Application to set the LCD backlight setting (0-255)
+void platform_setLcdBacklight( uint8_t value );
 
 /// Entry function to the application
 void runApplication() noexcept;

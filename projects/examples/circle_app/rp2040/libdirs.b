@@ -1,11 +1,6 @@
 # pimoroni libraries
-xsrc/pimoroni-pico/common
 xsrc/pimoroni-pico/drivers/rgbled
 xsrc/pimoroni-pico/drivers/st7789
-xsrc/pimoroni-pico/libraries/pico_graphics
-xsrc/pimoroni-pico/libraries/pico_display
-xsrc/pimoroni-pico/libraries/hershey_fonts
-xsrc/pimoroni-pico/libraries/bitmap_fonts
 
 # Platform specific driver(s)
 src/Driver/Button/RP2040
@@ -19,6 +14,9 @@ src/Cpl/System/RP2040/_fatalerror
 xsrc/pico-sdk/src/rp2_common/pico_multicore
 
 # Core SDK
+xsrc/pico-sdk/src/rp2_common/hardware_pio
+xsrc/pico-sdk/src/rp2_common/hardware_spi
+xsrc/pico-sdk/src/rp2_common/hardware_dma
 xsrc/pico-sdk/src/common/pico_sync
 xsrc/pico-sdk/src/common/pico_time
 xsrc/pico-sdk/src/common/pico_util
