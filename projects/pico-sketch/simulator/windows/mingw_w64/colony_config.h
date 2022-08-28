@@ -14,5 +14,5 @@
 #define CPL_IO_NEW_LINE_NATIVE_MAP              "\015\012"
 #endif
 
-
+#define USE_PICO_SKETCH_RGB565
 #endif

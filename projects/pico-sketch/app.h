@@ -20,9 +20,11 @@
 #include "libraries/pico_graphics/pico_graphics.hpp"
 #include "Driver/Button/PolledDebounced.h"
 #include "Driver/LED/RedGreenBlue.h"
+#include "Cpl/Io/Input.h"
+#include "Cpl/Io/Output.h"
 
-
-/// Width, in pixels, of the display
+ /*-------------------------------------------------------*/
+ /// Width, in pixels, of the display
 #define MY_APP_DISPLAY_WIDTH        240
 
 /// Height, in pixels, of the display
@@ -52,6 +54,15 @@ void platform_updateLcd( pimoroni::PicoGraphics& graphics );
 /// This function is called by the Application to set the LCD backlight setting (0-255)
 void platform_setLcdBacklight( uint8_t value );
 
+
+/*-------------------------------------------------------*/
+/// Let the platform specific code create the Console stream
+extern Cpl::Io::Input* g_consoleInputFdPtr;
+
+/// Let the platform specific code create the Console stream
+extern Cpl::Io::Output* g_consoleOutputFdPtr;
+
+/*-------------------------------------------------------*/
 /// Entry function to the application
 void runApplication() noexcept;
 

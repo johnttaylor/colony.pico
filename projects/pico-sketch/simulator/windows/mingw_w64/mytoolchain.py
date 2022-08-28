@@ -32,7 +32,7 @@ from nqbplib.my_globals import NQBP_PKG_ROOT
 #---------------------------------------------------
 
 # Set the name for the final output item
-FINAL_OUTPUT_NAME = 'cirlce-sim.exe'
+FINAL_OUTPUT_NAME = 'pico-sketch.exe'
 
 #
 # For build config/variant: "Release"

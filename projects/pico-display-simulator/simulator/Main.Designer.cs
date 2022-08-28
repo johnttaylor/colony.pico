@@ -40,6 +40,7 @@
             this.YButton = new System.Windows.Forms.Button();
             this.RbbLedOutline = new System.Windows.Forms.Panel();
             this.RgbLED = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.StatusStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.RbbLedOutline.SuspendLayout();
@@ -66,7 +67,7 @@
             // LcdPanel
             // 
             this.LcdPanel.Location = new System.Drawing.Point(4, 4);
-            this.LcdPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.LcdPanel.Margin = new System.Windows.Forms.Padding(0);
             this.LcdPanel.Name = "LcdPanel";
             this.LcdPanel.Size = new System.Drawing.Size(240, 135);
             this.LcdPanel.TabIndex = 1;
@@ -74,11 +75,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(70, 17);
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(38, 9);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(310, 41);
+            this.label1.Size = new System.Drawing.Size(365, 47);
             this.label1.TabIndex = 2;
             this.label1.Text = "240x135 Graphic LCD";
             // 
@@ -154,25 +155,37 @@
             // 
             // RgbLED
             // 
-            this.RgbLED.Location = new System.Drawing.Point(2, 2);
+            this.RgbLED.Location = new System.Drawing.Point(3, 3);
             this.RgbLED.Margin = new System.Windows.Forms.Padding(0);
             this.RgbLED.Name = "RgbLED";
             this.RgbLED.Size = new System.Drawing.Size(10, 10);
             this.RgbLED.TabIndex = 1;
             // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Comic Sans MS", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(0, 9);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(459, 47);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "240x135 Graphic LCD";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(459, 302);
             this.Controls.Add(this.RbbLedOutline);
             this.Controls.Add(this.YButton);
             this.Controls.Add(this.XButton);
             this.Controls.Add(this.BButton);
             this.Controls.Add(this.AButton);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.panel1);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -203,6 +216,7 @@
         private System.Windows.Forms.Button YButton;
         private System.Windows.Forms.Panel RbbLedOutline;
         private System.Windows.Forms.Panel RgbLED;
+        private System.Windows.Forms.Label label2;
     }
 }
 

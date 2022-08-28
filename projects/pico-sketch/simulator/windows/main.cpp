@@ -9,20 +9,22 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "../simulator.h"
 #include "../../app.h"
+#include "../simulator.h"
 #include "Cpl/Io/Socket/Win32/Connector.h"
 #include "Cpl/Io/Socket/InputOutput.h"
 #include "Cpl/System/Api.h"
 #include "Cpl/Io/InputOutput.h"
+#include "Cpl/Io/Stdio/StdIn.h"
+#include "Cpl/Io/Stdio/StdOut.h"
 #include "docopt-cpp/docopt.h"
 #include "docopt-cpp/docopt_value.h"
 
 static const char USAGE[] =
-R"(Circle-App Simulation.
+R"(Pico-sketch Simulation.
 
     Usage:
-      circle-sim [options]
+      pico-sketch [options]
 
     Options:
       -H HOST       Hostname for the Display Simulation. [Default: 127.0.0.1]
@@ -35,7 +37,13 @@ R"(Circle-App Simulation.
 
 static std::map<std::string, docopt::value> args_;
 
+/// Allocate memory for the console stream pointers
+Cpl::Io::Stdio::StdIn  consoleInfd_;
+Cpl::Io::Stdio::StdOut consoleOutfd_;
+Cpl::Io::Input*        g_consoleInputFdPtr  = &consoleInfd_;
+Cpl::Io::Output*       g_consoleOutputFdPtr = &consoleOutfd_;
 
+////////////////////////////////////////////////////
 int main( int argc, char* argv[] )
 {
     // Parse the command line arguments

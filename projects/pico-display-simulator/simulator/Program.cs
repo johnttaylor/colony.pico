@@ -67,8 +67,8 @@ namespace Simulator
             {
                 for (int xidx = x; xidx < x + w; xidx++)
                 {
-                    // Pixel byte ordering is assumed to be Little Endian
-                    m_ui.m_lcd.SetPixel(xidx, yidx, Utils.ConvertColor(pixelBytes[dataIndex] + (pixelBytes[dataIndex + 1] << 8)));
+                    // Pixel byte ordering is assumed to be Big Endian
+                    m_ui.m_lcd.SetPixel(xidx, yidx, Utils.ConvertColor((pixelBytes[dataIndex] << 8) + pixelBytes[dataIndex + 1]));
                     dataIndex += 2;
                 }
             }
@@ -130,7 +130,7 @@ namespace Simulator
         {
             Console.WriteLine("PROCESSING: " + rawString);
             byte[] colorBytes = Utils.HexStringToByteArray(tokenizeString[3]);
-            m_ui.FillImage( m_ui.m_lcd, Utils.ConvertColor(colorBytes[0] + (colorBytes[1] << 8)), m_ui.m_width, m_ui.m_height );    
+            m_ui.FillImage(m_ui.m_lcd, Utils.ConvertColor(colorBytes[0] + (colorBytes[1] << 8)), m_ui.m_width, m_ui.m_height);
             m_ui.UpdateLcd();
             return true;
         }
@@ -222,10 +222,13 @@ namespace Simulator
     {
         static public Color ConvertColor(int firmwareColor)
         {
-            int red = (firmwareColor & 0b1111100000000000) >> 8;
-            int green = (firmwareColor & 0b0000011111100000) >> 3;
-            int blue = (firmwareColor & 0b0000000000011111) << 3;
-            return Color.FromArgb(red, green, blue);
+            int red = (((firmwareColor & 0b1111100000000000) >> 8) * 255 + 128) / (0b11111000);
+            int green = (((firmwareColor & 0b0000011111100000) >> 3) * 255 + 128) / (0b11111100);
+            int blue = (((firmwareColor & 0b0000000000011111) << 3) * 255 + 128) / (0b11111000);
+            return Color.FromArgb(red > 0xFF ? 0xFF : red,
+                green > 0xFF ? 0xFF : green,
+                blue > 0xFF ? 0xFF : blue
+                );
         }
 
         static public byte[] HexStringToByteArray(string hexString)
