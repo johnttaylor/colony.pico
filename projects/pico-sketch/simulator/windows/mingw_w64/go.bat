@@ -8,5 +8,5 @@
 ::
 echo:Launching display simulator...
 start ..\..\..\..\pico-display-simulator\simulator\bin\Release\simulator.exe
-timeout /t 3
+timeout /t 1
 _win32\pico-sketch.exe

@@ -34,7 +34,7 @@ from nqbplib.my_globals import NQBP_PRE_PROCESS_SCRIPT
 #---------------------------------------------------
 
 # Set the name for the final output item (with NO file extension)
-FINAL_OUTPUT_NAME = 'circle-app'
+FINAL_OUTPUT_NAME = 'pico-sketch'
 
 # This is used for running the PIO Assembler in a given driver directory (e.g drivers\st7789)
 NQBP_PRE_PROCESS_SCRIPT( "nqbp-preprocess.py" )

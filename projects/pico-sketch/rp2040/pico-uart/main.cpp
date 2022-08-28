@@ -17,12 +17,16 @@
 #include "Cpl/System/RP2040/Console.h"
 #include "Driver/Button/RP2040/Hal.h"
 #include "Driver/LED/PimoroniPico/RedGreenBlue.h"
+#include "Cpl/TShell/Cmd/Threads.h"
 
 
 
 /// Allocate memory for the console stream pointers
 Cpl::Io::Input*  g_consoleInputFdPtr;
 Cpl::Io::Output* g_consoleOutputFdPtr;
+
+/// Generic thread TShell command
+static Cpl::TShell::Cmd::Threads threadsCmd_( g_cmdlist );
 
 /*-----------------------------------------------------------*/
 int main( void )

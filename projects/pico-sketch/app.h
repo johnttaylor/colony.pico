@@ -22,6 +22,8 @@
 #include "Driver/LED/RedGreenBlue.h"
 #include "Cpl/Io/Input.h"
 #include "Cpl/Io/Output.h"
+#include "Cpl/Container/Map.h"
+#include "Cpl/TShell/Command.h"
 
  /*-------------------------------------------------------*/
  /// Width, in pixels, of the display
@@ -61,6 +63,10 @@ extern Cpl::Io::Input* g_consoleInputFdPtr;
 
 /// Let the platform specific code create the Console stream
 extern Cpl::Io::Output* g_consoleOutputFdPtr;
+
+/*-------------------------------------------------------*/
+/// Expose the TShell command list to allow individual platform to add there own commands
+extern Cpl::Container::Map<Cpl::TShell::Command>    g_cmdlist;
 
 /*-------------------------------------------------------*/
 /// Entry function to the application

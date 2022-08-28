@@ -1,3 +1,14 @@
+/*-----------------------------------------------------------------------------
+* This file is part of the Colony.Core Project.  The Colony.Core Project is an
+* open source project with a BSD type of licensing agreement.  See the license
+* agreement (license.txt) in the top/ directory or on the Internet at
+* http://integerfox.com/colony.core/license.txt
+*
+* Copyright (c) 2014-2022  John T. Taylor
+*
+* Redistributions of the source code must retain the above copyright notice.
+*----------------------------------------------------------------------------*/
+
 #include "app.h"
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/Api.h"
@@ -10,25 +21,20 @@
 #include "Cpl/TShell/Cmd/Bye.h"
 #include "Cpl/TShell/Cmd/Trace.h"
 #include "Cpl/TShell/Cmd/TPrint.h"
-#include "Cpl/TShell/Cmd/Threads.h"
 #include "Cpl/Dm/TShell/Dm.h"
-#include "Cpl/Dm/Mp/Uint32.h"
+#include "ModelPoints.h"
+#include "LogicalButtons.h"
 
 /*-----------------------------------------------------------*/
-// Allocate/create my Data Model Database and create the model points
-static Cpl::Dm::ModelDatabase    modelDb_( "ignoreThisParameter_usedToInvokeTheStaticConstructor" );
-static Cpl::Dm::Mp::Uint32       bobDelayTimeMs_( modelDb_, "delayTime", 250 );
-//static Cpl::Dm::Mp::Bool         bobVerbose_( modelDb_, "verbose", false );
 
 // Create the Command/Debug Console and populate with commands
-static Cpl::Container::Map<Cpl::TShell::Command>    cmdlist_( "ignoreThisParameter_usedToInvokeTheStaticConstructor" );
-static Cpl::TShell::PolledMaker                     cmdProcessor_( cmdlist_ );
-static Cpl::TShell::Cmd::Help	                    helpCmd_( cmdlist_ );
-static Cpl::TShell::Cmd::Bye	                    byeCmd_( cmdlist_ );
-static Cpl::TShell::Cmd::Trace	                    traceCmd_( cmdlist_ );
-static Cpl::TShell::Cmd::TPrint	                    tprintCmd_( cmdlist_ );
-static Cpl::TShell::Cmd::Threads                    threadsCmd_( cmdlist_ );
-static Cpl::Dm::TShell::Dm                          dmCmd_( cmdlist_, modelDb_ );
+Cpl::Container::Map<Cpl::TShell::Command>    g_cmdlist( "ignoreThisParameter_usedToInvokeTheStaticConstructor" );
+static Cpl::TShell::PolledMaker              cmdProcessor_( g_cmdlist );
+static Cpl::TShell::Cmd::Help	             helpCmd_( g_cmdlist );
+static Cpl::TShell::Cmd::Bye	             byeCmd_( g_cmdlist );
+static Cpl::TShell::Cmd::Trace	             traceCmd_( g_cmdlist );
+static Cpl::TShell::Cmd::TPrint	             tprintCmd_( g_cmdlist );
+static Cpl::Dm::TShell::Dm                   dmCmd_( g_cmdlist, mp::modelDatabase );
 
 
 /*-----------------------------------------------------------*/
@@ -48,11 +54,8 @@ static void interval_10ms( Cpl::System::ElapsedTime::Precision_T currentTick,
                            Cpl::System::ElapsedTime::Precision_T currentInterval,
                            void*                                 context_notUsed )
 {
-    // De-bounce the button Inputs
-    g_buttonA.sample();
-    g_buttonB.sample();
-    g_buttonX.sample();
-    g_buttonY.sample();
+    // Process the buttons
+    processLogicalButtons( currentTick, currentInterval );
 }
 
 /// 10Hz
@@ -60,30 +63,30 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
                             Cpl::System::ElapsedTime::Precision_T currentInterval,
                             void*                                 context_notUsed )
 {
-    if ( g_buttonA.isPressed() )
-    {
-        g_rgbLEDDriverPtr->setRgb( 255, 0, 0 );
-    }
-    else if ( g_buttonB.isPressed() )
-    {
-        //printf( "B pressed\n" );
-        g_rgbLEDDriverPtr->setRgb( 0, 255, 0 );
-    }
-    else if ( g_buttonX.isPressed() )
-    {
-        //printf( "X pressed\n" );
-        g_rgbLEDDriverPtr->setRgb( 0, 0, 255 );
-    }
-    else if ( g_buttonY.isPressed() )
-    {
-        //printf( "Y pressed\n" );
-        g_rgbLEDDriverPtr->setRgb( 255, 255, 255 );
-    }
-    else
-    {
-        //printf( "ALL off\n" );
-        g_rgbLEDDriverPtr->setOff();
-    }
+    //if ( g_buttonA.isPressed() )
+    //{
+    //    g_rgbLEDDriverPtr->setRgb( 255, 0, 0 );
+    //}
+    //else if ( g_buttonB.isPressed() )
+    //{
+    //    //printf( "B pressed\n" );
+    //    g_rgbLEDDriverPtr->setRgb( 0, 255, 0 );
+    //}
+    //else if ( g_buttonX.isPressed() )
+    //{
+    //    //printf( "X pressed\n" );
+    //    g_rgbLEDDriverPtr->setRgb( 0, 0, 255 );
+    //}
+    //else if ( g_buttonY.isPressed() )
+    //{
+    //    //printf( "Y pressed\n" );
+    //    g_rgbLEDDriverPtr->setRgb( 255, 255, 255 );
+    //}
+    //else
+    //{
+    //    //printf( "ALL off\n" );
+    //    g_rgbLEDDriverPtr->setOff();
+    //}
 
     // set the colour of the pen
     // parameters are red, green, blue all between 0 and 255
@@ -105,9 +108,6 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
 
     // now we've done our drawing let's update the screen
     platform_updateLcd( graphics_ );
-
-    //st7789.update( &graphics_ );
-
 }
 
 /*-----------------------------------------------------------*/
@@ -139,13 +139,10 @@ Cpl::Dm::PeriodicScheduler core0Mbox_( core0Intervals_,
 void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     // Turn the RGB LED off
-    //led.set_rgb( 0, 0, 0 );
+    g_rgbLEDDriverPtr->setOff();
 
-    // Start the button drivers
-    g_buttonA.start();
-    g_buttonB.start();
-    g_buttonX.start();
-    g_buttonY.start();
+    // Initialize the buttons
+    intializeLogicalButtons();
 
     platform_setLcdBacklight( 220 );
 }
@@ -162,7 +159,7 @@ void core0Idle( Cpl::System::ElapsedTime::Precision_T currentTick, bool atLeastO
 
 // Forward References
 static void core1Start( Cpl::System::ElapsedTime::Precision_T currentTick );
-static void core1Idle( Cpl::System::ElapsedTime::Precision_T currentTick, bool atLeastOneIntervalExecuted);
+static void core1Idle( Cpl::System::ElapsedTime::Precision_T currentTick, bool atLeastOneIntervalExecuted );
 
 // Periodic Intervals
 static Cpl::System::PeriodicScheduler::Interval_T core1Intervals_[] =

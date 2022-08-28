@@ -17,6 +17,8 @@
 #include "Cpl/Io/InputOutput.h"
 #include "Cpl/Io/Stdio/StdIn.h"
 #include "Cpl/Io/Stdio/StdOut.h"
+#include "Cpl/TShell/Cmd/Win32/Threads.h"
+
 #include "docopt-cpp/docopt.h"
 #include "docopt-cpp/docopt_value.h"
 
@@ -38,10 +40,12 @@ R"(Pico-sketch Simulation.
 static std::map<std::string, docopt::value> args_;
 
 /// Allocate memory for the console stream pointers
-Cpl::Io::Stdio::StdIn  consoleInfd_;
-Cpl::Io::Stdio::StdOut consoleOutfd_;
+static Cpl::Io::Stdio::StdIn  consoleInfd_;
+static Cpl::Io::Stdio::StdOut consoleOutfd_;
 Cpl::Io::Input*        g_consoleInputFdPtr  = &consoleInfd_;
 Cpl::Io::Output*       g_consoleOutputFdPtr = &consoleOutfd_;
+
+static Cpl::TShell::Cmd::Win32::Threads cmdThreads_( g_cmdlist );
 
 ////////////////////////////////////////////////////
 int main( int argc, char* argv[] )
