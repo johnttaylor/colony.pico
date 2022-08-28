@@ -24,6 +24,7 @@
 #include "Cpl/Io/Output.h"
 #include "Cpl/Container/Map.h"
 #include "Cpl/TShell/Command.h"
+#include "Cpl/Dm/PeriodicScheduler.h"
 
  /*-------------------------------------------------------*/
  /// Width, in pixels, of the display
@@ -67,6 +68,9 @@ extern Cpl::Io::Output* g_consoleOutputFdPtr;
 /*-------------------------------------------------------*/
 /// Expose the TShell command list to allow individual platform to add there own commands
 extern Cpl::Container::Map<Cpl::TShell::Command>    g_cmdlist;
+
+/// Expose the runnable object for the UI thread to allow the creation of static UI class
+extern Cpl::Dm::PeriodicScheduler*                  g_uiRunnablePtr;
 
 /*-------------------------------------------------------*/
 /// Entry function to the application

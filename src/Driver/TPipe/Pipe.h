@@ -110,6 +110,9 @@ public:
 public:
     /// See Driver::TPipe::Tx
     bool sendCommand( const char* completeCommandText, size_t numBytes ) noexcept;
+    
+    /// See Driver::TPipe::Tx
+    bool sendRawCommand( const char* completeCommandText, size_t numBytes ) noexcept;
 
 public:
     /** This method returns the number of received frames that there was no
@@ -132,6 +135,9 @@ protected:
     /// Frame buffer
     char*                                   m_frameBuffer;
     
+    /// Cache the handle to the output stream (for raw-commands)
+    Cpl::Io::Output*                        m_outfdPtr;
+
     /// Lock for thread safety and atomic transmits
     Cpl::System::Mutex                      m_lock;
 

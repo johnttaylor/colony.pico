@@ -112,7 +112,7 @@ void platform_setLcdBacklight( uint8_t value )
 
     NOTE: Color/Pixel size RGB565 color resolution
 
-    
+
     <DD> <HH:MM:SS.sss> updateLCD
     Where:
          <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
@@ -126,7 +126,6 @@ void platform_setLcdBacklight( uint8_t value )
 
 static Cpl::Text::FString<TPIPE_WORK_BUF_SIZE> buffer_;
 static uint8_t                                 frameBuffer_[NUM_DISPLAY_BYTES];
-static uint8_t                                 frameCache_[NUM_DISPLAY_BYTES];
 static uint8_t*                                nextFrameByte_;
 static void clearLCDData()
 {
@@ -135,31 +134,28 @@ static void clearLCDData()
 }
 static void appendLCDRowData( const void* data, size_t len )
 {
-    memcpy( nextFrameByte_ , data, len );
+    memcpy( nextFrameByte_, data, len );
     nextFrameByte_ += len;
 }
 static void sendLCDData()
 {
-    // Only send the data if something changed
-    if ( memcmp( frameCache_, frameBuffer_, sizeof( frameCache_ ) ) != 0 )
-    {
-        // Update my display cache    
-        memcpy( frameCache_, frameBuffer_, sizeof( frameCache_ ) );
+    // Start building the TPipe command
+    buffer_ = '^';
+    formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
+    buffer_.formatAppend( " writeLCDData 0 %u 0 %u ",
+                          MY_APP_DISPLAY_WIDTH,
+                          MY_APP_DISPLAY_HEIGHT );
 
-        // Start building the TPipe command
-        formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime() );
-        buffer_.formatAppend( " writeLCDData 0 %u 0 %u ",
-                             MY_APP_DISPLAY_WIDTH,
-                             MY_APP_DISPLAY_HEIGHT );
+    // Add the pixel data and send the command
+    Cpl::Text::bufferToAsciiHex( frameBuffer_, sizeof( frameBuffer_ ), buffer_, true, true );
+    buffer_ += ';';
+    tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
 
-        // Add the pixel data and send the command
-        Cpl::Text::bufferToAsciiHex( frameBuffer_, sizeof(frameBuffer_), buffer_, true, true );
-        tpipe_.getPipeProcessor().sendCommand( buffer_.getString(), buffer_.length() );
-
-        formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime() );
-        buffer_.formatAppend( " updateLCD");
-        tpipe_.getPipeProcessor().sendCommand( buffer_.getString(), buffer_.length() );
-    }
+    buffer_ = '^';
+    formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
+    buffer_.formatAppend( " updateLCD" );
+    buffer_ += ';';
+    tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
 }
 
 void platform_updateLcd( pimoroni::PicoGraphics& graphics )

@@ -28,6 +28,7 @@ Pipe::Pipe( Cpl::Container::Map<RxFrameHandlerApi>&   rxFrameHdlrs,
     , m_deframer( deframer )
     , m_framer( framer )
     , m_frameBuffer( nullptr )
+    , m_outfdPtr( nullptr )
     , m_frameBufSize( rxBufferSize )
     , m_verbDelimiters( verbDelimiters )
     , m_unknownFrames( 0 )
@@ -44,6 +45,7 @@ void Pipe::start( Cpl::Io::Input& inStream, Cpl::Io::Output& outStream ) noexcep
 {
     m_frameBuffer   = new (std::nothrow) char[m_frameBufSize + 1]; // add space for the null terminator
     m_unknownFrames = 0;
+    m_outfdPtr      = &outStream;
     m_framer.setOutput( outStream );
     m_deframer.setInput( inStream );
 }
@@ -81,6 +83,19 @@ bool Pipe::sendCommand( const char* completeCommandText, size_t numBytes ) noexc
     return success;
 }
 
+bool Pipe::sendRawCommand( const char* completeCommandText, size_t numBytes ) noexcept
+{
+    bool success = false;
+    Cpl::System::Mutex::ScopeBlock lock( m_lock );
+
+    // Fail the send if start() has not been called
+    if ( m_frameBuffer != nullptr )
+    {
+        success = m_outfdPtr->write( completeCommandText, numBytes );
+    }
+
+    return success;
+}
 
 bool Pipe::poll() noexcept
 {

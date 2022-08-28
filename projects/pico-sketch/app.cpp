@@ -13,7 +13,6 @@
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/Api.h"
 #include "Cpl/System/Thread.h"
-#include "Cpl/Dm/PeriodicScheduler.h"
 #include "Driver/Button/PolledDebounced.h"
 #include "Cpl/Dm/ModelDatabase.h"
 #include "Cpl/TShell/PolledMaker.h"
@@ -24,6 +23,7 @@
 #include "Cpl/Dm/TShell/Dm.h"
 #include "ModelPoints.h"
 #include "LogicalButtons.h"
+#include "Sketch.h"
 
 /*-----------------------------------------------------------*/
 
@@ -37,15 +37,6 @@ static Cpl::TShell::Cmd::TPrint	             tprintCmd_( g_cmdlist );
 static Cpl::Dm::TShell::Dm                   dmCmd_( g_cmdlist, mp::modelDatabase );
 
 
-/*-----------------------------------------------------------*/
-// Graphics library: Use RGB332 mode (256 colours) on the Target to limit RAM usage
-#ifndef USE_PICO_SKETCH_RGB565
-pimoroni::PicoGraphics_PenRGB332 graphics_( 240, 135, nullptr );
-
-// Graphics library: Use RGB565 mode (64K colours) on the Simulator because RAM is NOT an issue
-#else
-pimoroni::PicoGraphics_PenRGB565 graphics_( 240, 135, nullptr );
-#endif
 
 
 /*-----------------------------------------------------------*/
@@ -63,6 +54,9 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
                             Cpl::System::ElapsedTime::Precision_T currentInterval,
                             void*                                 context_notUsed )
 {
+    // Process the UI
+    processUI( currentTick, currentInterval );
+
     //if ( g_buttonA.isPressed() )
     //{
     //    g_rgbLEDDriverPtr->setRgb( 255, 0, 0 );
@@ -88,26 +82,26 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
     //    g_rgbLEDDriverPtr->setOff();
     //}
 
-    // set the colour of the pen
-    // parameters are red, green, blue all between 0 and 255
-    graphics_.set_pen( 0, 0, 255 );
+    //// set the colour of the pen
+    //// parameters are red, green, blue all between 0 and 255
+    //graphics_.set_pen( 0, 0, 255 );
 
-    // fill the screen with the current pen colour
-    graphics_.clear();
+    //// fill the screen with the current pen colour
+    //graphics_.clear();
 
-    // draw a box to put some text in
-    graphics_.set_pen( 0, 0, 0 );
-    pimoroni::Rect text_rect( 10, 10, 150, 150 );
-    graphics_.rectangle( text_rect );
+    //// draw a box to put some text in
+    //graphics_.set_pen( 0, 0, 0 );
+    //pimoroni::Rect text_rect( 10, 10, 150, 150 );
+    //graphics_.rectangle( text_rect );
 
-    // write some text inside the box with 10 pixels of margin
-    // automatically word wrapping
-    text_rect.deflate( 10 );
-    graphics_.set_pen( 255, 255, 255 );
-    graphics_.text( "This is a message", pimoroni::Point( text_rect.x, text_rect.y ), text_rect.w );
+    //// write some text inside the box with 10 pixels of margin
+    //// automatically word wrapping
+    //text_rect.deflate( 10 );
+    //graphics_.set_pen( 255, 255, 255 );
+    //graphics_.text( "This is a message", pimoroni::Point( text_rect.x, text_rect.y ), text_rect.w );
 
-    // now we've done our drawing let's update the screen
-    platform_updateLcd( graphics_ );
+    //// now we've done our drawing let's update the screen
+    //platform_updateLcd( graphics_ );
 }
 
 /*-----------------------------------------------------------*/
@@ -135,14 +129,15 @@ Cpl::Dm::PeriodicScheduler core0Mbox_( core0Intervals_,
                                        Cpl::System::ElapsedTime::precision,
                                        core0Idle );
 
+Cpl::Dm::PeriodicScheduler* g_uiRunnablePtr = &core0Mbox_;
+
+
 // In thread initialization 
 void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
-    // Turn the RGB LED off
-    g_rgbLEDDriverPtr->setOff();
-
-    // Initialize the buttons
+    // Initialize sub-systems, drivers, etc.
     intializeLogicalButtons();
+    intializeUI();
 
     platform_setLcdBacklight( 220 );
 }

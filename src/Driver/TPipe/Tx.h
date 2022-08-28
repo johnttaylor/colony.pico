@@ -51,6 +51,13 @@ public:
         return sendCommand( commandString, strlen( commandString ) );
     }
 
+    /** This is an OPTIMIZATION - use with care!!
+
+        The method sends the data un-encoded to speed up the transfer of large
+        commands.  THe application is responsible for managing the framing
+     */
+    virtual bool sendRawCommand( const char* completeCommandText, size_t numBytes ) noexcept = 0;
+
 public:
     /// Virtual destructor
     virtual ~Tx() {}
