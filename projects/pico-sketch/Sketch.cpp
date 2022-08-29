@@ -409,6 +409,7 @@ void drawStartScreen()
 {
     // Turn the RGB LED off
     g_rgbLEDDriverPtr->setOff();
+    g_rgbLEDDriverPtr->setBrightness( 64 );
 
     // set the colour of the pen
     graphics_.set_pen( 0, 0, 255 );
@@ -455,28 +456,28 @@ void drawStartScreen()
 #define CURSOR_MARGIN       5
 #define BYTES_PER_PIXEL     sizeof(uint8_t)
 
-static unsigned blockX0_;
-static unsigned blockY0_;
-static unsigned blockWidth_;
-static unsigned blockHeight_;
-static unsigned blockRowSize_;
-static uint8_t  blockBuffer_[2 * CURSOR_RADIUS * 2 * CURSOR_RADIUS];
+static int     blockX0_;
+static int     blockY0_;
+static int     blockWidth_;
+static int     blockHeight_;
+static int     blockRowSize_;
+static uint8_t blockBuffer_[2 * CURSOR_RADIUS * 2 * CURSOR_RADIUS];
 
 void showCursor()
 {
     // Define and clamp the Cursor's dimensions
-    unsigned topOffset = CURSOR_RADIUS - pencilSize_ / 2;
-    blockX0_           = topOffset > pencilX0_ ? 0 : pencilX0_ - topOffset;
-    blockWidth_        = blockX0_ + 2 * CURSOR_RADIUS >= MY_APP_DISPLAY_WIDTH ? MY_APP_DISPLAY_WIDTH - blockX0_ : 2 * CURSOR_RADIUS;
-    blockY0_           = topOffset > pencilY0_ ? 0 : pencilY0_ - topOffset;
-    blockHeight_       = blockY0_ + 2 * CURSOR_RADIUS >= MY_APP_DISPLAY_HEIGHT ? MY_APP_DISPLAY_HEIGHT - blockY0_ : 2 * CURSOR_RADIUS;
-    blockRowSize_      = blockWidth_ * BYTES_PER_PIXEL;
+    int topOffset = CURSOR_RADIUS - pencilSize_ / 2;
+    blockX0_      = topOffset > pencilX0_ ? 0 : pencilX0_ - topOffset;
+    blockWidth_   = blockX0_ + 2 * CURSOR_RADIUS >= MY_APP_DISPLAY_WIDTH ? MY_APP_DISPLAY_WIDTH - blockX0_ : 2 * CURSOR_RADIUS;
+    blockY0_      = topOffset > pencilY0_ ? 0 : pencilY0_ - topOffset;
+    blockHeight_  = blockY0_ + 2 * CURSOR_RADIUS >= MY_APP_DISPLAY_HEIGHT ? MY_APP_DISPLAY_HEIGHT - blockY0_ : 2 * CURSOR_RADIUS;
+    blockRowSize_ = blockWidth_ * BYTES_PER_PIXEL;
 
     // Get copy of screen content for the cursor
     const uint8_t* originPtr    = (const uint8_t*) graphics_.frame_buffer;
     const uint8_t* nextBytePtr  = originPtr + blockX0_ + blockY0_ * MY_APP_DISPLAY_WIDTH * BYTES_PER_PIXEL;
     uint8_t*       nextCachePtr = blockBuffer_;
-    for ( unsigned yidx=0; yidx < blockHeight_; yidx++ )
+    for ( int yidx=0; yidx < blockHeight_; yidx++ )
     {
         memcpy( nextCachePtr, nextBytePtr, blockRowSize_ );
         nextCachePtr += blockRowSize_;
@@ -504,7 +505,7 @@ void restoreCursorBlock()
     uint8_t*       originPtr    = (uint8_t*) graphics_.frame_buffer;
     uint8_t*       nextBytePtr  = originPtr + blockX0_ + blockY0_ * MY_APP_DISPLAY_WIDTH * BYTES_PER_PIXEL;
     const uint8_t* nextCachePtr = blockBuffer_;
-    for ( unsigned yidx=0; yidx < blockHeight_; yidx++ )
+    for ( int yidx=0; yidx < blockHeight_; yidx++ )
     {
         memcpy( nextBytePtr, nextCachePtr, blockRowSize_ );
         //memset( nextBytePtr, 0x7f, blockRowSize_ );
