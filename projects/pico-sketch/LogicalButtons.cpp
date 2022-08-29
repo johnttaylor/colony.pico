@@ -122,10 +122,15 @@ void processLogicalButtons( Cpl::System::ElapsedTime::Precision_T currentTick,
             generateKeyEvent( latchedKey_ );
             state_ = isSingleKeyEvent_ ? STATE_IDLE : STATE_WAITING_ALL_RELEASED;
         }
-        else if ( --delayCounter_ == 0 )
+        
+        // Do NOT allow repeat event for the ALT key
+        else if ( latchedKey_ != &mp::buttonEventAlt )
         {
-            generateKeyEvent( latchedKey_ );
-            delayCounter_ = OPTION_MY_APP_LOGICAL_BUTTON_REPEAT_COUNT;
+            if ( --delayCounter_ == 0 )
+            {
+                generateKeyEvent( latchedKey_ );
+                delayCounter_ = OPTION_MY_APP_LOGICAL_BUTTON_REPEAT_COUNT;
+            }
         }
         break;
     }
@@ -161,7 +166,7 @@ static Cpl::Dm::Mp::Bool*lookUpLogicalKey( bool pressedA, bool pressedB, bool pr
     case 0b0101: isSingleKeyEvent_ = false;  return &mp::buttonEventLeft;
     case 0b1000: return &mp::buttonEventDown;
     case 0b1001: isSingleKeyEvent_ = false;  return &mp::buttonEventUp;
-    case 0b1101: isSingleKeyEvent_ = false;  return &mp::buttonEventClear;
+    case 0b0111: isSingleKeyEvent_ = false;  return &mp::buttonEventClear;
     default:
         return nullptr;
     }

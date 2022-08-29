@@ -34,7 +34,7 @@ namespace Simulator
     //      <w>                 Width (in display coordinates) of the rectangle. Note: <w> should always be greater than 0
     //      <y0>                Top/left Y coordinate (in pixel coordinates) of the rectangle
     //      <h>                 height (in display coordinates) of the rectangle. Note: <h> should always be greater than 0
-    //      <hexdata>           Pixel data as 'ASCII HEX' String (upper case and with no spaces).  Each PIXEL is two bytes in LITTLE ENDIAN ordering
+    //      <hexdata>           Pixel data as 'ASCII HEX' String (upper case and with no spaces).  Each PIXEL is one byte
     //                          Pixel layout is row, then column:
     //                              First Pixel is:   x0, y0
     //                              Pixel w is:       x0+w, y0
@@ -68,8 +68,8 @@ namespace Simulator
                 for (int xidx = x; xidx < x + w; xidx++)
                 {
                     // Pixel byte ordering is assumed to be Big Endian
-                    m_ui.m_lcd.SetPixel(xidx, yidx, Utils.ConvertColor((pixelBytes[dataIndex] << 8) + pixelBytes[dataIndex + 1]));
-                    dataIndex += 2;
+                    m_ui.m_lcd.SetPixel(xidx, yidx, Utils.ConvertColor(pixelBytes[dataIndex]));
+                    dataIndex += 1;
                 }
             }
 
@@ -222,9 +222,9 @@ namespace Simulator
     {
         static public Color ConvertColor(int firmwareColor)
         {
-            int red = (((firmwareColor & 0b1111100000000000) >> 8) * 255 + 128) / (0b11111000);
-            int green = (((firmwareColor & 0b0000011111100000) >> 3) * 255 + 128) / (0b11111100);
-            int blue = (((firmwareColor & 0b0000000000011111) << 3) * 255 + 128) / (0b11111000);
+            int red = ((firmwareColor   & 0b11100000) * 255 + 128) / (0b11100000);
+            int green = (((firmwareColor & 0b0011100) << 3) * 255 + 128) / (0b11100000);
+            int blue = (((firmwareColor  & 0b0000011) << 6) * 255 + 128) / (0b11000000);
             return Color.FromArgb(red > 0xFF ? 0xFF : red,
                 green > 0xFF ? 0xFF : green,
                 blue > 0xFF ? 0xFF : blue

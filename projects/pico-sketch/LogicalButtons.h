@@ -31,7 +31,7 @@
         mp::buttonUp        // aka A+Y
         mp::buttonColor     // aka B
         mp::buttonSize      // aka A+B
-        mp::buttonClear     // aka A+X+Y
+        mp::buttonClear     // aka A+B+Y
  */
 
 #include "Cpl/System/ElapsedTime.h"
@@ -41,7 +41,7 @@
     a pressed button generates a repeat event
  */
 #ifndef OPTION_MY_APP_LOGICAL_BUTTON_HOLD_COUNT
-#define OPTION_MY_APP_LOGICAL_BUTTON_HOLD_COUNT     150  // 1.5 sec @100Hz
+#define OPTION_MY_APP_LOGICAL_BUTTON_HOLD_COUNT     50  // 00.5 sec @100Hz
 #endif
 
 /** Specifies the repeat hold time, in interval counts, between

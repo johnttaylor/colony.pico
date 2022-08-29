@@ -103,54 +103,42 @@ void platform_setLcdBacklight( uint8_t value )
          <w>                 Width (in display coordinates) of the rectangle. Note: <w> should always be greater than 0
          <y0>                Top/left Y coordinate (in pixel coordinates) of the rectangle
          <h>                 height (in display coordinates) of the rectangle. Note: <h> should always be greater than 0
-         <hexdata>           Pixel data as 'ASCII HEX' String (upper case and with no spaces).  Each PIXEL is two bytes in BIG ENDIAN ordering
+         <hexdata>           Pixel data as 'ASCII HEX' String (upper case and with no spaces).  Each PIXEL is one byte 
                              Pixel layout is row, then column:
                                  First Pixel is:   x0, y0
                                  Pixel w is:       x0+w, y0
                                  Pixel w+1 is:     x0, y0+1
                                  Pixel (h*w) is:   x1, y1
 
-    NOTE: Color/Pixel size RGB565 color resolution
+    NOTE: Color/Pixel size RGB322 color resolution
 
 
     <DD> <HH:MM:SS.sss> updateLCD
     Where:
          <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
          <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-
+         
+    NOTE: The simulator makes a copy of the 'screen buffer' and ONLY sends 'deltas' to the simulated
+          display.  This has significant positive impact on the performance of 'display' on the simulator
  */
 
-#define NUM_DISPLAY_BYTES         (MY_APP_DISPLAY_WIDTH * MY_APP_DISPLAY_HEIGHT * sizeof(uint16_t))  
+#define NUM_DISPLAY_BYTES         (MY_APP_DISPLAY_WIDTH * MY_APP_DISPLAY_HEIGHT * sizeof(uint8_t))  
 #define TPIPE_WORK_BUF_SIZE       (NUM_DISPLAY_BYTES*2 + 128)
-#define DATE_SIZE_ROW             (MY_APP_DISPLAY_WIDTH * sizeof(uint16_t))
+#define DATE_SIZE_ROW             (MY_APP_DISPLAY_WIDTH * sizeof(uint8_t))
 
 static Cpl::Text::FString<TPIPE_WORK_BUF_SIZE> buffer_;
-static uint8_t                                 frameBuffer_[NUM_DISPLAY_BYTES];
-static uint8_t*                                nextFrameByte_;
-static void clearLCDData()
-{
-    memset( frameBuffer_, 0, sizeof( frameBuffer_ ) );
-    nextFrameByte_ = frameBuffer_;
-}
-static void appendLCDRowData( const void* data, size_t len )
-{
-    memcpy( nextFrameByte_, data, len );
-    nextFrameByte_ += len;
-}
-static void sendLCDData()
-{
-    // Start building the TPipe command
-    buffer_ = '^';
-    formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
-    buffer_.formatAppend( " writeLCDData 0 %u 0 %u ",
-                          MY_APP_DISPLAY_WIDTH,
-                          MY_APP_DISPLAY_HEIGHT );
+static uint8_t                                 frameCache_[NUM_DISPLAY_BYTES];
+static uint8_t*                                nextFrameCacheByte_;
+static unsigned                                rowIndex_;
 
-    // Add the pixel data and send the command
-    Cpl::Text::bufferToAsciiHex( frameBuffer_, sizeof( frameBuffer_ ), buffer_, true, true );
-    buffer_ += ';';
-    tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
+static void beginLCDData()
+{
+    nextFrameCacheByte_ = frameCache_;
+    rowIndex_           = 0;
+}
 
+static void endLCDData()
+{
     buffer_ = '^';
     formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
     buffer_.formatAppend( " updateLCD" );
@@ -158,12 +146,40 @@ static void sendLCDData()
     tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
 }
 
+static void sendLCDData( unsigned rowIndex, const void* data, size_t length )
+{
+    // Start building the TPipe command
+    buffer_ = '^';
+    formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
+    buffer_.formatAppend( " writeLCDData 0 %u %u 1 ",
+                          MY_APP_DISPLAY_WIDTH,
+                          rowIndex );
+
+    // Add the pixel data and send the command
+    Cpl::Text::bufferToAsciiHex( data, length, buffer_, true, true );
+    buffer_ += ';';
+    tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
+}
+
+static void appendLCDRowData( const void* data, size_t len )
+{
+    if ( memcpy( nextFrameCacheByte_, data, len ) != 0 )
+    {
+        memcpy( nextFrameCacheByte_, data, len );
+        sendLCDData( rowIndex_, data, len );
+    }
+
+    nextFrameCacheByte_ += len;
+    rowIndex_++;
+}
+
+
 void platform_updateLcd( pimoroni::PicoGraphics& graphics )
 {
-    clearLCDData();
+    beginLCDData();
 
     // Display buffer is screen native
-    if ( graphics.pen_type == pimoroni::PicoGraphics::PEN_RGB565 )
+    if ( graphics.pen_type == pimoroni::PicoGraphics::PEN_RGB332 )
     {
         const uint8_t* srcPtr = (const uint8_t*) graphics.frame_buffer;
         for ( int row=0; row < MY_APP_DISPLAY_HEIGHT; row++ )
@@ -173,10 +189,10 @@ void platform_updateLcd( pimoroni::PicoGraphics& graphics )
         }
     }
 
-    // Convert App's color palette to PEN_RGB565
+    // Convert App's color palette to PEN_RGB332
     else
     {
-        graphics.scanline_convert( pimoroni::PicoGraphics::PEN_RGB565,
+        graphics.scanline_convert( pimoroni::PicoGraphics::PEN_RGB332,
                                    []( void *data, size_t length )
                                    {
                                        appendLCDRowData( data, length );
@@ -184,6 +200,6 @@ void platform_updateLcd( pimoroni::PicoGraphics& graphics )
         );
     }
 
-    sendLCDData();
+    endLCDData();
 }
 
