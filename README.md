@@ -1,7 +1,7 @@
 # Colony.Pico
 
 The Colony.Pico package is collection of my Raspberry Pico projects that are built using the Raspberry Pi Pico C/C++ SDK and the Colony.Core C++ Class library.
-> The Colony.Core C++ library Package was developed specifcally for embedded software development. And as such, was designed for:
+> The Colony.Core C++ library Package was developed specifically for embedded software development. And as such, was designed for:
 > * Deterministic memory management (i.e. no heap usage after startup)
 > * The constrained (memory and CPU cycles) environment of embedded systems. 
 
@@ -9,6 +9,8 @@ The Colony.Pico package is collection of my Raspberry Pico projects that are bui
 See the [Getting Started](#Getting-Started) section for setup and build instructions.
 
 See the [Threading Example](#Threading-Example) and [Threading Details](#Threading-Details) sections for details of the example application demonstrating the package's Threading model.
+
+There is a [Pico-Sketch application](https://github.com/johnttaylor/colony.pico/blob/main/projects/pico-sketch/README.md#GettingStarted) that illustrates who to build a functional simulator.
 
 Doxygen documentation is located in the `docs/` directory. 
 

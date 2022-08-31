@@ -68,7 +68,7 @@ int main( int argc, char* argv[] )
     }
     Cpl::Io::Socket::InputOutput socketStream( socketFd );
 
-    // Initializes the simulator
+    // Initializes the simulator's socket connect to the GUI application
     platform_init( socketStream, socketStream );
 
     // Launch the application (on the simulation platform this method returns -->but don't the executable end)
