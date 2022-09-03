@@ -39,3 +39,12 @@ make.log
 *.pdb
 *.lst
 *.jdebug.user
+
+# ignore Visual Studio stuffs
+.vscode
+.cmake
+.vs
+Debug
+x64
+Release
+*.vcxproj.user

@@ -1,0 +1,1 @@
+// Dummy/empty file to make Visual Studio's Intellisense happy
