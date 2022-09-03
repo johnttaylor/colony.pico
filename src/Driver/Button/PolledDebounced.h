@@ -20,8 +20,8 @@ namespace Driver {
 ///
 namespace Button {
 
-/** This concrete class implements a button driver where 1 to N buttons
-    are polled and their raw button state is de-bounced.  The Application
+/** This concrete class implements a button driver where a single button
+    is polled and its raw button state is de-bounced.  The Application
     is responsible for the providing the sampling intervals by calling
     the interface's sample() method.
 

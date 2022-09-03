@@ -1,2 +1,0 @@
-# Common stuffs
-..\..\libdirs.b
