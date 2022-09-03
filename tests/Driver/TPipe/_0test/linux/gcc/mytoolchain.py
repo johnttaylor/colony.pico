@@ -35,7 +35,7 @@ FINAL_OUTPUT_NAME = 'a.out'
 # For build config/variant: "Release" (aka posix build variant)
 #
 # Link unittest directory by object module so that Catch's self-registration mechanism 'works'
-unit_test_objects = '_BUILT_DIR_.src/Driver/Button/_0test'
+unit_test_objects = '_BUILT_DIR_.src/Driver/TPipe/_0test'
 
 #
 # For build config/variant: "Release" (aka posix build variant)

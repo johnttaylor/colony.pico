@@ -94,6 +94,8 @@ static Cpl::Dm::PeriodicScheduler t1Mbox_( intervals_,
 ////////////////////////////////////////////////////////////////////////////////
 #define TX_TEXT_1_RAW       "hello world"
 #define TX_TEXT_1_FRAMED    "^" TX_TEXT_1_RAW ";"
+#define TX_TEXT_2_RAW       "hello`;world"
+#define TX_TEXT_2_FRAMED    "^hello```;world;"
 
 #define MAX_FRAME_SIZE      20
 
@@ -124,6 +126,36 @@ TEST_CASE( "pipe" )
     Cpl::Text::FString<MAX_FRAME_SIZE> buf;
     REQUIRE( outStream.read( buf ) );
     REQUIRE( buf == TX_TEXT_1_FRAMED );
+    uutPtr_->sendCommand( TX_TEXT_2_RAW, strlen( TX_TEXT_2_RAW ) );
+    REQUIRE( outStream.read( buf ) );
+    REQUIRE( buf == TX_TEXT_2_FRAMED );
+    uutPtr_->sendRawCommand( TX_TEXT_2_RAW, strlen( TX_TEXT_2_RAW ) );
+    REQUIRE( outStream.read( buf ) );
+    REQUIRE( buf == TX_TEXT_2_RAW );
+
+    // Receive tests
+    REQUIRE( inStream.write( "apple was here" ) );
+    Cpl::System::Api::sleep( 300 ); 
+    REQUIRE( rxApple_.m_rxCount == 0 );
+    REQUIRE( inStream.write( "^apple was here" ) );
+    Cpl::System::Api::sleep( 300 );
+    REQUIRE( rxApple_.m_rxCount == 0 );
+    REQUIRE( inStream.write( ";" ) );
+    Cpl::System::Api::sleep( 300 );
+    REQUIRE( rxApple_.m_rxCount == 1 );
+    
+    REQUIRE( uutPtr_->getUnknownFrameCount() == 0 );
+    REQUIRE( inStream.write( "^apple was here;^orange was too;^cherry went along;^plum was left home;" ) );
+    Cpl::System::Api::sleep( 600 );
+    REQUIRE( rxApple_.m_rxCount == 2 );
+    REQUIRE( rxOrange_.m_rxCount == 1 );
+    REQUIRE( rxCherry_.m_rxCount == 1 );
+    REQUIRE( uutPtr_->getUnknownFrameCount() == 1 );
+
+    REQUIRE( inStream.write( "^apple-was here;" ) );
+    Cpl::System::Api::sleep( 300 );
+    REQUIRE( rxApple_.m_rxCount == 2 );
+    REQUIRE( uutPtr_->getUnknownFrameCount() == 2 );
 
     // Shutdown threads
     t1Mbox_.pleaseStop();
