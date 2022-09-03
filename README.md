@@ -12,7 +12,7 @@ See the [Threading Example](#Threading-Example) and [Threading Details](#Threadi
 
 There is a [Pico-Sketch application](https://github.com/johnttaylor/colony.pico/blob/main/projects/pico-sketch/README.md#GettingStarted) that illustrates who to build a functional simulator.
 
-There is a [Visual Studio](https://visualstudio.microsoft.com/vs/community/) Solution that provides *Intellisense* editing and navigation of the code base as well as GUI front end for GIT. Click [here](https://github.com/johnttaylor/colony.pico/blob/main/projects/pico-sketch/README-VisualStudio.md) for details 
+There is a [Visual Studio](https://visualstudio.microsoft.com/vs/community/) Solution that provides *Intellisense* editing and navigation of the code base as well as GUI front end for GIT. Click [here](https://github.com/johnttaylor/colony.pico/blob/main/README-VisualStudio.md) for details 
 
 Doxygen documentation is located in the `docs/` directory. 
 
