@@ -28,10 +28,12 @@ namespace TPipe {
 
 /** This concrete class provides the implementation of TPipe.
 
-    The TPipe assumes that it executes in the context of a single thread.
-    All transmissions and reception of frames is done the TPipe's thread.
-    It is APPLICATION's responsibility to provide thread safety for its Receive
-    Frame Handlers.
+    The implementation is thread safe with respect to transmitting frames. In
+    addition, all transmitted frames are atomic with respect to each other.
+    
+    Reception of frames is done a single thread, i.e. the callback to individual
+    Receive Frame Handler occur in the TPipe's thread. It is APPLICATION's 
+    responsibility to provide thread safety for its Receive Frame Handlers.
 
     The TPipe dynamically allocates memory for its incoming frame buffer on
     start-up.  The memory is freed when the TPipe is shutdown.
@@ -50,7 +52,8 @@ namespace TPipe {
         - The application MUST call the TPipe's poll() method in the 'idleProcessing'
           function for the thread/PeriodicScheduler
 
-        - The concrete Frame decoder class MUST use non-blocking semantics. See 
+        - The concrete Frame decoder class MUST use non-blocking semantics AND
+          the input stream MUST support the Cpl::Io::Input.available() method. See 
           Cpl::Text::Frame::StreamDecoder for more details.
  */
 class Pipe : public Tx

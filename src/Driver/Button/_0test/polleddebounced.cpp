@@ -31,21 +31,6 @@ bool driverButtonHalUnitTest_getRawPressState( int pinHandle )
     return mockedButtonsPressed_[pinHandle];
 }
 
-// inline void start() noexcept { m_counts = 0; m_pressed = false; m_previousRawPressed = false; }
-//public:
-//    /** This method returns the de-bounced pressed button state.
-//     */
-//    inline bool isPressed() noexcept { return m_pressed; }
-//
-//    /** The application is required to call this method on fixed periodic
-//        intervals.  The raw button state is sampled during this call.
-//     */
-//    void sample() noexcept;
-//
-//public:
-//    /// Returns the driver's button handle
-//    inline Driver_Button_Hal_T getHandle() { return m_buttonHdl; }
-//
 
 ////////////////////////////////////////////////////////////////////////////////
 TEST_CASE( "PolledDebounced" )
@@ -55,6 +40,13 @@ TEST_CASE( "PolledDebounced" )
     PolledDebounced apple( APPLE_HDL );
     PolledDebounced orange( ORANGE_HDL, 3 );
     PolledDebounced cherry( CHERRY_HDL, 4 );
+
+    SECTION( "handles" )
+    {
+        REQUIRE( apple.getHandle() == APPLE_HDL );
+        REQUIRE( orange.getHandle() == ORANGE_HDL );
+        REQUIRE( cherry.getHandle() == CHERRY_HDL );
+    }
 
     SECTION( "happy path" )
     {
