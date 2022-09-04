@@ -47,12 +47,12 @@ static Storm::TShell::User	                        userCmd_( g_cmdlist );
 static Storm::TShell::Filter	                    filterCmd_( g_cmdlist );
 static Storm::TShell::WhiteBox	                    whiteBoxCmd_( g_cmdlist );
 
-static Storm::Thermostat::Algorithm thermostatAlgorithm_;
+static Cpl::Dm::MailboxServer       algoMbox_;
+static Storm::Thermostat::Algorithm thermostatAlgorithm_( algoMbox_);
 
 static Cpl::System::Semaphore       waitForShutdown_;
 static volatile int                 exitCode_;
 
-static void initializeModelPoints() noexcept;
 static int runShutdownHandlers() noexcept;
 
 
@@ -81,7 +81,7 @@ int runTheApplication( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
     shell_.launch( infd, outfd );
 
     // Create thread to run the Algorithm
-    Cpl::System::Thread::create( thermostatAlgorithm_, "Algorithm", CPL_SYSTEM_THREAD_PRIORITY_NORMAL + CPL_SYSTEM_THREAD_PRIORITY_RAISE );
+    Cpl::System::Thread::create( algoMbox_, "Algorithm", CPL_SYSTEM_THREAD_PRIORITY_NORMAL + CPL_SYSTEM_THREAD_PRIORITY_RAISE );
 
     // Start the application
     openPlatform0();

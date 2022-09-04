@@ -23,7 +23,7 @@ void initializePlatform0();
 
 /** This method is used to initialize the model points to known state
  */
-void initializeModelPoints();
+void initializeModelPoints() noexcept;
 
 /** This method is used to 'open' any platform specific objects.  It is called
     prior to the application 'open' calls

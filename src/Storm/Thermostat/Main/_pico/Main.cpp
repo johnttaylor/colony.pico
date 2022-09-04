@@ -42,7 +42,7 @@ static Cpl::TShell::Cmd::Bye	                    byeCmd_( g_cmdlist );
 static Cpl::TShell::Cmd::Trace	                    traceCmd_( g_cmdlist );
 static Cpl::TShell::Cmd::TPrint	                    tprintCmd_( g_cmdlist );
 static Cpl::Dm::TShell::Dm	                        dmCmd_( g_cmdlist, g_modelDatabase );
-static Storm::TShell::State	                        stateCmd_( g_cmdlist);
+static Storm::TShell::State	                        stateCmd_( g_cmdlist );
 static Storm::TShell::User	                        userCmd_( g_cmdlist );
 static Storm::TShell::Filter	                    filterCmd_( g_cmdlist );
 static Storm::TShell::WhiteBox	                    whiteBoxCmd_( g_cmdlist );
@@ -51,7 +51,7 @@ static Cpl::Io::Output*                             consoleOutputFdPtr_;
 
 
 // The control algorithm
-static Storm::Thermostat::Algorithm thermostatAlgorithm_;
+static Storm::Thermostat::Algorithm thermostatAlgorithm_( *g_algoRunnablePtr );
 
 // Include the House simulation since we don't actual have (yet) a temperature sensor
 static Storm::Thermostat::Main::ScheduledSimHouse houseSim_;
@@ -60,18 +60,7 @@ static Storm::Thermostat::Main::ScheduledSimHouse houseSim_;
 static volatile int exitCode_;
 static int runShutdownHandlers() noexcept;
 
-
 // Allocate/create my Model Database
-// NOTE: For the MickySoft compiler I must 'allocate' the g_modelDatabase before any
-//       model points get instantiated.  By placing the allocation in the Main 
-//       directory AND by using nqbp's 'firstObjects' feature (and setting the Main
-//       directory to be a 'firstObjects') it seems to appease the MS gods.
-//
-//       Updated: The issue appears that the g_modelDatabases class's vtable
-//       pointer was zero when static MP instances self registered with the
-//       database.  As to why the vtable pointer is/was zero - is still a mystery
-//       (the issue also appeared with the gcc/mingw compiler). The work-around 
-//       was to make the insert_() method a non-virtual method.
 Cpl::Dm::ModelDatabase   g_modelDatabase( "ignoreThisParameter_usedToInvokeTheStaticConstructor" );
 
 
@@ -97,18 +86,6 @@ static void interval_1000ms( Cpl::System::ElapsedTime::Precision_T currentTick,
     houseSim_.scheduleSimulation();
 }
 
-/**
-Core0 
-    TShell
-    Sim house
-    UI
-
-Core1
-    Thermostat
-    Record server
-    
-*/
-
 // Forward References
 static void core0Idle( Cpl::System::ElapsedTime::Precision_T currentTick, bool atLeastOneIntervalExecuted );
 static void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick );
@@ -129,13 +106,15 @@ Cpl::Dm::PeriodicScheduler core0Mbox_( core0Intervals_,
                                        nullptr,
                                        Cpl::System::ElapsedTime::precision,
                                        core0Idle );
-
 Cpl::Dm::PeriodicScheduler* g_uiRunnablePtr = &core0Mbox_;
 
 
 // In thread initialization 
 void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
+    CPL_SYSTEM_TRACE_MSG( MY_APP_TRACE_SECTION, ("core0Start") );
+    Cpl::System::Api::sleep( 200 );
+    openPlatform0();
     thermostatAlgorithm_.open();
     cmdProcessor_.getCommandProcessor().start( *consoleInputFdPtr_, *consoleOutputFdPtr_ ); // Note: I don't need to set the 'blocking flag' because the processor knows it is non-blocking processor
 }
@@ -143,6 +122,7 @@ void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 // In thread shutdown 
 void core0Stop( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
+    CPL_SYSTEM_TRACE_MSG( MY_APP_TRACE_SECTION, ("core0Stop") );
     cmdProcessor_.getCommandProcessor().requestStop();
     thermostatAlgorithm_.close();
     closePlatform0();
@@ -183,6 +163,7 @@ int runTheApplication( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
     // Start scheduling
     CPL_SYSTEM_TRACE_MSG( MY_APP_TRACE_SECTION, ("Enabling scheduling") );
     Cpl::System::Api::enableScheduling();
+    return 0;   // Note: the function never exits
 }
 
 ////////////////////////////////////////////////////////////////////////////////

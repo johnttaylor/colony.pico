@@ -8,3 +8,5 @@
 
 // My/Default BSP
 #include "Bsp/RP2040/Pico/gcc/Api.h"
+
+#error this should NOT be included

@@ -1,3 +1,6 @@
+# Application stuffs
+src/Storm/Thermostat/Main/_pico/_rp2040
+
 # UART
 src/Cpl/Io/Serial/RP2040/Uart
 xsrc/pico-sdk/src/rp2_common/pico_stdio_uart

@@ -1,3 +1,6 @@
+# Use traditional Mailboxes instead of periodic scheduling
+src/Storm/Thermostat/Main
+
 # Simulation specific directories....
 src/Storm/Thermostat/_file_logger
 src/Storm/Thermostat/SimHouse

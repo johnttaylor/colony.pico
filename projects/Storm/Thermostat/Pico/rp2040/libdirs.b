@@ -1,9 +1,14 @@
+# House simulation
+src/Storm/Thermostat/_file_logger
+src/Storm/Thermostat/SimHouse
+src/Storm/Thermostat/Main/_simulation
+
 # pimoroni libraries
-xsrc/pimoroni-pico/drivers/rgbled
-xsrc/pimoroni-pico/drivers/st7789
+#xsrc/pimoroni-pico/drivers/rgbled
+#xsrc/pimoroni-pico/drivers/st7789
 
 # Platform specific driver(s)
-src/Driver/Button/RP2040
+#src/Driver/Button/RP2040
 
 # OSAL - Platform specific
 src/Cpl/System/RP2040
