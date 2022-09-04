@@ -100,6 +100,22 @@
         }
       },
       {
+        "pkgname": "ratt",
+        "pkgtype": "readonly",
+        "adoptedDate": "Sun Sep  4 14:31:59 2022",
+        "parentDir": "xsrc",
+        "version": {
+          "semanticVersion": "1.0.1",
+          "branch": null,
+          "tag": "OUTCAST2-main-1.0.1"
+        },
+        "repo": {
+          "name": "ratt",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      },
+      {
         "pkgname": "colony.apps",
         "pkgtype": "overlay",
         "adoptedDate": "Sat Sep  3 19:20:53 2022",
