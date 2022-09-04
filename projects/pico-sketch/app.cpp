@@ -56,52 +56,6 @@ static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
 {
     // Process the UI
     processUI( currentTick, currentInterval );
-
-    //if ( g_buttonA.isPressed() )
-    //{
-    //    g_rgbLEDDriverPtr->setRgb( 255, 0, 0 );
-    //}
-    //else if ( g_buttonB.isPressed() )
-    //{
-    //    //printf( "B pressed\n" );
-    //    g_rgbLEDDriverPtr->setRgb( 0, 255, 0 );
-    //}
-    //else if ( g_buttonX.isPressed() )
-    //{
-    //    //printf( "X pressed\n" );
-    //    g_rgbLEDDriverPtr->setRgb( 0, 0, 255 );
-    //}
-    //else if ( g_buttonY.isPressed() )
-    //{
-    //    //printf( "Y pressed\n" );
-    //    g_rgbLEDDriverPtr->setRgb( 255, 255, 255 );
-    //}
-    //else
-    //{
-    //    //printf( "ALL off\n" );
-    //    g_rgbLEDDriverPtr->setOff();
-    //}
-
-    //// set the colour of the pen
-    //// parameters are red, green, blue all between 0 and 255
-    //graphics_.set_pen( 0, 0, 255 );
-
-    //// fill the screen with the current pen colour
-    //graphics_.clear();
-
-    //// draw a box to put some text in
-    //graphics_.set_pen( 0, 0, 0 );
-    //pimoroni::Rect text_rect( 10, 10, 150, 150 );
-    //graphics_.rectangle( text_rect );
-
-    //// write some text inside the box with 10 pixels of margin
-    //// automatically word wrapping
-    //text_rect.deflate( 10 );
-    //graphics_.set_pen( 255, 255, 255 );
-    //graphics_.text( "This is a message", pimoroni::Point( text_rect.x, text_rect.y ), text_rect.w );
-
-    //// now we've done our drawing let's update the screen
-    //platform_updateLcd( graphics_ );
 }
 
 /*-----------------------------------------------------------*/

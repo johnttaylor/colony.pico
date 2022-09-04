@@ -25,50 +25,51 @@ import os
 
 # get definition of the Options strcuture
 from nqbplib.base import BuildValues
-from nqbplib.my_globals import NQBP_WORK_ROOT
 from nqbplib.my_globals import NQBP_PKG_ROOT
+from nqbplib.my_globals import NQBP_PRE_PROCESS_SCRIPT
 
-# Get the location of the compiler toolchain
-env_error = None
-ARDUINO_TOOLS = os.environ.get( 'ARDUINO_TOOLS' )
-if ( ARDUINO_TOOLS == None ):
-    ARDUINO_TOOLS = env_error = "ARDUINO_TOOLS"
-ARDUINO_COMPILER_VER = os.environ.get( 'ARDUINO_COMPILER_VER' )
-if ( ARDUINO_COMPILER_VER == None ):
-    ARDUINO_COMPILER_VER = env_error = "ARDUINO_COMPILER_VER"
-ARDUINO_BSP_VER = os.environ.get( 'ARDUINO_BSP_VER' )
-if ( ARDUINO_BSP_VER == None ):
-    ARDUINO_BSP_VER = env_error = "ARDUINO_BSP_VER"
-
-ARDUINO_SUPPORT            = NQBP_PKG_ROOT()
-COLONY_ARDUINO_BSP_SUPPORT = NQBP_PKG_ROOT()
 
 #===================================================
 # BEGIN EDITS/CUSTOMIZATIONS
 #---------------------------------------------------
 
 # Set the name for the final output item (with NO file extension)
-FINAL_OUTPUT_NAME = 'thermostat'
+FINAL_OUTPUT_NAME = 'pico-sketch'
 
-# BSP directory that contains the vector table 
-#bsp_objects = '_BUILT_DIR_.arduino/src/Bsp/Adafruit/grand_central_m4/gcc'
+# This is used for running the PIO Assembler in a given driver directory (e.g drivers\st7789)
+NQBP_PRE_PROCESS_SCRIPT( "nqbp-preprocess.py" )
 
 #
 # For build config/variant: "Release"
 #
+ 
+# Additional PICO-SDK Header paths
+sdk_src_path  = os.path.join( NQBP_PKG_ROOT(), 'xsrc', 'pico-sdk', 'src' )
+sdk_inc       = f' -I{os.path.join(sdk_src_path,"rp2_common","hardware_i2c","include")}' +\
+                f' -I{os.path.join(sdk_src_path,"rp2_common","hardware_spi","include")}' +\
+                f' -I{os.path.join(sdk_src_path,"rp2_common","hardware_pwm","include")}' +\
+                f' -I{os.path.join(sdk_src_path,"rp2_common","hardware_pio","include")}' +\
+                f' -I{os.path.join(sdk_src_path,"rp2_common","hardware_dma","include")}' 
+
+# Additional Header paths for PIMORONI supplied code
+pimoroni_src_path = os.path.join( NQBP_PKG_ROOT(), 'xsrc', 'pimoroni-pico' )
+pimoroni_inc      = f' -I{pimoroni_src_path}' + \
+                    f' -I{os.path.join(pimoroni_src_path,"common")}' +\
+                    f' -I{os.path.join(pimoroni_src_path,"drivers","rgbled")}' +\
+                    f' -I{os.path.join(pimoroni_src_path,"drivers","st7789")}' +\
+                    f' -I{os.path.join(pimoroni_src_path,"libraries","pico_display")}' +\
+                    f' -I{os.path.join(pimoroni_src_path,"libraries","pico_graphcis")}' +\
+                    f' -I{os.path.join(pimoroni_src_path,"libraries","pico_bitmap_fonts")}' +\
+                    f' -I{os.path.join(pimoroni_src_path,"libraries","pico_hershey_fonts")}' 
 
 # Set project specific 'base' (i.e always used) options
 base_release = BuildValues()        # Do NOT comment out this line
-base_release.cflags       = ' -DUSING_FREERTOS -DBUILD_OPT_PIN=6 -DBUILD_OPT_NUM_PIXELS=40 -DBUILD_OPT_NEO_TYPE=NEO_GRBW -Wall -DF_CPU=120000000L -DARDUINO=10810 -DVARIANT_QSPI_BAUD_DEFAULT=50000000 -DENABLE_CACHE '
-base_release.inc         += r' -I{}\src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\Include'.format(COLONY_ARDUINO_BSP_SUPPORT)
-base_release.inc         += r' -I{}\src\Bsp\Adafruit\grand_central_m4\gcc\FreeRTOS\Source\portable\GCC\ARM_CM4F'.format(COLONY_ARDUINO_BSP_SUPPORT)
-base_release.inc         += r' -I{}\arduino\libraries\Adafruit_NeoPixel'.format( ARDUINO_SUPPORT )
-base_release.inc         += r' -I{}\arduino\libraries\SdFat\src'.format( ARDUINO_SUPPORT )
-base_release.inc         += r' -I{}\arduino\libraries\Adafruit_SPIFlash\src'.format( ARDUINO_SUPPORT )
-base_release.inc         += r' -I{}\arduino\libraries\Adafruit_Zero_DMA_Library'.format( ARDUINO_SUPPORT )
+common_flags           = ' -DPICO_STACK_SIZE=2048 -DPICO_COPY_TO_RAM=0 -DPICO_CXX_ENABLE_EXCEPTIONS=0 -DPICO_NO_FLASH=0 -DPICO_NO_HARDWARE=0 -DPICO_ON_DEVICE=1 -DPICO_USE_BLOCKED_RAM=0 '
+base_release.cflags    = f' -Wall {common_flags}'
+base_release.cppflags  = ' -std=gnu++17'
+base_release.asmflags  = f' {common_flags}'
+base_release.inc       = f'{sdk_inc}{pimoroni_inc}'
 
-base_release.linkflags    = r'-Tflash_without_bootloader.ld'
-#base_release.firstobjs    = bsp_objects;
 
 # Set project specific 'optimized' options
 optimzed_release = BuildValues()    # Do NOT comment out this line
@@ -101,7 +102,7 @@ release_opts = { 'user_base':base_release,
         
 # Add new variant option dictionary to # dictionary of 
 # build variants
-build_variants = { 'arduino':release_opts,
+build_variants = { 'pico':release_opts,
 #                  'xyz':xyz_opts,
                  }    
 
@@ -117,10 +118,10 @@ prjdir = os.path.dirname(os.path.abspath(__file__))
 
 
 # Select Module that contains the desired toolchain
-from nqbplib.toolchains.windows.arm_m4_arduino.atsamd51_grandcentral import ToolChain
+from nqbplib.toolchains.windows.arm_gcc_rp2040.stdio_serial import ToolChain
 
 
 # Function that instantiates an instance of the toolchain
 def create():
-    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, ARDUINO_TOOLS, ARDUINO_SUPPORT, ARDUINO_COMPILER_VER, ARDUINO_BSP_VER, "arduino", env_error )
+    tc = ToolChain( FINAL_OUTPUT_NAME, prjdir, build_variants, "pico", NQBP_PKG_ROOT(), "pico"  )
     return tc 

@@ -41,9 +41,7 @@ namespace Thermostat {
 /** This concrete class is a "maker" pattern assembles the objects needed for the
     thermostat's control algorithm.
  */
-class Algorithm : public Cpl::Dm::MailboxServer,
-    public Cpl::Itc::CloseSync,
-    public Cpl::System::Timer
+class Algorithm : public Cpl::Itc::CloseSync, public Cpl::System::Timer
 {
 protected:
     /// Component
@@ -103,7 +101,7 @@ protected:
 
 public:
     /// Constructor.
-    Algorithm();
+    Algorithm( Cpl::Dm::MailboxServer& myMbox );
 
 
 public:

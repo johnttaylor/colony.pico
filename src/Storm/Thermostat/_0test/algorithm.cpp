@@ -52,7 +52,8 @@ static Storm::TShell::State	            stateCmd_( cmdlist_ );
 static Storm::Thermostat::SimHouse::Cmd houseCmd_( cmdlist_ );
 static Storm::Thermostat::Log           logCmd_( cmdlist_ );
 
-static Storm::Thermostat::Algorithm uut_;
+static Cpl::Dm::MailboxServer       algoMbox_;
+static Storm::Thermostat::Algorithm uut_( algoMbox_);
 
 static Storm::Thermostat::SimHouse::House houseSimulator_;
 
@@ -64,7 +65,7 @@ void algorithmTest( Cpl::Io::Input& infd, Cpl::Io::Output& outfd )
     shell_.launch( infd, outfd );
 
     // Create thread to run the Algorithm
-    Cpl::System::Thread::create( uut_, "Algorithm", CPL_SYSTEM_THREAD_PRIORITY_NORMAL + CPL_SYSTEM_THREAD_PRIORITY_RAISE );
+    Cpl::System::Thread::create( algoMbox_, "Algorithm", CPL_SYSTEM_THREAD_PRIORITY_NORMAL + CPL_SYSTEM_THREAD_PRIORITY_RAISE );
 
     // Create thread to run the House simulation
     Cpl::System::Thread::create( houseSimulator_, "HouseSim", CPL_SYSTEM_THREAD_PRIORITY_NORMAL + CPL_SYSTEM_THREAD_PRIORITY_RAISE );

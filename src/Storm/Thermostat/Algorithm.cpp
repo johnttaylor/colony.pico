@@ -81,10 +81,9 @@ protected:
 static PostProcessing postProcessor_;
 
 ///////////////////////////////
-Algorithm::Algorithm()
-    : Cpl::Dm::MailboxServer( OPTION_CPL_SYSTEM_EVENT_LOOP_TIMEOUT_PERIOD )
-    , Cpl::Itc::CloseSync( *( ( Cpl::Itc::PostApi* )this ) )
-    , Cpl::System::Timer( *( ( Cpl::System::TimerManager* )this ) )
+Algorithm::Algorithm( Cpl::Dm::MailboxServer& myMbox )
+    : Cpl::Itc::CloseSync( myMbox )
+    , Cpl::System::Timer( myMbox )
     , m_idtSelection( idtSelection_ins_, idtSelection_outs_ )
     , m_operatingMode( operatingMode_ins_, operatingMode_outs_ )
     , m_piPreProcess( piPreProcess_ins_, piPreProcess_outs_ )
