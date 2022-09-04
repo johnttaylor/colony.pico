@@ -18,6 +18,7 @@
 #include "Cpl/Persistent/CrcChunk.h"
 #include "Cpl/Persistent/RecordServer.h"
 #include "Cpl/Persistent/FileAdapter.h"
+#include "Cpl/Persistent/NullRegionMedia.h"
 #include "Cpl/Io/File/Api.h"
 #include "Cpl/Io/File/Output.h"
 #include <memory.h>
@@ -217,6 +218,43 @@ TEST_CASE( "CrcChunk" )
         REQUIRE( payload1_.m_putCount == 1 );
 
         uut.stop();
+    }
+
+    SECTION( "null media region" )
+    {
+        NullRegionMedia uutFd( 0, 128 );
+        MyUut chunk( uutFd );
+        payload1_.m_putCount = 0;
+        payload1_.m_getCount = 0;
+
+        bool result = chunk.loadData( payload1_ );
+        REQUIRE( result == false );
+        REQUIRE( payload1_.m_putCount == 0 );
+
+        REQUIRE( payload1_.m_getCount == 0 );
+        uut.updateData( payload1_ );
+        REQUIRE( payload1_.m_getCount == 1 );
+
+        result = chunk.loadData( payload1_ );
+        REQUIRE( result == false );
+        REQUIRE( payload1_.m_putCount == 0 );
+
+        uut.stop();
+    }
+
+    SECTION( "null media - start/stop" )
+    {
+        NullRegionMedia uutFd( 0, 128 );
+        MyUut chunk( uutFd );
+
+        REQUIRE( chunk.m_startCount == 0 );
+        REQUIRE( chunk.m_stopCount == 0 );
+        chunk.start( mockEvents_ );
+        REQUIRE( chunk.m_startCount == 1 );
+        REQUIRE( chunk.m_stopCount == 0 );
+        chunk.stop();
+        REQUIRE( chunk.m_startCount == 1 );
+        REQUIRE( chunk.m_stopCount == 1 );
     }
 
     REQUIRE( Cpl::System::Shutdown_TS::getAndClearCounter() == 0u );
