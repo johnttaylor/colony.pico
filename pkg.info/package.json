@@ -34,22 +34,6 @@
         }
       },
       {
-        "pkgname": "colony.core",
-        "pkgtype": "overlay",
-        "adoptedDate": "Sat Aug 20 16:01:58 2022",
-        "parentDir": null,
-        "version": {
-          "semanticVersion": "4.1.0",
-          "branch": null,
-          "tag": "OUTCAST2-main-4.1.0"
-        },
-        "repo": {
-          "name": "colony.core",
-          "type": "git",
-          "origin": "https://github.com/johnttaylor"
-        }
-      },
-      {
         "pkgname": "pimoroni-pico",
         "pkgtype": "readonly",
         "adoptedDate": "Sat Aug 20 21:50:16 2022",
