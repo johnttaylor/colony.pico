@@ -9,20 +9,23 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
+#include "Storm/Thermostat/Main/_pico/Main.h"
 #include "Storm/Thermostat/Main/Private_.h"
-#include "statics_.h"
+#include "Storm/Thermostat/Main/_simulation/statics_.h"
 #include "Cpl/System/Thread.h"
 #include <stdlib.h>
+
+// The Algorithm shares the same thread as the Record server.  In theory I
+// can get away with this because the Algorithm executes at 0.5 Hz - which
+// should be slow enough that any blocking/busy writes the record server
+// performs will NOT negatively impact the Algorithm timing.
+Cpl::Dm::MailboxServer*                         g_algoRunnablePtr = &recordServer_;
 
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializePlatform0()
 {
-    // Create thread to run the House simulation
-    Cpl::System::Thread::create( houseSimulator_, "HouseSim", CPL_SYSTEM_THREAD_PRIORITY_NORMAL );
-
-    // Create thread for persistent storage
-    Cpl::System::Thread::create( recordServer_, "NVRAM", CPL_SYSTEM_THREAD_PRIORITY_NORMAL );
+    // Note: The 'main' code creates the thread for the RecordServer/Algorithm Runnable object
 }
 
 void openPlatform0()

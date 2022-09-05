@@ -32,7 +32,7 @@ from nqbplib.my_globals import NQBP_PKG_ROOT
 #---------------------------------------------------
 
 # Set the name for the final output item
-FINAL_OUTPUT_NAME = 'pico-sketch.exe'
+FINAL_OUTPUT_NAME = 'thermostat-sim.exe'
 
 #
 # For build config/variant: "Release"
@@ -72,7 +72,7 @@ extra_cflags = '-DLIB_PICO_BIT_OPS=1 -DLIB_PICO_BIT_OPS_PICO=1 -DLIB_PICO_DIVIDE
 # Set project specific 'base' (i.e always used) options
 base_release           = BuildValues()        # Do NOT comment out this line
 base_release.cflags    = f'-Wno-attributes -m32 -D__unused= -D__always_inline=__attribute__((always_inline)) {extra_cflags}'
-base_release.cppflags  = f'-std=gnu++17'
+base_release.cppflags   = f'-std=gnu++17'
 base_release.inc       = f'{sdk_inc}{pimoroni_inc}'
 base_release.linkflags = '-m32 -fprofile-arcs'
 base_release.linklibs  = '-lgcov -lws2_32'
