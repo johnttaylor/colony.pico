@@ -217,14 +217,38 @@ namespace Simulator
         }
     }
 
+    // Command sets the Title string for the main window
+    //
+    // <DD> <HH:MM:SS.sss> title <text>
+    // Where:
+    //      <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
+    //      <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
+    //      <text>              The title text for the main windows.  Can contain spaces
+    public class Title : ICommand
+    {
+        private MainForm m_ui;
+        public Title(MainForm ui)
+        {
+            m_ui = ui;
+        }
+        public string GetCommandName() { return "title"; }
+        public bool ExecuteCommand(string rawString, List<string> tokenizeString)
+        {
+            Console.WriteLine("PROCESSING: " + rawString);
+            string newTitle = String.Join(" ", tokenizeString.GetRange(3, tokenizeString.Count - 3));
+            m_ui.UpdateTitle( newTitle );
+            return true;
+        }
+    }
+
     // Common/Helper methods
     public class Utils
     {
         static public Color ConvertColor(int firmwareColor)
         {
-            int red = ((firmwareColor   & 0b11100000) * 255 + 128) / (0b11100000);
+            int red = ((firmwareColor & 0b11100000) * 255 + 128) / (0b11100000);
             int green = (((firmwareColor & 0b0011100) << 3) * 255 + 128) / (0b11100000);
-            int blue = (((firmwareColor  & 0b0000011) << 6) * 255 + 128) / (0b11000000);
+            int blue = (((firmwareColor & 0b0000011) << 6) * 255 + 128) / (0b11000000);
             return Color.FromArgb(red > 0xFF ? 0xFF : red,
                 green > 0xFF ? 0xFF : green,
                 blue > 0xFF ? 0xFF : blue

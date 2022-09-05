@@ -52,6 +52,7 @@
 #include "colony_config.h"
 #include "Cpl/Io/Input.h"
 #include "Cpl/Io/Output.h"
+#include "Driver/TPipe/Pipe.h"
 
 /** The size, in bytes, of the receive frame buffer used for the TPipe
     connection
@@ -115,7 +116,11 @@ namespace TPipe {
 /** This method initializes the composite driver and provides the IO streams
     it uses to communicate with the external executable
  */
-void initialize( Cpl::Io::Input & tpipeInStream, Cpl::Io::Output & tpipeOutStream );
+void initialize( Cpl::Io::Input & tpipeInStream, Cpl::Io::Output & tpipeOutStream ) noexcept;
+
+/** This method returns a handle to the underly TPipe instance
+ */
+Driver::TPipe::Pipe& tpipe() noexcept;
 
 } // End namespace(s)
 }

@@ -75,7 +75,12 @@ Cpl::Dm::PeriodicScheduler tpipeMbox_( tpipeIntervals_,
 
 
 /*-----------------------------------------------------------*/
-void Driver::PicoDisplay::TPipe::initialize( Cpl::Io::Input& tpipeInStream, Cpl::Io::Output& tpipeOutStream )
+Driver::TPipe::Pipe& Driver::PicoDisplay::TPipe::tpipe() noexcept
+{
+    return tpipe_;
+}
+
+void Driver::PicoDisplay::TPipe::initialize( Cpl::Io::Input& tpipeInStream, Cpl::Io::Output& tpipeOutStream ) noexcept
 {
     // Initialize the HAL for the button driver
     driverButtonHalTPipe_initialize( frameHandlers_ );

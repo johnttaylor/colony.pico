@@ -32,7 +32,6 @@
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusStripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.LcdPanel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.AButton = new System.Windows.Forms.Button();
             this.BButton = new System.Windows.Forms.Button();
@@ -40,7 +39,7 @@
             this.YButton = new System.Windows.Forms.Button();
             this.RbbLedOutline = new System.Windows.Forms.Panel();
             this.RgbLED = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
+            this.Title = new System.Windows.Forms.Label();
             this.StatusStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.RbbLedOutline.SuspendLayout();
@@ -71,17 +70,6 @@
             this.LcdPanel.Name = "LcdPanel";
             this.LcdPanel.Size = new System.Drawing.Size(240, 135);
             this.LcdPanel.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(38, 9);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(365, 47);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "240x135 Graphic LCD";
             // 
             // panel1
             // 
@@ -161,28 +149,29 @@
             this.RgbLED.Size = new System.Drawing.Size(10, 10);
             this.RgbLED.TabIndex = 1;
             // 
-            // label2
+            // Title
             // 
-            this.label2.Font = new System.Drawing.Font("Comic Sans MS", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(0, 9);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(459, 47);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "240x135 Graphic LCD";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Title.AutoSize = true;
+            this.Title.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Title.Location = new System.Drawing.Point(-1, 9);
+            this.Title.MaximumSize = new System.Drawing.Size(460, 37);
+            this.Title.MinimumSize = new System.Drawing.Size(460, 37);
+            this.Title.Name = "Title";
+            this.Title.Size = new System.Drawing.Size(460, 37);
+            this.Title.TabIndex = 10;
+            this.Title.Text = "240 X 135 Graphic Display";
+            this.Title.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(459, 302);
+            this.Controls.Add(this.Title);
             this.Controls.Add(this.RbbLedOutline);
             this.Controls.Add(this.YButton);
             this.Controls.Add(this.XButton);
             this.Controls.Add(this.BButton);
             this.Controls.Add(this.AButton);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.panel1);
             this.DoubleBuffered = true;
@@ -207,7 +196,6 @@
 
         private System.Windows.Forms.StatusStrip StatusStrip;
         private System.Windows.Forms.Panel LcdPanel;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripStatusLabel StatusStripLabel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button AButton;
@@ -216,7 +204,7 @@
         private System.Windows.Forms.Button YButton;
         private System.Windows.Forms.Panel RbbLedOutline;
         private System.Windows.Forms.Panel RgbLED;
-        private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.Label Title;
     }
 }
 

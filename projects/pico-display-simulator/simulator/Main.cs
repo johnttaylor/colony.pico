@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
+using System.Reflection;
+using System.Collections;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Simulator
 {
@@ -45,6 +48,7 @@ namespace Simulator
             m_listener.RegisterCommand(new Simulator.Exit());
             m_listener.RegisterCommand(new Simulator.Nop(this));
             m_listener.RegisterCommand(new Simulator.FillLCD(this));
+            m_listener.RegisterCommand(new Simulator.Title(this));
 
             new Thread(new ParameterizedThreadStart(Simulator.SocketListener.Start)).Start(m_listener);
         }
@@ -62,6 +66,22 @@ namespace Simulator
                 StatusStrip.Refresh();
                 LcdPanel.Refresh();
                 RgbLED.Refresh();
+            }
+        }
+
+        private delegate void SafeCallDelegate(string text);
+
+        public void UpdateTitle( string newTitle )
+        {
+            if (InvokeRequired)
+            {
+                var d = new SafeCallDelegate(UpdateTitle);
+                Invoke(d, new object[] { newTitle });
+            }
+            else
+            {
+                Title.Text = newTitle;
+                Title.Refresh();
             }
         }
 

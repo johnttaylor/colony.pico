@@ -36,6 +36,9 @@ R"(Pico-sketch Simulation.
 
 )";
 
+#define SIMULATION_TITLE        "Pico-Sketch"
+#define TITLE_COMMAND           "00 00:00:00.000 title " SIMULATION_TITLE
+
 static std::map<std::string, docopt::value> args_;
 
 /// Allocate memory for the console stream pointers
@@ -69,6 +72,10 @@ int main( int argc, char* argv[] )
 
     // Initializes the simulator's socket connect to the GUI application
     Driver::PicoDisplay::TPipe::initialize( socketStream, socketStream );
+
+    // Set the title for the Simulation window
+    Cpl::System::Api::sleep( 100 ); // Allow time for the TPipe thread to spin up
+    Driver::PicoDisplay::TPipe::tpipe().sendCommand( TITLE_COMMAND, strlen( TITLE_COMMAND ) );
 
     // Launch the application (on the simulation platform this method returns -->but don't the executable end)
     runApplication();
