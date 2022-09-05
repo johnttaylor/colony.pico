@@ -12,6 +12,8 @@ See the [Threading Example](#Threading-Example) and [Threading Details](#Threadi
 
 There is a [Pico-Sketch application](https://github.com/johnttaylor/colony.pico/blob/main/projects/pico-sketch/README.md#GettingStarted) that illustrates who to build a functional simulator.
 
+A case study of the [*Main Pattern*](https://github.com/johnttaylor/colony.pico/blob/main/projects/Storm/Thermostat/Pico/README.md) by porting the PIM example [Thermostat application](https://github.com/johnttaylor/pim) to the Pico.
+
 There is a [Visual Studio](https://visualstudio.microsoft.com/vs/community/) Solution that provides *Intellisense* editing and navigation of the code base as well as GUI front end for GIT. Click [here](https://github.com/johnttaylor/colony.pico/blob/main/README-VisualStudio.md) for details 
 
 Doxygen documentation is located in the `docs/` directory. 
