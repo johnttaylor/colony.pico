@@ -9,14 +9,12 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
+#include "Driver/PicoDisplay/RP2040/Api.h"     // Must be first #include (because of the Pimoroni/Pico SDK)
 #include "../../app.h"
 #include "Bsp/Api.h"
-#include "main.h"
 #include "Cpl/System/Api.h"
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/RP2040/Console.h"
-#include "Driver/Button/RP2040/Hal.h"
-#include "Driver/LED/PimoroniPico/RedGreenBlue.h"
 #include "Cpl/TShell/Cmd/Threads.h"
 
 
@@ -36,7 +34,7 @@ int main( void )
 
     // Initialize the board
     Bsp_Api_initialize();
-    platform_initialize_buttons();
+    Driver::PicoDisplay::RP2040::initialize();
 
     // Start the Console/Trace output: Accepting the default UART Config parameters, e.g. 115200, 8N1
     Cpl::System::RP2040::startConsole();

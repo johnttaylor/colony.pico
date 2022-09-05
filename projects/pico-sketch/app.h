@@ -17,9 +17,6 @@
 
  */
 
-#include "libraries/pico_graphics/pico_graphics.hpp"
-#include "Driver/Button/PolledDebounced.h"
-#include "Driver/LED/RedGreenBlue.h"
 #include "Cpl/Io/Input.h"
 #include "Cpl/Io/Output.h"
 #include "Cpl/Container/Map.h"
@@ -35,27 +32,6 @@
 
 /// Default Trace section
 #define MY_APP_TRACE_SECTION        "app"
-
-/// expose the Button A driver
-extern Driver::Button::PolledDebounced g_buttonA;
-
-/// expose the Button B driver
-extern Driver::Button::PolledDebounced g_buttonB;
-
-/// expose the Button X driver
-extern Driver::Button::PolledDebounced g_buttonX;
-
-/// expose the Button Y driver
-extern Driver::Button::PolledDebounced g_buttonY;
-
-/// expose the RGB LED driver
-extern Driver::LED::RedGreenBlue*      g_rgbLEDDriverPtr;
-
-/// This function is called by the Application to update/refresh the LCD contents
-void platform_updateLcd( pimoroni::PicoGraphics& graphics );
-
-/// This function is called by the Application to set the LCD backlight setting (0-255)
-void platform_setLcdBacklight( uint8_t value );
 
 
 /*-------------------------------------------------------*/

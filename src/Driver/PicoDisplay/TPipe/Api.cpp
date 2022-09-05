@@ -9,8 +9,8 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include "../app.h"
-#include "colony_config.h"
+#include "Driver/PicoDisplay/Api.h" // Must be first #include (because of the Pimoroni/Pico SDK)
+#include "Api.h"
 #include "Driver/TPipe/Maker.h"
 #include "Cpl/System/Thread.h"
 #include "Cpl/Dm/PeriodicScheduler.h"
@@ -18,26 +18,27 @@
 #include "Driver/LED/TPipe/RedGreenBlue.h"
 
 
-
-#ifndef OPTION_MY_APP_SIM_RX_FRAME_HANDLER_SIZE
-#define OPTION_MY_APP_SIM_RX_FRAME_HANDLER_SIZE     256
-#endif
-
 static Cpl::Container::Map<Driver::TPipe::RxFrameHandlerApi> frameHandlers_( "ignoreThisParameter_usedToSelecStaticContructor" );
-static Driver::TPipe::Maker                                  tpipe_( frameHandlers_, OPTION_MY_APP_SIM_RX_FRAME_HANDLER_SIZE );
+static Driver::TPipe::Maker                                  tpipe_( frameHandlers_, OPTION_DRIVER_PICO_DISPLAY_TPIPE_RX_FRAME_HANDLER_SIZE );
 
 static Cpl::Io::Input*  tpipeInfd_;
 static Cpl::Io::Output* tpipeOutfd_;
 
-// Create the Button drivers
-Driver::Button::PolledDebounced g_buttonA( "A" );
-Driver::Button::PolledDebounced g_buttonB( "B" );
-Driver::Button::PolledDebounced g_buttonX( "X" );
-Driver::Button::PolledDebounced g_buttonY( "Y" );
+// Create the Button drivers (assumes that the TPipe HAL layer is linked)
+static Driver::Button::PolledDebounced buttonA_( OPTION_DRIVER_PICO_DISPLAY_TPIPE_BUTTON_A_NAME );
+static Driver::Button::PolledDebounced buttonB_( OPTION_DRIVER_PICO_DISPLAY_TPIPE_BUTTON_B_NAME );
+static Driver::Button::PolledDebounced buttonX_( OPTION_DRIVER_PICO_DISPLAY_TPIPE_BUTTON_X_NAME );
+static Driver::Button::PolledDebounced buttonY_( OPTION_DRIVER_PICO_DISPLAY_TPIPE_BUTTON_Y_NAME );
 
 // Create RGB LED Driver
-static Driver::LED::TPipe::RedGreeBlue rgbLedDriver_( tpipe_, "theOne" );
-Driver::LED::RedGreenBlue*             g_rgbLEDDriverPtr = &rgbLedDriver_;
+static Driver::LED::TPipe::RedGreeBlue rgbLedDriver_( tpipe_, OPTION_DRIVER_PICO_DISPLAY_TPIPE_RGB_LED_NAME );
+
+// Public accessors
+Driver::Button::PolledDebounced& Driver::PicoDisplay::Api::buttonA() noexcept { return buttonA_; }
+Driver::Button::PolledDebounced& Driver::PicoDisplay::Api::buttonB() noexcept { return buttonB_; }
+Driver::Button::PolledDebounced& Driver::PicoDisplay::Api::buttonX() noexcept { return buttonX_; }
+Driver::Button::PolledDebounced& Driver::PicoDisplay::Api::buttonY() noexcept { return buttonY_; }
+Driver::LED::RedGreenBlue& Driver::PicoDisplay::Api::rgbLED() noexcept { return rgbLedDriver_; }
 
 /*-----------------------------------------------------------*/
 //
@@ -74,7 +75,7 @@ Cpl::Dm::PeriodicScheduler tpipeMbox_( tpipeIntervals_,
 
 
 /*-----------------------------------------------------------*/
-void platform_init( Cpl::Io::Input& tpipeInStream, Cpl::Io::Output& tpipeOutStream )
+void Driver::PicoDisplay::TPipe::initialize( Cpl::Io::Input& tpipeInStream, Cpl::Io::Output& tpipeOutStream )
 {
     // Initialize the HAL for the button driver
     driverButtonHalTPipe_initialize( frameHandlers_ );
@@ -88,43 +89,14 @@ void platform_init( Cpl::Io::Input& tpipeInStream, Cpl::Io::Output& tpipeOutStre
 }
 
 
-void platform_setLcdBacklight( uint8_t value )
+void Driver::PicoDisplay::Api::setLCDBrightness( uint8_t value )
 {
     // Not supported
 }
 
-/** TPipe Command format:
-
-    <DD> <HH:MM:SS.sss> writeLCDData <x0> <w> <y0> <h> <hexdata>
-    Where:
-         <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-         <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-         <x0>                Top/left X coordinate (in pixel coordinates) of the rectangle
-         <w>                 Width (in display coordinates) of the rectangle. Note: <w> should always be greater than 0
-         <y0>                Top/left Y coordinate (in pixel coordinates) of the rectangle
-         <h>                 height (in display coordinates) of the rectangle. Note: <h> should always be greater than 0
-         <hexdata>           Pixel data as 'ASCII HEX' String (upper case and with no spaces).  Each PIXEL is one byte 
-                             Pixel layout is row, then column:
-                                 First Pixel is:   x0, y0
-                                 Pixel w is:       x0+w, y0
-                                 Pixel w+1 is:     x0, y0+1
-                                 Pixel (h*w) is:   x1, y1
-
-    NOTE: Color/Pixel size RGB322 color resolution
-
-
-    <DD> <HH:MM:SS.sss> updateLCD
-    Where:
-         <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-         <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
-         
-    NOTE: The simulator makes a copy of the 'screen buffer' and ONLY sends 'deltas' to the simulated
-          display.  This has significant positive impact on the performance of 'display' on the simulator
- */
-
-#define NUM_DISPLAY_BYTES         (MY_APP_DISPLAY_WIDTH * MY_APP_DISPLAY_HEIGHT * sizeof(uint8_t))  
+#define NUM_DISPLAY_BYTES         (OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_WIDTH * OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_HEIGHT * sizeof(uint8_t))  
 #define TPIPE_WORK_BUF_SIZE       (NUM_DISPLAY_BYTES*2 + 128)
-#define DATE_SIZE_ROW             (MY_APP_DISPLAY_WIDTH * sizeof(uint8_t))
+#define DATE_SIZE_ROW             (OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_WIDTH * sizeof(uint8_t))
 
 static Cpl::Text::FString<TPIPE_WORK_BUF_SIZE> buffer_;
 static uint8_t                                 frameCache_[NUM_DISPLAY_BYTES];
@@ -139,25 +111,25 @@ static void beginLCDData()
 
 static void endLCDData()
 {
-    buffer_ = '^';
+    buffer_ = OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_SOF;
     formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
     buffer_.formatAppend( " updateLCD" );
-    buffer_ += ';';
+    buffer_ += OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_EOF;
     tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
 }
 
 static void sendLCDData( unsigned rowIndex, const void* data, size_t length )
 {
     // Start building the TPipe command
-    buffer_ = '^';
+    buffer_ = OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_SOF;
     formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
     buffer_.formatAppend( " writeLCDData 0 %u %u 1 ",
-                          MY_APP_DISPLAY_WIDTH,
+                          OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_WIDTH,
                           rowIndex );
 
     // Add the pixel data and send the command
     Cpl::Text::bufferToAsciiHex( data, length, buffer_, true, true );
-    buffer_ += ';';
+    buffer_ += OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_EOF;
     tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
 }
 
@@ -173,8 +145,7 @@ static void appendLCDRowData( const void* data, size_t len )
     rowIndex_++;
 }
 
-
-void platform_updateLcd( pimoroni::PicoGraphics& graphics )
+void Driver::PicoDisplay::Api::updateLCD( pimoroni::PicoGraphics& graphics )
 {
     beginLCDData();
 
@@ -182,7 +153,7 @@ void platform_updateLcd( pimoroni::PicoGraphics& graphics )
     if ( graphics.pen_type == pimoroni::PicoGraphics::PEN_RGB332 )
     {
         const uint8_t* srcPtr = (const uint8_t*) graphics.frame_buffer;
-        for ( int row=0; row < MY_APP_DISPLAY_HEIGHT; row++ )
+        for ( int row=0; row < OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_HEIGHT; row++ )
         {
             appendLCDRowData( srcPtr, DATE_SIZE_ROW );
             srcPtr += DATE_SIZE_ROW;

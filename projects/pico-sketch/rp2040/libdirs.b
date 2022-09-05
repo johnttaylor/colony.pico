@@ -4,6 +4,7 @@ xsrc/pimoroni-pico/drivers/st7789
 
 # Platform specific driver(s)
 src/Driver/Button/RP2040
+src/Driver/PicoDisplay/RP2040
 
 # OSAL - Platform specific
 src/Cpl/System/RP2040

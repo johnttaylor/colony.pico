@@ -10,7 +10,6 @@
 *----------------------------------------------------------------------------*/
 
 #include "../../app.h"
-#include "../simulator.h"
 #include "Cpl/Io/Socket/Win32/Connector.h"
 #include "Cpl/Io/Socket/InputOutput.h"
 #include "Cpl/System/Api.h"
@@ -18,7 +17,7 @@
 #include "Cpl/Io/Stdio/StdIn.h"
 #include "Cpl/Io/Stdio/StdOut.h"
 #include "Cpl/TShell/Cmd/Win32/Threads.h"
-
+#include "Driver/PicoDisplay/TPipe/Api.h"
 #include "docopt-cpp/docopt.h"
 #include "docopt-cpp/docopt_value.h"
 
@@ -69,7 +68,7 @@ int main( int argc, char* argv[] )
     Cpl::Io::Socket::InputOutput socketStream( socketFd );
 
     // Initializes the simulator's socket connect to the GUI application
-    platform_init( socketStream, socketStream );
+    Driver::PicoDisplay::TPipe::initialize( socketStream, socketStream );
 
     // Launch the application (on the simulation platform this method returns -->but don't the executable end)
     runApplication();

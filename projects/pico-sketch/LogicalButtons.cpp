@@ -9,11 +9,11 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
+#include "Driver/PicoDisplay/Api.h" // Must be first #include (because of the Pimoroni/Pico SDK)
 #include "app.h"
 #include "LogicalButtons.h"
 #include "ModelPoints.h"
 #include "Cpl/System/Trace.h"
-
 
 #define STATE_IDLE                  0
 #define STATE_KEYPRESSED            1    
@@ -67,18 +67,18 @@ void processLogicalButtons( Cpl::System::ElapsedTime::Precision_T currentTick,
                             Cpl::System::ElapsedTime::Precision_T currentInterval )
 {
     // De-bounce the button Inputs
-    g_buttonA.sample();
-    g_buttonB.sample();
-    g_buttonX.sample();
-    g_buttonY.sample();
+    Driver::PicoDisplay::Api::buttonA().sample();
+    Driver::PicoDisplay::Api::buttonB().sample();
+    Driver::PicoDisplay::Api::buttonX().sample();
+    Driver::PicoDisplay::Api::buttonY().sample();
 
     // Detect release events
     releaseEvent_ = false;
     pressedEvent_ = false;
-    int edgeA     = detectEdges( g_buttonA.isPressed(), buttonAPressed_ );
-    int edgeB     = detectEdges( g_buttonB.isPressed(), buttonBPressed_ );
-    int edgeX     = detectEdges( g_buttonX.isPressed(), buttonXPressed_ );
-    int edgeY     = detectEdges( g_buttonY.isPressed(), buttonYPressed_ );
+    int edgeA     = detectEdges( Driver::PicoDisplay::Api::buttonA().isPressed(), buttonAPressed_ );
+    int edgeB     = detectEdges( Driver::PicoDisplay::Api::buttonB().isPressed(), buttonBPressed_ );
+    int edgeX     = detectEdges( Driver::PicoDisplay::Api::buttonX().isPressed(), buttonXPressed_ );
+    int edgeY     = detectEdges( Driver::PicoDisplay::Api::buttonY().isPressed(), buttonYPressed_ );
 
     // Convert to button events
     isSingleKeyEvent_ = true;
@@ -108,9 +108,9 @@ void processLogicalButtons( Cpl::System::ElapsedTime::Precision_T currentTick,
         break;
 
     case STATE_WAITING_ALL_RELEASED:
-        if ( !g_buttonB.isPressed() &&
-             !g_buttonX.isPressed() &&
-             !g_buttonY.isPressed() )
+        if ( !Driver::PicoDisplay::Api::buttonB().isPressed() &&
+             !Driver::PicoDisplay::Api::buttonX().isPressed() &&
+             !Driver::PicoDisplay::Api::buttonY().isPressed() )
         {
             state_ = STATE_IDLE;
         }
@@ -177,23 +177,23 @@ Cpl::Dm::Mp::Bool* getLogicalKey( int edgeA, int edgeB, int edgeX, int edgeY )
 {
     if ( edgeA == EDGE_RELEASED )
     {
-        return lookUpLogicalKey( true, g_buttonB.isPressed(), g_buttonX.isPressed(), g_buttonY.isPressed() );
+        return lookUpLogicalKey( true, Driver::PicoDisplay::Api::buttonB().isPressed(), Driver::PicoDisplay::Api::buttonX().isPressed(), Driver::PicoDisplay::Api::buttonY().isPressed() );
     }
     else if ( edgeB == EDGE_RELEASED )
     {
-        return lookUpLogicalKey( g_buttonA.isPressed(), true, g_buttonX.isPressed(), g_buttonY.isPressed() );
+        return lookUpLogicalKey( Driver::PicoDisplay::Api::buttonA().isPressed(), true, Driver::PicoDisplay::Api::buttonX().isPressed(), Driver::PicoDisplay::Api::buttonY().isPressed() );
     }
     else if ( edgeX == EDGE_RELEASED )
     {
-        return lookUpLogicalKey( g_buttonA.isPressed(), g_buttonB.isPressed(), true, g_buttonY.isPressed() );
+        return lookUpLogicalKey( Driver::PicoDisplay::Api::buttonA().isPressed(), Driver::PicoDisplay::Api::buttonB().isPressed(), true, Driver::PicoDisplay::Api::buttonY().isPressed() );
     }
     else if ( edgeY == EDGE_RELEASED )
     {
-        return lookUpLogicalKey( g_buttonA.isPressed(), g_buttonB.isPressed(), g_buttonX.isPressed(), true );
+        return lookUpLogicalKey( Driver::PicoDisplay::Api::buttonA().isPressed(), Driver::PicoDisplay::Api::buttonB().isPressed(), Driver::PicoDisplay::Api::buttonX().isPressed(), true );
     }
     else if ( edgeA == EDGE_TIME )
     {
-        return lookUpLogicalKey( g_buttonA.isPressed(), g_buttonB.isPressed(), g_buttonX.isPressed(), g_buttonY.isPressed() );
+        return lookUpLogicalKey( Driver::PicoDisplay::Api::buttonA().isPressed(), Driver::PicoDisplay::Api::buttonB().isPressed(), Driver::PicoDisplay::Api::buttonX().isPressed(), Driver::PicoDisplay::Api::buttonY().isPressed() );
     }
 
     return nullptr;

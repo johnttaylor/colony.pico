@@ -9,6 +9,7 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
+#include "Driver/PicoDisplay/Api.h" // Must be first #include (because of the Pimoroni/Pico SDK)
 #include "app.h"
 #include "Sketch.h"
 #include "colony_config.h"
@@ -172,7 +173,7 @@ public:
             }
 
             setPencilColor( colors[m_colorIndex].red, colors[m_colorIndex].green, colors[m_colorIndex].blue );
-            g_rgbLEDDriverPtr->setRgb( colors[m_colorIndex].red, colors[m_colorIndex].green, colors[m_colorIndex].blue );
+            Driver::PicoDisplay::Api::rgbLED().setRgb( colors[m_colorIndex].red, colors[m_colorIndex].green, colors[m_colorIndex].blue );
         }
     }
 
@@ -345,7 +346,7 @@ void movePencil( int deltaX, int deltaY )
     // now update the screen
     pimoroni::Rect box( pencilX0_, pencilY0_, pencilSize_, pencilSize_ );
     graphics_.rectangle( box );
-    platform_updateLcd( graphics_ );
+    Driver::PicoDisplay::Api::updateLCD( graphics_ );
 
 }
 
@@ -367,7 +368,7 @@ void clearTheCanvas( uint8_t bgColorRed, uint8_t bgColorGreen, uint8_t bgColorBl
     pencilBlue_  = 0;
 
     // now we've done our drawing let's update the screen
-    platform_updateLcd( graphics_ );
+    Driver::PicoDisplay::Api::updateLCD( graphics_ );
 }
 
 /*---------------------------------------------------------------------------*/
@@ -408,8 +409,8 @@ void clearTheCanvas( uint8_t bgColorRed, uint8_t bgColorGreen, uint8_t bgColorBl
 void drawStartScreen()
 {
     // Turn the RGB LED off
-    g_rgbLEDDriverPtr->setOff();
-    g_rgbLEDDriverPtr->setBrightness( 64 );
+    Driver::PicoDisplay::Api::rgbLED().setOff();
+    Driver::PicoDisplay::Api::rgbLED().setBrightness( 64 );
 
     // set the colour of the pen
     graphics_.set_pen( 0, 0, 255 );
@@ -447,7 +448,7 @@ void drawStartScreen()
 
 
     // now we've done our drawing let's update the screen
-    platform_updateLcd( graphics_ );
+    Driver::PicoDisplay::Api::updateLCD( graphics_ );
 }
 
 
@@ -494,7 +495,7 @@ void showCursor()
     graphics_.rectangle( cursor );
 
     // now we've done our drawing let's update the screen
-    platform_updateLcd( graphics_ );
+    Driver::PicoDisplay::Api::updateLCD( graphics_ );
 }
 
 void restoreCursorBlock()
@@ -508,12 +509,10 @@ void restoreCursorBlock()
     for ( int yidx=0; yidx < blockHeight_; yidx++ )
     {
         memcpy( nextBytePtr, nextCachePtr, blockRowSize_ );
-        //memset( nextBytePtr, 0x7f, blockRowSize_ );
         nextCachePtr += blockRowSize_;
         nextBytePtr  += MY_APP_DISPLAY_WIDTH;
     }
 
     // now we've done our drawing let's update the screen
-    platform_updateLcd( graphics_ );
-
+    Driver::PicoDisplay::Api::updateLCD( graphics_ );
 }

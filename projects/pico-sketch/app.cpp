@@ -9,6 +9,7 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
+#include "Driver/PicoDisplay/Api.h" // Must be first #include (because of the Pimoroni/Pico SDK)
 #include "app.h"
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/Api.h"
@@ -93,7 +94,7 @@ void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
     intializeLogicalButtons();
     intializeUI();
 
-    platform_setLcdBacklight( 220 );
+    Driver::PicoDisplay::Api::setLCDBrightness( 200 );
 }
 
 void core0Idle( Cpl::System::ElapsedTime::Precision_T currentTick, bool atLeastOneIntervalExecuted )
