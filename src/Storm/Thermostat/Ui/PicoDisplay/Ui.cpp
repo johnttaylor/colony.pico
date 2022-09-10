@@ -13,8 +13,10 @@
 #include "Ui.h"
 #include "Private_.h"
 #include "Layout_.h"
+#include "EventMonitor.h"
 #include "Storm/Thermostat/ModelPoints.h"
 #include "Storm/Thermostat/Ui/PicoDisplay/ModelPoints.h"
+#include "Storm/Thermostat/Main/_pico/Main.h"
 #include "Cpl/System/Trace.h"
 #include "Cpl/Dm/SubscriberComposer.h"
 #include "Cpl/Dm/MailboxServer.h"
@@ -22,15 +24,19 @@
 
 static void drawStartScreen();
 
-Storm::Type::ThermostatMode Storm::Thermostat::Ui::PicoDisplay::g_uiMode = Storm::Type::ThermostatMode::eOFF;
-Storm::Type::FanMode        Storm::Thermostat::Ui::PicoDisplay::g_uiFan  = Storm::Type::FanMode::eAUTO;
-float                       Storm::Thermostat::Ui::PicoDisplay::g_uiCoolingSetpoint;
-float                       Storm::Thermostat::Ui::PicoDisplay::g_uiHeatingSetpoint;
+Storm::Type::ThermostatMode Storm::Thermostat::Ui::PicoDisplay::g_uiMode            = Storm::Type::ThermostatMode::eOFF;
+Storm::Type::FanMode        Storm::Thermostat::Ui::PicoDisplay::g_uiFan             = Storm::Type::FanMode::eAUTO;
+float                       Storm::Thermostat::Ui::PicoDisplay::g_uiCoolingSetpoint = 0.0F;
+float                       Storm::Thermostat::Ui::PicoDisplay::g_uiHeatingSetpoint = 0.0F;
 
 
 using namespace Storm::Thermostat::Ui::PicoDisplay;
 
-//static EventMonitor events_( *g_uiRunnablePtr );
+static EventMonitor events_( *g_uiRunnablePtr );
+
+// Graphics library: Use RGB332 mode (256 colours) on the Target to limit RAM usage canvas 
+pimoroni::PicoGraphics_PenRGB332 graphics_( OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH, OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT, nullptr );
+
 
 void Storm::Thermostat::Ui::PicoDisplay::intializeUI()
 {
@@ -43,18 +49,43 @@ void Storm::Thermostat::Ui::PicoDisplay::intializeUI()
     drawStartScreen();
 
     // Start the Event monitor
-    //events_.start();
+    events_.start();
 }
 
 void Storm::Thermostat::Ui::PicoDisplay::processUI( Cpl::System::ElapsedTime::Precision_T currentTick,
                                                     Cpl::System::ElapsedTime::Precision_T currentInterval )
 {
+    // Update Temperatures (they are analog values and subject to change at any time)
+    drawIdt();
+    drawOdt();
 
+    // Update the Relay outputs (but only when something has changed)
+    static Storm::Type::HvacRelayOutputs_T  prevOutputs;
+    Storm::Type::HvacRelayOutputs_T         currentOutputs;
+    if ( mp_relayOutputs.read( currentOutputs ) )
+    {
+        if ( memcmp( &prevOutputs, &currentOutputs, sizeof( prevOutputs ) ) != 0 )
+        {
+            drawHVACOutputs();
+            prevOutputs = currentOutputs;
+        }
+    }
+
+    // Periodic Refresh of the screen
+    Driver::PicoDisplay::Api::updateLCD( graphics_ );
+
+    // Update the time on the simulation every half seconds (on the target this does nothing)
+    static unsigned counter = 0;
+    if ( ++counter > 5 )
+    {
+        counter = 0;
+        Driver::PicoDisplay::Api::nop();
+    }
 }
 
 void Storm::Thermostat::Ui::PicoDisplay::shutdownUI()
 {
-    //events_.stop();
+    events_.stop();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,28 +96,10 @@ void Storm::Thermostat::Ui::PicoDisplay::shutdownUI()
 
 
 /*---------------------------------------------------------------------------*/
-// Graphics library: Use RGB332 mode (256 colours) on the Target to limit RAM usage canvas 
-pimoroni::PicoGraphics_PenRGB332 graphics_( OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH, OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT, nullptr );
-
-
-/*
-   Mode: Heat  Fan: Auto
-   Room: 78.5  Out: -23.4
-   Cool: 79   Heat: 60
-
-   G:100% Y1 Y2 W1 W2 W3
-
-   Heat Mode   Fan Cont
-   Room: 78.5  Cool: 79
-   Out: -23.5  Heat: 70
-
-   G:100% Y1 Y2 W1 W2 W3
-*/
-
 
 void drawStartScreen()
 {
-    // Turn the RGB LED off
+    // Default the RGB LED to off
     Driver::PicoDisplay::Api::rgbLED().setOff();
     Driver::PicoDisplay::Api::rgbLED().setBrightness( 64 );
 
@@ -124,125 +137,195 @@ void drawStartScreen()
 
 void Storm::Thermostat::Ui::PicoDisplay::drawHVACOutputs()
 {
+    // Clear all fields
+
     // Fan
     pimoroni::Rect box( G_OUTPUT_X0, G_OUTPUT_Y0, G_OUTPUT_WIDTH, G_OUTPUT_HEIGHT );
     graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
     graphics_.rectangle( box );
-    graphics_.set_pen( G_OUTPUT_NOMINAL_COLOR_R, G_OUTPUT_NOMINAL_COLOR_G, G_OUTPUT_NOMINAL_COLOR_B );
-    const char* val = "G:100%";
-    graphics_.text( val, pimoroni::Point( G_OUTPUT_X0, G_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
 
     // Compressor: 1st stage
     pimoroni::Rect box2( Y1_OUTPUT_X0, Y1_OUTPUT_Y0, Y1_OUTPUT_WIDTH, Y1_OUTPUT_HEIGHT );
     graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
     graphics_.rectangle( box2 );
-    graphics_.set_pen( Y1_OUTPUT_NOMINAL_COLOR_R, Y1_OUTPUT_NOMINAL_COLOR_G, Y1_OUTPUT_NOMINAL_COLOR_B );
-    val = "y1";
-    graphics_.text( val, pimoroni::Point( Y1_OUTPUT_X0, Y1_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
 
     // Compressor: 2nd stage
     pimoroni::Rect box3( Y2_OUTPUT_X0, Y2_OUTPUT_Y0, Y2_OUTPUT_WIDTH, Y2_OUTPUT_HEIGHT );
     graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
     graphics_.rectangle( box3 );
-    graphics_.set_pen( Y2_OUTPUT_NOMINAL_COLOR_R, Y2_OUTPUT_NOMINAL_COLOR_G, Y2_OUTPUT_NOMINAL_COLOR_B );
-    val = "y1";
-    graphics_.text( val, pimoroni::Point( Y2_OUTPUT_X0, Y2_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
 
     // Indoor: 1st stage
     pimoroni::Rect box4( W1_OUTPUT_X0, W1_OUTPUT_Y0, W1_OUTPUT_WIDTH, W1_OUTPUT_HEIGHT );
     graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
     graphics_.rectangle( box4 );
-    graphics_.set_pen( W1_OUTPUT_NOMINAL_COLOR_R, W1_OUTPUT_NOMINAL_COLOR_G, W1_OUTPUT_NOMINAL_COLOR_B );
-    val = "w1";
-    graphics_.text( val, pimoroni::Point( W1_OUTPUT_X0, W1_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
 
     // Indoor: 2nd stage
     pimoroni::Rect box5( W2_OUTPUT_X0, W2_OUTPUT_Y0, W2_OUTPUT_WIDTH, W2_OUTPUT_HEIGHT );
     graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
     graphics_.rectangle( box5 );
-    graphics_.set_pen( W2_OUTPUT_NOMINAL_COLOR_R, W2_OUTPUT_NOMINAL_COLOR_G, W2_OUTPUT_NOMINAL_COLOR_B );
-    val = "w2";
-    graphics_.text( val, pimoroni::Point( W2_OUTPUT_X0, W2_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
 
     // Indoor: third stage
     pimoroni::Rect box6( W3_OUTPUT_X0, W3_OUTPUT_Y0, W3_OUTPUT_WIDTH, W3_OUTPUT_HEIGHT );
     graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
     graphics_.rectangle( box6 );
-    graphics_.set_pen( W3_OUTPUT_NOMINAL_COLOR_R, W3_OUTPUT_NOMINAL_COLOR_G, W3_OUTPUT_NOMINAL_COLOR_B );
-    val = "w3";
-    graphics_.text( val, pimoroni::Point( W3_OUTPUT_X0, W3_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+
+
+    // Get the outputs - and only update the screen if we have valid values
+    Storm::Type::HvacRelayOutputs_T outputs;
+    if ( mp_relayOutputs.read( outputs ) )
+    {
+        // Fan
+        if ( outputs.g )
+        {
+            Cpl::Text::FString<6> val;
+            val.format( "G:%d%%", outputs.bk );
+            graphics_.set_pen( G_OUTPUT_NOMINAL_COLOR_R, G_OUTPUT_NOMINAL_COLOR_G, G_OUTPUT_NOMINAL_COLOR_B );
+            graphics_.text( val.getString(), pimoroni::Point( G_OUTPUT_X0, G_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+        }
+
+        // Compressor: 1st stage
+        if ( outputs.y1 )
+        {
+            graphics_.set_pen( Y1_OUTPUT_NOMINAL_COLOR_R, Y1_OUTPUT_NOMINAL_COLOR_G, Y1_OUTPUT_NOMINAL_COLOR_B );
+            graphics_.text( "y1", pimoroni::Point( Y1_OUTPUT_X0, Y1_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+        }
+
+        // Compressor: 2nd stage
+        if ( outputs.y2 )
+        {
+            graphics_.set_pen( Y2_OUTPUT_NOMINAL_COLOR_R, Y2_OUTPUT_NOMINAL_COLOR_G, Y2_OUTPUT_NOMINAL_COLOR_B );
+            graphics_.text( "y2", pimoroni::Point( Y2_OUTPUT_X0, Y2_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+        }
+
+        // Indoor: 1st stage
+        if ( outputs.w1 )
+        {
+            graphics_.set_pen( W1_OUTPUT_NOMINAL_COLOR_R, W1_OUTPUT_NOMINAL_COLOR_G, W1_OUTPUT_NOMINAL_COLOR_B );
+            graphics_.text( "w1", pimoroni::Point( W1_OUTPUT_X0, W1_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+        }
+
+        // Indoor: 2nd stage
+        if ( outputs.w2 )
+        {
+            graphics_.set_pen( W2_OUTPUT_NOMINAL_COLOR_R, W2_OUTPUT_NOMINAL_COLOR_G, W2_OUTPUT_NOMINAL_COLOR_B );
+            graphics_.text( "w2", pimoroni::Point( W2_OUTPUT_X0, W2_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+        }
+
+        // Indoor: third stage
+        if ( outputs.w3 )
+        {
+            graphics_.set_pen( W3_OUTPUT_NOMINAL_COLOR_R, W3_OUTPUT_NOMINAL_COLOR_G, W3_OUTPUT_NOMINAL_COLOR_B );
+            graphics_.text( "w3", pimoroni::Point( W3_OUTPUT_X0, W3_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH ); \
+        }
+
+        // Set the RGB state to reflect the SOV state (but only change)
+        if ( outputs.o )
+        {
+            // Cooling: BLUE
+            Driver::PicoDisplay::Api::rgbLED().setRgb( 0, 0, 255 );
+        }
+        else
+        {
+            // Cooling: RED
+            Driver::PicoDisplay::Api::rgbLED().setRgb( 255, 0, 0 );
+        }
+    }
 }
 
 void Storm::Thermostat::Ui::PicoDisplay::drawCoolingSetpoint( bool active )
 {
     pimoroni::Rect box( COOL_OUTLINE_X0, COOL_OUTLINE_Y0, COOL_OUTLINE_WIDTH, COOL_OUTLINE_HEIGHT );
 
-    // nominal display (i.e. not being updated)
-    if ( !active )
-    {
-        graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
-        graphics_.rectangle( box );
-        graphics_.set_pen( COOL_NOMINAL_COLOR_R, COOL_NOMINAL_COLOR_G, COOL_NOMINAL_COLOR_B );
-    }
+    // Clear the current value
+    graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
+    graphics_.rectangle( box );
 
-    // Active/being-updated
-    else
+    // Only display a value when my setpoint is valid
+    if ( g_uiCoolingSetpoint >= OPTION_STORM_DM_MP_SETPOINTS_MIN_COOLING )
     {
-        graphics_.set_pen( COOL_BKGRD_ACTIVE_COLOR_R, COOL_BKGRD_ACTIVE_COLOR_G, COOL_BKGRD_ACTIVE_COLOR_B );
-        graphics_.rectangle( box );
-        graphics_.set_pen( COOL_ACTIVE_COLOR_R, COOL_ACTIVE_COLOR_G, COOL_ACTIVE_COLOR_B );
-    }
+        // nominal display (i.e. not being updated)
+        if ( !active )
+        {
+            graphics_.set_pen( COOL_NOMINAL_COLOR_R, COOL_NOMINAL_COLOR_G, COOL_NOMINAL_COLOR_B );
+        }
 
-    const char* val = "79";
-    graphics_.text( val, pimoroni::Point( COOL_X0, COOL_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+        // Active/being-updated
+        else
+        {
+            graphics_.set_pen( COOL_BKGRD_ACTIVE_COLOR_R, COOL_BKGRD_ACTIVE_COLOR_G, COOL_BKGRD_ACTIVE_COLOR_B );
+            graphics_.rectangle( box );
+            graphics_.set_pen( COOL_ACTIVE_COLOR_R, COOL_ACTIVE_COLOR_G, COOL_ACTIVE_COLOR_B );
+        }
+
+        Cpl::Text::FString<2> val = (unsigned) (g_uiCoolingSetpoint + 0.5);
+        graphics_.text( val.getString(), pimoroni::Point( COOL_X0, COOL_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+    }
 }
 
 void Storm::Thermostat::Ui::PicoDisplay::drawHeatingSetpoint( bool active )
 {
     pimoroni::Rect box( HEAT_OUTLINE_X0, HEAT_OUTLINE_Y0, HEAT_OUTLINE_WIDTH, HEAT_OUTLINE_HEIGHT );
 
-    // nominal display (i.e. not being updated)
-    if ( !active )
-    {
-        graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
-        graphics_.rectangle( box );
-        graphics_.set_pen( HEAT_NOMINAL_COLOR_R, HEAT_NOMINAL_COLOR_G, HEAT_NOMINAL_COLOR_B );
-    }
+    // Clear the current value
+    graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
+    graphics_.rectangle( box );
 
-    // Active/being-updated
-    else
+    // Only display a value when my setpoint is valid
+    if ( g_uiHeatingSetpoint >= OPTION_STORM_DM_MP_SETPOINTS_MIN_HEATING )
     {
-        graphics_.set_pen( HEAT_BKGRD_ACTIVE_COLOR_R, HEAT_BKGRD_ACTIVE_COLOR_G, HEAT_BKGRD_ACTIVE_COLOR_B );
-        graphics_.rectangle( box );
-        graphics_.set_pen( HEAT_ACTIVE_COLOR_R, HEAT_ACTIVE_COLOR_G, HEAT_ACTIVE_COLOR_B );
-    }
+        // nominal display (i.e. not being updated)
+        if ( !active )
+        {
+            graphics_.set_pen( HEAT_NOMINAL_COLOR_R, HEAT_NOMINAL_COLOR_G, HEAT_NOMINAL_COLOR_B );
+        }
 
-    const char* val = "69";
-    graphics_.text( val, pimoroni::Point( HEAT_X0, HEAT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+        // Active/being-updated
+        else
+        {
+            graphics_.set_pen( HEAT_BKGRD_ACTIVE_COLOR_R, HEAT_BKGRD_ACTIVE_COLOR_G, HEAT_BKGRD_ACTIVE_COLOR_B );
+            graphics_.rectangle( box );
+            graphics_.set_pen( HEAT_ACTIVE_COLOR_R, HEAT_ACTIVE_COLOR_G, HEAT_ACTIVE_COLOR_B );
+        }
+
+        Cpl::Text::FString<2> val = (unsigned) (g_uiHeatingSetpoint + 0.5);
+        graphics_.text( val.getString(), pimoroni::Point( HEAT_X0, HEAT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+    }
 }
 
 void Storm::Thermostat::Ui::PicoDisplay::drawIdt()
 {
+    // Clear the temperature
     pimoroni::Rect box( IDT_OUTLINE_X0, IDT_OUTLINE_Y0, IDT_OUTLINE_WIDTH, IDT_OUTLINE_HEIGHT );
     graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
     graphics_.rectangle( box );
-    graphics_.set_pen( IDT_NOMINAL_COLOR_R, IDT_NOMINAL_COLOR_G, IDT_NOMINAL_COLOR_B );
 
-
-    const char* val = "99.9";
-    graphics_.text( val, pimoroni::Point( IDT_X0, IDT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+    // Get the value
+    float temperature;
+    if ( mp_activeIdt.read( temperature ) )
+    {
+        graphics_.set_pen( IDT_NOMINAL_COLOR_R, IDT_NOMINAL_COLOR_G, IDT_NOMINAL_COLOR_B );
+        Cpl::Text::FString<5> val;
+        val.format( "%.1f", temperature );
+        graphics_.text( val.getString(), pimoroni::Point( IDT_X0, IDT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+    }
 }
 
 void Storm::Thermostat::Ui::PicoDisplay::drawOdt()
 {
+    // Clear the temperature
     pimoroni::Rect box( ODT_OUTLINE_X0, ODT_OUTLINE_Y0, ODT_OUTLINE_WIDTH, ODT_OUTLINE_HEIGHT );
     graphics_.set_pen( BACKGROUND_COLOR_R, BACKGROUND_COLOR_G, BACKGROUND_COLOR_B );
     graphics_.rectangle( box );
-    graphics_.set_pen( ODT_NOMINAL_COLOR_R, ODT_NOMINAL_COLOR_G, ODT_NOMINAL_COLOR_B );
 
-
-    const char* val = "999.9";
-    graphics_.text( val, pimoroni::Point( ODT_X0, ODT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+    // Get the value
+    float temperature;
+    if ( mp_outdoorTemp.read( temperature ) )
+    {
+        graphics_.set_pen( ODT_NOMINAL_COLOR_R, ODT_NOMINAL_COLOR_G, ODT_NOMINAL_COLOR_B );
+        Cpl::Text::FString<5> val;
+        val.format( "%.1f", temperature );
+        graphics_.text( val.getString(), pimoroni::Point( ODT_X0, ODT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH );
+    }
 }
 
 void Storm::Thermostat::Ui::PicoDisplay::drawMode( bool active )

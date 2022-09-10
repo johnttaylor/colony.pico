@@ -78,7 +78,7 @@
 #define MODE_BKGRD_ACTIVE_COLOR_B   ACTIVE_BACKGROUND_COLOR_B
 #define MODE_X0                     COLUMN1_X0
 #define MODE_Y0                     MODE_LABEL_Y0
-#define MODE_WIDTH                  43
+#define MODE_WIDTH                  50
 #define MODE_HEIGHT                 TEXT_HEIGHT
 #define MODE_OUTLINE_X0             (MODE_X0 - MODE_OUTLINE_DELTA)
 #define MODE_OUTLINE_Y0             (MODE_Y0 - MODE_OUTLINE_DELTA)

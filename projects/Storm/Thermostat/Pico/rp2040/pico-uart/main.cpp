@@ -14,10 +14,8 @@
 #include "Cpl/System/Api.h"
 #include "Cpl/System/Trace.h"
 #include "Cpl/System/RP2040/Console.h"
-#include "Driver/Button/RP2040/Hal.h"
-#include "Driver/LED/PimoroniPico/RedGreenBlue.h"
 #include "Cpl/TShell/Cmd/Threads.h"
-
+#include "Driver/PicoDisplay/RP2040/Api.h"
 
 
 /// Allocate memory for the console stream pointers
@@ -35,6 +33,7 @@ int main( void )
 
     // Initialize the board
     Bsp_Api_initialize();
+    Driver::PicoDisplay::RP2040::initialize();
 
     // Start the Console/Trace output: Accepting the default UART Config parameters, e.g. 115200, 8N1
     Cpl::System::RP2040::startConsole();

@@ -55,16 +55,16 @@ void drawHVACOutputs();
 /*-------------------------------------------------------*/
 /* Expose sub-system variables */
 
-/// Current/working User mode
+/// Current/working User mode. Is set to eOFF when no valid value
 extern Storm::Type::ThermostatMode  g_uiMode;
 
-/// Current/working Fan mode
+/// Current/working Fan mode. Is set to eAUTO when no valid value
 extern Storm::Type::FanMode         g_uiFan;
 
-/// Current/working cooling setpoint
+/// Current/working cooling setpoint. Is set to 0.0 when no valid value
 extern float                        g_uiCoolingSetpoint;
 
-/// Current/working heating setpoint
+/// Current/working heating setpoint. Is set to 0.0 when no valid value
 extern float                        g_uiHeatingSetpoint;
 
 }   // end namespace(s)

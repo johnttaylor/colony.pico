@@ -69,6 +69,33 @@ namespace Simulator
             }
         }
 
+        public void UpdateStatus()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(UpdateStatus));
+            }
+            else
+            {
+                StatusStripLabel.Text = String.Format("MCU Elapsed Time: {0:00} {1:00}:{2:00}:{3:00}.{4:000}", m_listener.m_dd, m_listener.m_hh, m_listener.m_mm, m_listener.m_sec, m_listener.m_msec);
+                StatusStrip.Refresh();
+                RgbLED.Refresh();
+            }
+        }
+
+        public void UpdateLED()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new MethodInvoker(UpdateLED));
+            }
+            else
+            {
+                StatusStripLabel.Text = String.Format("MCU Elapsed Time: {0:00} {1:00}:{2:00}:{3:00}.{4:000}", m_listener.m_dd, m_listener.m_hh, m_listener.m_mm, m_listener.m_sec, m_listener.m_msec);
+                StatusStrip.Refresh();
+            }
+        }
+
         private delegate void SafeCallDelegate(string text);
 
         public void UpdateTitle( string newTitle )

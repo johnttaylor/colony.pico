@@ -107,20 +107,36 @@ static Cpl::Text::FString<TPIPE_WORK_BUF_SIZE> buffer_;
 static uint8_t                                 frameCache_[NUM_DISPLAY_BYTES];
 static uint8_t*                                nextFrameCacheByte_;
 static unsigned                                rowIndex_;
+static bool                                    dirty_;
+
+void Driver::PicoDisplay::Api::nop()
+{
+    // Update Elapsed time
+    buffer_ = OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_SOF;
+    formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
+    buffer_.formatAppend( " nop" );
+    buffer_ += OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_EOF;
+    tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
+}
+
 
 static void beginLCDData()
 {
     nextFrameCacheByte_ = frameCache_;
     rowIndex_           = 0;
+    dirty_              = false;
 }
 
 static void endLCDData()
 {
-    buffer_ = OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_SOF;
-    formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
-    buffer_.formatAppend( " updateLCD" );
-    buffer_ += OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_EOF;
-    tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
+    if ( dirty_ )
+    {
+        buffer_ = OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_SOF;
+        formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
+        buffer_.formatAppend( " updateLCD" );
+        buffer_ += OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_EOF;
+        tpipe_.getPipeProcessor().sendRawCommand( buffer_.getString(), buffer_.length() );
+    }
 }
 
 static void sendLCDData( unsigned rowIndex, const void* data, size_t length )
@@ -140,10 +156,11 @@ static void sendLCDData( unsigned rowIndex, const void* data, size_t length )
 
 static void appendLCDRowData( const void* data, size_t len )
 {
-    if ( memcpy( nextFrameCacheByte_, data, len ) != 0 )
+    if ( memcmp( nextFrameCacheByte_, data, len ) != 0 )
     {
         memcpy( nextFrameCacheByte_, data, len );
         sendLCDData( rowIndex_, data, len );
+        dirty_ = true;
     }
 
     nextFrameCacheByte_ += len;

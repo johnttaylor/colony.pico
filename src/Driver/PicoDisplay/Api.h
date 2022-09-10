@@ -66,6 +66,13 @@ public:
 
     /// This method sets the back-light brightness of the LCD (range: 0 - 255)
     static void setLCDBrightness( uint8_t brightnessLevel );
+
+    /** This method performs a 'null operation' on the display board.  What
+        'null operation' means is target dependent (e.g. this method does
+        nothing on the physical display, but on the Simulator it updates
+        the simulation time on the GUI screen
+    */
+    static void nop();
 };
 
 } // End namespace(s)

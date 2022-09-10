@@ -170,7 +170,7 @@ namespace Simulator
             int b = int.Parse(tokenizeString[6]);
 
             m_ui.FillImage(m_ui.m_rgbLED, Color.FromArgb(r, g, b), m_ui.m_rgbLED.Width, m_ui.m_rgbLED.Height);
-            m_ui.UpdateLcd();
+            m_ui.UpdateLED();
 
             return true;
         }
@@ -195,7 +195,7 @@ namespace Simulator
     // A Null-Operation command. This command is typically used to update the
     // simulator with the latest time
     //
-    // <DD> <HH:MM:SS.sss> no
+    // <DD> <HH:MM:SS.sss> nop
     // Where:
     //      <DD>                is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
     //      <HH:MM:SS.sss>      is CPU time since power-up/reset:  Format is: DD HH:MM:SS.sss
@@ -212,7 +212,7 @@ namespace Simulator
         public bool ExecuteCommand(string rawString, List<string> tokenizeString)
         {
             Console.WriteLine("PROCESSING: " + rawString);
-            m_ui.UpdateLcd();
+            m_ui.UpdateStatus();
             return true;
         }
     }

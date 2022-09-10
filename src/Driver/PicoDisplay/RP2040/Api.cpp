@@ -59,3 +59,8 @@ void Driver::PicoDisplay::Api::setLCDBrightness( uint8_t brightnessLevel )
 {
     st7789_.set_backlight( brightnessLevel );
 }
+
+void Driver::PicoDisplay::Api::nop()
+{
+    // Do NOTHING!
+}
