@@ -57,16 +57,6 @@
 #define OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_BLUE_PIN      8
 #endif
 
-/// The default width, in pixels, of the Display
-#ifndef OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_WIDTH
-#define OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_WIDTH          240
-#endif
-
-/// The default height, in pixels, of the Display
-#ifndef OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_HEIGHT           
-#define OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_HEIGHT         135
-#endif
-
 /// The default screen orientation
 #ifndef OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_ROTATION         
 #define OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_ROTATION       pimoroni::ROTATE_0

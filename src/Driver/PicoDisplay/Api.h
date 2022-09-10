@@ -14,8 +14,19 @@
 
 
 #include "libraries/pico_graphics/pico_graphics.hpp"    // Must be first #include (because of the Pimoroni/Pico SDK)
+#include "colony_config.h"
 #include "Driver/Button/PolledDebounced.h"
 #include "Driver/LED/RedGreenBlue.h"
+
+/// The width, in pixels, of the Display
+#ifndef OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH
+#define OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH          240
+#endif
+
+/// The height, in pixels, of the Display
+#ifndef OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT
+#define OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT         135
+#endif
 
 ///
 namespace Driver {

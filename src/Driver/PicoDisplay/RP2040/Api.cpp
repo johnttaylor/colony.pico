@@ -28,8 +28,8 @@ static Driver::LED::PimoroniPico::RedGreenBlue rgbLEDDriver_( OPTION_DRIVER_PICO
                                                               OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_GREEN_PIN, 
                                                               OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_BLUE_PIN );
 
-pimoroni::ST7789 st7789_( OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_WIDTH, 
-                          OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_HEIGHT, 
+pimoroni::ST7789 st7789_( OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH, 
+                          OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT, 
                           OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_ROTATION, 
                           false, 
                           OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_PINS );

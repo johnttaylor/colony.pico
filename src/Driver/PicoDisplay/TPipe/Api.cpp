@@ -99,9 +99,9 @@ void Driver::PicoDisplay::Api::setLCDBrightness( uint8_t value )
     // Not supported
 }
 
-#define NUM_DISPLAY_BYTES         (OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_WIDTH * OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_HEIGHT * sizeof(uint8_t))  
+#define NUM_DISPLAY_BYTES         (OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH * OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT * sizeof(uint8_t))  
 #define TPIPE_WORK_BUF_SIZE       (NUM_DISPLAY_BYTES*2 + 128)
-#define DATE_SIZE_ROW             (OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_WIDTH * sizeof(uint8_t))
+#define DATE_SIZE_ROW             (OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH * sizeof(uint8_t))
 
 static Cpl::Text::FString<TPIPE_WORK_BUF_SIZE> buffer_;
 static uint8_t                                 frameCache_[NUM_DISPLAY_BYTES];
@@ -129,7 +129,7 @@ static void sendLCDData( unsigned rowIndex, const void* data, size_t length )
     buffer_ = OPTION_DRIVER_PICO_DISPLAY_TPIP_FRAME_SOF;
     formatMsecTimeStamp( buffer_, Cpl::System::ElapsedTime::precision().asFlatTime(), true, true );
     buffer_.formatAppend( " writeLCDData 0 %u %u 1 ",
-                          OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_WIDTH,
+                          OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH,
                           rowIndex );
 
     // Add the pixel data and send the command
@@ -158,7 +158,7 @@ void Driver::PicoDisplay::Api::updateLCD( pimoroni::PicoGraphics& graphics )
     if ( graphics.pen_type == pimoroni::PicoGraphics::PEN_RGB332 )
     {
         const uint8_t* srcPtr = (const uint8_t*) graphics.frame_buffer;
-        for ( int row=0; row < OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_HEIGHT; row++ )
+        for ( int row=0; row < OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT; row++ )
         {
             appendLCDRowData( srcPtr, DATE_SIZE_ROW );
             srcPtr += DATE_SIZE_ROW;

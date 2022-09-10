@@ -87,13 +87,13 @@
 #endif
 
 /// The width, in pixels, of the Display
-#ifndef OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_WIDTH
-#define OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_WIDTH          240
+#ifndef OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH
+#define OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH          240
 #endif
 
 /// The height, in pixels, of the Display
-#ifndef OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_HEIGHT
-#define OPTION_DRIVER_PICO_DISPLAY_TPIPE_LCD_HEIGHT         135
+#ifndef OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT
+#define OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT         135
 #endif
 
 /// The TPipe SOF character

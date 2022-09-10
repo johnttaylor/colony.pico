@@ -115,6 +115,7 @@ bool Input_::read( void* buffer, int numBytes, int& bytesRead )
 	return result != 0 && bytesRead > 0;
 }
 
+#include <conio.h>
 
 bool Input_::available()
 {
@@ -124,8 +125,28 @@ bool Input_::available()
         return false;
     }
 
-    DWORD signaled = WaitForSingleObject( m_inFd.m_handlePtr, 0 );
-    return signaled == WAIT_OBJECT_0;
+    /* THIS IS HACK, but I discovered the issue/solution well after the design
+       and implementation of the Stdio/File-IO stuffs - so here is a hack that 
+       is 'transparent' to the clients
+
+       THE PROBLEM with STDIN:
+       Windows consider mouse events, change in focus, etc. as events that get 
+       routed to the StdIn Handle.  The ReadFile() method ignores these 'non-character' 
+       events, but WaitForSingleObject() does NOT. This means that WaitForSingleObject()
+       can/will return false positive (that data is available) when in fact the 
+       ReadFile() call will block.
+    */
+    
+    // Handle STDIN differently!
+    if ( m_inFd.m_handlePtr == (void*) GetStdHandle( STD_INPUT_HANDLE ) )
+    {
+        return _kbhit();
+    }
+    else
+    {
+        DWORD signaled = WaitForSingleObject( m_inFd.m_handlePtr, 0 );
+        return signaled == WAIT_OBJECT_0;
+    }
 }
 
 bool Input_::isEos()

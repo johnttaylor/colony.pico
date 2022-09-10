@@ -62,8 +62,8 @@ public:
 		to reset and begin searching/looking-for the next start-of-frame
 		character.
 	 */
-	AsciiDecoder( char startOfFrame, char endOfFrame, char escapeChar, bool restrict=true, Cpl::Io::Input* inputSource=0 )
-		:StreamDecoder( m_buffer, BUFSIZE, inputSource )
+	AsciiDecoder( char startOfFrame, char endOfFrame, char escapeChar, bool restrict=true, Cpl::Io::Input* inputSource=0, bool blocking = true )
+		:StreamDecoder( m_buffer, BUFSIZE, inputSource, blocking )
 		, m_sof( startOfFrame )
 		, m_eof( endOfFrame )
 		, m_esc( escapeChar )

@@ -1,6 +1,6 @@
-/** @namespace Storm::Thermostat
+/** @namespace Storm::Thermostat::Ui
 
-The 'Thermostat' namespace is the root name space that defines the
-specific of basic Heat/Cool Thermostat Applications.
+The 'Ui' namespace is the root name space for User Interface(s) for the
+Thermostat Application(s).
 
 */ 

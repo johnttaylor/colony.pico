@@ -29,8 +29,7 @@
 #include "Cpl/TShell/PolledMaker.h"
 #include "Cpl/Dm/PeriodicScheduler.h"
 #include "Cpl/System/Thread.h"
-#include "Storm/Thermostat/Ui/PicoDisplay/Ui.h"
-#include "Storm/Thermostat/Ui/PicoDisplay/LogicalButtons.h"
+
 
 #define MY_APP_TRACE_SECTION    "storm"
 
@@ -70,20 +69,12 @@ Cpl::Dm::ModelDatabase   g_modelDatabase( "ignoreThisParameter_usedToInvokeTheSt
 // Set up Periodic scheduling: Core 0 
 //
 
-/// 100Hz
-static void interval_10ms( Cpl::System::ElapsedTime::Precision_T currentTick,
-                           Cpl::System::ElapsedTime::Precision_T currentInterval,
-                           void*                                 context_notUsed )
-{
-    Storm::Thermostat::Ui::PicoDisplay::processLogicalButtons( currentTick, currentInterval );
-}
-
 /// 10Hz
 static void interval_100ms( Cpl::System::ElapsedTime::Precision_T currentTick,
                             Cpl::System::ElapsedTime::Precision_T currentInterval,
                             void*                                 context_notUsed )
 {
-    Storm::Thermostat::Ui::PicoDisplay::processUI( currentTick, currentInterval );
+    // UI Stuffs here...
 }
 
 /// 1Hz
@@ -91,6 +82,7 @@ static void interval_1000ms( Cpl::System::ElapsedTime::Precision_T currentTick,
                              Cpl::System::ElapsedTime::Precision_T currentInterval,
                              void*                                 context_notUsed )
 {
+    // House simulation
     houseSim_.scheduleSimulation();
 }
 
@@ -102,7 +94,6 @@ static void core0Stop( Cpl::System::ElapsedTime::Precision_T currentTick );
 // Periodic Intervals
 static Cpl::System::PeriodicScheduler::Interval_T core0Intervals_[] =
 {
-    { interval_10ms, {0, 10}, nullptr },
     { interval_100ms, { 0, 100 }, nullptr  },
     { interval_1000ms, { 0, 1000 }, nullptr  },
     CPL_SYSTEM_PERIODIC_SCHEDULAR_END_INTERVALS
@@ -122,22 +113,17 @@ Cpl::Dm::PeriodicScheduler* g_uiRunnablePtr = &core0Mbox_;
 void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     CPL_SYSTEM_TRACE_MSG( MY_APP_TRACE_SECTION, ("core0Start") );
+    Cpl::System::Api::sleep( 200 );
     openPlatform0();
     thermostatAlgorithm_.open();
-    Storm::Thermostat::Ui::PicoDisplay::intializeLogicalButtons();
-    Storm::Thermostat::Ui::PicoDisplay::intializeUI();
-    cmdProcessor_.getCommandProcessor().start( *consoleInputFdPtr_, *consoleOutputFdPtr_, false ); 
+    cmdProcessor_.getCommandProcessor().start( *consoleInputFdPtr_, *consoleOutputFdPtr_ ); // Note: I don't need to set the 'blocking flag' because the processor knows it is non-blocking processor
 }
 
 // In thread shutdown 
 void core0Stop( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     CPL_SYSTEM_TRACE_MSG( MY_APP_TRACE_SECTION, ("core0Stop") );
-    
-    // Reverse order of the start()
     cmdProcessor_.getCommandProcessor().requestStop();
-    Storm::Thermostat::Ui::PicoDisplay::shutdownUI();
-    Storm::Thermostat::Ui::PicoDisplay::shutdownLogicalButtons();
     thermostatAlgorithm_.close();
     closePlatform0();
     runShutdownHandlers();

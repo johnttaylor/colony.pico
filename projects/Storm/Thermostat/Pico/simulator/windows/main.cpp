@@ -74,7 +74,7 @@ int main( int argc, char* argv[] )
     Driver::PicoDisplay::TPipe::initialize( socketStream, socketStream );
 
     // Set the title for the Simulation window
-    Cpl::System::Api::sleep( 100 ); // Allow time for the TPipe thread to spin up
+    Cpl::System::Api::sleep( 50 ); // Allow time for the TPipe thread to spin up
     Driver::PicoDisplay::TPipe::tpipe().sendCommand( TITLE_COMMAND, strlen( TITLE_COMMAND ) );
 
     // Launch the application (on the simulation platform this method returns -->but don't the executable end)
