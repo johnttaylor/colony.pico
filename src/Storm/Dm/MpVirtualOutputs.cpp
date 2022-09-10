@@ -202,7 +202,7 @@ uint16_t MpVirtualOutputs::setSafeAllOff( LockRequest_T lockRequest ) noexcept
 
 uint16_t MpVirtualOutputs::setCapacityOff( LockRequest_T lockRequest ) noexcept
 {
-    Storm::Type::VirtualOutputs_T newData;
+    Storm::Type::VirtualOutputs_T newData ={ 0, };
     m_modelDatabase.lock_();
 
     setCapacityOff( newData );

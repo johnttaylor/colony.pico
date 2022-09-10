@@ -7,6 +7,8 @@ In my book - [Patterns in the Machine: A Software Engineering Guide to Embedded 
 
 The book also provides an [example Thermostat application](https://github.com/johnttaylor/pim) that was built using various best practices from the book including the *Main Pattern*.  To demonstrate and to some extent validate how effective the *Main Pattern* is I ported the example application to a Raspberry Pi Pico board with a small graphic LCD.  The Pico projects are located under `projects/Storm/Thermostat/Pico/` directory.  The rest of this README page describes the challenges, process, and the final outcome of the exercise. 
 
+Additional details on how to run the Pico variant of the Thermostat can be found [here](https://github.com/johnttaylor/colony.pico/blob/main/projects/Storm/Thermostat/Pico/README-PicoStormThermostat.md)
+
 #### TL;DR
 The *Patterns in the Machine* book takes the [Open/Close](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle) principle quit literally in that:
   > Adding new functionality should not be done by editing existing source code.
@@ -23,7 +25,7 @@ So not a an **A+**, but I claim it is definitely a pass grade :). If this was a 
 # Requirements
 I gave myself the following requirements for porting the Thermostat example code to the Pico.
   - Execute the example code on the Pico hardware platform.
-  - Add a partial, basic GUI to the application.
+  - Add a partial, primitive GUI to the application.
   - Include a functional simulator of the Pico port with its GUI that executes on a PC
      
 # Constraints
@@ -82,6 +84,8 @@ Here is how the final sub-system/threads came out for the Pico Port
 #### UI 
 Since this is new sub-system to the application the only constraint is that it needs to execute in a *responsive* thread.
 
+Slightly off topic - the entire UI was developed using the [functional simulator](https://github.com/johnttaylor/colony.pico/blob/main/projects/pico-sketch/README.md#GettingStarted).  No debugging, refactoring, etc. was need for running the UI on the physical hardware.
+
 #### Debug Console
 The CPL C++ Class library provides support for executing the Debug console in a dedicate thread with blocking read semantics (i.e. the original Thermostat application approach) **or** sharing a thread using a Periodic Scheduler runnable object using polling read semantics.
 
@@ -103,3 +107,7 @@ The PC simulation of the Pico port is slightly different from the original simul
 
 # Summary
 While this was just *academic* exercise, it contains sufficient details and nuisances to be representative of real world design challenges and best practices.  Yes I had to modify 7 existing files from the original application - but it was always wishful thinking that no files would have to be modified.  I would argue that really on the two files `src/Storm/Thermostat/Algorithm.h|cpp` *broke* the goal of the [Open/Close](https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle) principle since the other 5 files belong to parts of the system that are highly dependent on most everything and not worth the investment to make them closed to modification and 100% open to extension.  And to be honest the original design of `Algorithm` class was a poor choice on my part and if it had been done better, then only 5 files would have had to be changed and no OCP violations ;-).
+
+**Post Script:**  Once the GUI was up and running a somewhat *embarrassing* bug was found in the Thermostat Algorithm.  The bug was the *Fan Continuous* operation did not work when the thermostat was in the `OFF` mode (it has been fixed in this repository).  This just proves rule #1 from chapter 17 my book ;-) 
+  >Never trust the software guys
+ 
