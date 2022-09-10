@@ -188,7 +188,6 @@ void generateKeyEvent( Cpl::Dm::Mp::Bool * keyModelPoint )
 {
     if ( keyModelPoint )
     {
-        printf( "key=%s\n", keyModelPoint->getName() );
         keyModelPoint->write( true );
         keyModelPoint->touch();
     }

@@ -53,8 +53,8 @@ bool FanControl::execute( Cpl::System::ElapsedTime::Precision_T currentTick,
 
     // Get my inputs
     Storm::Type::FanMode            fanMode        = Storm::Type::FanMode::eAUTO;
-    Storm::Type::SystemConfig_T     sysCfg         = { 0, };
-    Storm::Type::VirtualOutputs_T   outputs        = { 0, };
+    Storm::Type::SystemConfig_T     sysCfg         ={ 0, };
+    Storm::Type::VirtualOutputs_T   outputs        ={ 0, };
     Storm::Type::EquipmentTimes_T   equipTimes;
     int8_t                          validMode      = m_in.fanMode->read( fanMode );
     int8_t                          validSystem    = m_in.systemConfig->read( sysCfg );
@@ -65,7 +65,7 @@ bool FanControl::execute( Cpl::System::ElapsedTime::Precision_T currentTick,
          validOutputs == false ||
          validEquipment == false )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ( "FanControl::execute. One or more invalid MPs (FanMode=%d, system=%d, vOutputs=%d equipTimes=%d", validMode, validSystem, validOutputs, validEquipment ) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("FanControl::execute. One or more invalid MPs (FanMode=%d, system=%d, vOutputs=%d equipTimes=%d", validMode, validSystem, validOutputs, validEquipment) );
 
         // Force the fan off
         m_out.vOutputs->setIndoorFanOutput( STORM_DM_MP_VIRTUAL_OUTPUTS_OFF );

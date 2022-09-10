@@ -97,7 +97,7 @@ bool Control::execute( Cpl::System::ElapsedTime::Precision_T currentTick,
             m_sysCfgSequenceNumber = sysSeqNum;
             args.systemOn          = false;
             args.cycleInfo.mode    = Storm::Type::CycleStatus::eOFF;
-            Storm::Dm::MpVirtualOutputs::setSafeAllOff( args.vOutputs );
+            Storm::Dm::MpVirtualOutputs::setCapacityOff( args.vOutputs );
             m_equipment.reset();
         }
 

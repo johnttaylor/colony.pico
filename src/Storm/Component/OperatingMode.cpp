@@ -251,6 +251,7 @@ bool OperatingMode::execute( Cpl::System::ElapsedTime::Precision_T currentTick,
 void OperatingMode::setSystemConfig( Storm::Type::OperatingMode newOpMode, Storm::Type::SystemConfig_T& sysCfg, const Storm::Dm::MpEquipmentConfig::Data& equipmentCfg, const Storm::Type::ComfortConfig_T& comfortCfg )
 {
     // Housekeeping
+    Storm::Dm::MpSystemConfig::setToOff( sysCfg );  // Clear everything, i.e. we regenerate all the values everytime
     sysCfg.currentOpMode       = newOpMode;
     sysCfg.outdoorUnitType     = equipmentCfg.oduType;
     sysCfg.indoorUnitType      = equipmentCfg.iduType;
@@ -303,7 +304,6 @@ void OperatingMode::setSystemConfig( Storm::Type::OperatingMode newOpMode, Storm
 
         // OFF mode (and any invalid mode settings)
     default:
-        Storm::Dm::MpSystemConfig::setToOff( sysCfg );
         break;
     }
 }

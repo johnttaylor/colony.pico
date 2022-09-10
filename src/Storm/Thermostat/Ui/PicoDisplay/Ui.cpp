@@ -59,17 +59,8 @@ void Storm::Thermostat::Ui::PicoDisplay::processUI( Cpl::System::ElapsedTime::Pr
     drawIdt();
     drawOdt();
 
-    // Update the Relay outputs (but only when something has changed)
-    static Storm::Type::HvacRelayOutputs_T  prevOutputs;
-    Storm::Type::HvacRelayOutputs_T         currentOutputs;
-    if ( mp_relayOutputs.read( currentOutputs ) )
-    {
-        if ( memcmp( &prevOutputs, &currentOutputs, sizeof( prevOutputs ) ) != 0 )
-        {
-            drawHVACOutputs();
-            prevOutputs = currentOutputs;
-        }
-    }
+    // Update the Relay outputs
+    drawHVACOutputs();
 
     // Periodic Refresh of the screen
     Driver::PicoDisplay::Api::updateLCD( graphics_ );
@@ -217,17 +208,29 @@ void Storm::Thermostat::Ui::PicoDisplay::drawHVACOutputs()
             graphics_.set_pen( W3_OUTPUT_NOMINAL_COLOR_R, W3_OUTPUT_NOMINAL_COLOR_G, W3_OUTPUT_NOMINAL_COLOR_B );
             graphics_.text( "w3", pimoroni::Point( W3_OUTPUT_X0, W3_OUTPUT_Y0 ), OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH ); \
         }
+    }
 
-        // Set the RGB state to reflect the SOV state (but only change)
-        if ( outputs.o )
+    // Set the RGB state to reflect the Heating/Cooling state
+    Storm::Type::SystemConfig_T systemConfig;
+    if ( mp_systemConfig.read( systemConfig ) )
+    {
+        // Cooling: BLUE
+        if ( systemConfig.currentOpMode == +Storm::Type::OperatingMode::eCOOLING )
         {
-            // Cooling: BLUE
             Driver::PicoDisplay::Api::rgbLED().setRgb( 0, 0, 255 );
         }
+
+        // Heating: RED
+        else if ( systemConfig.currentOpMode == +Storm::Type::OperatingMode::eHEATING ||
+                  systemConfig.currentOpMode == +Storm::Type::OperatingMode::eID_HEATING )
+        {
+            Driver::PicoDisplay::Api::rgbLED().setRgb( 255, 0, 0 );
+        }
+
+        // Off: off
         else
         {
-            // Cooling: RED
-            Driver::PicoDisplay::Api::rgbLED().setRgb( 255, 0, 0 );
+            Driver::PicoDisplay::Api::rgbLED().setOff();
         }
     }
 }

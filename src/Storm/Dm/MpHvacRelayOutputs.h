@@ -83,6 +83,20 @@ public:
         return result;
     }
 
+    /// Sets all compressor/indoor stage outputs to their off states.  Note: the Fan and SOV outputs are NOT changed by this operation
+    inline uint16_t setCapacityOff( LockRequest_T lockRequest = eNO_REQUEST ) noexcept
+    {
+        Storm::Type::HvacRelayOutputs_T newData;
+        setCapacityOff( newData );
+
+        m_modelDatabase.lock_();
+        newData.o = m_data.o;
+        uint16_t result = write( newData, lockRequest );
+        m_modelDatabase.unlock_();
+
+        return result;
+    }
+
 public:
     /// Updates the MP with the valid-state/data from 'src'. Note: the src.lock state is NOT copied
     inline uint16_t copyFrom( const MpHvacRelayOutputs& src, LockRequest_T lockRequest = eNO_REQUEST ) noexcept
@@ -91,9 +105,15 @@ public:
     }
 
 public:
-    /** Helper method that sets Output struct to its 'safe/all off state. Note: the SOV output is NOT changed by this operation
+    /** Helper method that sets Output struct to its 'safe/all off state. 
+        Note: the SOV output is NOT changed by this operation
      */
     static void setSafeAllOff( Storm::Type::HvacRelayOutputs_T& outputs );
+
+    /** Helper method that sets Output struct to turn off all Outdoor and Indoor 
+        stages - but leaves fan/Blower and SOV settings left 'unchanged'
+     */
+    static void setCapacityOff( Storm::Type::HvacRelayOutputs_T& outputs );
 
 public:
     /// Type safe subscriber

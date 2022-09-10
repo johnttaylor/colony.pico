@@ -200,6 +200,19 @@ uint16_t MpVirtualOutputs::setSafeAllOff( LockRequest_T lockRequest ) noexcept
     return result;
 }
 
+uint16_t MpVirtualOutputs::setCapacityOff( LockRequest_T lockRequest ) noexcept
+{
+    Storm::Type::VirtualOutputs_T newData;
+    m_modelDatabase.lock_();
+
+    setCapacityOff( newData );
+    newData.sovInHeating = m_data.sovInHeating;
+
+    uint16_t result = write( newData, lockRequest );
+    m_modelDatabase.unlock_();
+
+    return result;
+}
 
 void MpVirtualOutputs::attach( Observer& observer, uint16_t initialSeqNumber ) noexcept
 {
@@ -364,3 +377,12 @@ void MpVirtualOutputs::setSafeAllOff( Storm::Type::VirtualOutputs_T & outputs )
     outputs.sovInHeating = sov;
 }
 
+void MpVirtualOutputs::setCapacityOff( Storm::Type::VirtualOutputs_T& outputs )
+{
+    // Set everything to ZERO, but preserve the SOV and Fan Continuous settings
+    bool     sov          = outputs.sovInHeating;
+    uint16_t fanCont      = outputs.indoorFanCont;
+    memset( &outputs, 0, sizeof( Storm::Type::VirtualOutputs_T ) );
+    outputs.sovInHeating  = sov;
+    outputs.indoorFanCont = fanCont;
+}

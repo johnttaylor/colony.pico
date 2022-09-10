@@ -101,6 +101,9 @@ public:
     /// Sets the system unit outputs to its "safe/all off state".  Note: the SOV output is NOT changed by this operation
     uint16_t setSafeAllOff( LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
 
+    /// Sets the indoor and outdoor stage outputs to their off states. Note: the indoor fan and SOV output are NOT changed by this operation
+    uint16_t setCapacityOff( LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
+
     /// Sets all of the outdoor unit outputs to off (except it does not change the SOV output)
     uint16_t setOutdoorOff( LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
 
@@ -116,6 +119,10 @@ public:
     /** Helper method that sets Output struct to its 'safe/all off state
      */
     static void setSafeAllOff( Storm::Type::VirtualOutputs_T& outputs );
+
+    /** Helper method that sets Output struct to turn off all Outdoor and Indoor stages - but leaves continuous fan operation and the SOV left 'unchanged'
+     */
+    static void setCapacityOff( Storm::Type::VirtualOutputs_T& outputs );
 
 public:
     /// Updates the MP with the valid-state/data from 'src'. Note: the src.lock state is NOT copied

@@ -22,8 +22,8 @@ Off::Off()
 //////////////////////////////////////////////////////////////
 bool Off::executeActive( Args_T& args ) noexcept
 {
-    // Turn OFF all of the equipment (including the both fans - but NOT the SOV)
-    Storm::Dm::MpVirtualOutputs::setSafeAllOff( args.vOutputs );
+    // Turn OFF all of the equipment (except indoor fan and the SOV)
+    Storm::Dm::MpVirtualOutputs::setCapacityOff( args.vOutputs );
 
     // Trap the start of the next 'off cycle'
     if ( args.systemOn )
@@ -31,7 +31,7 @@ bool Off::executeActive( Args_T& args ) noexcept
         args.cycleInfo.beginOffTime = args.currentInterval;
     }
 
-    // Set my state of OFF
+    // Set my cycle state to OFF
     args.cycleInfo.mode = Storm::Type::CycleStatus::eOFF;
     args.systemOn       = false;
     return true;

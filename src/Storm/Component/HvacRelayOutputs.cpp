@@ -83,12 +83,18 @@ bool HvacRelayOutputs::execute( Cpl::System::ElapsedTime::Precision_T currentTic
 
     Storm::Type::HvacRelayOutputs_T relaysNew = { 0, };
 
-    // Force the system if there is 'hard' failure.  Note: In theory the system 
-    // will have already been forced to the off mode at this point - but belts
-    // and suspenders and all that...
-    if ( failOff || forcedOffRefCnt > 0 )
+    // Force the system if there is 'hard' failure.  
+    if ( failOff )
     {
         Storm::Dm::MpVirtualOutputs::setSafeAllOff( outputs );
+    }
+
+    // Force the system capacity off. Note: In theory the system 
+    // will have already been forced to the off mode at this point - but belts
+    // and suspenders and all that...
+    if ( forcedOffRefCnt > 0 )
+    {
+        Storm::Dm::MpVirtualOutputs::setCapacityOff( outputs );
     }
 
     // Resolve the actual Fan speed

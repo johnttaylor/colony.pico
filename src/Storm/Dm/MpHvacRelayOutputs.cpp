@@ -126,3 +126,12 @@ void MpHvacRelayOutputs::setSafeAllOff( Storm::Type::HvacRelayOutputs_T& outputs
     outputs.y1 = false;
     outputs.y2 = false;
 }
+
+void MpHvacRelayOutputs::setCapacityOff( Storm::Type::HvacRelayOutputs_T& outputs )
+{
+    outputs.w1 = false;
+    outputs.w2 = false;
+    outputs.w3 = false;
+    outputs.y1 = false;
+    outputs.y2 = false;
+}
