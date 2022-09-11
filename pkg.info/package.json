@@ -66,17 +66,17 @@
         }
       },
       {
-        "pkgname": "colony.apps",
+        "pkgname": "colony.bsp",
         "pkgtype": "overlay",
-        "adoptedDate": "Sun Sep 11 23:44:23 2022",
+        "adoptedDate": "Sun Sep 11 23:47:15 2022",
         "parentDir": null,
         "version": {
-          "semanticVersion": "2.0.4",
+          "semanticVersion": "0.1.1",
           "branch": null,
-          "tag": "OUTCAST2-main-2.0.4"
+          "tag": "OUTCAST2-main-0.1.1"
         },
         "repo": {
-          "name": "colony.apps",
+          "name": "colony.bsp",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
         }
@@ -111,6 +111,22 @@
         },
         "repo": {
           "name": "ratt",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      },
+      {
+        "pkgname": "colony.apps",
+        "pkgtype": "overlay",
+        "adoptedDate": "Sun Sep 11 23:44:23 2022",
+        "parentDir": null,
+        "version": {
+          "semanticVersion": "2.0.4",
+          "branch": null,
+          "tag": "OUTCAST2-main-2.0.4"
+        },
+        "repo": {
+          "name": "colony.apps",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
         }
