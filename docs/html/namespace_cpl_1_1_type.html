@@ -61,9 +61,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cpl_1_1_type_1_1_guid___t.html">Guid_T</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This structure defines a type for a 16 Byte GUID/UUID.  <a href="struct_cpl_1_1_type_1_1_guid___t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:struct_cpl_1_1_type_1_1_guid___t_8____unnamed4____"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_cpl_1_1_type.html#struct_cpl_1_1_type_1_1_guid___t_8____unnamed4____">Guid_T.__unnamed4__</a></td></tr>
-<tr class="memdesc:struct_cpl_1_1_type_1_1_guid___t_8____unnamed4____"><td class="mdescLeft">&#160;</td><td class="mdescRight">GUID value as single block of memory.  <a href="namespace_cpl_1_1_type.html#struct_cpl_1_1_type_1_1_guid___t_8____unnamed4____">More...</a><br /></td></tr>
-<tr class="separator:struct_cpl_1_1_type_1_1_guid___t_8____unnamed4____"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:union_cpl_1_1_type_1_1_guid___t_8____unnamed4____"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_cpl_1_1_type.html#union_cpl_1_1_type_1_1_guid___t_8____unnamed4____">Guid_T.__unnamed4__</a></td></tr>
+<tr class="memdesc:union_cpl_1_1_type_1_1_guid___t_8____unnamed4____"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value as single memory block, and/or internal structure.  <a href="namespace_cpl_1_1_type.html#union_cpl_1_1_type_1_1_guid___t_8____unnamed4____">More...</a><br /></td></tr>
+<tr class="separator:union_cpl_1_1_type_1_1_guid___t_8____unnamed4____"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:struct_cpl_1_1_type_1_1_guid___t_8____unnamed4_____8____unnamed6____"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespace_cpl_1_1_type.html#struct_cpl_1_1_type_1_1_guid___t_8____unnamed4_____8____unnamed6____">Guid_T.__unnamed4__.__unnamed6__</a></td></tr>
+<tr class="separator:struct_cpl_1_1_type_1_1_guid___t_8____unnamed4_____8____unnamed6____"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_type_1_1_seq_number.html">SeqNumber</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class defines a sequence number and the operation that can be performed on it.  <a href="class_cpl_1_1_type_1_1_seq_number.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -72,19 +74,48 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Class Documentation</h2>
-<a name="struct_cpl_1_1_type_1_1_guid___t_8____unnamed4____" id="struct_cpl_1_1_type_1_1_guid___t_8____unnamed4____"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#struct_cpl_1_1_type_1_1_guid___t_8____unnamed4____">&#9670;&nbsp;</a></span>Cpl::Type::Guid_T.__unnamed4__</h2>
+<a name="union_cpl_1_1_type_1_1_guid___t_8____unnamed4____" id="union_cpl_1_1_type_1_1_guid___t_8____unnamed4____"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#union_cpl_1_1_type_1_1_guid___t_8____unnamed4____">&#9670;&nbsp;</a></span>Cpl::Type::Guid_T.__unnamed4__</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct Cpl::Type::Guid_T.__unnamed4__</td>
+          <td class="memname">union Cpl::Type::Guid_T.__unnamed4__</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p >GUID value as single block of memory. </p>
+<div class="textblock"><p >Value as single memory block, and/or internal structure. </p>
 </div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="a21945c50944818f4cf3b6aef8608f9ce" name="a21945c50944818f4cf3b6aef8608f9ce"></a>struct <a class="el" href="namespace_cpl_1_1_type.html#struct_cpl_1_1_type_1_1_guid___t_8____unnamed4_____8____unnamed6____">Guid_T.__unnamed4__.__unnamed6__</a></td>
+<td class="fieldname">
+__unnamed__</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ab4ccca25a6c6422d5a62f74ab2133ff9" name="ab4ccca25a6c6422d5a62f74ab2133ff9"></a>uint8_t</td>
+<td class="fieldname">
+block[<a class="el" href="_guid_8h.html#a6d2bca772bf929acb260ecac11902b8e">CPL_TYPE_GUID_BINARY_LENGTH</a>]</td>
+<td class="fielddoc">
+GUID value as single block of memory. </td></tr>
+</table>
+
+</div>
+</div>
+<a name="struct_cpl_1_1_type_1_1_guid___t_8____unnamed4_____8____unnamed6____" id="struct_cpl_1_1_type_1_1_guid___t_8____unnamed4_____8____unnamed6____"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#struct_cpl_1_1_type_1_1_guid___t_8____unnamed4_____8____unnamed6____">&#9670;&nbsp;</a></span>Cpl::Type::Guid_T.__unnamed4__.__unnamed6__</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct Cpl::Type::Guid_T.__unnamed4__.__unnamed6__</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"></div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
 <a id="a6a5716a162842157f4f022704d705c50" name="a6a5716a162842157f4f022704d705c50"></a>uint8_t</td>
@@ -123,7 +154,7 @@ Middle 16 bits of the time. </td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 14 2022 10:35:54 for Colony.Pico by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Generated on Sun Sep 11 2022 10:35:21 for Colony.Pico by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
 </small></address>
 </body>
 </html>

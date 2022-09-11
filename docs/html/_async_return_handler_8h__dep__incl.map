@@ -1,16 +1,20 @@
 <map id="Cpl/Itc/AsyncReturnHandler.h" name="Cpl/Itc/AsyncReturnHandler.h">
-<area shape="rect" id="node1" title=" " alt="" coords="374,5,569,32"/>
-<area shape="rect" id="node2" href="$_response_message_8h.html" title=" " alt="" coords="378,80,565,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="379,5,574,32"/>
+<area shape="rect" id="node2" href="$_response_message_8h.html" title=" " alt="" coords="383,80,570,107"/>
 <area shape="rect" id="node3" href="$_erase_request_8h.html" title=" " alt="" coords="5,311,231,338"/>
-<area shape="rect" id="node5" href="$_flush_request_8h.html" title=" " alt="" coords="156,229,379,256"/>
-<area shape="rect" id="node6" href="$_atomic_request_8h.html" title=" " alt="" coords="297,155,461,181"/>
-<area shape="rect" id="node8" href="$_close_request_8h.html" title=" " alt="" coords="485,155,641,181"/>
-<area shape="rect" id="node12" href="$_open_request_8h.html" title=" " alt="" coords="666,155,821,181"/>
-<area shape="rect" id="node14" href="$_indexed_entry_requests_8h.html" title=" " alt="" coords="740,304,925,345"/>
+<area shape="rect" id="node8" href="$_flush_request_8h.html" title=" " alt="" coords="156,229,379,256"/>
+<area shape="rect" id="node9" href="$_atomic_request_8h.html" title=" " alt="" coords="303,155,467,181"/>
+<area shape="rect" id="node11" href="$_close_request_8h.html" title=" " alt="" coords="491,155,647,181"/>
+<area shape="rect" id="node16" href="$_open_request_8h.html" title=" " alt="" coords="671,155,826,181"/>
+<area shape="rect" id="node18" href="$_indexed_entry_requests_8h.html" title=" " alt="" coords="768,304,953,345"/>
 <area shape="rect" id="node4" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="177,483,361,509"/>
-<area shape="rect" id="node7" href="$_atomic_sync_8h.html" title=" " alt="" coords="403,229,550,256"/>
-<area shape="rect" id="node9" href="$_close_sync_8h.html" title=" " alt="" coords="542,311,681,338"/>
-<area shape="rect" id="node10" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="685,393,871,435"/>
-<area shape="rect" id="node11" href="$_record_server_8h.html" title=" " alt="" coords="409,401,608,427"/>
-<area shape="rect" id="node13" href="$_open_sync_8h.html" title=" " alt="" coords="646,229,782,256"/>
+<area shape="rect" id="node5" href="$_installer_record_8h_source.html" title=" " alt="" coords="7,557,165,599"/>
+<area shape="rect" id="node6" href="$_run_time_record_8h_source.html" title=" " alt="" coords="189,557,348,599"/>
+<area shape="rect" id="node7" href="$_user_record_8h_source.html" title=" " alt="" coords="372,557,531,599"/>
+<area shape="rect" id="node10" href="$_atomic_sync_8h.html" title=" " alt="" coords="403,229,550,256"/>
+<area shape="rect" id="node12" href="$_close_sync_8h.html" title=" " alt="" coords="566,311,705,338"/>
+<area shape="rect" id="node13" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="760,393,945,435"/>
+<area shape="rect" id="node14" href="$_record_server_8h.html" title=" " alt="" coords="311,401,509,427"/>
+<area shape="rect" id="node15" href="$_algorithm_8h.html" title=" " alt="" coords="537,401,734,427"/>
+<area shape="rect" id="node17" href="$_open_sync_8h.html" title=" " alt="" coords="673,229,809,256"/>
 </map>

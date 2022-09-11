@@ -64,7 +64,7 @@ $(function() {
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
-<div class="center"><iframe scrolling="no" frameborder="0" src="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder__inherit__graph.svg" width="890" height="118"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder__inherit__graph.svg" width="890" height="170"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-1-trigger" src="closed.png" alt="+"/> Collaboration diagram for Cpl::Text::Frame::StreamDecoder:</div>
@@ -96,9 +96,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:ab3fac3618a4a54306102b61951ab225e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#ab3fac3618a4a54306102b61951ab225e">StreamDecoder</a> (char rawInputBuffer[], size_t sizeOfRawInputBuffer, <a class="el" href="class_cpl_1_1_io_1_1_input.html">Cpl::Io::Input</a> *inputSource=0)</td></tr>
-<tr class="memdesc:ab3fac3618a4a54306102b61951ab225e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#ab3fac3618a4a54306102b61951ab225e">More...</a><br /></td></tr>
-<tr class="separator:ab3fac3618a4a54306102b61951ab225e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f9be58ded547b8c107b6c156c7b7265"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#a7f9be58ded547b8c107b6c156c7b7265">StreamDecoder</a> (char rawInputBuffer[], size_t sizeOfRawInputBuffer, <a class="el" href="class_cpl_1_1_io_1_1_input.html">Cpl::Io::Input</a> *inputSource=0, bool blocking=true)</td></tr>
+<tr class="memdesc:a7f9be58ded547b8c107b6c156c7b7265"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#a7f9be58ded547b8c107b6c156c7b7265">More...</a><br /></td></tr>
+<tr class="separator:a7f9be58ded547b8c107b6c156c7b7265"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02e0e4d12ece41e89587b2d02c2ca1e3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#a02e0e4d12ece41e89587b2d02c2ca1e3">read</a> (void *buffer, int numBytes, int &amp;bytesRead)</td></tr>
 <tr class="memdesc:a02e0e4d12ece41e89587b2d02c2ca1e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">See <a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_decoder__.html" title="This private partially concrete class implements the basic/common logic for a frame decoder.">Cpl::Text::Frame::Decoder_</a>.  <a href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#a02e0e4d12ece41e89587b2d02c2ca1e3">More...</a><br /></td></tr>
 <tr class="separator:a02e0e4d12ece41e89587b2d02c2ca1e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,6 +127,9 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:afd3686e314932d1183136e682c431f81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_cpl_1_1_io_1_1_input.html">Cpl::Io::Input</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#afd3686e314932d1183136e682c431f81">m_srcPtr</a></td></tr>
 <tr class="memdesc:afd3686e314932d1183136e682c431f81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input stream.  <a href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#afd3686e314932d1183136e682c431f81">More...</a><br /></td></tr>
 <tr class="separator:afd3686e314932d1183136e682c431f81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4029cd406d2dad68a8894ab8f3d814be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#a4029cd406d2dad68a8894ab8f3d814be">m_blocking</a></td></tr>
+<tr class="memdesc:a4029cd406d2dad68a8894ab8f3d814be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Block semantics.  <a href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html#a4029cd406d2dad68a8894ab8f3d814be">More...</a><br /></td></tr>
+<tr class="separator:a4029cd406d2dad68a8894ab8f3d814be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_class_cpl_1_1_text_1_1_frame_1_1_decoder__"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_cpl_1_1_text_1_1_frame_1_1_decoder__')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_decoder__.html">Cpl::Text::Frame::Decoder_</a></td></tr>
 <tr class="memitem:aee545532699163c9d1b44dd0457665b2 inherit pro_attribs_class_cpl_1_1_text_1_1_frame_1_1_decoder__"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_decoder__.html#aee545532699163c9d1b44dd0457665b2">m_dataLen</a></td></tr>
 <tr class="memdesc:aee545532699163c9d1b44dd0457665b2 inherit pro_attribs_class_cpl_1_1_text_1_1_frame_1_1_decoder__"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current number of characters remaining in my raw input buffer.  <a href="class_cpl_1_1_text_1_1_frame_1_1_decoder__.html#aee545532699163c9d1b44dd0457665b2">More...</a><br /></td></tr>
@@ -154,8 +157,8 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:ac049a41af0558528fad2d93875ac6989 inherit pro_attribs_class_cpl_1_1_text_1_1_frame_1_1_decoder__"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ab3fac3618a4a54306102b61951ab225e" name="ab3fac3618a4a54306102b61951ab225e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3fac3618a4a54306102b61951ab225e">&#9670;&nbsp;</a></span>StreamDecoder()</h2>
+<a id="a7f9be58ded547b8c107b6c156c7b7265" name="a7f9be58ded547b8c107b6c156c7b7265"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f9be58ded547b8c107b6c156c7b7265">&#9670;&nbsp;</a></span>StreamDecoder()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -179,7 +182,13 @@ Protected Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="class_cpl_1_1_io_1_1_input.html">Cpl::Io::Input</a> *&#160;</td>
-          <td class="paramname"><em>inputSource</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>inputSource</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>blocking</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -196,6 +205,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Constructor. </p>
 <p >The 'inputSource' can optionally be specified at construction time or defer till later (the default is: later). However, the "input source" MUST be specified BEFORF <a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_decoder__.html#a46e6aef3d96e3da42ffcb8fc76650a20" title="See Cpl::Text::Frame::Decoder.">scan()</a> is called or a fatal error will be generated. See <a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_decoder__.html" title="This private partially concrete class implements the basic/common logic for a frame decoder.">Cpl::Text::Frame::Decoder_</a> for details about the other constructor arguments.</p>
+<p >When the 'blocking' argument is set to false - decoder will not block while waiting on input data. The default behavior is to BLOCK.</p>
 <p >NOTE: A sub-class IS required to actual create an instance of a <a class="el" href="class_cpl_1_1_text_1_1_frame_1_1_stream_decoder.html" title="This partially concrete class defines an interface a Text &quot;Decoder&quot; that has a Cpl::Io::Input stream ...">StreamDecoder</a>. </p>
 
 </div>
@@ -276,6 +286,30 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a4029cd406d2dad68a8894ab8f3d814be" name="a4029cd406d2dad68a8894ab8f3d814be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4029cd406d2dad68a8894ab8f3d814be">&#9670;&nbsp;</a></span>m_blocking</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Cpl::Text::Frame::StreamDecoder::m_blocking</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Block semantics. </p>
+
+</div>
+</div>
 <a id="afd3686e314932d1183136e682c431f81" name="afd3686e314932d1183136e682c431f81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd3686e314932d1183136e682c431f81">&#9670;&nbsp;</a></span>m_srcPtr</h2>
 
@@ -306,7 +340,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 14 2022 10:35:54 for Colony.Pico by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Generated on Sun Sep 11 2022 10:35:21 for Colony.Pico by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
 </small></address>
 </body>
 </html>

@@ -1,10 +1,13 @@
 <map id="Cpl/Persistent/Chunk.h" name="Cpl/Persistent/Chunk.h">
-<area shape="rect" id="node1" title=" " alt="" coords="429,5,585,32"/>
-<area shape="rect" id="node2" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="5,80,189,107"/>
-<area shape="rect" id="node3" href="$_crc_chunk_8h.html" title=" " alt="" coords="213,80,389,107"/>
-<area shape="rect" id="node4" href="$_data_record_8h.html" title=" " alt="" coords="413,80,600,107"/>
-<area shape="rect" id="node6" href="$_indexed_entry_record_8h.html" title=" " alt="" coords="478,229,663,271"/>
-<area shape="rect" id="node8" href="$_mirrored_chunk_8h.html" title=" " alt="" coords="675,80,877,107"/>
-<area shape="rect" id="node5" href="$_index_record_8h.html" title=" " alt="" coords="408,155,600,181"/>
-<area shape="rect" id="node7" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="478,319,663,360"/>
+<area shape="rect" id="node1" title=" " alt="" coords="599,5,755,32"/>
+<area shape="rect" id="node2" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="175,80,359,107"/>
+<area shape="rect" id="node6" href="$_crc_chunk_8h.html" title=" " alt="" coords="383,80,559,107"/>
+<area shape="rect" id="node7" href="$_data_record_8h.html" title=" " alt="" coords="583,80,770,107"/>
+<area shape="rect" id="node9" href="$_indexed_entry_record_8h.html" title=" " alt="" coords="648,244,833,285"/>
+<area shape="rect" id="node11" href="$_mirrored_chunk_8h.html" title=" " alt="" coords="845,80,1047,107"/>
+<area shape="rect" id="node3" href="$_installer_record_8h_source.html" title=" " alt="" coords="5,155,164,196"/>
+<area shape="rect" id="node4" href="$_run_time_record_8h_source.html" title=" " alt="" coords="188,155,347,196"/>
+<area shape="rect" id="node5" href="$_user_record_8h_source.html" title=" " alt="" coords="371,155,529,196"/>
+<area shape="rect" id="node8" href="$_index_record_8h.html" title=" " alt="" coords="578,162,770,189"/>
+<area shape="rect" id="node10" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="648,333,833,375"/>
 </map>

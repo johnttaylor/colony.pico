@@ -1,12 +1,15 @@
 <map id="Cpl/Text/Frame/Decoder.h" name="Cpl/Text/Frame/Decoder.h">
-<area shape="rect" id="node1" title=" " alt="" coords="319,5,494,32"/>
-<area shape="rect" id="node2" href="$_decoder___8h.html" title=" " alt="" coords="315,80,498,107"/>
-<area shape="rect" id="node3" href="$_stream_decoder_8h.html" title=" " alt="" coords="179,155,397,181"/>
-<area shape="rect" id="node10" href="$_string_decoder_8h.html" title=" " alt="" coords="421,155,630,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="431,5,606,32"/>
+<area shape="rect" id="node2" href="$_decoder___8h.html" title=" " alt="" coords="427,80,610,107"/>
+<area shape="rect" id="node3" href="$_stream_decoder_8h.html" title=" " alt="" coords="291,155,509,181"/>
+<area shape="rect" id="node13" href="$_string_decoder_8h.html" title=" " alt="" coords="533,155,742,181"/>
 <area shape="rect" id="node4" href="$_processor_8h.html" title=" " alt="" coords="6,229,162,256"/>
 <area shape="rect" id="node8" href="$_ascii_decoder_8h.html" title=" " alt="" coords="186,229,390,256"/>
 <area shape="rect" id="node9" href="$_line_decoder_8h.html" title=" " alt="" coords="414,229,613,256"/>
-<area shape="rect" id="node5" href="$_maker_8h.html" title=" " alt="" coords="291,304,424,331"/>
-<area shape="rect" id="node6" href="$_polled_processor_8h.html" title=" " alt="" coords="5,304,197,331"/>
-<area shape="rect" id="node7" href="$_polled_maker_8h.html" title=" " alt="" coords="214,379,383,405"/>
+<area shape="rect" id="node10" href="$_pipe_8h.html" title=" " alt="" coords="637,229,771,256"/>
+<area shape="rect" id="node5" href="$_cpl_2_t_shell_2_maker_8h.html" title=" " alt="" coords="256,311,389,338"/>
+<area shape="rect" id="node6" href="$_polled_processor_8h.html" title=" " alt="" coords="5,311,197,338"/>
+<area shape="rect" id="node7" href="$_polled_maker_8h.html" title=" " alt="" coords="214,393,383,420"/>
+<area shape="rect" id="node11" href="$_driver_2_pico_display_2_t_pipe_2_api_8h.html" title="This file defines the interface for initializing the concrete implementation of the PicoDisplay drive..." alt="" coords="558,304,687,345"/>
+<area shape="rect" id="node12" href="$_driver_2_t_pipe_2_maker_8h.html" title=" " alt="" coords="711,311,857,338"/>
 </map>

@@ -1,10 +1,11 @@
 <map id="Cpl::Itc::CloseSync" name="Cpl::Itc::CloseSync">
-<area shape="rect" id="node1" title="This partially concrete class implements the synchronous ITC close call for the CloseApi." alt="" coords="233,155,367,181"/>
-<area shape="rect" id="node7" href="$class_cpl_1_1_persistent_1_1_indexed_entry_server.html" title="This concrete template class implements the ITC messaging (and Model Point monitoring) needed to prov..." alt="" coords="117,229,280,271"/>
-<area shape="rect" id="node8" href="$class_cpl_1_1_persistent_1_1_record_server.html" title="This concrete class provides an Event driven Runnable object for executing the read/write operation t..." alt="" coords="304,237,499,263"/>
-<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_open_sync.html" title="This partially concrete class implements the synchronous ITC open call for the OpenApi." alt="" coords="80,80,213,107"/>
-<area shape="rect" id="node3" href="$class_cpl_1_1_itc_1_1_open_api.html" title="This abstract class defines an open interface." alt="" coords="5,5,128,32"/>
-<area shape="rect" id="node4" href="$class_cpl_1_1_itc_1_1_open_request.html" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="153,5,303,32"/>
-<area shape="rect" id="node5" href="$class_cpl_1_1_itc_1_1_close_api.html" title="This abstract class defines an close interface." alt="" coords="238,80,362,107"/>
-<area shape="rect" id="node6" href="$class_cpl_1_1_itc_1_1_close_request.html" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="386,80,539,107"/>
+<area shape="rect" id="node1" title="This partially concrete class implements the synchronous ITC close call for the CloseApi." alt="" coords="405,81,540,108"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_persistent_1_1_indexed_entry_server.html" title="This concrete template class implements the ITC messaging (and Model Point monitoring) needed to prov..." alt="" coords="604,15,767,57"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_persistent_1_1_record_server.html" title="This concrete class provides an Event driven Runnable object for executing the read/write operation t..." alt="" coords="588,81,783,108"/>
+<area shape="rect" id="node9" href="$class_storm_1_1_thermostat_1_1_algorithm.html" title="This concrete class is a &quot;maker&quot; pattern assembles the objects needed for the thermostat&#39;s control al..." alt="" coords="616,133,755,174"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_open_sync.html" title="This partially concrete class implements the synchronous ITC open call for the OpenApi." alt="" coords="214,31,347,57"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_itc_1_1_open_api.html" title="This abstract class defines an open interface." alt="" coords="19,5,142,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_itc_1_1_open_request.html" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="5,56,156,83"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_itc_1_1_close_api.html" title="This abstract class defines an close interface." alt="" coords="219,81,343,108"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_itc_1_1_close_request.html" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="204,132,357,159"/>
 </map>

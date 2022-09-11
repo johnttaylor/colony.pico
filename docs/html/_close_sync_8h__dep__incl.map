@@ -1,6 +1,10 @@
 <map id="Cpl/Itc/CloseSync.h" name="Cpl/Itc/CloseSync.h">
-<area shape="rect" id="node1" title=" " alt="" coords="137,5,275,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="245,5,383,32"/>
 <area shape="rect" id="node2" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="5,80,191,121"/>
 <area shape="rect" id="node3" href="$_record_server_8h.html" title=" " alt="" coords="215,87,413,114"/>
+<area shape="rect" id="node8" href="$_algorithm_8h.html" title=" " alt="" coords="438,87,635,114"/>
 <area shape="rect" id="node4" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="222,169,406,196"/>
+<area shape="rect" id="node5" href="$_installer_record_8h_source.html" title=" " alt="" coords="52,244,211,285"/>
+<area shape="rect" id="node6" href="$_run_time_record_8h_source.html" title=" " alt="" coords="235,244,393,285"/>
+<area shape="rect" id="node7" href="$_user_record_8h_source.html" title=" " alt="" coords="417,244,576,285"/>
 </map>

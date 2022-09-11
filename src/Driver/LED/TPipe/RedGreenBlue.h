@@ -32,6 +32,7 @@ namespace TPipe {
 /** This concrete class implements the Red-Green-Blue LED interface by sending
     the LED state over the TPipe to an external client. The driver assumes the
     following TPipe command format (without leading/trailing SOF/EOF framing characters)
+    \code
 
     <DD> <HH:MM:SS.sss> writeRGBLed <led> <r> <g> <b> <bright>
     Where:
@@ -42,6 +43,8 @@ namespace TPipe {
          <g>                 The 'Green' value (0-255) for the RGB LED
          <b>                 The 'Blue' value (0-255) for the RGB LED
          <bright>            Overall brightness for the LED (0-255)
+
+    \endcode
  */
 class RedGreeBlue : public Driver::LED::RedGreenBlue
 {

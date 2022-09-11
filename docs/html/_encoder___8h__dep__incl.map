@@ -1,9 +1,12 @@
 <map id="Cpl/Text/Frame/Encoder_.h" name="Cpl/Text/Frame/Encoder_.h">
-<area shape="rect" id="node1" title=" " alt="" coords="193,5,375,32"/>
-<area shape="rect" id="node2" href="$_stream_encoder_8h.html" title=" " alt="" coords="57,80,274,107"/>
-<area shape="rect" id="node7" href="$_string_encoder_8h.html" title=" " alt="" coords="298,80,507,107"/>
-<area shape="rect" id="node3" href="$_processor_8h.html" title=" " alt="" coords="87,155,243,181"/>
-<area shape="rect" id="node4" href="$_maker_8h.html" title=" " alt="" coords="5,229,139,256"/>
-<area shape="rect" id="node5" href="$_polled_processor_8h.html" title=" " alt="" coords="163,229,355,256"/>
-<area shape="rect" id="node6" href="$_polled_maker_8h.html" title=" " alt="" coords="174,304,343,331"/>
+<area shape="rect" id="node1" title=" " alt="" coords="378,5,561,32"/>
+<area shape="rect" id="node2" href="$_stream_encoder_8h.html" title=" " alt="" coords="242,80,459,107"/>
+<area shape="rect" id="node10" href="$_string_encoder_8h.html" title=" " alt="" coords="483,80,693,107"/>
+<area shape="rect" id="node3" href="$_processor_8h.html" title=" " alt="" coords="181,155,337,181"/>
+<area shape="rect" id="node7" href="$_pipe_8h.html" title=" " alt="" coords="377,155,511,181"/>
+<area shape="rect" id="node4" href="$_cpl_2_t_shell_2_maker_8h.html" title=" " alt="" coords="5,237,139,263"/>
+<area shape="rect" id="node5" href="$_polled_processor_8h.html" title=" " alt="" coords="163,237,355,263"/>
+<area shape="rect" id="node6" href="$_polled_maker_8h.html" title=" " alt="" coords="174,319,343,345"/>
+<area shape="rect" id="node8" href="$_driver_2_pico_display_2_t_pipe_2_api_8h.html" title="This file defines the interface for initializing the concrete implementation of the PicoDisplay drive..." alt="" coords="379,229,509,271"/>
+<area shape="rect" id="node9" href="$_driver_2_t_pipe_2_maker_8h.html" title=" " alt="" coords="533,237,678,263"/>
 </map>

@@ -1,10 +1,13 @@
 <map id="Cpl/Text/Frame/Encoder.h" name="Cpl/Text/Frame/Encoder.h">
-<area shape="rect" id="node1" title=" " alt="" coords="197,5,371,32"/>
-<area shape="rect" id="node2" href="$_encoder___8h.html" title=" " alt="" coords="193,80,375,107"/>
-<area shape="rect" id="node3" href="$_stream_encoder_8h.html" title=" " alt="" coords="57,155,274,181"/>
-<area shape="rect" id="node8" href="$_string_encoder_8h.html" title=" " alt="" coords="298,155,507,181"/>
-<area shape="rect" id="node4" href="$_processor_8h.html" title=" " alt="" coords="87,229,243,256"/>
-<area shape="rect" id="node5" href="$_maker_8h.html" title=" " alt="" coords="5,304,139,331"/>
-<area shape="rect" id="node6" href="$_polled_processor_8h.html" title=" " alt="" coords="163,304,355,331"/>
-<area shape="rect" id="node7" href="$_polled_maker_8h.html" title=" " alt="" coords="174,379,343,405"/>
+<area shape="rect" id="node1" title=" " alt="" coords="382,5,557,32"/>
+<area shape="rect" id="node2" href="$_encoder___8h.html" title=" " alt="" coords="378,80,561,107"/>
+<area shape="rect" id="node3" href="$_stream_encoder_8h.html" title=" " alt="" coords="242,155,459,181"/>
+<area shape="rect" id="node11" href="$_string_encoder_8h.html" title=" " alt="" coords="483,155,693,181"/>
+<area shape="rect" id="node4" href="$_processor_8h.html" title=" " alt="" coords="181,229,337,256"/>
+<area shape="rect" id="node8" href="$_pipe_8h.html" title=" " alt="" coords="377,229,511,256"/>
+<area shape="rect" id="node5" href="$_cpl_2_t_shell_2_maker_8h.html" title=" " alt="" coords="5,311,139,338"/>
+<area shape="rect" id="node6" href="$_polled_processor_8h.html" title=" " alt="" coords="163,311,355,338"/>
+<area shape="rect" id="node7" href="$_polled_maker_8h.html" title=" " alt="" coords="174,393,343,420"/>
+<area shape="rect" id="node9" href="$_driver_2_pico_display_2_t_pipe_2_api_8h.html" title="This file defines the interface for initializing the concrete implementation of the PicoDisplay drive..." alt="" coords="379,304,509,345"/>
+<area shape="rect" id="node10" href="$_driver_2_t_pipe_2_maker_8h.html" title=" " alt="" coords="533,311,678,338"/>
 </map>

@@ -1,4 +1,5 @@
 <map id="Cpl::Persistent::RegionMedia" name="Cpl::Persistent::RegionMedia">
-<area shape="rect" id="node1" title="This mostly abstract class defines the operations that can be performed on a persistent media." alt="" coords="5,5,196,32"/>
-<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_file_adapter.html" title="This concrete class implements the RegionMedia interface using the Cpl::Io::File interfaces." alt="" coords="9,80,192,107"/>
+<area shape="rect" id="node1" title="This mostly abstract class defines the operations that can be performed on a persistent media." alt="" coords="104,5,295,32"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_file_adapter.html" title="This concrete class implements the RegionMedia interface using the Cpl::Io::File interfaces." alt="" coords="5,87,188,114"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_null_region_media.html" title="This concrete class provides a &#39;null&#39; implementation of the RegionMedia interface." alt="" coords="213,80,391,121"/>
 </map>

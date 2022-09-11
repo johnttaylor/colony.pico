@@ -1,7 +1,10 @@
 <map id="Cpl::Persistent::Record" name="Cpl::Persistent::Record">
-<area shape="rect" id="node1" title="This abstract class defines the public interface for a Record instance." alt="" coords="87,5,244,32"/>
-<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_persistent_1_1_record.html" title="This mostly concrete class implements the Cpl::Persistent::Record interface where a Record instance c..." alt="" coords="5,80,141,121"/>
-<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_data_record.html" title="This mostly concrete class implements the Cpl::Persistent::DataRecord interface where a DataRecord in..." alt="" coords="165,87,349,114"/>
-<area shape="rect" id="node4" href="$class_cpl_1_1_persistent_1_1_index_record.html" title="This concrete class extends the Cpl::Persistent::DataRecord interface to store a latest/oldest &#39;recor..." alt="" coords="63,177,252,203"/>
-<area shape="rect" id="node5" href="$class_cpl_1_1_persistent_1_1_indexed_entry_record.html" title="This concrete class implements the Cpl::Persistent::Record interface to store a collection &#39;entries&#39;." alt="" coords="276,169,439,211"/>
+<area shape="rect" id="node1" title="This abstract class defines the public interface for a Record instance." alt="" coords="5,157,163,183"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_persistent_1_1_record.html" title="This mostly concrete class implements the Cpl::Persistent::Record interface where a Record instance c..." alt="" coords="235,104,371,145"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_persistent_1_1_data_record.html" title="This mostly concrete class implements the Cpl::Persistent::DataRecord interface where a DataRecord in..." alt="" coords="211,202,395,229"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_thermostat_1_1_main_1_1_installer_record.html" title="This concrete class implements the &quot;Record&quot; class for storing Installer settings." alt="" coords="465,5,610,47"/>
+<area shape="rect" id="node4" href="$class_storm_1_1_thermostat_1_1_main_1_1_run_time_record.html" title="This concrete class implements the &quot;Record&quot; class for storing persistent run time alerts,..." alt="" coords="462,71,613,112"/>
+<area shape="rect" id="node5" href="$class_storm_1_1_thermostat_1_1_main_1_1_user_record.html" title="This concrete class implements the &quot;Record&quot; class for storing user settings." alt="" coords="468,136,607,177"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_persistent_1_1_index_record.html" title="This concrete class extends the Cpl::Persistent::DataRecord interface to store a latest/oldest &#39;recor..." alt="" coords="443,202,632,229"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_persistent_1_1_indexed_entry_record.html" title="This concrete class implements the Cpl::Persistent::Record interface to store a collection &#39;entries&#39;." alt="" coords="456,253,619,295"/>
 </map>

@@ -1,8 +1,12 @@
 <map id="Cpl/Itc/OpenRequest.h" name="Cpl/Itc/OpenRequest.h">
-<area shape="rect" id="node1" title=" " alt="" coords="129,5,283,32"/>
-<area shape="rect" id="node2" href="$_open_sync_8h.html" title=" " alt="" coords="138,80,274,107"/>
-<area shape="rect" id="node3" href="$_close_sync_8h.html" title=" " alt="" coords="137,155,275,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="237,5,391,32"/>
+<area shape="rect" id="node2" href="$_open_sync_8h.html" title=" " alt="" coords="246,80,382,107"/>
+<area shape="rect" id="node3" href="$_close_sync_8h.html" title=" " alt="" coords="245,155,383,181"/>
 <area shape="rect" id="node4" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="5,229,191,271"/>
 <area shape="rect" id="node5" href="$_record_server_8h.html" title=" " alt="" coords="215,237,413,263"/>
+<area shape="rect" id="node10" href="$_algorithm_8h.html" title=" " alt="" coords="438,237,635,263"/>
 <area shape="rect" id="node6" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="222,319,406,345"/>
+<area shape="rect" id="node7" href="$_installer_record_8h_source.html" title=" " alt="" coords="52,393,211,435"/>
+<area shape="rect" id="node8" href="$_run_time_record_8h_source.html" title=" " alt="" coords="235,393,393,435"/>
+<area shape="rect" id="node9" href="$_user_record_8h_source.html" title=" " alt="" coords="417,393,576,435"/>
 </map>

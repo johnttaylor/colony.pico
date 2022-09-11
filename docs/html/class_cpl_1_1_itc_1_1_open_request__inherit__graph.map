@@ -1,7 +1,8 @@
 <map id="Cpl::Itc::OpenRequest" name="Cpl::Itc::OpenRequest">
-<area shape="rect" id="node1" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="113,5,263,32"/>
-<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_open_sync.html" title="This partially concrete class implements the synchronous ITC open call for the OpenApi." alt="" coords="121,80,255,107"/>
-<area shape="rect" id="node3" href="$class_cpl_1_1_itc_1_1_close_sync.html" title="This partially concrete class implements the synchronous ITC close call for the CloseApi." alt="" coords="121,155,255,181"/>
-<area shape="rect" id="node4" href="$class_cpl_1_1_persistent_1_1_indexed_entry_server.html" title="This concrete template class implements the ITC messaging (and Model Point monitoring) needed to prov..." alt="" coords="5,229,168,271"/>
-<area shape="rect" id="node5" href="$class_cpl_1_1_persistent_1_1_record_server.html" title="This concrete class provides an Event driven Runnable object for executing the read/write operation t..." alt="" coords="192,237,387,263"/>
+<area shape="rect" id="node1" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="5,71,156,98"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_open_sync.html" title="This partially concrete class implements the synchronous ITC open call for the OpenApi." alt="" coords="204,71,337,98"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_itc_1_1_close_sync.html" title="This partially concrete class implements the synchronous ITC close call for the CloseApi." alt="" coords="385,71,520,98"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_persistent_1_1_indexed_entry_server.html" title="This concrete template class implements the ITC messaging (and Model Point monitoring) needed to prov..." alt="" coords="584,5,747,47"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_persistent_1_1_record_server.html" title="This concrete class provides an Event driven Runnable object for executing the read/write operation t..." alt="" coords="568,71,763,98"/>
+<area shape="rect" id="node6" href="$class_storm_1_1_thermostat_1_1_algorithm.html" title="This concrete class is a &quot;maker&quot; pattern assembles the objects needed for the thermostat&#39;s control al..." alt="" coords="596,123,735,164"/>
 </map>

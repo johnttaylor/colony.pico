@@ -1,5 +1,10 @@
 <map id="Cpl::Container::RingBuffer&lt; ITEM &gt;" name="Cpl::Container::RingBuffer&lt; ITEM &gt;">
-<area shape="rect" id="node1" title="This template class implements a Ring Buffer." alt="" coords="5,5,179,47"/>
-<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_ring_buffer_m_t.html" title="This template class implements a THREAD SAFE Ring Buffer." alt="" coords="5,95,179,136"/>
-<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_ring_buffer_m_p.html" title="This template class implements a THREAD SAFE Ring Buffer AND it maintains/reports the number of eleme..." alt="" coords="5,184,179,225"/>
+<area shape="rect" id="node1" title="This template class implements a Ring Buffer." alt="" coords="5,35,179,76"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_container_1_1_ring_buffer_m_t.html" title="This template class implements a THREAD SAFE Ring Buffer." alt="" coords="349,5,523,47"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_container_1_1_ring_buffer.html" title=" " alt="" coords="349,71,523,112"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_container_1_1_ring_buffer_m_p.html" title="This template class implements a THREAD SAFE Ring Buffer AND it maintains/reports the number of eleme..." alt="" coords="586,5,759,47"/>
+<area shape="rect" id="node5" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_fsm_event_queue__.html" title="Event Queue for FSM events." alt="" coords="572,71,773,112"/>
+<area shape="rect" id="node6" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_basic.html" title="This partially concrete class implements the Storm::Component::Equipment::Stage interface for a singl..." alt="" coords="823,71,1024,112"/>
+<area shape="rect" id="node7" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_basic_cooling.html" title="This concrete class implements the Storm::Component::Equipment::Stage interface for a single compress..." alt="" coords="1073,37,1275,79"/>
+<area shape="rect" id="node8" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_basic_indoor_heat.html" title="This concrete class implements the Storm::Component::Equipment::Stage interface for a single compress..." alt="" coords="1073,103,1275,144"/>
 </map>

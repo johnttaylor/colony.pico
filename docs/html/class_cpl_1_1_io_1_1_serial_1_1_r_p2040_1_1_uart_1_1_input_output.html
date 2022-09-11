@@ -214,8 +214,11 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:adcc0f153750cd4542eb0654c00a34c5e"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_io_1_1_serial_1_1_r_p2040_1_1_uart_1_1_input_output.html#adcc0f153750cd4542eb0654c00a34c5e">m_rxTail</a></td></tr>
 <tr class="memdesc:adcc0f153750cd4542eb0654c00a34c5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Head pointer for RX FIFO.  <a href="class_cpl_1_1_io_1_1_serial_1_1_r_p2040_1_1_uart_1_1_input_output.html#adcc0f153750cd4542eb0654c00a34c5e">More...</a><br /></td></tr>
 <tr class="separator:adcc0f153750cd4542eb0654c00a34c5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac1bb4201d139156742aaaa53e4796c0"><td class="memItemLeft" align="right" valign="top">critical_section_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_io_1_1_serial_1_1_r_p2040_1_1_uart_1_1_input_output.html#aac1bb4201d139156742aaaa53e4796c0">m_lock</a></td></tr>
+<tr class="memdesc:aac1bb4201d139156742aaaa53e4796c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Critical section for ISR/thread/Core exclusion.  <a href="class_cpl_1_1_io_1_1_serial_1_1_r_p2040_1_1_uart_1_1_input_output.html#aac1bb4201d139156742aaaa53e4796c0">More...</a><br /></td></tr>
+<tr class="separator:aac1bb4201d139156742aaaa53e4796c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85c3e17cc636462ccbab45e1f26868f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cpl_1_1_io_1_1_serial_1_1_r_p2040_1_1_uart_1_1_input_output.html#a85c3e17cc636462ccbab45e1f26868f1">m_started</a></td></tr>
-<tr class="memdesc:a85c3e17cc636462ccbab45e1f26868f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Critical section for ISR/thread/Core exclusion critical_section_t* m_lock;.  <a href="class_cpl_1_1_io_1_1_serial_1_1_r_p2040_1_1_uart_1_1_input_output.html#a85c3e17cc636462ccbab45e1f26868f1">More...</a><br /></td></tr>
+<tr class="memdesc:a85c3e17cc636462ccbab45e1f26868f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">My started/stopped state.  <a href="class_cpl_1_1_io_1_1_serial_1_1_r_p2040_1_1_uart_1_1_input_output.html#a85c3e17cc636462ccbab45e1f26868f1">More...</a><br /></td></tr>
 <tr class="separator:a85c3e17cc636462ccbab45e1f26868f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-attribs" name="pro-static-attribs"></a>
@@ -724,6 +727,30 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="aac1bb4201d139156742aaaa53e4796c0" name="aac1bb4201d139156742aaaa53e4796c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac1bb4201d139156742aaaa53e4796c0">&#9670;&nbsp;</a></span>m_lock</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">critical_section_t* Cpl::Io::Serial::RP2040::Uart::InputOutput::m_lock</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Critical section for ISR/thread/Core exclusion. </p>
+
+</div>
+</div>
 <a id="a1bfc8e509ea8cf31f9dbd96266cd83d7" name="a1bfc8e509ea8cf31f9dbd96266cd83d7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1bfc8e509ea8cf31f9dbd96266cd83d7">&#9670;&nbsp;</a></span>m_rxBuffer</h2>
 
@@ -840,8 +867,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Critical section for ISR/thread/Core exclusion critical_section_t* m_lock;. </p>
-<p >My started/stopped state </p>
+<p>My started/stopped state. </p>
 
 </div>
 </div>
@@ -1019,7 +1045,7 @@ Additional Inherited Members</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Aug 14 2022 10:35:53 for Colony.Pico by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
+Generated on Sun Sep 11 2022 10:35:21 for Colony.Pico by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.2
 </small></address>
 </body>
 </html>

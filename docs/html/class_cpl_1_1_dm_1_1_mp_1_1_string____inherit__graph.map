@@ -1,7 +1,9 @@
 <map id="Cpl::Dm::Mp::String_&lt; S, MPTYPE &gt;" name="Cpl::Dm::Mp::String_&lt; S, MPTYPE &gt;">
-<area shape="rect" id="node1" title="This mostly concrete template class provides the storage for a Point who&#39;s data is a null terminated ..." alt="" coords="37,304,175,345"/>
-<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_mp_1_1_string_base__.html" title="This mostly concrete class provides the base implementation for a Point who&#39;s data is a null terminat..." alt="" coords="19,229,193,256"/>
-<area shape="rect" id="node3" href="$class_cpl_1_1_dm_1_1_model_point_common__.html" title="This concrete class provide common infrastructure for a Model Point." alt="" coords="5,155,207,181"/>
-<area shape="rect" id="node4" href="$class_cpl_1_1_dm_1_1_model_point.html" title="This mostly abstract class defines the interface for a Model Point." alt="" coords="35,80,177,107"/>
-<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="37,5,175,32"/>
+<area shape="rect" id="node1" title="This mostly concrete template class provides the storage for a Point who&#39;s data is a null terminated ..." alt="" coords="51,309,189,351"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_dm_1_1_mp_1_1_string__.html" title=" " alt="" coords="5,428,235,484"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_mp_1_1_string_base__.html" title="This mostly concrete class provides the base implementation for a Point who&#39;s data is a null terminat..." alt="" coords="33,233,207,260"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_dm_1_1_model_point_common__.html" title="This concrete class provide common infrastructure for a Model Point." alt="" coords="19,157,221,184"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_dm_1_1_model_point.html" title="This mostly abstract class defines the interface for a Model Point." alt="" coords="49,81,191,108"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="51,5,189,32"/>
+<area shape="rect" id="node7" href="$class_storm_1_1_dm_1_1_mp_file_name_string.html" title="This class provides a concrete implementation for a Point who&#39;s data a null terminated string for sto..." alt="" coords="20,533,220,560"/>
 </map>

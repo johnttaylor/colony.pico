@@ -21,6 +21,12 @@ def filter_warnings( output ):
     at_least_one = False
     lines = output.splitlines()
     for line in lines:
+        
+        # Skip empty lines
+        line.strip()
+        if ( line == "" ):
+            continue
+
         # Filter
         if ( re.search( r"^.*error.*inline_dotgraph_.*\.dot", line ) ):
             continue
@@ -33,14 +39,6 @@ def filter_warnings( output ):
         if ( re.search( r"^.*src/.*warning: argument .* of command @param is not found in the argument list of .*BETTER_ENUM.*", line ) ):
             continue
 
-        # Filter
-        #if ( re.search( r"src/Cpl/Text/Frame/LineDecoder.h:.*warning: Found unknown command.*\\r", line ) ):
-        #    continue
- 
-        # Filter
-        #if ( re.search( 'src/Cpl/TShell/Dac/Cmd/Command.h:.*warning: Unsupported xml/html tag <esc> found', line ) ):
-        #    continue
-            
         # Passed ALL filters
         print( line )
         at_least_one = True

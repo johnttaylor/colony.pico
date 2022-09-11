@@ -1,7 +1,11 @@
 <map id="Cpl/Itc/CloseRequest.h" name="Cpl/Itc/CloseRequest.h">
-<area shape="rect" id="node1" title=" " alt="" coords="128,5,284,32"/>
-<area shape="rect" id="node2" href="$_close_sync_8h.html" title=" " alt="" coords="137,80,275,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="236,5,392,32"/>
+<area shape="rect" id="node2" href="$_close_sync_8h.html" title=" " alt="" coords="245,80,383,107"/>
 <area shape="rect" id="node3" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="5,155,191,196"/>
 <area shape="rect" id="node4" href="$_record_server_8h.html" title=" " alt="" coords="215,162,413,189"/>
+<area shape="rect" id="node9" href="$_algorithm_8h.html" title=" " alt="" coords="438,162,635,189"/>
 <area shape="rect" id="node5" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="222,244,406,271"/>
+<area shape="rect" id="node6" href="$_installer_record_8h_source.html" title=" " alt="" coords="52,319,211,360"/>
+<area shape="rect" id="node7" href="$_run_time_record_8h_source.html" title=" " alt="" coords="235,319,393,360"/>
+<area shape="rect" id="node8" href="$_user_record_8h_source.html" title=" " alt="" coords="417,319,576,360"/>
 </map>

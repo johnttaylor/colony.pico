@@ -18,6 +18,7 @@
 
     Note: The implementation creates a thread to execute the TPipe driver in.
 
+    \code
     TPipe Command format for the LCD Data
     -------------------------------------
 
@@ -47,6 +48,7 @@
     NOTE: The simulator makes a copy of the 'screen buffer' and ONLY sends 'deltas' to the simulated
           display.  This has significant positive impact on the performance of 'display' on the simulator
  
+    \endcode
  */
 
 #include "colony_config.h"

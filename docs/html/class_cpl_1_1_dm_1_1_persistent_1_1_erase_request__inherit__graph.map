@@ -1,4 +1,7 @@
 <map id="Cpl::Dm::Persistent::EraseRequest" name="Cpl::Dm::Persistent::EraseRequest">
-<area shape="rect" id="node1" title="This abstract class define ITC message type and payload for the application to request invalidating/c..." alt="" coords="5,5,141,47"/>
-<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_persistent_1_1_record.html" title="This mostly concrete class implements the Cpl::Persistent::Record interface where a Record instance c..." alt="" coords="5,95,141,136"/>
+<area shape="rect" id="node1" title="This abstract class define ITC message type and payload for the application to request invalidating/c..." alt="" coords="5,71,141,112"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_persistent_1_1_record.html" title="This mostly concrete class implements the Cpl::Persistent::Record interface where a Record instance c..." alt="" coords="189,71,325,112"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_thermostat_1_1_main_1_1_installer_record.html" title="This concrete class implements the &quot;Record&quot; class for storing Installer settings." alt="" coords="376,5,521,47"/>
+<area shape="rect" id="node4" href="$class_storm_1_1_thermostat_1_1_main_1_1_run_time_record.html" title="This concrete class implements the &quot;Record&quot; class for storing persistent run time alerts,..." alt="" coords="373,71,524,112"/>
+<area shape="rect" id="node5" href="$class_storm_1_1_thermostat_1_1_main_1_1_user_record.html" title="This concrete class implements the &quot;Record&quot; class for storing user settings." alt="" coords="379,136,518,177"/>
 </map>

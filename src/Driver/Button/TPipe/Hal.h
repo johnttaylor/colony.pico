@@ -15,6 +15,7 @@
     This file defines the concrete implementation for the Button HAL that gets
     its raw inputs via a Driver::TPipe.  The driver assumes the following
     RX Command structure:
+    \code
 
     <verb> <b1> DN|up [<b2> DN|up [..<bN> DN|up]]
 
@@ -31,7 +32,8 @@
         buttons A up B up X DN Y up     // Only the Y button is pressed
         buttons A UP B UP X up Y up     // Only the A & B buttons are pressed
 
-*/
+    \endcode
+ */
 
 #include "Driver/Button/Hal.h"
 #include "Cpl/Container/Map.h"

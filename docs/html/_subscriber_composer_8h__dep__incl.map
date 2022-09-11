@@ -1,5 +1,9 @@
 <map id="Cpl/Dm/SubscriberComposer.h" name="Cpl/Dm/SubscriberComposer.h">
-<area shape="rect" id="node1" title=" " alt="" coords="101,5,302,32"/>
-<area shape="rect" id="node2" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="5,87,189,114"/>
-<area shape="rect" id="node3" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="214,80,399,121"/>
+<area shape="rect" id="node1" title=" " alt="" coords="376,5,577,32"/>
+<area shape="rect" id="node2" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="175,87,359,114"/>
+<area shape="rect" id="node6" href="$_indexed_entry_server_8h.html" title=" " alt="" coords="384,80,569,121"/>
+<area shape="rect" id="node7" href="$_event_monitor_8h_source.html" title=" " alt="" coords="594,80,781,121"/>
+<area shape="rect" id="node3" href="$_installer_record_8h_source.html" title=" " alt="" coords="5,169,164,211"/>
+<area shape="rect" id="node4" href="$_run_time_record_8h_source.html" title=" " alt="" coords="188,169,347,211"/>
+<area shape="rect" id="node5" href="$_user_record_8h_source.html" title=" " alt="" coords="371,169,529,211"/>
 </map>

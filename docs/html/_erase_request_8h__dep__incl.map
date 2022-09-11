@@ -1,4 +1,7 @@
 <map id="Cpl/Dm/Persistent/EraseRequest.h" name="Cpl/Dm/Persistent/EraseRequest.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,231,32"/>
-<area shape="rect" id="node2" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="26,80,210,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="155,5,380,32"/>
+<area shape="rect" id="node2" href="$_dm_2_persistent_2_record_8h.html" title=" " alt="" coords="175,80,359,107"/>
+<area shape="rect" id="node3" href="$_installer_record_8h_source.html" title=" " alt="" coords="5,155,164,196"/>
+<area shape="rect" id="node4" href="$_run_time_record_8h_source.html" title=" " alt="" coords="188,155,347,196"/>
+<area shape="rect" id="node5" href="$_user_record_8h_source.html" title=" " alt="" coords="371,155,529,196"/>
 </map>
