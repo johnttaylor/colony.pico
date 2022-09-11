@@ -21,6 +21,7 @@ src/Storm/Thermostat/Main
 src/Storm/Thermostat/Main/_adafruit_grand_central_m4
 src/Storm/Thermostat/Main/_simulation
 src/Storm/Thermostat/SimHouse
+src/Storm/Thermostat/Ui
 src/Storm/Thermostat/_0test
 src/Storm/Thermostat/_file_logger
 src/Storm/TShell
