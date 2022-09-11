@@ -5,25 +5,25 @@ The Colony.Pico package is collection of my Raspberry Pico projects that are bui
 > * Deterministic memory management (i.e. no heap usage after startup)
 > * The constrained (memory and CPU cycles) environment of embedded systems. 
 
+### General Info
+- See the [Getting Started](#Getting-Started) section for setup and build instructions.
 
-See the [Getting Started](#Getting-Started) section for setup and build instructions.
+- See the [Threading Example](#Threading-Example) and [Threading Details](#Threading-Details) sections for details of the example application demonstrating the package's Threading model.
 
-See the [Threading Example](#Threading-Example) and [Threading Details](#Threading-Details) sections for details of the example application demonstrating the package's Threading model.
+- There is a [Pico-Sketch application](https://github.com/johnttaylor/colony.pico/blob/main/projects/pico-sketch/README.md#GettingStarted) that illustrates who to build a functional simulator.
 
-There is a [Pico-Sketch application](https://github.com/johnttaylor/colony.pico/blob/main/projects/pico-sketch/README.md#GettingStarted) that illustrates who to build a functional simulator.
+- A case study of the [*Main Pattern*](https://github.com/johnttaylor/colony.pico/blob/main/projects/Storm/Thermostat/Pico/README.md) by porting the PIM example [Thermostat application](https://github.com/johnttaylor/pim) to the Pico.
 
-A case study of the [*Main Pattern*](https://github.com/johnttaylor/colony.pico/blob/main/projects/Storm/Thermostat/Pico/README.md) by porting the PIM example [Thermostat application](https://github.com/johnttaylor/pim) to the Pico.
+- There is a [Visual Studio](https://visualstudio.microsoft.com/vs/community/) Solution that provides *Intellisense* editing and navigation of the code base as well as GUI front end for GIT. Click [here](https://github.com/johnttaylor/colony.pico/blob/main/README-VisualStudio.md) for details 
 
-There is a [Visual Studio](https://visualstudio.microsoft.com/vs/community/) Solution that provides *Intellisense* editing and navigation of the code base as well as GUI front end for GIT. Click [here](https://github.com/johnttaylor/colony.pico/blob/main/README-VisualStudio.md) for details 
+- Doxygen documentation is located in the `docs/` directory. 
 
-Doxygen documentation is located in the `docs/` directory. 
-
-Source code under the `src/Cpl` directory is licensd with a BSD licensing agreement (see the `top/` directory).
-
-Individual Pico-SDK packages have their own licenses (see the individual directories).
+- Licensing:
+  - Source code under the `src/` directory is licensed with a BSD licensing agreement (see the `top/` directory).
+  - Individual Pico-SDK packages have their own licenses (see the individual directories).
 
 
-For more details about the `Colony.*` eco-system see 
+- For more details about the `Colony.*` eco-system see 
   * https://github.com/johnttaylor/colony.core
   * https://github.com/johnttaylor/nqbp
   * https://github.com/johnttaylor/pim

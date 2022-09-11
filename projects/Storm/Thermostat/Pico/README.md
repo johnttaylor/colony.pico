@@ -30,7 +30,7 @@ I gave myself the following requirements for porting the Thermostat example code
      
 # Constraints
 The example Thermostat application is a incomplete application in the senses that it has no actual temperature inputs, relay outputs, or User Interface.  It has internal interfaces for all of the above - I just didn't have the time when writing the book to flush out a complete product.  That said the application does contain the following:
-  - A PID based Temperature Control algorithm that supports Heat/Cool systems with zero to two stage air conditioners and up to 3 stages of indoor heat.
+  - A PID based Temperature Control algorithm that supports Heat/Cool systems with zero to a single stage air conditioners and up to 3 stages of indoor heat.
   - Since there are no physical inputs/outputs, a *house simulator* thats provide a crude closed loop simulation of a house and the effects of Outdoor temperature, Indoor temperature, Setpoints, and the output capacity of the HVAC system. 
   - A Debug Console that provides commands to fully exercise and monitor the thermostat's control algorithm.
   - Persistent storage for the Thermostat's Installer and Home owner settings.

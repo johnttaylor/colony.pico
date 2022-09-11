@@ -8,6 +8,15 @@ The project build directory for the Pico hardware is located at:
 The project build directory for the Windoze simluator is located at:
 >`projects\Storm\Pico\simulator\windows\mingw_w64`
 
+The project build directories for the 'original' simulator are located at:
+  
+>```
+>projects\Storm\simulation\linux\gcc
+>projects\Storm\simulation\windows\vc12
+>projects\Storm\simulation\windows\mingw_w64
+>```
+
+
 #### Features, Constraints, etc.
 - A primitive UI that allows the user to set the thermostat mode, fan operating mode, and the set the cooling and heating setpoints.
   - Indoor temperature is displayed
@@ -62,6 +71,6 @@ The following set of console commands can be used to exercise the thermostat, i.
   >wb enot disable
   >state
   >```
-- Change the HVAC Equipment configuration (by writing to a model point).  The following command configures the system to: Three Stage furnace with a variable speed blower motor and two stage Air Conditioner
-  >`dm write {name:"equipmentConfig",val: {iduType:"eFURNACE",vspBlower:true,numIduHeat:3,oduType:"eAC",numCompStages:2}}
+- Change the HVAC Equipment configuration (by writing to a model point).  The following command configures the system to: Three Stage furnace with a variable speed blower motor and single stage Air Conditioner
+  >`dm write {name:"equipmentConfig",val: {iduType:"eFURNACE",vspBlower:true,numIduHeat:3,oduType:"eAC",numCompStages:1}}
 `
