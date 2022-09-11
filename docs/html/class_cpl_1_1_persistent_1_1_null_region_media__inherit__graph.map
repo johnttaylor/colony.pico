@@ -1,0 +1,4 @@
+<map id="Cpl::Persistent::NullRegionMedia" name="Cpl::Persistent::NullRegionMedia">
+<area shape="rect" id="node1" title="This concrete class provides a &#39;null&#39; implementation of the RegionMedia interface." alt="" coords="11,80,190,121"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_persistent_1_1_region_media.html" title="This mostly abstract class defines the operations that can be performed on a persistent media." alt="" coords="5,5,196,32"/>
+</map>

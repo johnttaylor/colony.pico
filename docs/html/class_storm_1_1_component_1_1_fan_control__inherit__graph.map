@@ -1,0 +1,5 @@
+<map id="Storm::Component::FanControl" name="Storm::Component::FanControl">
+<area shape="rect" id="node1" title="This class is responsible for implementing the Indoor Fan Policies (e.g." alt="" coords="5,155,208,181"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_base.html" title="This partially concrete class provide core infrastructure for Components." alt="" coords="22,80,191,107"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_api.html" title="This class define the interface for a Component." alt="" coords="27,5,186,32"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="Storm::Thermostat::Main::UserRecord" name="Storm::Thermostat::Main::UserRecord">
+<area shape="rect" id="node1" title="This concrete class implements the &quot;Record&quot; class for storing user settings." alt="" coords="400,78,539,119"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_dm_1_1_persistent_1_1_record.html" title="This mostly concrete class implements the Cpl::Persistent::Record interface where a Record instance c..." alt="" coords="216,78,352,119"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_persistent_1_1_record.html" title="This abstract class defines the public interface for a Record instance." alt="" coords="8,5,165,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_persistent_1_1_payload.html" title="This abstract class defines the interface accessing the &#39;data payload&#39; of an individual Record instan..." alt="" coords="5,56,168,83"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_dm_1_1_persistent_1_1_flush_request.html" title="This abstract class define ITC message type and payload for the application to request flushing the R..." alt="" coords="19,107,155,149"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_dm_1_1_persistent_1_1_erase_request.html" title="This abstract class define ITC message type and payload for the application to request invalidating/c..." alt="" coords="19,173,155,214"/>
+</map>

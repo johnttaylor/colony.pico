@@ -1,0 +1,4 @@
+<map id="Storm::Utils::SimHouse" name="Storm::Utils::SimHouse">
+<area shape="rect" id="node1" title="This class provides a &#39;functional&#39; simulation of house with respect to Outdoor temperature,..." alt="" coords="9,95,168,121"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_utils_1_1_sim_system.html" title="This class simulates a &quot;system&quot; whose state is affected by its environment and any number of control ..." alt="" coords="5,5,172,32"/>
+</map>

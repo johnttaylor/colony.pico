@@ -1,0 +1,5 @@
+<map id="Storm::Component::AirFilterMonitor" name="Storm::Component::AirFilterMonitor">
+<area shape="rect" id="node1" title="This class is responsible for monitoring how long the indoor fan has been running and raise an alert ..." alt="" coords="5,155,189,196"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_base.html" title="This partially concrete class provide core infrastructure for Components." alt="" coords="13,80,182,107"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_api.html" title="This class define the interface for a Component." alt="" coords="18,5,177,32"/>
+</map>

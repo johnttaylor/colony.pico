@@ -1,0 +1,5 @@
+<map id="Storm::Component::PiPreProcess" name="Storm::Component::PiPreProcess">
+<area shape="rect" id="node1" title="This concrete class provide the context for a PI controller." alt="" coords="5,155,224,181"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_base.html" title="This partially concrete class provide core infrastructure for Components." alt="" coords="30,80,199,107"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_api.html" title="This class define the interface for a Component." alt="" coords="35,5,194,32"/>
+</map>

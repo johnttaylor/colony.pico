@@ -1,0 +1,11 @@
+<map id="Storm/Type/HvacRelayOutputs.h" name="Storm/Type/HvacRelayOutputs.h">
+<area shape="rect" id="node1" title=" " alt="" coords="266,5,481,32"/>
+<area shape="rect" id="node2" href="$_mp_hvac_relay_outputs_8h.html" title=" " alt="" coords="262,80,485,107"/>
+<area shape="rect" id="node3" href="$_component_2_hvac_relay_outputs_8h.html" title=" " alt="" coords="84,155,279,196"/>
+<area shape="rect" id="node5" href="$_model_points_8h.html" title="This file defines all of the Model Points for the Thermostat Application." alt="" coords="382,162,597,189"/>
+<area shape="rect" id="node4" href="$_algorithm_8h.html" title=" " alt="" coords="5,251,203,278"/>
+<area shape="rect" id="node6" href="$_installer_record_8h_source.html" title=" " alt="" coords="227,244,386,285"/>
+<area shape="rect" id="node7" href="$_run_time_record_8h_source.html" title=" " alt="" coords="410,244,569,285"/>
+<area shape="rect" id="node8" href="$_user_record_8h_source.html" title=" " alt="" coords="593,244,751,285"/>
+<area shape="rect" id="node9" href="$_event_monitor_8h_source.html" title=" " alt="" coords="776,244,963,285"/>
+</map>

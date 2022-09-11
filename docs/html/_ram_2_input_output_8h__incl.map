@@ -1,0 +1,22 @@
+<map id="Cpl/Io/Ram/InputOutput.h" name="Cpl/Io/Ram/InputOutput.h">
+<area shape="rect" id="node1" title=" " alt="" coords="364,5,535,32"/>
+<area shape="rect" id="node2" href="$_input_output_8h.html" title=" " alt="" coords="297,80,436,107"/>
+<area shape="rect" id="node17" href="$_ring_buffer_8h.html" title=" " alt="" coords="5,80,181,107"/>
+<area shape="rect" id="node18" href="$_semaphore_8h.html" title=" " alt="" coords="536,155,707,181"/>
+<area shape="rect" id="node20" href="$_mutex_8h.html" title=" " alt="" coords="687,80,828,107"/>
+<area shape="rect" id="node3" href="$_input_8h.html" title=" " alt="" coords="317,155,417,181"/>
+<area shape="rect" id="node16" href="$_output_8h.html" title=" " alt="" coords="182,155,293,181"/>
+<area shape="rect" id="node4" href="$_string_8h.html" title=" " alt="" coords="141,229,261,256"/>
+<area shape="rect" id="node13" href="$_close_8h.html" title=" " alt="" coords="285,229,389,256"/>
+<area shape="rect" id="node15" href="$_is_eos_8h.html" title=" " alt="" coords="414,229,519,256"/>
+<area shape="rect" id="node5" title=" " alt="" coords="553,379,655,405"/>
+<area shape="rect" id="node6" href="$_key_8h.html" title=" " alt="" coords="163,304,301,331"/>
+<area shape="rect" id="node11" title=" " alt="" coords="69,304,139,331"/>
+<area shape="rect" id="node12" title=" " alt="" coords="325,304,397,331"/>
+<area shape="rect" id="node7" href="$_fatal_error_8h.html" title=" " alt="" coords="151,379,313,405"/>
+<area shape="rect" id="node10" title=" " alt="" coords="30,379,95,405"/>
+<area shape="rect" id="node8" title=" " alt="" coords="140,453,209,480"/>
+<area shape="rect" id="node9" title=" " alt="" coords="234,453,347,480"/>
+<area shape="rect" id="node14" href="$_item_8h.html" title=" " alt="" coords="531,304,672,331"/>
+<area shape="rect" id="node19" href="$_signable_8h.html" title=" " alt="" coords="544,229,699,256"/>
+</map>

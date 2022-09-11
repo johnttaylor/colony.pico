@@ -1,0 +1,10 @@
+<map id="Storm::Thermostat::SimHouse::House" name="Storm::Thermostat::SimHouse::House">
+<area shape="rect" id="node1" title="This class glues the House Simulation into the Thermostat Test Application." alt="" coords="693,74,832,115"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_system_1_1_event_loop.html" title="This concrete class is a Runnable object that provides a event driven execution model for a thread." alt="" coords="481,81,645,108"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_system_1_1_runnable.html" title="This is an abstract class defines the interface for an object that is &quot;executed&quot; when a Thread object..." alt="" coords="263,5,419,32"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_system_1_1_event_flag.html" title="This abstract class defines the interface to generated a &#39;Event Flag&#39;." alt="" coords="260,56,421,83"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_system_1_1_signable.html" title="This abstract class defines the interface by which a client can cause an object that is waiting&#45;on&#45;a&#45;..." alt="" coords="265,107,417,133"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="33,107,172,133"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_system_1_1_timer_manager.html" title="This mostly concrete class implements manages a list of Software Timers." alt="" coords="248,157,433,184"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_system_1_1_counter_source__.html" title="This abstract class defines the interface for registering for an Counter object with the Timer Manage..." alt="" coords="5,157,200,184"/>
+</map>

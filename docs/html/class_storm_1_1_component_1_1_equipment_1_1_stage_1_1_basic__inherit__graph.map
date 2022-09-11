@@ -1,0 +1,10 @@
+<map id="Storm::Component::Equipment::Stage::Basic" name="Storm::Component::Equipment::Stage::Basic">
+<area shape="rect" id="node1" title="This partially concrete class implements the Storm::Component::Equipment::Stage interface for a singl..." alt="" coords="823,39,1024,80"/>
+<area shape="rect" id="node7" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_basic_cooling.html" title="This concrete class implements the Storm::Component::Equipment::Stage interface for a single compress..." alt="" coords="1073,5,1275,47"/>
+<area shape="rect" id="node8" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_basic_indoor_heat.html" title="This concrete class implements the Storm::Component::Equipment::Stage interface for a single compress..." alt="" coords="1073,71,1275,112"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_api.html" title="This abstract class define &#39;equipments&#39; interface to a &quot;stage&quot;." alt="" coords="572,13,773,55"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_fsm_event_queue__.html" title="Event Queue for FSM events." alt="" coords="572,79,773,120"/>
+<area shape="rect" id="node4" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_fsm.html" title="Here is the graph that shows the state machine this class implements." alt="" coords="412,63,460,90"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_ring_buffer.html" title=" " alt="" coords="349,115,523,156"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_container_1_1_ring_buffer.html" title="This template class implements a Ring Buffer." alt="" coords="5,115,179,156"/>
+</map>

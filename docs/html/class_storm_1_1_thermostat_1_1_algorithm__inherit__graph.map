@@ -1,0 +1,13 @@
+<map id="Storm::Thermostat::Algorithm" name="Storm::Thermostat::Algorithm">
+<area shape="rect" id="node1" title="This concrete class is a &quot;maker&quot; pattern assembles the objects needed for the thermostat&#39;s control al..." alt="" coords="868,126,1007,167"/>
+<area shape="rect" id="node2" href="$class_cpl_1_1_itc_1_1_close_sync.html" title="This partially concrete class implements the synchronous ITC close call for the CloseApi." alt="" coords="685,95,820,121"/>
+<area shape="rect" id="node3" href="$class_cpl_1_1_itc_1_1_open_sync.html" title="This partially concrete class implements the synchronous ITC open call for the OpenApi." alt="" coords="469,31,602,57"/>
+<area shape="rect" id="node4" href="$class_cpl_1_1_itc_1_1_open_api.html" title="This abstract class defines an open interface." alt="" coords="227,5,350,32"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_itc_1_1_open_request.html" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="213,56,364,83"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_itc_1_1_close_api.html" title="This abstract class defines an close interface." alt="" coords="473,81,597,108"/>
+<area shape="rect" id="node7" href="$class_cpl_1_1_itc_1_1_close_request.html" title="This abstract class define message types and payloads for a set of ITC services." alt="" coords="459,132,612,159"/>
+<area shape="rect" id="node8" href="$class_cpl_1_1_system_1_1_timer.html" title="This mostly concrete interface defines the operations that can be performed on a software timer." alt="" coords="685,171,820,197"/>
+<area shape="rect" id="node9" href="$class_cpl_1_1_system_1_1_counter_callback__.html" title="This abstract class defines the call&#45;back interface for a Counter object." alt="" coords="433,183,637,209"/>
+<area shape="rect" id="node10" href="$class_cpl_1_1_container_1_1_extended_item.html" title="This class is used by the Container classes to implement a various types of DOUBLY linked containers." alt="" coords="192,183,385,209"/>
+<area shape="rect" id="node11" href="$class_cpl_1_1_container_1_1_item.html" title="This class is used by the Container classes to implement a various types of singly linked containers." alt="" coords="5,183,144,209"/>
+</map>

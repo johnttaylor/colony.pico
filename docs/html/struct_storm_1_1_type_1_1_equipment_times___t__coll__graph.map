@@ -1,0 +1,4 @@
+<map id="Storm::Type::EquipmentTimes_T" name="Storm::Type::EquipmentTimes_T">
+<area shape="rect" id="node1" title="The following typedef is used to store the &#39;begin times&#39; for the Indoor and Outdoor HVAC equipment." alt="" coords="5,183,220,209"/>
+<area shape="rect" id="node2" href="$struct_cpl_1_1_system_1_1_elapsed_time_1_1_precision___t.html" title="Data type for time in seconds with a &#39;fractional&#39; millisecond precision." alt="" coords="23,5,202,47"/>
+</map>

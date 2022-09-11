@@ -1,0 +1,4 @@
+<map id="Storm::Component::Equipment::Cooling" name="Storm::Component::Equipment::Cooling">
+<area shape="rect" id="node1" title="This concrete class provides the business logic for controlling the HVAC system when the system is in..." alt="" coords="5,95,207,136"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_control_1_1_equipment.html" title="This abstract class defines the interface for the Control Component to invoke the control logic/proce..." alt="" coords="16,5,196,47"/>
+</map>

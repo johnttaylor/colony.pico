@@ -1,0 +1,12 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_storm_1_1_component_1_1_api.html" title="This class define the interface for a Component." alt="" coords="5,210,164,237"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_base.html" title="This partially concrete class provide core infrastructure for Components." alt="" coords="212,210,381,237"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_air_filter_monitor.html" title="This class is responsible for monitoring how long the indoor fan has been running and raise an alert ..." alt="" coords="451,5,635,47"/>
+<area shape="rect" id="node4" href="$class_storm_1_1_component_1_1_control.html" title="This concrete class provides the Component wrapper that is responsible for determining how to control..." alt="" coords="453,71,633,98"/>
+<area shape="rect" id="node5" href="$class_storm_1_1_component_1_1_fan_control.html" title="This class is responsible for implementing the Indoor Fan Policies (e.g." alt="" coords="441,122,644,149"/>
+<area shape="rect" id="node6" href="$class_storm_1_1_component_1_1_hvac_relay_outputs.html" title="This class is responsible for implementing the Indoor Fan Policies (e.g." alt="" coords="441,173,644,215"/>
+<area shape="rect" id="node7" href="$class_storm_1_1_component_1_1_idt_selection.html" title="This concrete class determines which Indoor&#45;Temperature (IDT) value to be used for the rest of the al..." alt="" coords="439,239,647,266"/>
+<area shape="rect" id="node8" href="$class_storm_1_1_component_1_1_operating_mode.html" title="This concrete class determine the actual mode of operation for the thermostat when the user has selec..." alt="" coords="429,290,656,317"/>
+<area shape="rect" id="node9" href="$class_storm_1_1_component_1_1_pi.html" title="This concrete class implements a simple (P)roportional (I)ntegral controller that only allows the int..." alt="" coords="467,341,618,367"/>
+<area shape="rect" id="node10" href="$class_storm_1_1_component_1_1_pi_pre_process.html" title="This concrete class provide the context for a PI controller." alt="" coords="433,391,652,418"/>
+</map>

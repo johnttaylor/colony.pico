@@ -1,0 +1,4 @@
+<map id="Storm::Type::ComfortConfig_T" name="Storm::Type::ComfortConfig_T">
+<area shape="rect" id="node1" title="The &#39;comfort&#39; parameters for the system." alt="" coords="5,139,205,165"/>
+<area shape="rect" id="node2" href="$struct_storm_1_1_type_1_1_comfort_stage_parameters___t.html" title="The &#39;comfort&#39; parameters per stage." alt="" coords="14,5,197,47"/>
+</map>

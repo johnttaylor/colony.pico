@@ -1,0 +1,16 @@
+<map id="Storm::Component::Equipment::Stage::Basic" name="Storm::Component::Equipment::Stage::Basic">
+<area shape="rect" id="node1" title="This partially concrete class implements the Storm::Component::Equipment::Stage interface for a singl..." alt="" coords="1105,97,1307,139"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_api.html" title="This abstract class define &#39;equipments&#39; interface to a &quot;stage&quot;." alt="" coords="775,5,976,47"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_fsm_event_queue__.html" title="Event Queue for FSM events." alt="" coords="775,72,976,113"/>
+<area shape="rect" id="node4" href="$class_storm_1_1_component_1_1_equipment_1_1_stage_1_1_fsm.html" title="Here is the graph that shows the state machine this class implements." alt="" coords="462,21,510,47"/>
+<area shape="rect" id="node5" href="$class_cpl_1_1_container_1_1_ring_buffer.html" title=" " alt="" coords="399,72,573,113"/>
+<area shape="rect" id="node6" href="$class_cpl_1_1_container_1_1_ring_buffer.html" title="This template class implements a Ring Buffer." alt="" coords="8,72,181,113"/>
+<area shape="rect" id="node7" href="$struct_cpl_1_1_system_1_1_elapsed_time_1_1_precision___t.html" title="Data type for time in seconds with a &#39;fractional&#39; millisecond precision." alt="" coords="5,252,184,293"/>
+<area shape="rect" id="node8" href="$class_storm_1_1_component_1_1_control_1_1_equipment.html#struct_storm_1_1_component_1_1_control_1_1_equipment_1_1_args___t" title="This structure holds all of the data/info/configuration/etc." alt="" coords="785,356,965,397"/>
+<area shape="rect" id="node11" href="$struct_storm_1_1_type_1_1_equipment_times___t.html" title="The following typedef is used to store the &#39;begin times&#39; for the Indoor and Outdoor HVAC equipment." alt="" coords="379,313,593,339"/>
+<area shape="rect" id="node14" href="$struct_storm_1_1_type_1_1_cycle_info___t.html" title="The following typedef is used to store the information about the current on/off cycling of the equipm..." alt="" coords="400,363,572,390"/>
+<area shape="rect" id="node9" href="$namespace_storm_1_1_type.html#struct_storm_1_1_type_1_1_system_config___t" title="The following typedef contains system attributes, parameters, bounds, etc." alt="" coords="387,414,585,441"/>
+<area shape="rect" id="node10" href="$namespace_storm_1_1_type.html#struct_storm_1_1_type_1_1_stage___t" title="The following typedef information per stage." alt="" coords="19,418,170,445"/>
+<area shape="rect" id="node12" href="$namespace_storm_1_1_type.html#struct_storm_1_1_type_1_1_white_box___t" title="The following typedef contains variables/settings/flags/etc." alt="" coords="399,465,573,491"/>
+<area shape="rect" id="node13" href="$namespace_storm_1_1_type.html#struct_storm_1_1_type_1_1_virtual_outputs___t" title="The following typedef is used to hold the virtual outputs for System." alt="" coords="386,515,586,542"/>
+</map>

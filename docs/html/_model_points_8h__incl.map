@@ -1,0 +1,52 @@
+<map id="Storm/Thermostat/ModelPoints.h" name="Storm/Thermostat/ModelPoints.h">
+<area shape="rect" id="node1" title="This file defines all of the Model Points for the Thermostat Application." alt="" coords="1403,5,1618,32"/>
+<area shape="rect" id="node2" href="$_model_database_8h.html" title=" " alt="" coords="332,319,503,345"/>
+<area shape="rect" id="node11" href="$_mp_idt_alarm_8h.html" title=" " alt="" coords="1429,80,1592,107"/>
+<area shape="rect" id="node17" href="$_mp_simple_alarm_8h.html" title=" " alt="" coords="547,162,735,189"/>
+<area shape="rect" id="node19" href="$_mp_setpoints_8h.html" title=" " alt="" coords="354,162,523,189"/>
+<area shape="rect" id="node20" href="$_mp_fan_mode_8h.html" title=" " alt="" coords="1667,80,1835,107"/>
+<area shape="rect" id="node23" href="$_mp_thermostat_mode_8h.html" title=" " alt="" coords="1890,80,2102,107"/>
+<area shape="rect" id="node25" href="$_mp_equipment_config_8h.html" title=" " alt="" coords="3108,162,3321,189"/>
+<area shape="rect" id="node28" href="$_mp_virtual_outputs_8h.html" title=" " alt="" coords="1007,162,1204,189"/>
+<area shape="rect" id="node30" href="$_mp_equipment_begin_times_8h.html" title=" " alt="" coords="1381,155,1579,196"/>
+<area shape="rect" id="node33" href="$_mp_comfort_config_8h.html" title=" " alt="" coords="2476,162,2673,189"/>
+<area shape="rect" id="node35" href="$_mp_cycle_info_8h.html" title=" " alt="" coords="2698,162,2867,189"/>
+<area shape="rect" id="node37" href="$_mp_system_config_8h.html" title=" " alt="" coords="3286,80,3482,107"/>
+<area shape="rect" id="node40" href="$_mp_hvac_relay_outputs_8h.html" title=" " alt="" coords="759,162,982,189"/>
+<area shape="rect" id="node42" href="$_mp_white_box_8h.html" title=" " alt="" coords="2281,162,2452,189"/>
+<area shape="rect" id="node44" href="$_uint32_8h.html" title=" " alt="" coords="160,80,299,107"/>
+<area shape="rect" id="node46" href="$_float_8h.html" title=" " alt="" coords="5,80,136,107"/>
+<area shape="rect" id="node48" href="$_bool_8h.html" title=" " alt="" coords="1085,80,1213,107"/>
+<area shape="rect" id="node49" href="$_ref_counter_8h.html" title=" " alt="" coords="1238,80,1405,107"/>
+<area shape="rect" id="node50" href="$_elapsed_precision_time_8h.html" title=" " alt="" coords="2892,155,3084,196"/>
+<area shape="rect" id="node3" title=" " alt="" coords="1085,468,1198,495"/>
+<area shape="rect" id="node4" href="$_model_database_api_8h.html" title=" " alt="" coords="228,393,417,420"/>
+<area shape="rect" id="node7" href="$_mutex_8h.html" title=" " alt="" coords="441,393,583,420"/>
+<area shape="rect" id="node8" href="$_s_list_8h.html" title=" " alt="" coords="607,393,753,420"/>
+<area shape="rect" id="node10" href="$_arduino_8h_source.html" title=" " alt="" coords="879,468,1011,495"/>
+<area shape="rect" id="node5" href="$_string_8h.html" title=" " alt="" coords="263,468,383,495"/>
+<area shape="rect" id="node6" title=" " alt="" coords="342,543,445,569"/>
+<area shape="rect" id="node9" href="$_item_8h.html" title=" " alt="" coords="661,468,803,495"/>
+<area shape="rect" id="node12" href="$_model_point_common___8h.html" title=" " alt="" coords="1378,244,1582,271"/>
+<area shape="rect" id="node13" href="$_model_point_8h.html" title=" " alt="" coords="1014,393,1159,420"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1883,468,1949,495"/>
+<area shape="rect" id="node15" href="$_subscriber_8h.html" title=" " alt="" coords="1841,319,1983,345"/>
+<area shape="rect" id="node16" href="$_d_list_8h.html" title=" " alt="" coords="1510,319,1655,345"/>
+<area shape="rect" id="node18" href="$_f_string_8h.html" title=" " alt="" coords="949,244,1077,271"/>
+<area shape="rect" id="node21" href="$_fan_mode_8h.html" title=" " alt="" coords="1603,162,1762,189"/>
+<area shape="rect" id="node22" href="$_enum___8h.html" title=" " alt="" coords="1786,162,1929,189"/>
+<area shape="rect" id="node24" href="$_thermostat_mode_8h.html" title=" " alt="" coords="1953,162,2156,189"/>
+<area shape="rect" id="node26" href="$_idu_type_8h.html" title=" " alt="" coords="3168,244,3320,271"/>
+<area shape="rect" id="node27" href="$_odu_type_8h.html" title=" " alt="" coords="3345,244,3503,271"/>
+<area shape="rect" id="node29" href="$_virtual_outputs_8h.html" title=" " alt="" coords="1298,319,1486,345"/>
+<area shape="rect" id="node31" href="$_equipment_times_8h.html" title=" " alt="" coords="2059,244,2261,271"/>
+<area shape="rect" id="node32" href="$_elapsed_time_8h.html" title=" " alt="" coords="2523,319,2704,345"/>
+<area shape="rect" id="node34" href="$_comfort_config_8h.html" title=" " alt="" coords="2059,393,2247,420"/>
+<area shape="rect" id="node36" href="$_cycle_info_8h.html" title=" " alt="" coords="2523,244,2683,271"/>
+<area shape="rect" id="node38" href="$_system_config_8h.html" title=" " alt="" coords="3447,162,3633,189"/>
+<area shape="rect" id="node39" href="$_type_2_operating_mode_8h.html" title=" " alt="" coords="3558,244,3751,271"/>
+<area shape="rect" id="node41" href="$_type_2_hvac_relay_outputs_8h.html" title=" " alt="" coords="1007,319,1222,345"/>
+<area shape="rect" id="node43" href="$_type_2_white_box_8h.html" title=" " alt="" coords="2286,244,2447,271"/>
+<area shape="rect" id="node45" href="$_numeric_8h.html" title=" " alt="" coords="127,162,278,189"/>
+<area shape="rect" id="node47" href="$real_8h.html" title="This file contains a collection of methods comparing, manipulating, etc." alt="" coords="879,393,990,420"/>
+</map>

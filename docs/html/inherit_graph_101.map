@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_storm_1_1_component_1_1_control_1_1_equipment.html" title="This abstract class defines the interface for the Control Component to invoke the control logic/proce..." alt="" coords="5,71,185,112"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_equipment_1_1_cooling.html" title="This concrete class provides the business logic for controlling the HVAC system when the system is in..." alt="" coords="246,5,447,47"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_equipment_1_1_indoor_heating.html" title="This concrete class provides the business logic for controlling the HVAC system when the system is in..." alt="" coords="246,71,447,112"/>
+<area shape="rect" id="node4" href="$class_storm_1_1_component_1_1_equipment_1_1_off.html" title="This concrete class provides the business logic for controlling the HVAC system when the system is of..." alt="" coords="233,137,460,163"/>
+</map>

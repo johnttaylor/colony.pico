@@ -1,0 +1,10 @@
+<map id="Storm::Component::Control::Equipment::Args_T" name="Storm::Component::Control::Equipment::Args_T">
+<area shape="rect" id="node1" title="This structure holds all of the data/info/configuration/etc." alt="" coords="775,177,955,218"/>
+<area shape="rect" id="node2" href="$namespace_storm_1_1_type.html#struct_storm_1_1_type_1_1_system_config___t" title="The following typedef contains system attributes, parameters, bounds, etc." alt="" coords="387,7,585,33"/>
+<area shape="rect" id="node3" href="$namespace_storm_1_1_type.html#struct_storm_1_1_type_1_1_stage___t" title="The following typedef information per stage." alt="" coords="19,7,170,33"/>
+<area shape="rect" id="node4" href="$struct_cpl_1_1_system_1_1_elapsed_time_1_1_precision___t.html" title="Data type for time in seconds with a &#39;fractional&#39; millisecond precision." alt="" coords="5,174,184,215"/>
+<area shape="rect" id="node5" href="$struct_storm_1_1_type_1_1_equipment_times___t.html" title="The following typedef is used to store the &#39;begin times&#39; for the Indoor and Outdoor HVAC equipment." alt="" coords="379,157,593,184"/>
+<area shape="rect" id="node8" href="$struct_storm_1_1_type_1_1_cycle_info___t.html" title="The following typedef is used to store the information about the current on/off cycling of the equipm..." alt="" coords="400,208,572,235"/>
+<area shape="rect" id="node6" href="$namespace_storm_1_1_type.html#struct_storm_1_1_type_1_1_white_box___t" title="The following typedef contains variables/settings/flags/etc." alt="" coords="399,259,573,285"/>
+<area shape="rect" id="node7" href="$namespace_storm_1_1_type.html#struct_storm_1_1_type_1_1_virtual_outputs___t" title="The following typedef is used to hold the virtual outputs for System." alt="" coords="386,309,586,336"/>
+</map>

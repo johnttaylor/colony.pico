@@ -1,0 +1,5 @@
+<map id="Storm::Component::Control" name="Storm::Component::Control">
+<area shape="rect" id="node1" title="This concrete class provides the Component wrapper that is responsible for determining how to control..." alt="" coords="5,155,185,181"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_base.html" title="This partially concrete class provide core infrastructure for Components." alt="" coords="11,80,180,107"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_api.html" title="This class define the interface for a Component." alt="" coords="16,5,175,32"/>
+</map>

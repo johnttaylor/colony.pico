@@ -1,0 +1,5 @@
+<map id="Storm::Component::IdtSelection" name="Storm::Component::IdtSelection">
+<area shape="rect" id="node1" title="This concrete class determines which Indoor&#45;Temperature (IDT) value to be used for the rest of the al..." alt="" coords="5,155,213,181"/>
+<area shape="rect" id="node2" href="$class_storm_1_1_component_1_1_base.html" title="This partially concrete class provide core infrastructure for Components." alt="" coords="25,80,194,107"/>
+<area shape="rect" id="node3" href="$class_storm_1_1_component_1_1_api.html" title="This class define the interface for a Component." alt="" coords="30,5,189,32"/>
+</map>
