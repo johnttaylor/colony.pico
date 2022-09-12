@@ -1,3 +1,5 @@
+src/Storm/Thermostat/Main
+
 # Common stuff
 ../../../libdirs.b
 
@@ -9,7 +11,6 @@ src/Storm/Thermostat/SimHouse
 src/Cpl/TShell/Cmd/FreeRTOS
 src/Cpl/System/FreeRTOS
 src/Cpl/System/FreeRTOS/_fatalerror
-src/Cpl/System/_trace
 src/Cpl/System/_trace/_arduino
 src/Cpl/Io/Serial/Arduino
 src/Bsp/Adafruit/grand_central_m4/gcc

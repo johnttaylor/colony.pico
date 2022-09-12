@@ -1,5 +1,4 @@
 # Application
-src/Storm/Thermostat/Main
 src/Storm/Thermostat 
 src/Storm/Component
 src/Storm/Component/Equipment
@@ -30,4 +29,4 @@ src/Cpl/Itc
 src/Cpl/System
 src/Cpl/TShell
 src/Cpl/TShell/Cmd
-
+src/Cpl/System/_trace
