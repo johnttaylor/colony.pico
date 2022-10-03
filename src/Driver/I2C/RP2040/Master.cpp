@@ -14,12 +14,15 @@
 #include "Cpl/System/Assert.h"
 #include "pico/time.h"
 
+#include "Cpl/System/Trace.h"
+#define SECT_ "_0testxx"
+
 using namespace Driver::I2C::RP2040;
 
 //////////////////////////////////////////////////////////////////////////////
-Master::Master( i2c_inst_t*   i2cInstance,
-                unsigned long baudrate,
-                unsigned long timeoutMs )
+Master::Master( i2c_inst_t* i2cInstance,
+                size_t      baudrate,
+                size_t      timeoutMs )
     : m_i2cDevice( i2cInstance )
     , m_baudrate( baudrate )
     , m_timeoutMs( timeoutMs )
@@ -31,6 +34,8 @@ Master::Master( i2c_inst_t*   i2cInstance,
 //////////////////////////////////////////////////////////////////////////////
 bool Master::start() noexcept
 {
+    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
+
     if ( !m_started )
     {
         m_started = true;
@@ -43,6 +48,8 @@ bool Master::start() noexcept
 
 void Master::stop() noexcept
 {
+    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
+ 
     if ( m_started )
     {
         m_started = false;
@@ -52,10 +59,12 @@ void Master::stop() noexcept
 
 
 Driver::I2C::Master::Result_T Master::writeToDevice( uint8_t     device7BitAddress,
-                                                     unsigned    numBytesToTransmit,
+                                                     size_t      numBytesToTransmit,
                                                      const void* srcData,
                                                      bool        noStop ) noexcept
 {
+    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
+
     // Fail if not started
     if ( !m_started )
     {
@@ -68,15 +77,16 @@ Driver::I2C::Master::Result_T Master::writeToDevice( uint8_t     device7BitAddre
                                         numBytesToTransmit,
                                         noStop,
                                         make_timeout_time_ms( (uint32_t) m_timeoutMs ) );
-
     return ret == (int) numBytesToTransmit ? eSUCCESS : ret == PICO_ERROR_GENERIC ? eNO_ACK : eTIMEOUT;
 }
 
 Driver::I2C::Master::Result_T Master::readFromDevice( uint8_t   device7BitAddress,
-                                                      unsigned  numBytesToRead,
+                                                      size_t    numBytesToRead,
                                                       void*     dstData,
                                                       bool      noStop )
 {
+    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
+
     // Fail if not started
     if ( !m_started )
     {
@@ -94,17 +104,21 @@ Driver::I2C::Master::Result_T Master::readFromDevice( uint8_t   device7BitAddres
 }
 
 
-unsigned long Master::setBaudRate( unsigned long newBaudRateHz ) noexcept
+size_t Master::setBaudRate( size_t newBaudRateHz ) noexcept
 {
-    unsigned long prevBaud = m_baudrate;
-    m_baudrate = newBaudRateHz;
+    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
+
+    size_t prevBaud = m_baudrate;
+    m_baudrate      = newBaudRateHz;
     i2c_init( m_i2cDevice, m_baudrate );
     return prevBaud;
 }
 
-unsigned long Master::setTransactionTimeout( unsigned long maxTimeMs ) noexcept
+size_t Master::setTransactionTimeout( size_t maxTimeMs ) noexcept
 {
-    unsigned long prevTimeout = m_timeoutMs;
-    m_timeoutMs = maxTimeMs;
+    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
+
+    size_t prevTimeout = m_timeoutMs;
+    m_timeoutMs        = maxTimeMs;
     return prevTimeout;
 }

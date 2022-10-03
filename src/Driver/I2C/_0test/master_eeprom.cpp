@@ -62,7 +62,7 @@ void runtests( Driver::I2C::Master& uut, uint8_t device7BitAddress )
     buffer[2] = 2;
     buffer[3] = 3;
     buffer[4] = 4;
-    result = uut.writeToDevice( device7BitAddress, 2 + 4, buffer );
+    result = uut.writeToDevice( device7BitAddress, 2 + 3, buffer );
     if ( result == Driver::I2C::Master::eSUCCESS )
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("EXPECTED:[%x] Wrote 3 bytes to offset 0", device7BitAddress) );
@@ -94,7 +94,7 @@ void runtests( Driver::I2C::Master& uut, uint8_t device7BitAddress )
     }
 
     // Read back the bytes
-    result = uut.readFromDevice( device7BitAddress, 4, buffer );
+    result = uut.readFromDevice( device7BitAddress, 3, buffer );
     if ( result == Driver::I2C::Master::eSUCCESS )
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("EXPECTED:[%x] Read 3 bytes to offset 0. %02x %02x %02x | 02 03 04", device7BitAddress, buffer[0], buffer[1], buffer[2]) );
@@ -111,7 +111,7 @@ void runtests( Driver::I2C::Master& uut, uint8_t device7BitAddress )
     buffer[2] = 22;
     buffer[3] = 33;
     buffer[4] = 44;
-    result = uut.writeToDevice( device7BitAddress, 2 + 4, buffer );
+    result = uut.writeToDevice( device7BitAddress, 2 + 3, buffer );
     if ( result == Driver::I2C::Master::eSUCCESS )
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("EXPECTED:[%x] Wrote 3 more bytes to offset 0", device7BitAddress) );
@@ -143,7 +143,7 @@ void runtests( Driver::I2C::Master& uut, uint8_t device7BitAddress )
     }
     
     // Read back the bytes
-    result = uut.readFromDevice( device7BitAddress, 4, buffer );
+    result = uut.readFromDevice( device7BitAddress, 3, buffer );
     if ( result == Driver::I2C::Master::eSUCCESS )
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("EXPECTED:[%x] Read 3 more bytes to offset 0. %02x %02x %02x | 16 21 2c", device7BitAddress, buffer[0], buffer[1], buffer[2]) );

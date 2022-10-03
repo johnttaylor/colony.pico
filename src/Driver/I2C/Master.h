@@ -14,6 +14,7 @@
 
 
 #include <stdint.h>
+#include <stdlib.h>
 
 ///
 namespace Driver {
@@ -22,10 +23,12 @@ namespace I2C {
 
 
 /** This class defines a non-platform specific interface for an I2C master device
-    driver.
-
-    The interface itself is NOT thread safe. It is the responsibility of
-    the users/clients of the driver to handle any threading issues.
+    driver. The intended usage is to create ONE driver per physical I2C bus, i.e.
+    the driver instance can/should-be shared with multiple clients.  
+    
+    The driver is thread safe in that ALL operations are atomic. This means that
+    all of the methods have the potential to BLOCK if another client/thread has
+    in-progress method call.
  */
 class Master
 {
@@ -62,10 +65,10 @@ public:
         of the transfer (no Stop is issued), and the next I2C transaction will 
         begin with a Restart rather than a Start.
      */
-    virtual Result_T  writeToDevice( uint8_t  device7BitAddress, 
-                                     unsigned numBytesToTransmit, 
+    virtual Result_T  writeToDevice( uint8_t        device7BitAddress, 
+                                     size_t         numBytesToTransmit,
                                      const void*    srcData,
-                                     bool     noStop = false ) noexcept = 0;
+                                     bool           noStop = false ) noexcept = 0;
 
     /** This method reads 'numBytesToRead' bytes from the I2C peripheral device
         into 'dstData'. The application is RESPONSIBLE for ensure that 'dstData' 
@@ -76,7 +79,7 @@ public:
         with a Restart rather than a Start.
      */
     virtual Result_T readFromDevice( uint8_t   device7BitAddress,
-                                     unsigned  numBytesToRead,
+                                     size_t    numBytesToRead,
                                      void*     dstData,
                                      bool      noStop = false ) = 0;
 
@@ -96,7 +99,7 @@ public:
 
         This method can be called before start() is called.
      */
-    virtual unsigned long setBaudRate( unsigned long newBaudRateHz ) noexcept = 0;
+    virtual size_t setBaudRate( size_t newBaudRateHz ) noexcept = 0;
 
     /** This method changes the default/current timeout duration.  The timeout
         duration is the maximum amount of time, in milliseconds, the driver 
@@ -111,7 +114,7 @@ public:
 
         This method can be called before start() is called.
      */
-    virtual unsigned long setTransactionTimeout( unsigned long maxTimeMs ) noexcept = 0;
+    virtual size_t setTransactionTimeout( size_t maxTimeMs ) noexcept = 0;
 
 
 public:
