@@ -112,7 +112,7 @@ The Pico-Sketch simulator consists of two executables
 2. Flash the output image to the target board.  The output image will be in the `projects/pico-sketch/rp2040/pico-uart/windows/gcc/_pico/` directory.
 3. Connected a terminal emulator to the Pico's UART0 for access to the debug console
 
-# Antomomy of the Simulator
+# Anatomy of the Simulator
 
 
 ### Pico-Sketch Application
