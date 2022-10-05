@@ -89,6 +89,8 @@ public:
      */
     virtual size_t getPageSize() const noexcept = 0;
     
+    /// Helper method that returns the total storage size in bytes
+    inline size_t getTotalSize() const noexcept { return getNumPages() * getPageSize(); }
 
 public:
     /// Virtual destructor

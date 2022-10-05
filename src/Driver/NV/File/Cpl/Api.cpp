@@ -52,17 +52,18 @@ bool Api::start() noexcept
             }
 
             // Set the file/storage to all 'Erased Value'
-            uint8_t* pageBuffer = new(std::nothrow) uint8_t[m_pageSize];
-            memset( pageBuffer, OPTION_DRIVER_NV_FILE_CPL_ERASED_VALUE, m_pageSize );
-            for ( size_t i=0; i < m_numPages; i++ )
+            uint8_t pageBuffer[OPTION_DRIVER_NV_FILE_CPL_BYTES_PER_PAGE];
+            memset( pageBuffer, OPTION_DRIVER_NV_FILE_CPL_ERASED_VALUE, sizeof( pageBuffer ) );
+            size_t bytesRemaining = m_totalSize;
+            while( bytesRemaining )
             {
-                if ( !fd.write( pageBuffer, sizeof( pageBuffer ) ) )
+                size_t bytesToWrite = bytesRemaining > sizeof( pageBuffer ) ? sizeof( pageBuffer ) : bytesRemaining;
+                if ( !fd.write( pageBuffer, bytesToWrite ) )
                 {
-                    delete[] pageBuffer;
                     return false;
                 }
+                bytesRemaining -= bytesToWrite;
             }
-            delete[] pageBuffer;
         }
 
         m_started = true;

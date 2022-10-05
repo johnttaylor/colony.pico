@@ -52,9 +52,6 @@ namespace Cpl {
 /** This class implements the Non-volatile storage driver using the Cpl::Io::File
     interfaces.
 
-    Note: The implementation perform dynamic memory allocation in it start()
-          method (but NOT in any of the other methods)
-
     The interface itself is NOT thread safe. It is the responsibility of
     the users/clients of the driver to handle any threading issues.
  */
@@ -85,7 +82,7 @@ public:
     /// See Driver::NV::Api
     size_t getPageSize() const noexcept;
     
-
+   
 protected:
     /// File name
     const char* m_fname;

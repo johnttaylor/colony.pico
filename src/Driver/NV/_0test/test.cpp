@@ -54,6 +54,18 @@ static void printBuffer( const char* header, uint8_t* buffer, size_t numberBytes
     }
 }
 
+static void fillBuffer( uint8_t* dstBuffer, uint8_t marker )
+{
+    int i;
+    for ( i=0; i < 256; i++ )
+    {
+        dstBuffer[i] = i;
+    }
+    dstBuffer[i] = marker;
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////
 int runtests( Driver::NV::Api& uut,
               size_t           expectedPages,
@@ -147,25 +159,25 @@ int runtests( Driver::NV::Api& uut,
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Writing non-aligned buffer (start=%d, val=%02X)...", startingOffset, startVal) );
     if ( !uut.write( startingOffset, expectedBuffer_, totalBytes ) )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#0 Writing non-aligned buffer (start=%d, val=%02X)...", startingOffset, startVal) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#0 Writing non-aligned buffer (start=%d, val=%02X)", startingOffset, startVal) );
         return TEST_FAILED;
     }
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Verifying non-aligned buffer - Check1 (start=%d, val=%02X)...", startingOffset, startVal) );
     if ( !uut.read( 0, pageBuffer_, uut.getPageSize() ) )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#1 reading back page0 for non-aligned verify - Check1 (start=%d, val=%02X)...", startingOffset, startVal) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#1 reading back page0 for non-aligned verify - Check1 (start=%d, val=%02X)", startingOffset, startVal) );
         return TEST_FAILED;
     }
     if ( !uut.read( uut.getPageSize(), pageBuffer2_, uut.getPageSize() ) )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#3 reading back page1 for non-aligned verify - Check1 (start=%d, val=%02X)...", startingOffset, startVal) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#3 reading back page1 for non-aligned verify - Check1 (start=%d, val=%02X)", startingOffset, startVal) );
         return TEST_FAILED;
     }
 
     // Verify the write contents on the 1st page
     if ( memcmp( pageBuffer_ + startingOffset, expectedBuffer_, page0Bytes ) != 0 )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#1 verify for non-aligned verify: 1st page content (start=%d, val=%02X)...", startingOffset, startVal) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#1 verify for non-aligned verify: 1st page content (start=%d, val=%02X)", startingOffset, startVal) );
         printBuffer( "PageBuffer0", pageBuffer_ + startingOffset, page0Bytes );
         printBuffer( "PageBuffer1", pageBuffer2_ + startingOffset, page0Bytes );
         return TEST_FAILED;
@@ -175,7 +187,7 @@ int runtests( Driver::NV::Api& uut,
     // Verity that no wrap around happened on the 1st page
     if ( memcmp( pageBuffer_, expectedBuffer2_, startingOffset ) != 0 )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#4 verify for non-aligned verify: 1st page wrap-around (start=%d, val=%02X)...", startingOffset, startVal) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#4 verify for non-aligned verify: 1st page wrap-around (start=%d, val=%02X)", startingOffset, startVal) );
         printBuffer( "PageBuffer0", pageBuffer_, uut.getPageSize() );
         printBuffer( "PageBuffer1", pageBuffer2_, uut.getPageSize() );
         return TEST_FAILED;
@@ -187,7 +199,7 @@ int runtests( Driver::NV::Api& uut,
     // Verify the write contents on the 2nd page
     if ( memcmp( pageBuffer2_, expectedBuffer_, page1Bytes ) != 0 )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#5 verify for non-aligned verify: 2nd page content (start=%d, val=%02X)...", startingOffset, startVal) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#5 verify for non-aligned verify: 2nd page content (start=%d, val=%02X)", startingOffset, startVal) );
         printBuffer( "PageBuffer0", pageBuffer_, uut.getPageSize() );
         printBuffer( "PageBuffer1", pageBuffer2_, uut.getPageSize() );
         return TEST_FAILED;
@@ -195,16 +207,52 @@ int runtests( Driver::NV::Api& uut,
     // Verity that no extra writes on the 2nd page
     if ( memcmp( pageBuffer2_ + page1Bytes, expectedBuffer2_, uut.getPageSize() - page1Bytes ) != 0 )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#6 verify for non-aligned verify: 2nd page no-extras (start=%d, val=%02X)...", startingOffset, startVal) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#6 verify for non-aligned verify: 2nd page no-extras (start=%d, val=%02X)", startingOffset, startVal) );
         printBuffer( "PageBuffer0", pageBuffer_, uut.getPageSize() );
         printBuffer( "PageBuffer1", pageBuffer2_, uut.getPageSize() );
         return TEST_FAILED;
     }
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Verified non-aligned buffer - Check2 (start=%d, val=%02X).", startingOffset, startVal) );
 
+    // Walking counter, non-page size writes
+    fillBuffer( expectedBuffer_, 0xAA );
+    size_t bytesRemaining = uut.getTotalSize();
+    offset                = 0;
+    CPL_SYSTEM_TRACE_MSG( SECT_, ("Walking counter test (total size=%lu, page=%lu, size=%lu)...", bytesRemaining, uut.getNumPages(), uut.getPageSize()) );
+    while ( bytesRemaining )
+    {
+        size_t bytesToWrite = bytesRemaining > 257 ? 257 : bytesRemaining;
+        if ( !uut.write( offset, expectedBuffer_, bytesToWrite ) )
+        {
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#7 Writing walking counter (start=%d, bytes=%d)", offset, bytesToWrite) );
+            return TEST_FAILED;
+        }
+        bytesRemaining -= bytesToWrite;
+        offset         += bytesToWrite;
+    }
+    CPL_SYSTEM_TRACE_MSG( SECT_, ("Verifying walking counter test...") );
+    bytesRemaining = uut.getTotalSize();
+    offset         = 0;
+    while ( bytesRemaining )
+    {
+        size_t bytesToRead = bytesRemaining > 257 ? 257 : bytesRemaining;
+        memset( pageBuffer_, 0, 257 );
+        if ( !uut.read( offset, pageBuffer_, bytesToRead ) )
+        {
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#8 Read-back walking counter (start=%d, bytes=%d)", offset, bytesToRead) );
+            return TEST_FAILED;
+        }
+        if ( memcmp( pageBuffer_, expectedBuffer_, bytesToRead ) != 0 )
+        {
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#9 Verify walking counter (start=%d, bytes=%d)", offset, bytesToRead) );
+            return TEST_FAILED;
+        }
+        bytesRemaining -= bytesToRead;
+        offset         += bytesToRead;
+    }
+
 
     CPL_SYSTEM_TRACE_MSG( SECT_, ("\n*** ALL TESTS PASSED ***\n") );
     return TEST_PASSED;
 }
-
 
