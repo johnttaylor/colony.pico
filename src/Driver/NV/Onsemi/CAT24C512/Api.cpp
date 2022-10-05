@@ -15,9 +15,6 @@
 #include "Cpl/System/Api.h"
 #include "pico/time.h"
 
-#include "Cpl/System/Trace.h"
-#define SECT_ "_0testxx"
-
 using namespace Driver::NV::Onsemi::CAT24C512;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -70,7 +67,7 @@ bool Api::write( size_t dstOffset, const void* srcData, size_t numBytesToWrite )
     while ( numBytesToWrite )
     {
         size_t bytesToWrite = numBytesToWrite > bytesRemainingInPage ? bytesRemainingInPage : numBytesToWrite;
-        if ( !writePage( dstOffset, srcPtr, numBytesToWrite ) )
+        if ( !writePage( dstOffset, srcPtr, bytesToWrite ) )
         {
             return false;
         }
