@@ -35,7 +35,7 @@ using namespace Driver::NV;
 
 static uint8_t pageBuffer_[OPTION_MAX_PAGE_SIZE];
 static uint8_t pageBuffer2_[OPTION_MAX_PAGE_SIZE];
-static uint8_t expectedBuffer_[OPTION_MAX_PAGE_SIZE];
+static uint8_t expectedBuffer_[OPTION_MAX_PAGE_SIZE*2];
 static uint8_t expectedBuffer2_[OPTION_MAX_PAGE_SIZE];
 
 static Cpl::Text::FString<1024> tmpBuffer_;
@@ -142,7 +142,7 @@ int runtests( Driver::NV::Api& uut,
     size_t   page0Bytes         = uut.getPageSize() - startingOffset;
     size_t   page1Bytes         = totalBytes - page0Bytes;
     uint8_t  startVal           = 0xAA;
-    memset( expectedBuffer_, startVal, uut.getPageSize() );
+    memset( expectedBuffer_, startVal, sizeof(expectedBuffer_) );
     memset( expectedBuffer2_, 0xFF, uut.getPageSize() );
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Writing non-aligned buffer (start=%d, val=%02X)...", startingOffset, startVal) );
     if ( !uut.write( startingOffset, expectedBuffer_, totalBytes ) )
@@ -185,7 +185,7 @@ int runtests( Driver::NV::Api& uut,
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Verifying non-aligned buffer - Check2 (start=%d, val=%02X)...", startingOffset, startVal) );
 
     // Verify the write contents on the 2nd page
-    if ( memcmp( pageBuffer2_, expectedBuffer_ + page0Bytes, page1Bytes ) != 0 )
+    if ( memcmp( pageBuffer2_, expectedBuffer_, page1Bytes ) != 0 )
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("FAILED#5 verify for non-aligned verify: 2nd page content (start=%d, val=%02X)...", startingOffset, startVal) );
         printBuffer( "PageBuffer0", pageBuffer_, uut.getPageSize() );
