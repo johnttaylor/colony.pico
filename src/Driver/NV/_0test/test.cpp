@@ -69,7 +69,8 @@ static void fillBuffer( uint8_t* dstBuffer, uint8_t marker )
 ///////////////////////////////////////////////////////////////////////
 int runtests( Driver::NV::Api& uut,
               size_t           expectedPages,
-              size_t           expectedBytesPerPage )
+              size_t           expectedBytesPerPage,
+              size_t           expectedTotalSize )
 {
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Starting test for the NV RAM tests") );
 
@@ -84,7 +85,11 @@ int runtests( Driver::NV::Api& uut,
         CPL_SYSTEM_TRACE_MSG( SECT_, ("Incorrect page size. expected=%ld, actual=%lu", expectedBytesPerPage, uut.getPageSize()) );
         return TEST_FAILED;
     }
-
+    if ( uut.getTotalSize() != expectedTotalSize )
+    {
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("Incorrect total size. expected=%ld, actual=%lu", expectedTotalSize, uut.getTotalSize()) );
+        return TEST_FAILED;
+    }
 
     // Start the NV driver
     if ( !uut.start() )
@@ -94,7 +99,7 @@ int runtests( Driver::NV::Api& uut,
     }
 
     // Attempt to write pass the end of the memory
-    size_t offset = uut.getPageSize() * uut.getNumPages() - 10;
+    size_t offset = uut.getTotalSize() - 10;
     size_t len    = 11;
     if ( uut.write( offset, expectedBuffer_, len ) )
     {
@@ -103,7 +108,7 @@ int runtests( Driver::NV::Api& uut,
     }
 
     // Attempt to read pass the end of the memory
-    offset = uut.getPageSize() * uut.getNumPages() - 10;
+    offset = uut.getTotalSize() - 10;
     len    = 11;
     if ( uut.read( offset, pageBuffer_, len ) )
     {

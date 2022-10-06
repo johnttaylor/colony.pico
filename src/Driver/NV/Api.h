@@ -79,18 +79,27 @@ public:
     /** This method returns the total number of NV storage pages.  A Page is 
         defined as the boundary/maximum amount of data that can be written in 
         a single physical update of the NV storage
+
+        NOTE: ALWAYS use the getTotalSize() method for querying/determining the 
+              total available storage size.
      */
     virtual size_t getNumPages() const noexcept = 0;
 
     /** This method returns the NV storage page size.  See getNumPages() for 
         more details about the definition of a page.  
 
-        The total amount of storage available is NumPages X PageSize
+        NOTE: ALWAYS use the getTotalSize() method for querying/determining the
+              total available storage size.
      */
     virtual size_t getPageSize() const noexcept = 0;
     
-    /// Helper method that returns the total storage size in bytes
-    inline size_t getTotalSize() const noexcept { return getNumPages() * getPageSize(); }
+    /** The method that returns the total storage size in bytes.
+
+        Note: This is canonical source of truth for the total available storage,
+              i.e, if the driver instance is a 'Gang' driver instance then
+              the method CAN return a different result from: getNumPages() * getPageSize()
+     */        
+    virtual size_t getTotalSize() const noexcept { return getNumPages() * getPageSize(); }
 
 public:
     /// Virtual destructor

@@ -57,7 +57,11 @@ int main(void)
 
     // Go run the test(s)
     i2cBus0Driver_.start();
-    runtests( uut_, OPTION_DRIVER_NV_ONSEMI_CAT24C512_NUM_PAGES, OPTION_DRIVER_NV_ONSEMI_CAT24C512_BYTES_PER_PAGE );
+    runtests( uut_, 
+              OPTION_DRIVER_NV_ONSEMI_CAT24C512_NUM_PAGES, 
+              OPTION_DRIVER_NV_ONSEMI_CAT24C512_BYTES_PER_PAGE,
+              OPTION_DRIVER_NV_ONSEMI_CAT24C512_NUM_PAGES * OPTION_DRIVER_NV_ONSEMI_CAT24C512_BYTES_PER_PAGE
+    );
 
     // Do not exit main when the test ends
 	for( ;; );

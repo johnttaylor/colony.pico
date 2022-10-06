@@ -17,7 +17,8 @@
 /// Executes the tests. A return of zero indicates all test passed
 int runtests( Driver::NV::Api& uut,
               size_t           expectedPages,
-              size_t           expectedBytesPerPage );
+              size_t           expectedBytesPerPage,
+              size_t           expectedTotalSize );
 
 
 #endif  // end header latch
