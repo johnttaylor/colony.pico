@@ -13,7 +13,6 @@
 #include "Gang.h"
 #include "Cpl/System/Assert.h"
 #include "Cpl/System/Api.h"
-#include <stdint.h>
 
 using namespace Driver::NV;
 
@@ -116,8 +115,27 @@ bool Gang::write( size_t dstOffset, const void* srcData, size_t numBytesToWrite 
         if ( dstOffset < endOffset )
         {
             // Normalize the dstOffset and write the data
-            dstOffset -= beginOffset;
-            return driverWrite( drivers, dstOffset, srcData, numBytesToWrite );
+            dstOffset   -= beginOffset;
+
+            // Loop through as many drivers as needed to complete the write
+            const uint8_t* srcPtr         = (const uint8_t*) srcData;
+            while ( numBytesToWrite && *drivers != nullptr )
+            {
+                bool result = driverWrite( drivers, dstOffset, srcPtr, numBytesToWrite );
+                if ( !result )
+                {
+                    return false;
+                }
+
+                // Advance to the next driver
+                drivers++;
+                dstOffset = 0;
+            }
+            
+            // Note: numBytesToWrite should always be zero.  But if some how we
+            // ran out of drivers before the write completed ->fail the 
+            // transaction
+            return numBytesToWrite == 0;
         }
 
         // Next driver
@@ -129,31 +147,24 @@ bool Gang::write( size_t dstOffset, const void* srcData, size_t numBytesToWrite 
     return false;
 }
 
-bool Gang::driverWrite( Api** drivers, size_t normalizedDstOffset, const void* srcData, size_t numBytesToWrite ) noexcept
+bool Gang::driverWrite( Api**           drivers,
+                        size_t          normalizedDstOffset,
+                        const uint8_t*& srcData,
+                        size_t&         numBytesToWrite ) noexcept
 {
-    // This should never happen -->but abort the write if there are no more drivers in the list
-    if ( *drivers == nullptr )
-    {
-        return false;
-    }
-
     // Start writing bytes using the current driver
     size_t bytesThisDriver = numBytesToWrite;
-    size_t bytesRemaining  = 0;
     if ( normalizedDstOffset + numBytesToWrite > (*drivers)->getTotalSize() )
     {
         bytesThisDriver = (*drivers)->getTotalSize() - normalizedDstOffset;
-        bytesRemaining  = numBytesToWrite - bytesThisDriver;
+        numBytesToWrite = numBytesToWrite - bytesThisDriver;
     }
-    bool result = (*drivers)->write( normalizedDstOffset, srcData, bytesThisDriver );
-
-    // Forward any remaining bytes to the 'next' driver
-    if ( bytesRemaining )
+    else
     {
-        drivers++;
-        const uint8_t* srcPtr = (const uint8_t*) srcData;
-        result = driverWrite( drivers, 0, srcPtr + bytesThisDriver, bytesRemaining );
+        numBytesToWrite = 0;
     }
+    bool result      = (*drivers)->write( normalizedDstOffset, srcData, bytesThisDriver );
+    srcData         += bytesThisDriver;
     return result;
 }
 
@@ -180,7 +191,26 @@ bool Gang::read( size_t srcOffset, void* dstData, size_t numBytesToRead ) noexce
         {
             // Normalize the srcOffset and read the data
             srcOffset -= beginOffset;
-            return driverRead( drivers, srcOffset, dstData, numBytesToRead );
+
+            // Loop through as many drivers as needed to complete the read
+            uint8_t* dstPtr  = (uint8_t*) dstData;
+            while ( numBytesToRead && *drivers != nullptr )
+            {
+                bool result = driverRead( drivers, srcOffset, dstPtr, numBytesToRead );
+                if ( !result )
+                {
+                    return false;
+                }
+
+                // Advance to the next driver
+                drivers++;
+                srcOffset = 0;
+            }
+
+            // Note: numBytesToRead should always be zero.  But if some how we
+            // ran out of drivers before the read completed ->fail the 
+            // transaction
+            return numBytesToRead == 0;
         }
 
         // Next driver
@@ -192,7 +222,10 @@ bool Gang::read( size_t srcOffset, void* dstData, size_t numBytesToRead ) noexce
     return false;
 }
 
-bool Gang::driverRead( Api** drivers, size_t normalizedSrcOffset, void* dstData, size_t numBytesToRead ) noexcept
+bool Gang::driverRead( Api**     drivers,
+                       size_t    normalizedSrcOffset,
+                       uint8_t*& dstData,
+                       size_t&   numBytesToRead ) noexcept
 {
     // This should never happen -->but abort the write if there are no more drivers in the list
     if ( *drivers == nullptr )
@@ -202,22 +235,17 @@ bool Gang::driverRead( Api** drivers, size_t normalizedSrcOffset, void* dstData,
 
     // Starting reading the data from the current driver
     size_t bytesThisDriver = numBytesToRead;
-    size_t bytesRemaining  = 0;
     if ( normalizedSrcOffset + numBytesToRead > (*drivers)->getTotalSize() )
     {
         bytesThisDriver = (*drivers)->getTotalSize() - normalizedSrcOffset;
-        bytesRemaining  = numBytesToRead - bytesThisDriver;
+        numBytesToRead  = numBytesToRead - bytesThisDriver;
     }
-    bool result = (*drivers)->read( normalizedSrcOffset, dstData, bytesThisDriver );
-
-    // Forward any remaining bytes to the 'next' driver
-    if ( bytesRemaining )
+    else
     {
-        drivers++;
-        uint8_t* dstPtr = (uint8_t*) dstData;
-        result = driverRead( drivers, 0, dstPtr + bytesThisDriver, bytesRemaining );
+        numBytesToRead = 0;
     }
-
+    bool result     = (*drivers)->read( normalizedSrcOffset, dstData, bytesThisDriver );
+    dstData        += bytesThisDriver;
     return result;
 }
 

@@ -14,6 +14,7 @@
 
 
 #include "Driver/NV/Api.h"
+#include <stdint.h>
 
 
 
@@ -78,10 +79,16 @@ public:
 
 protected:
     /// Helper method to read data 
-    bool driverRead( Api** drivers, size_t normalizedSrcOffset, void* dstData, size_t numBytesToRead) noexcept;
+    bool driverRead( Api**     drivers, 
+                     size_t    normalizedSrcOffset, 
+                     uint8_t*& dstData,
+                     size_t&   numBytesToRead ) noexcept;
 
     /// Helper method to write data 
-    bool driverWrite( Api** drivers, size_t normalizedDstOffset, const void* srcData, size_t numBytesToWrite ) noexcept;
+    bool driverWrite( Api**           drivers, 
+                      size_t          normalizedDstOffset, 
+                      const uint8_t*& srcData, 
+                      size_t&         numBytesToWrite ) noexcept;
 
 
 protected:
