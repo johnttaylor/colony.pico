@@ -163,8 +163,8 @@ bool Gang::driverWrite( Api**           drivers,
     {
         numBytesToWrite = 0;
     }
-    bool result      = (*drivers)->write( normalizedDstOffset, srcData, bytesThisDriver );
-    srcData         += bytesThisDriver;
+    bool result = (*drivers)->write( normalizedDstOffset, srcData, bytesThisDriver );
+    srcData    += bytesThisDriver;
     return result;
 }
 
@@ -244,8 +244,8 @@ bool Gang::driverRead( Api**     drivers,
     {
         numBytesToRead = 0;
     }
-    bool result     = (*drivers)->read( normalizedSrcOffset, dstData, bytesThisDriver );
-    dstData        += bytesThisDriver;
+    bool result = (*drivers)->read( normalizedSrcOffset, dstData, bytesThisDriver );
+    dstData    += bytesThisDriver;
     return result;
 }
 
