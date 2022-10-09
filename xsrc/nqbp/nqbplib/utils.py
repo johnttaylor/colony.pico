@@ -10,6 +10,7 @@ import platform
 import collections
 import fnmatch
 import re
+import stat
 
 # Globals
 from .my_globals import NQBP_WORK_ROOT
@@ -470,6 +471,8 @@ def delete_file( fname ):
     
     result = False
     try:
+        if os.path.isfile(fname):
+            os.chmod(fname, stat.S_IWRITE)
         os.remove( fname )
         result = True
     except OSError:
