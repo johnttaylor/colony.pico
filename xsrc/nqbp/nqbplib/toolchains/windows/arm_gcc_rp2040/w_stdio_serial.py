@@ -56,6 +56,7 @@ class ToolChain( base.ToolChain ):
                 ' -I' + sdk_src_path + r'\common\pico_time\include' + \
                 ' -I' + sdk_src_path + r'\common\pico_util\include' + \
                 ' -I' + sdk_src_path + r'\rp2_common\pico_cyw43_arch\include' + \
+                ' -I' + sdk_src_path + r'\rp2_common\pico_lwip\include' + \
                 ' -I' + sdk_src_path + r'\rp2_common\cyw43_driver' + \
                 ' -I' + sdk_src_path + r'\rp2_common\hardware_gpio\include' + \
                 ' -I' + sdk_src_path + r'\rp2_common\pico_platform\include' + \
