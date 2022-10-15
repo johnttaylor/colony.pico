@@ -150,6 +150,7 @@ bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
     else
     {
         m_eos = true;
+        close();
     }
     return !m_eos;
 }
@@ -192,6 +193,7 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     else
     {
         m_eos = true;
+        close();
     }
     return !m_eos;
 }

@@ -23,6 +23,7 @@ using namespace Cpl::Io::Tcp::Win32;
 #define STATE_BINDING           1
 #define STATE_RETRING_BINDING   2
 #define STATE_LISTENING         3
+#define STATE_CONNECTED         4
 
 
 ///////////////////////////////////////////////////
@@ -62,6 +63,7 @@ void AsyncListener::startListening( Client& client,
 
         // Start the listening sequence
         m_state        = STATE_BINDING;
+        m_clientFd     = INVALID_SOCKET;
         m_retryCounter = OPTION_CPL_IO_TCP_WIN32_BIND_RETRIES;
         poll();
     }
@@ -90,8 +92,8 @@ void AsyncListener::poll() noexcept
         if ( bind( m_fd, (struct sockaddr *) &local, sizeof( local ) ) != SOCKET_ERROR )
         {
             // Create a queue to hold connection requests
-            // NOTE: Set the backlog to 1 per the interface semantics
-            if ( ::listen( m_fd, 1 ) == SOCKET_ERROR )
+            // NOTE: Set the backlog to 0 per the interface semantics
+            if ( ::listen( m_fd, 0 ) == SOCKET_ERROR )
             {
                 Cpl::System::FatalError::logf( "Cpl::Io::Tcp::Win32::AsyncListener: listen() failed" );
                 return;
@@ -125,6 +127,17 @@ void AsyncListener::poll() noexcept
     // Start listening for connections
     if ( m_state == STATE_LISTENING )
     {
+        // Monitor the current remote connection 
+        if ( m_clientFd != INVALID_SOCKET )
+        {
+            unsigned long nbytes=1;
+            if ( ioctlsocket( m_clientFd, FIONREAD, &nbytes ) < 0 && WSAGetLastError() == WSAENOTSOCK )
+            {
+                // Accept connections again
+                m_clientFd = INVALID_SOCKET;
+            }
+        }
+
         // Wait on the 'accept'
         SOCKET             newfd;
         struct sockaddr_in client_addr;
@@ -151,10 +164,15 @@ void AsyncListener::poll() noexcept
 
         // Create a Descriptor for the accepted connection and pass it to the client
         Cpl::Io::Descriptor streamFd( (void*) newfd );
-        if ( !m_clientPtr->newConnection( streamFd, inet_ntoa( client_addr.sin_addr ) ) )
+        if ( m_clientFd != INVALID_SOCKET || !m_clientPtr->newConnection( streamFd, inet_ntoa( client_addr.sin_addr ) ) )
         {
             closesocket( newfd );    // Connection refused
         }
+        else 
+        {
+            m_clientFd = newfd;
+        }
+
     }
 }
 

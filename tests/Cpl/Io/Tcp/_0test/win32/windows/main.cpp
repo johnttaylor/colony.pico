@@ -3,10 +3,6 @@
 #include "Cpl/System/Api.h"
 #include "Cpl/System/Trace.h"
 #include "Cpl/Io/Tcp/_0test/loopback.h"
-#define CATCH_CONFIG_RUNNER  
-#include "Catch/catch.hpp"
-
-
 
 int main( int argc, char* argv[] )
 {
@@ -19,6 +15,7 @@ int main( int argc, char* argv[] )
 
     CPL_SYSTEM_TRACE_ENABLE();
     CPL_SYSTEM_TRACE_ENABLE_SECTION("_0test");
+    CPL_SYSTEM_TRACE_ENABLE_SECTION( "*Cpl::Io::Tcp" );
     CPL_SYSTEM_TRACE_SET_INFO_LEVEL( Cpl::System::Trace::eVERBOSE );
 
     // Run the test(s)

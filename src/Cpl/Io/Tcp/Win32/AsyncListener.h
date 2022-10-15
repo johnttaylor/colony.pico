@@ -73,6 +73,9 @@ protected:
     /// socket I am listen on
     SOCKET          m_fd;
 
+    /// The client connection socket
+    SOCKET          m_clientFd;
+
     /// Client
     Client*         m_clientPtr;
 
