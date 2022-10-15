@@ -44,10 +44,13 @@ public:
 	{
 	public:
 		/** This method is a callback method that is called when the listener
-			has  accepted in incoming socket request.  It is up the client to
-			determine  if the application will accept or reject the TCP 
+			has accepted in incoming socket request.  It is up the client to
+			determine if the application will accept or reject the TCP 
 			connection.  If the client rejects the connection, it needs to 
 			return false, else returns true.
+
+			Expected usage when the connection is accepted is to create (or 
+			activate) a Cpl::Io::Tcp::InputOutput instance with 'newFd'
 		 */
 		virtual bool newConnection( Cpl::Io::Descriptor newFd, const char* rawConnectionInfo ) noexcept = 0;
 
@@ -64,6 +67,10 @@ public:
 	virtual void startListening( Client& client, 
 								 int	 portNumToListenOn ) noexcept = 0;
 
+	/** This method must be called periodically to service the listen/connection
+		status
+	*/
+	virtual void poll() noexcept = 0;
 
 	/// Shuts down the Listener.  
 	virtual void terminate() noexcept = 0;

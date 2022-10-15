@@ -38,7 +38,7 @@ protected:
 	Cpl::Io::Descriptor  m_fd;
 
 	/// End-of-Stream status
-	bool				m_eos;
+	bool				 m_eos;
 
 public:
 	/** Constructor. No 'fd' provided -->the instance MUST be activated prior

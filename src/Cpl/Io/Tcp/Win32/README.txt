@@ -1,6 +1,6 @@
-/** @namespace Cpl::Io::Socket
+/** @namespace Cpl::Io::Tcp::Win32
 
-The Socket namespace provides interfaces for creating BSD socket connections.
+The 'Win32' namespace implements the TCP interfaces using the Win32 APIs
 
 */  
 

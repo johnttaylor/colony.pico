@@ -12,10 +12,15 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
-#include "Cpl/Io/Socket/Listener.h"
-#include "Cpl/Io/Socket/Connector.h"
+#include "colony_config.h"
+#include "Cpl/Io/Tcp/AsyncListener.h"
+#include "Cpl/Io/Tcp/AsyncConnector.h"
 
-void initialize_loopback( Cpl::Io::Socket::Listener& listener, Cpl::Io::Socket::Connector& connector );
+#ifndef OPTION_TCP_TEST_PORT_NUM
+#define OPTION_TCP_TEST_PORT_NUM    5002
+#endif
+
+int runTest( Cpl::Io::Tcp::AsyncListener& listener, /* Cpl::Io::Tcp::AsyncConnector& connector,*/ int portNum );
 
 
 #endif  // end header latch
