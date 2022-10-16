@@ -37,10 +37,7 @@ AsyncListener::AsyncListener()
 
 AsyncListener::~AsyncListener()
 {
-    if ( m_fd != INVALID_SOCKET )
-    {
-        closesocket( m_fd );
-    }
+    terminate();
 }
 
 ///////////////////////////////////////////////////
@@ -181,8 +178,13 @@ void AsyncListener::terminate() noexcept
     if ( m_fd != INVALID_SOCKET )
     {
         closesocket( m_fd );
+        m_fd = INVALID_SOCKET;
     }
-
+    if ( m_clientFd != INVALID_SOCKET )
+    {
+        closesocket( m_fd );
+        m_clientFd = INVALID_SOCKET;
+    }
     m_state = STATE_NOT_STARTED;
 }
 

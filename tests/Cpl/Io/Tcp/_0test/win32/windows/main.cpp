@@ -11,13 +11,13 @@ int main( int argc, char* argv[] )
 
     // Platform specific listener
     Cpl::Io::Tcp::Win32::AsyncListener  listener;
-    //Cpl::Io::Tcp::Win32::AsyncConnector connector;
+    Cpl::Io::Tcp::Win32::AsyncConnector connector;
 
     CPL_SYSTEM_TRACE_ENABLE();
     CPL_SYSTEM_TRACE_ENABLE_SECTION("_0test");
     CPL_SYSTEM_TRACE_ENABLE_SECTION( "*Cpl::Io::Tcp" );
-    CPL_SYSTEM_TRACE_SET_INFO_LEVEL( Cpl::System::Trace::eVERBOSE );
+    CPL_SYSTEM_TRACE_SET_INFO_LEVEL( Cpl::System::Trace::eINFO );
 
     // Run the test(s)
-    return runTest( listener,/* connection, */ OPTION_TCP_TEST_PORT_NUM );
+    return runTest( listener, connector, OPTION_TCP_TEST_PORT_NUM );
 }

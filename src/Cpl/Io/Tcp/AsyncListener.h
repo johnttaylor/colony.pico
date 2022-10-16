@@ -27,7 +27,12 @@ namespace Tcp {
 	socket listener 'listens' for potential TCP/IP socket connections.  When a
 	request for a connection comes in, the listener notifies the client.  
 	
-	The listener accepts only one connection at a time.
+	In keeping with the non-blocking semantics a poll() function has been
+	defined that must be periodically called.
+
+	The listener accepts only one connection at a time.  After a connection has
+	been established, the listener will accept a new connection once the existing/
+	previous connection is closed.
 
 	The interface is NOT thread safe. This includes the client callback function, 
 	i.e. no guarantees on what thread the callback function executes in. However, 
@@ -72,7 +77,9 @@ public:
 	*/
 	virtual void poll() noexcept = 0;
 
-	/// Shuts down the Listener.  
+	/** Shuts down the Listener and/or will CLOSE the active connection. The
+		listener can be restarted by calling startListening()
+	 */
 	virtual void terminate() noexcept = 0;
 
 

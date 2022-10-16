@@ -29,8 +29,8 @@ public:
 public:
     ListenerClient()
         :m_connected( false )
-	{
-	}
+    {
+    }
 
 public:
     bool newConnection( Cpl::Io::Descriptor newFd, const char* rawConnectionInfo ) noexcept
@@ -52,42 +52,153 @@ public:
             {
                 if ( bytesRead > 0 )
                 {
-                    CPL_SYSTEM_TRACE_MSG( SECT_, ("Bytes in: %d", bytesRead) );
+                    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d", bytesRead) );
                     int bytesWritten;
                     if ( m_fd.write( inBuf, bytesRead, bytesWritten ) )
                     {
-                        CPL_SYSTEM_TRACE_MSG( SECT_, ("  echoed: %d", bytesWritten) );
+                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
                     }
                     else
                     {
-                        CPL_SYSTEM_TRACE_MSG( SECT_, ("WRITE FAILED") );
+                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
                         m_connected = false;
                     }
                 }
             }
             else
             {
-                CPL_SYSTEM_TRACE_MSG( SECT_, ("READ FAILED") );
+                CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: READ FAILED") );
                 m_connected = false;
             }
         }
     }
 };
 
+#define TEST_STRING1 "Hi there.  My name is bob"
+#define TEST_STRING2 "Nice to meet you bob!"
+
+
+#define STATE_WAITING_INCOMING_DATA     0
+#define STATE_DELAYING                  1
+
+#ifndef OPTION_DELAY_INTERVAL_MS
+#define OPTION_DELAY_INTERVAL_MS       1000
+#endif
+
+class ConnectorClient : public AsyncConnector::Client
+{
+public:
+    Cpl::Io::Tcp::InputOutput m_fd;
+    bool                      m_connected;
+    unsigned long             m_timeMark;
+    int                       m_state;
+    bool                      m_string1;
+
+public:
+    ConnectorClient()
+        :m_connected( false )
+    {
+    }
+
+public:
+    void newConnection( Cpl::Io::Descriptor newFd )  noexcept
+    {
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("Connection ESTABLISHED") );
+        m_fd.activate( newFd );
+        m_connected = true;
+
+        m_state   = STATE_WAITING_INCOMING_DATA;
+        m_string1 = true;
+        sendData();
+    }
+
+    const char* testString()
+    {
+        return m_string1 ? TEST_STRING1 : TEST_STRING2;
+    }
+
+    void sendData()
+    {
+        char outBuf[128];
+        int  bytesWritten;
+        strcpy( outBuf, testString() );
+        if ( m_fd.write( outBuf, strlen( outBuf ), bytesWritten ) )
+        {
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("CONN: Bytes OUT: %d", bytesWritten) );
+        }
+        else
+        {
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("CONN: WRITE FAILED") );
+            m_connected = false;
+        }
+    }
+
+    void connectionFailed( Error_T errorCode ) noexcept
+    {
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("Connection FAILED: error=%X", errorCode) );
+    }
+
+public:
+    void consumeInput()
+    {
+        if ( m_connected )
+        {
+            if ( m_state == STATE_WAITING_INCOMING_DATA )
+            {
+                int  bytesRead;
+                char inBuf[128];
+                if ( m_fd.read( inBuf, sizeof( inBuf ), bytesRead ) )
+                {
+                    if ( bytesRead > 0 )
+                    {
+                        CPL_SYSTEM_TRACE_MSG( SECT_, ("CONN: Bytes  IN: %d. %.*s", bytesRead, bytesRead, inBuf) );
+                        if ( memcmp( inBuf, testString(), strlen( testString() ) ) != 0 )
+                        {
+                            CPL_SYSTEM_TRACE_MSG( SECT_, ("ERROR: Expected: [%s]", testString()) );
+                            m_fd.close();
+                            m_connected = false;
+                        }
+                        else
+                        {
+                            m_state    = STATE_DELAYING;
+                            m_string1  = !m_string1;
+                            m_timeMark = Cpl::System::ElapsedTime::milliseconds();
+                        }
+                    }
+                }
+                else
+                {
+                    CPL_SYSTEM_TRACE_MSG( SECT_, ("CONN: READ FAILED") );
+                    m_connected = false;
+                }
+            }
+
+            if ( m_state == STATE_DELAYING )
+            {
+                if ( Cpl::System::ElapsedTime::expiredMilliseconds( m_timeMark, OPTION_DELAY_INTERVAL_MS ) )
+                {
+                    sendData();
+                    m_state = STATE_WAITING_INCOMING_DATA;
+                }
+            }
+        }
+    }
+};
 
 //////////////////////////////////////////////
 int                           portNum_;
 Cpl::Io::Tcp::AsyncListener*  listenerPtr_;
 ListenerClient                listenClient_;
-
-//Cpl::Io::Tcp::AsyncConnector* connectorPtr_;
-
+Cpl::Io::Tcp::AsyncConnector* connectorPtr_;
+ConnectorClient               connectorClient_;
 
 
 static void tcpScan_( Cpl::System::ElapsedTime::Precision_T currentTick, bool atLeastOneIntervalExecuted )
 {
     listenerPtr_->poll();
+    connectorPtr_->poll();
     listenClient_.consumeInput();
+    connectorClient_.consumeInput();
 }
 
 static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
@@ -98,29 +209,32 @@ static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
 static void beginThreadProcessing( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     listenerPtr_->startListening( listenClient_, portNum_ );
+    connectorPtr_->establish( connectorClient_, "127.0.0.1", portNum_ );
 }
 static void endThreadProcssing( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     listenerPtr_->terminate();
+    connectorPtr_->terminate();
 }
 
 
-static Cpl::Itc::PeriodicScheduler scheduler_( intervals_, 
-                                               beginThreadProcessing, endThreadProcssing, 
-                                               nullptr, 
-                                               Cpl::System::ElapsedTime::precision, 
+static Cpl::Itc::PeriodicScheduler scheduler_( intervals_,
+                                               beginThreadProcessing, endThreadProcssing,
+                                               nullptr,
+                                               Cpl::System::ElapsedTime::precision,
                                                tcpScan_ );
 
 
 ////////////////////////////////////////////////////////////////////////////////
 
-int runTest( Cpl::Io::Tcp::AsyncListener& listener, /* Cpl::Io::Tcp::AsyncConnector& connector,*/ int portNum )
+int runTest( Cpl::Io::Tcp::AsyncListener& listener, Cpl::Io::Tcp::AsyncConnector& connector, int portNum )
 {
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Enter: TCP Loopback test") );
-    
+
     // Cache the UUTs
-    portNum_     = portNum;
-    listenerPtr_ = &listener;
+    portNum_      = portNum;
+    listenerPtr_  = &listener;
+    connectorPtr_ = &connector;
 
     // Create thread for the test to run in
     Cpl::System::Thread::create( scheduler_, "TEST" );

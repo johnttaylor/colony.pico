@@ -1,5 +1,5 @@
-#ifndef Cpl_Io_Socket_Connector_h_
-#define Cpl_Io_Socket_Connector_h_
+#ifndef Cpl_Io_Tcp_Win32_AsyncConnector_h_
+#define Cpl_Io_Tcp_Win32_AsyncConnector_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -12,7 +12,8 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
-#include "Cpl/Io/Descriptor.h"
+#include <winsock2.h>
+#include "Cpl/Io/Tcp/AsyncConnector.h"
 
 
 ///
@@ -20,40 +21,64 @@ namespace Cpl {
 ///
 namespace Io {
 ///
-namespace Socket {
+namespace Tcp {
+///
+namespace Win32 {
 
 
-/** This abstract class defines the interface for establishing/requesting
-	a SIMPLE socket connection, i.e. make a "client connection".  A single
-	instance can be used to create many connections.
+/** This class implements the Asynchronous Connector.
  */
-class Connector
-
+class AsyncConnector : public Cpl::Io::Tcp::AsyncConnector
 {
 public:
-	/// Possible return codes when attempting to establish a connection
-	enum Result_T {
-		eSUCCESS=0,     /// Connection was successful
-		eERROR,         /// Error occurred
-		eREFUSED,       /// Connection request was refused by the remote Host
-	};
+    /// Constructor
+    AsyncConnector();
 
+    /// Destructor
+    ~AsyncConnector();
 
 public:
-	/** Requests a client connection to the specified remote Host.  Upon
-		success an opened Cpl::Io::Descriptor is returned (via 'fdOut') for the
-		connection.
-	 */
-	virtual Result_T establish( const char* remoteHostName, int portNumToConnectTo, Cpl::Io::Descriptor& fdOut ) = 0;
+    /// See Cpl::Io::Tcp::AsyncConnector
+    bool establish( Client&     client,
+                    const char* remoteHostName,
+                    int         portNumToConnectTo );
 
+    /// See Cpl::Io::Tcp::AsyncConnector
+    void poll() noexcept;
 
-public:
-	/// Virtual destructor
-	virtual ~Connector() {}
+    /// See Cpl::Io::Tcp::AsyncConnector
+    void terminate() noexcept;
+
+protected:
+    /// Helper method that is used to notify the client that the connection has been established
+    void notifyConnected( SOCKET sock );
+
+    /// Helper method that is used to notify the client that the connection request failed
+    void notifyError( Client::Error_T error, int wsaLastError );
+
+    /// Helper method to try the 'next' address for the remote host
+    void nextAddress( int wsaLastError );
+
+protected:
+    /// socket for the connection
+    SOCKET              m_fd;
+
+    /// Client
+    Client*             m_clientPtr;
+
+    /// Current address to try
+    struct addrinfo*    m_remoteAddrPtr;
+
+    /// Connecting state
+    int                 m_state;
+
+    /// Track the 1st call to connect();
+    bool                m_connectCalled;
 };
 
 
 };      // end namespaces
+};
 };
 };
 #endif  // end header latch

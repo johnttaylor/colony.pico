@@ -20,7 +20,7 @@
 #define OPTION_TCP_TEST_PORT_NUM    5002
 #endif
 
-int runTest( Cpl::Io::Tcp::AsyncListener& listener, /* Cpl::Io::Tcp::AsyncConnector& connector,*/ int portNum );
+int runTest( Cpl::Io::Tcp::AsyncListener& listener, Cpl::Io::Tcp::AsyncConnector& connector, int portNum );
 
 
 #endif  // end header latch

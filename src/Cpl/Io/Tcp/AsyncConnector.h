@@ -1,5 +1,5 @@
-#ifndef Cpl_Io_Socket_Connector_h_
-#define Cpl_Io_Socket_Connector_h_
+#ifndef Cpl_Io_Tcp_Async_Connector_h_
+#define Cpl_Io_Tcp_Async_Connector_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -27,10 +27,16 @@ namespace Tcp {
 	a SIMPLE socket connection, i.e. make a "client connection".   When the
 	connection is accepted by the remote host, the connector notifies the client. 
 	
-	The interface semantics are one Connector instance per connection.
+	In keeping with the non-blocking semantics a poll() function has been
+	defined that must be periodically called.
+
+	The Connector allows only one connection at a time.  After a connection has
+	been established, any calls to establish() will be ignore.  Once the existing/
+	previous connection is closed, the application can establish() again.
  */
 class AsyncConnector
 {
+public:
 	/** This class defines the callback mechanism used for accepting incoming
 		TCP connections.
 	 */
@@ -59,12 +65,24 @@ class AsyncConnector
 	};
 
 public:
-	/** Requests a client connection to the specified remote Host.  
+	/** Requests a client connection to the specified remote Host.  The method
+		returns true if the connection process is started. The method returns
+		false if an error occurred or there is a connection request in progress
+		or there is active connection.
 	 */
-	virtual void establish( Client&     client, 
+	virtual bool establish( Client&     client, 
 							const char* remoteHostName, 
 							int			portNumToConnectTo ) = 0;
 
+	/** This method must be called periodically to service the connection
+		status
+	*/
+	virtual void poll() noexcept = 0;
+
+	/** Aborts any connection in progress and/or will CLOSE the active 
+	    connection.  A new connection can be requested by calling establish().
+	 */
+	virtual void terminate() noexcept = 0;
 
 public:
 	/// Virtual destructor

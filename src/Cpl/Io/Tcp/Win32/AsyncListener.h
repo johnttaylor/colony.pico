@@ -1,5 +1,5 @@
-#ifndef Cpl_Io_Tcp_Win32_Listener_h_
-#define Cpl_Io_Tcp_Win32_Listener_h_
+#ifndef Cpl_Io_Tcp_Win32_AsyncListener_h_
+#define Cpl_Io_Tcp_Win32_AsyncListener_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -40,10 +40,7 @@ namespace Tcp {
 namespace Win32 {
 
 
-/** This class implements the Asynchronous Listener.  In keeping with the
-    non-blocking semantics the implementation does NOT use a dedicated thread
-    for listening.  Instead it has a poll() function that must be periodically
-    called.
+/** This class implements the Asynchronous Listener.  
  */
 class AsyncListener : public Cpl::Io::Tcp::AsyncListener
 
