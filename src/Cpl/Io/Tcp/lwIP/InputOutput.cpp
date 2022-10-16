@@ -9,77 +9,11 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
-#include <winsock2.h>
 #include "Cpl/Io/Tcp/InputOutput.h"
 #include "Cpl/System/FatalError.h"
 #include "Cpl/System/Private_.h"
 #include "Cpl/System/Shutdown.h"
 
-//
-// NOTE: The implementation ASSUMES that when the socket was created that
-//       is set to non-blocking mode. For example:
-//
-//		 u_long iMode = 1;	       
-//		 ioctlsocket( ( (SOCKET) ( m_fd.m_handlePtr ) ), FIONBIO, &iMode ); 
-//
-
-/////////////////////////////////////////////////////////////////////////////
-// Use the CPL startup and shutdown hooks to initialize the Winsock library
-
-// Anonymous namespace
-namespace {
-
-////
-class ExitHandler : public Cpl::System::Shutdown::Handler
-{
-protected:
-    ///
-    int notify( int exit_code )
-    {
-        WSACleanup();
-        return exit_code;
-    }
-};
-
-
-////
-class RegisterInitHandler : public Cpl::System::StartupHook_
-{
-protected:
-    ///
-    ExitHandler m_shutdown;
-
-public:
-    ///
-    RegisterInitHandler() :StartupHook_( eMIDDLE_WARE ) {}
-
-
-protected:
-    /// 
-    void notify( InitLevel_T init_level )
-    {
-        WSADATA wsaData;
-
-        if ( WSAStartup( 0x202, &wsaData ) == SOCKET_ERROR )
-        {
-            int err = WSAGetLastError();
-            WSACleanup();
-            Cpl::System::FatalError::logf( "WSAStartup failed with error", err );
-        }
-
-        // Register my shutdown handler
-        Cpl::System::Shutdown::registerHandler( m_shutdown );
-    }
-
-};
-
-
-
-}; // end namespace
-
-///
-static RegisterInitHandler autoRegister_systemInit_hook;
-/////////////////////////////////////////////////////////////////////////////
 
 
 ///
@@ -111,8 +45,7 @@ void InputOutput::activate( Cpl::Io::Descriptor fd )
     // Only activate if already closed 
     if ( ((SOCKET) (m_fd.m_handlePtr)) == INVALID_SOCKET )
     {
-        m_fd  = fd;
-        m_eos = false;
+        m_fd = fd;
     }
     else
     {

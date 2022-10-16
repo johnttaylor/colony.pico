@@ -59,9 +59,9 @@ void AsyncListener::startListening( Client& client,
         }
 
         // Start the listening sequence
-        m_state        = STATE_BINDING;
-        m_clientFd     = INVALID_SOCKET;
-        m_retryCounter = OPTION_CPL_IO_TCP_WIN32_BIND_RETRIES;
+        m_state           = STATE_BINDING;
+        m_clientConnected = false;
+        m_retryCounter    = OPTION_CPL_IO_TCP_WIN32_BIND_RETRIES;
         poll();
     }
 }
@@ -125,13 +125,12 @@ void AsyncListener::poll() noexcept
     if ( m_state == STATE_LISTENING )
     {
         // Monitor the current remote connection 
-        if ( m_clientFd != INVALID_SOCKET )
+        if ( m_clientConnected )
         {
-            unsigned long nbytes=1;
-            if ( ioctlsocket( m_clientFd, FIONREAD, &nbytes ) < 0 && WSAGetLastError() == WSAENOTSOCK )
+            if ( m_clientPtr->isEos() )
             {
                 // Accept connections again
-                m_clientFd = INVALID_SOCKET;
+                m_clientConnected = false;
             }
         }
 
@@ -161,13 +160,13 @@ void AsyncListener::poll() noexcept
 
         // Create a Descriptor for the accepted connection and pass it to the client
         Cpl::Io::Descriptor streamFd( (void*) newfd );
-        if ( m_clientFd != INVALID_SOCKET || !m_clientPtr->newConnection( streamFd, inet_ntoa( client_addr.sin_addr ) ) )
+        if ( m_clientConnected || !m_clientPtr->newConnection( streamFd, inet_ntoa( client_addr.sin_addr ) ) )
         {
-            closesocket( newfd );    // Connection refused
+            closesocket( newfd );       // Connection refused
         }
         else 
         {
-            m_clientFd = newfd;
+            m_clientConnected = true;   // Connection accepted
         }
 
     }
@@ -180,12 +179,16 @@ void AsyncListener::terminate() noexcept
         closesocket( m_fd );
         m_fd = INVALID_SOCKET;
     }
-    if ( m_clientFd != INVALID_SOCKET )
+    if ( m_clientConnected )
     {
-        closesocket( m_fd );
-        m_clientFd = INVALID_SOCKET;
+        if ( m_clientPtr )
+        {
+            m_clientPtr->close();
+        }
+        m_clientConnected = false;
     }
-    m_state = STATE_NOT_STARTED;
+    m_state     = STATE_NOT_STARTED;
+    m_clientPtr = nullptr;
 }
 
 

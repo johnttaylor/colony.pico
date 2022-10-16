@@ -35,8 +35,7 @@ namespace Tcp {
 	previous connection is closed.
 
 	The interface is NOT thread safe. This includes the client callback function, 
-	i.e. no guarantees on what thread the callback function executes in. However, 
-	the constructed IO Streams are thread safe.
+	i.e. no guarantees on what thread the callback function executes in.
  */
 class AsyncListener 
 
@@ -45,7 +44,7 @@ public:
 	/** This class defines the callback mechanism used for accepting incoming
 		TCP connections.
 	 */
-	class Client
+	class Client: public Cpl::Io::Tcp::InputOutput
 	{
 	public:
 		/** This method is a callback method that is called when the listener
@@ -54,8 +53,8 @@ public:
 			connection.  If the client rejects the connection, it needs to 
 			return false, else returns true.
 
-			Expected usage when the connection is accepted is to create (or 
-			activate) a Cpl::Io::Tcp::InputOutput instance with 'newFd'
+			When the client accepts the connection, it is required to call
+			its Cpl::Io::Tcp::InputOutput.activate() method with 'newFd'
 		 */
 		virtual bool newConnection( Cpl::Io::Descriptor newFd, const char* rawConnectionInfo ) noexcept = 0;
 

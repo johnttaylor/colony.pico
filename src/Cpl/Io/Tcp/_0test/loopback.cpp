@@ -23,8 +23,7 @@ using namespace Cpl::Io::Tcp;
 class ListenerClient : public AsyncListener::Client
 {
 public:
-    Cpl::Io::Tcp::InputOutput m_fd;
-    bool                      m_connected;
+    bool m_connected;
 
 public:
     ListenerClient()
@@ -36,7 +35,7 @@ public:
     bool newConnection( Cpl::Io::Descriptor newFd, const char* rawConnectionInfo ) noexcept
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("Accepted incoming connection. Remote Host: %s", rawConnectionInfo) );
-        m_fd.activate( newFd );
+        activate( newFd );
         m_connected = true;
         return true;
     }
@@ -48,13 +47,13 @@ public:
         {
             int  bytesRead;
             char inBuf[128];
-            if ( m_fd.read( inBuf, sizeof( inBuf ), bytesRead ) )
+            if ( read( inBuf, sizeof( inBuf ), bytesRead ) )
             {
                 if ( bytesRead > 0 )
                 {
                     CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d", bytesRead) );
                     int bytesWritten;
-                    if ( m_fd.write( inBuf, bytesRead, bytesWritten ) )
+                    if ( write( inBuf, bytesRead, bytesWritten ) )
                     {
                         CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
                     }
@@ -88,7 +87,6 @@ public:
 class ConnectorClient : public AsyncConnector::Client
 {
 public:
-    Cpl::Io::Tcp::InputOutput m_fd;
     bool                      m_connected;
     unsigned long             m_timeMark;
     int                       m_state;
@@ -101,15 +99,16 @@ public:
     }
 
 public:
-    void newConnection( Cpl::Io::Descriptor newFd )  noexcept
+    bool newConnection( Cpl::Io::Descriptor newFd )  noexcept
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("Connection ESTABLISHED") );
-        m_fd.activate( newFd );
+        activate( newFd );
         m_connected = true;
 
         m_state   = STATE_WAITING_INCOMING_DATA;
         m_string1 = true;
         sendData();
+        return true;
     }
 
     const char* testString()
@@ -122,7 +121,7 @@ public:
         char outBuf[128];
         int  bytesWritten;
         strcpy( outBuf, testString() );
-        if ( m_fd.write( outBuf, strlen( outBuf ), bytesWritten ) )
+        if ( write( outBuf, strlen( outBuf ), bytesWritten ) )
         {
             CPL_SYSTEM_TRACE_MSG( SECT_, ("CONN: Bytes OUT: %d", bytesWritten) );
         }
@@ -147,7 +146,7 @@ public:
             {
                 int  bytesRead;
                 char inBuf[128];
-                if ( m_fd.read( inBuf, sizeof( inBuf ), bytesRead ) )
+                if ( read( inBuf, sizeof( inBuf ), bytesRead ) )
                 {
                     if ( bytesRead > 0 )
                     {
@@ -155,7 +154,7 @@ public:
                         if ( memcmp( inBuf, testString(), strlen( testString() ) ) != 0 )
                         {
                             CPL_SYSTEM_TRACE_MSG( SECT_, ("ERROR: Expected: [%s]", testString()) );
-                            m_fd.close();
+                            close();
                             m_connected = false;
                         }
                         else

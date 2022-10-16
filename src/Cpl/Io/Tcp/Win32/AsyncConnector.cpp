@@ -44,8 +44,17 @@ void AsyncConnector::notifyConnected( SOCKET sock )
 {
     CPL_SYSTEM_TRACE_MSG( SECT_, ("Cpl::Io::Tcp::Win32::AsyncConnector: - Connected") );
     Cpl::Io::Descriptor newfd( sock );
-    m_clientPtr->newConnection( newfd );
-    m_state = STATE_CONNECTED;
+    if ( m_clientPtr->newConnection( newfd ) )
+    {
+        m_clientConnected = true;
+        m_state           = STATE_CONNECTED;
+    }
+    
+    // Connection refused
+    else
+    {
+        terminate();   // Note: Updates my internal state to: STATE_IDLE
+    }
 }
 
 void AsyncConnector::notifyError( Client::Error_T error, int wsaLastError )
@@ -64,7 +73,8 @@ bool AsyncConnector::establish( Client&     client,
     if ( m_state == STATE_IDLE )
     {
         // Cache the client reference
-        m_clientPtr = &client;
+        m_clientPtr       = &client;
+        m_clientConnected = false;
 
         // Resolve the server address and port
         struct addrinfo hints;
@@ -187,9 +197,21 @@ void AsyncConnector::terminate() noexcept
 {
     if ( m_fd != INVALID_SOCKET )
     {
-        closesocket( m_fd );
+        // If I am connected -->use the client reference to close the socket
+        if ( m_clientConnected && m_clientPtr )
+        {
+            m_clientPtr->close();
+        }
+        
+        // Connection in-progress -->close the socket directly
+        else
+        {
+            closesocket( m_fd );
+        }
         m_fd = INVALID_SOCKET;
     }
 
-    m_state = STATE_IDLE;
+    m_state           = STATE_IDLE;
+    m_clientPtr       = nullptr;
+    m_clientConnected = false;
 }

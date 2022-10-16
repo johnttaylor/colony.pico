@@ -70,9 +70,6 @@ protected:
     /// socket I am listen on
     SOCKET          m_fd;
 
-    /// The client connection socket
-    SOCKET          m_clientFd;
-
     /// Client
     Client*         m_clientPtr;
 
@@ -88,6 +85,8 @@ protected:
     /// Retry counter
     unsigned        m_retryCounter;
 
+    /// Track if the client is connected
+    bool            m_clientConnected;
 };
 
 

@@ -12,7 +12,7 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
-#include "Cpl/Io/Descriptor.h"
+#include "Cpl/Io/Tcp/InputOutput.h"
 
 
 ///
@@ -33,6 +33,9 @@ namespace Tcp {
 	The Connector allows only one connection at a time.  After a connection has
 	been established, any calls to establish() will be ignore.  Once the existing/
 	previous connection is closed, the application can establish() again.
+ 
+ 	The interface is NOT thread safe. This includes the client callback functions, 
+	i.e. no guarantees on what thread the callback functions executes in.
  */
 class AsyncConnector
 {
@@ -40,7 +43,7 @@ public:
 	/** This class defines the callback mechanism used for accepting incoming
 		TCP connections.
 	 */
-	class Client
+	class Client: public Cpl::Io::Tcp::InputOutput
 	{
 	public:
 		/// Possible error codes when attempting to establish a connection
@@ -51,12 +54,15 @@ public:
 
 	public:
 		/** This method is a callback method that is called when the remote host
-			has accepted in connection request.
+			has accepted in connection request. It is up the client to
+			determine if the application will accept or reject the TCP 
+			connection.  If the client rejects the connection, it needs to 
+			return false, else returns true.
 
-			Expected usage when the connection is accepted is to create (or
-			activate) a Cpl::Io::Tcp::InputOutput instance with 'newFd'
+			When the client accepts the connection, it is required to call
+			its Cpl::Io::Tcp::InputOutput.activate() method with 'newFd'
 		 */
-		virtual void newConnection( Cpl::Io::Descriptor newFd ) noexcept = 0;
+		virtual bool newConnection( Cpl::Io::Descriptor newFd ) noexcept = 0;
 
 		/** This method is a callback method that is called when an error occurred
 			when making the connection request.

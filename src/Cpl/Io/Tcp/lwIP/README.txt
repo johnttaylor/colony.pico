@@ -1,6 +1,9 @@
-/** @namespace Cpl::Io::Socket
+/** @namespace Cpl::Io::Tcp::lwIP
 
-The Socket namespace provides interfaces for creating BSD socket connections.
+The 'lwIP' namespace implements the TCP interfaces using 'raw' lwIP TCP 
+interfaces.
+
+http://savannah.nongnu.org/projects/lwip/
 
 */  
 

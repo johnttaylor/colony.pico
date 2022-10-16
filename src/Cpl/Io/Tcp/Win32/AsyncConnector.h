@@ -74,6 +74,9 @@ protected:
 
     /// Track the 1st call to connect();
     bool                m_connectCalled;
+
+    /// Track if the client is connected
+    bool                m_clientConnected;
 };
 
 
