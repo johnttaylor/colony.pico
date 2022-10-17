@@ -108,7 +108,7 @@ err_t AsyncListener::lwIPCb_accept( void* arg, struct tcp_pcb* newpcb, err_t err
 
     // Set the callback function for the connection
     tcp_arg( newpcb, &(theOne->m_connectionFd) );
-    tcp_sent( newpcb, lwipCb_dataSent_ );
+    //tcp_sent( newpcb, lwipCb_dataSent_ );
     tcp_recv( newpcb, lwipCb_dataReceived_ );
     tcp_err( newpcb, lwipCb_error_ );
 

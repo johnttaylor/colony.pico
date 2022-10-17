@@ -51,18 +51,18 @@ public:
             {
                 if ( bytesRead > 0 )
                 {
-                    //CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d", bytesRead) );
-                    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d [%.*s]", bytesRead, bytesRead, inBuf) );
-                    //int bytesWritten;
-                    //if ( write( inBuf, bytesRead, bytesWritten ) )
-                    //{
-                    //    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
-                    //}
-                    //else
-                    //{
-                    //    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
-                    //    m_connected = false;
-                    //}
+                    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d", bytesRead) );
+                    //CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d [%.*s]", bytesRead, bytesRead, inBuf) );
+                    int bytesWritten;
+                    if ( write( inBuf, bytesRead, bytesWritten ) )
+                    {
+                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
+                    }
+                    else
+                    {
+                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
+                        m_connected = false;
+                    }
                 }
             }
             else

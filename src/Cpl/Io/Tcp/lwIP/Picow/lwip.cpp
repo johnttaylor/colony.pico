@@ -18,7 +18,7 @@
 
 err_t Cpl::Io::Tcp::lwIP::Picow::lwipCb_dataSent_( void* arg, struct tcp_pcb* pcb, uint16_t len )
 {
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_dataSent_: len=%d", len) );
+    //CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_dataSent_: len=%d", len) );
     // Not used/needed
     return ERR_OK;
 }
@@ -27,7 +27,7 @@ err_t Cpl::Io::Tcp::lwIP::Picow::lwipCb_dataSent_( void* arg, struct tcp_pcb* pc
 err_t Cpl::Io::Tcp::lwIP::Picow::lwipCb_dataReceived_( void* arg, struct tcp_pcb* pcb, struct pbuf* pbuf, err_t err )
 {
     Socket_T* fd = (Socket_T *) arg;
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_dataReceived_: err=%d, len=%d", err, pbuf->tot_len) );
+    //CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_dataReceived_: err=%d, len=%d", err, pbuf->tot_len) );
 
     // Fail if no valid upper layer 
     if ( fd == nullptr )

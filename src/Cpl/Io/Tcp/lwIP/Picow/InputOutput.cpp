@@ -14,6 +14,7 @@
 #include "Cpl/System/FatalError.h"
 #include "pico/cyw43_arch.h"
 
+#include "Cpl/System/Api.h"
 #include "Cpl/System/Trace.h"
 #define SECT_ "Cpl::Io::Tcp::lwIP::Picow"
 
@@ -82,7 +83,7 @@ bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
     cyw43_arch_lwip_begin();
     if ( fd->lwipPcb == nullptr )
     {
-        m_eos = true;
+        close();
         cyw43_arch_lwip_end();
         CPL_SYSTEM_TRACE_MSG( SECT_, ("read. fd->lwipPcb is NULL") );
         return false;
@@ -154,7 +155,7 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     cyw43_arch_lwip_begin();
     if ( fd->lwipPcb == nullptr )
     {
-        m_eos = true;
+        close();
         cyw43_arch_lwip_end();
         CPL_SYSTEM_TRACE_MSG( SECT_, ("write. fd->lwipPcb is NULL") );
         return false;
@@ -167,6 +168,7 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
         bytesWritten = 0;
         return true;
     }
+    CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write....  aval=%d, maxBytes=%d", availLen, maxBytes) );
 
     // Adjust how many bytes can be sent
     if ( maxBytes > availLen )
@@ -178,14 +180,29 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     err_t err = tcp_write( fd->lwipPcb, buffer, maxBytes, TCP_WRITE_FLAG_COPY );
     if ( err )
     {
-        m_eos = true;
-        cyw43_arch_lwip_end();
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write. failed. err=%d", err) );
-        return false;
+        // If there is out of memory error -->wait for something to free up
+        if ( err == ERR_MEM )
+        {
+            bytesWritten = 0;
+        }
+        
+        // Unrecoverable error
+        else
+        {
+            close();
+            cyw43_arch_lwip_end();
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write. failed. err=%d", err) );
+            return false;
+        }
+    }
+    else
+    {
+        //tcp_output( fd->lwipPcb );
     }
     bytesWritten = maxBytes;
-
     cyw43_arch_lwip_end();
+    CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write: out [%.*s]", bytesWritten, buffer) );
+
     return true;
 }
 
@@ -225,10 +242,10 @@ void InputOutput::close()
         }
 
         tcp_close( fd->lwipPcb );
-        m_eos            = true;
         fd->lwipPcb      = nullptr;
         m_fd.m_handlePtr = nullptr;
     }
 
+    m_eos = true;
     cyw43_arch_lwip_end();
 }
