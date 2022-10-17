@@ -61,11 +61,17 @@ public:
 
 			When the client accepts the connection, it is required to call
 			its Cpl::Io::Tcp::InputOutput.activate() method with 'newFd'
+
+			Note: Caution: This method can be called from an ISR context, it
+				  all depends on the platform implementation
 		 */
 		virtual bool newConnection( Cpl::Io::Descriptor newFd ) noexcept = 0;
 
 		/** This method is a callback method that is called when an error occurred
 			when making the connection request.
+
+			Note: Caution: This method can be called from an ISR context, it
+				  all depends on the platform implementation
 		 */
 		virtual void connectionFailed( Error_T errorCode ) noexcept = 0;
 	};

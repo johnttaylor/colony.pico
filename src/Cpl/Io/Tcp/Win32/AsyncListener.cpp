@@ -41,7 +41,7 @@ AsyncListener::~AsyncListener()
 }
 
 ///////////////////////////////////////////////////
-void AsyncListener::startListening( Client& client,
+bool AsyncListener::startListening( Client& client,
                                     int     portNumToListenOn ) noexcept
 {
     // Once started, must first be terminate() before restarting
@@ -54,8 +54,8 @@ void AsyncListener::startListening( Client& client,
         m_fd = socket( AF_INET, SOCK_STREAM, 0 );
         if ( m_fd == INVALID_SOCKET )
         {
-            Cpl::System::FatalError::logf( "Cpl::Io::Tcp::Win32::AsyncListener: Can not create Stream Socket" );
-            return;
+            CPL_SYSTEM_TRACE_MSG( SECT_, ( "Cpl::Io::Tcp::Win32::AsyncListener: Can not create Stream Socket" ));
+            return false;
         }
 
         // Start the listening sequence
@@ -63,7 +63,10 @@ void AsyncListener::startListening( Client& client,
         m_clientConnected = false;
         m_retryCounter    = OPTION_CPL_IO_TCP_WIN32_BIND_RETRIES;
         poll();
+        return true;
     }
+
+    return false;
 }
 
 void AsyncListener::poll() noexcept

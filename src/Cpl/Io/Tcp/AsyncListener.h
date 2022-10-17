@@ -55,6 +55,9 @@ public:
 
 			When the client accepts the connection, it is required to call
 			its Cpl::Io::Tcp::InputOutput.activate() method with 'newFd'
+
+			Note: Caution: This method can be called from an ISR context, it
+			      all depends on the platform implementation
 		 */
 		virtual bool newConnection( Cpl::Io::Descriptor newFd, const char* rawConnectionInfo ) noexcept = 0;
 
@@ -67,8 +70,10 @@ public:
 
 
 public:
-	/// Starts the Listener listening.  
-	virtual void startListening( Client& client, 
+	/** Starts the Listener listening.  If an error occurred then false is
+		is returned; else true is returned.
+	 */
+	virtual bool startListening( Client& client, 
 								 int	 portNumToListenOn ) noexcept = 0;
 
 	/** This method must be called periodically to service the listen/connection

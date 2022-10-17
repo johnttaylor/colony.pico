@@ -214,6 +214,7 @@ bool InputOutput::isEos()
 
 void InputOutput::close()
 {
+    m_eos = true;
     if ( ((SOCKET) (m_fd.m_handlePtr)) != INVALID_SOCKET )
     {
         closesocket( ((SOCKET) (m_fd.m_handlePtr)) );

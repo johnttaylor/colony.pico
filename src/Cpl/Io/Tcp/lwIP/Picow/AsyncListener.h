@@ -1,5 +1,5 @@
-#ifndef Cpl_Io_Tcp_Win32_AsyncListener_h_
-#define Cpl_Io_Tcp_Win32_AsyncListener_h_
+#ifndef Cpl_Io_Tcp_lwIP_Picow_AsyncListener_h_
+#define Cpl_Io_Tcp_lwIP_Picow_AsyncListener_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -12,23 +12,9 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
-#include <winsock2.h>
 #include "colony_config.h"
 #include "Cpl/Io/Tcp/AsyncListener.h"
-
-/** This value is number of retries that is performed when attempting
-    to bind to the listening port.
- */
-#ifndef OPTION_CPL_IO_TCP_WIN32_BIND_RETRIES
-#define OPTION_CPL_IO_TCP_WIN32_BIND_RETRIES        5
-#endif
-
- /** This value is time, in milliseconds between retries during the binding
-     process.
-  */
-#ifndef OPTION_CPL_IO_TCP_WIN32_BIND_RETRY_WAIT
-#define OPTION_CPL_IO_TCP_WIN32_BIND_RETRY_WAIT     (10*1000)
-#endif
+#include "Cpl/Io/Tcp/lwIP/Picow/Private_.h"
 
 ///
 namespace Cpl {
@@ -37,10 +23,12 @@ namespace Io {
 ///
 namespace Tcp {
 ///
-namespace Win32 {
+namespace lwIP {
+///
+namespace Picow {
 
 
-/** This class implements the Asynchronous Listener.  
+/** This class implements the Asynchronous Listener.
  */
 class AsyncListener : public Cpl::Io::Tcp::AsyncListener
 
@@ -67,30 +55,25 @@ public:
     void poll() noexcept;
 
 protected:
-    /// socket I am listen on
-    SOCKET          m_fd;
+    /** Callback method to accept a connection.  This method can/will-be called from
+        an ISR context
+     */
+    static err_t lwIPCb_accept( void *arg, struct tcp_pcb *newpcb, err_t err );
+
+protected:
+    /// connection I am listen on
+    struct tcp_pcb* m_listenerPcb;
 
     /// Client
     Client*         m_clientPtr;
 
-    /// Time marker
-    unsigned long   m_timeMarker;
-
-    /// Port Number to listen on
-    int             m_portNum;
-
-    /// Listening state
-    int             m_state;
-
-    /// Retry counter
-    unsigned        m_retryCounter;
-
-    /// Track if the client is connected
-    bool            m_clientConnected;
+    /// Socket instance for the Stream.  Note: At any given time there is at most only one stream 'active' from a Listener instance
+    Socket_T        m_connectionFd;
 };
 
 
 };      // end namespaces
+};
 };
 };
 };

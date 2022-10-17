@@ -51,17 +51,18 @@ public:
             {
                 if ( bytesRead > 0 )
                 {
-                    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d", bytesRead) );
-                    int bytesWritten;
-                    if ( write( inBuf, bytesRead, bytesWritten ) )
-                    {
-                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
-                    }
-                    else
-                    {
-                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
-                        m_connected = false;
-                    }
+                    //CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d", bytesRead) );
+                    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d [%.*s]", bytesRead, bytesRead, inBuf) );
+                    //int bytesWritten;
+                    //if ( write( inBuf, bytesRead, bytesWritten ) )
+                    //{
+                    //    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
+                    //}
+                    //else
+                    //{
+                    //    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
+                    //    m_connected = false;
+                    //}
                 }
             }
             else
@@ -197,7 +198,7 @@ static void tcpScan_( Cpl::System::ElapsedTime::Precision_T currentTick, bool at
     listenerPtr_->poll();
     connectorPtr_->poll();
     listenClient_.consumeInput();
-    connectorClient_.consumeInput();
+    //connectorClient_.consumeInput();
 }
 
 static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
@@ -208,12 +209,12 @@ static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
 static void beginThreadProcessing( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     listenerPtr_->startListening( listenClient_, portNum_ );
-    connectorPtr_->establish( connectorClient_, "127.0.0.1", portNum_ );
+    //connectorPtr_->establish( connectorClient_, "127.0.0.1", portNum_ );
 }
 static void endThreadProcssing( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     listenerPtr_->terminate();
-    connectorPtr_->terminate();
+    //connectorPtr_->terminate();
 }
 
 
