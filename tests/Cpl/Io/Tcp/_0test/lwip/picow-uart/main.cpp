@@ -24,7 +24,7 @@ int main( void )
     CPL_SYSTEM_TRACE_ENABLE();
     CPL_SYSTEM_TRACE_ENABLE_SECTION( "_0test" );
     CPL_SYSTEM_TRACE_ENABLE_SECTION( "*Cpl::Io::Tcp" );
-    CPL_SYSTEM_TRACE_SET_INFO_LEVEL( Cpl::System::Trace::eINFO );
+    CPL_SYSTEM_TRACE_SET_INFO_LEVEL( Cpl::System::Trace::eBRIEF );
 
     // Start the Console/Trace output: Accepting the default UART Config parameters, e.g. 115200, 8N1
     Cpl::System::RP2040::startConsole();

@@ -1,4 +1,5 @@
 #ifndef Cpl_Io_Tcp_lwIP_Picow_Private_h_
+
 #define Cpl_Io_Tcp_lwIP_Picow_Private_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
@@ -12,10 +13,16 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
+#include "colony_config.h"
 #include "lwip/pbuf.h"
 #include "lwip/tcp.h"
 #include "pico/sync.h"
 #include <stdint.h>
+
+/// Poll time in .5sec increment
+#ifndef OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS
+#define	OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS		0	
+#endif
 
 ///
 namespace Cpl {

@@ -23,8 +23,8 @@ using namespace Cpl::Io::Tcp;
 class ListenerClient : public AsyncListener::Client
 {
 public:
-    bool m_connected;
-
+    bool   m_connected;
+    size_t m_totalReadBytes;
 public:
     ListenerClient()
         :m_connected( false )
@@ -36,7 +36,8 @@ public:
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("Accepted incoming connection. Remote Host: %s", rawConnectionInfo) );
         activate( newFd );
-        m_connected = true;
+        m_connected      = true;
+        m_totalReadBytes = 0;
         return true;
     }
 
@@ -47,28 +48,33 @@ public:
         {
             int  bytesRead;
             char inBuf[128];
-            if ( read( inBuf, sizeof( inBuf ), bytesRead ) )
+            if ( available() )
             {
-                if ( bytesRead > 0 )
+                if ( read( inBuf, sizeof( inBuf ), bytesRead ) )
                 {
-                    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d", bytesRead) );
-                    //CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d [%.*s]", bytesRead, bytesRead, inBuf) );
-                    int bytesWritten;
-                    if ( write( inBuf, bytesRead, bytesWritten ) )
+                    m_totalReadBytes += bytesRead;
+                    if ( bytesRead > 0 )
                     {
-                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
+                        //CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d [%.*s]", bytesRead, bytesRead, inBuf) );
+                        //int bytesWritten;
+                        //if ( write( inBuf, bytesRead, bytesWritten ) )
+                        //{
+                        //    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
+                        //}
+                        //else
+                        //{
+                        //    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
+                        //    m_connected = false;
+                        //}
                     }
-                    else
-                    {
-                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
-                        m_connected = false;
-                    }
+
+                    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d (%d)", bytesRead, m_totalReadBytes) );
                 }
-            }
-            else
-            {
-                CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: READ FAILED") );
-                m_connected = false;
+                else
+                {
+                    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: READ FAILED") );
+                    m_connected = false;
+                }
             }
         }
     }

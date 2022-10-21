@@ -110,6 +110,7 @@ err_t AsyncListener::lwIPCb_accept( void* arg, struct tcp_pcb* newpcb, err_t err
     tcp_arg( newpcb, &(theOne->m_connectionFd) );
     //tcp_sent( newpcb, lwipCb_dataSent_ );
     tcp_recv( newpcb, lwipCb_dataReceived_ );
+    //tcp_poll( newpcb, lwipCb_poll_, OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS );
     tcp_err( newpcb, lwipCb_error_ );
 
     // Inform the client of new connection

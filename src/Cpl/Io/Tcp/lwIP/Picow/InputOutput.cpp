@@ -22,6 +22,16 @@
 using namespace Cpl::Io::Tcp;
 using namespace Cpl::Io::Tcp::lwIP::Picow;
 
+#define PICO_LOCK()
+#define PICO_UNLOCK()
+
+//#define PICO_LOCK   cyw43_arch_lwip_begin      
+//#define PICO_UNLOCK cyw43_arch_lwip_end
+
+//#include "Cpl/System/GlobalLock.h"
+//#define PICO_LOCK   Cpl::System::GlobalLock::begin      
+//#define PICO_UNLOCK Cpl::System::GlobalLock::end
+
 
 /////////////////////
 InputOutput::InputOutput()
@@ -64,8 +74,8 @@ void InputOutput::activate( Cpl::Io::Descriptor fd )
 bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
 {
     Socket_T* fd = (Socket_T *) m_fd.m_handlePtr;
-
-    // Throw an error if the socket had already been closed
+    
+        // Throw an error if the socket had already been closed
     if ( fd == nullptr )
     {
         CPL_SYSTEM_TRACE_MSG( SECT_, ("read. Stream closed" ) );
@@ -80,53 +90,73 @@ bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
     }
 
     // Fail if there was socket error
-    cyw43_arch_lwip_begin();
+    bool result = false;
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("read. locking...") );
+    PICO_LOCK();
+    CPL_SYSTEM_TRACE_MSG( SECT_, ("read. LOCK Aquired") );
+
     if ( fd->lwipPcb == nullptr )
     {
         close();
-        cyw43_arch_lwip_end();
         CPL_SYSTEM_TRACE_MSG( SECT_, ("read. fd->lwipPcb is NULL") );
-        return false;
     }
 
     // Check if there is any received data
-    if ( fd->recvPbuf == nullptr )
+    else if ( fd->recvPbuf == nullptr )
     {
         // No data received -->return zero bytes read
         bytesRead = 0;
-        cyw43_arch_lwip_end();
-        return true;
+        result = true;
     }
 
-    // Copy the data to the caller's buffer
-    bytesRead = pbuf_copy_partial( fd->recvPbuf, buffer, numBytes, fd->rxOffset );
-    tcp_recved( fd->lwipPcb, bytesRead );
-
-    // Consumed all of the data -->free the buffer
-    if ( fd->recvPbuf->tot_len == bytesRead + fd->rxOffset )
-    {
-        fd->rxOffset = 0;
-        fd->recvPbuf = nullptr;
-        pbuf_free( fd->recvPbuf );
-    }
-
-    // Adjust the offset to begin at the start of the 'unread data'
+    // Read some data...
     else
     {
-        fd->rxOffset += bytesRead;
+        result = true;
+        
+        // Determine how much is left in the pbuf
+        uint16_t remainingBytes = fd->recvPbuf->tot_len - fd->rxOffset;
+        if ( numBytes > remainingBytes )
+        {
+            numBytes = remainingBytes;
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("read. truncated 'numbytes' %d", numBytes) );
+        }
+
+        // Copy the data to the caller's buffer
+        bytesRead = pbuf_copy_partial( fd->recvPbuf, buffer, numBytes, fd->rxOffset );
+        if ( bytesRead == 0 )
+        {
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("read. pbuf_copy_partial() failed") );
+        }
+        tcp_recved( fd->lwipPcb, bytesRead );
+
+        // Consumed all of the data -->free the buffer
+        if ( fd->recvPbuf->tot_len == bytesRead + fd->rxOffset )
+        {
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("read. freed pbuf (%p). offset=%u, bytesRead=%u, tot_len=%u", fd->recvPbuf, fd->rxOffset, bytesRead, fd->recvPbuf->tot_len) );
+            fd->rxOffset = 0;
+            fd->recvPbuf = nullptr;
+            pbuf_free( fd->recvPbuf );
+        }
+
+        // Adjust the offset to begin at the start of the 'unread data'
+        else
+        {
+            fd->rxOffset += bytesRead;
+        }
     }
-    
-    cyw43_arch_lwip_end();
-    return true;
+
+    PICO_UNLOCK();
+    return result;
 }
 
 bool InputOutput::available()
 {
     Socket_T* fd = (Socket_T *) m_fd.m_handlePtr;
 
-    cyw43_arch_lwip_begin();
+    PICO_LOCK();
     bool haveData = fd->recvPbuf != nullptr;
-    cyw43_arch_lwip_end();
+    PICO_UNLOCK();
 
     return haveData;
 }
@@ -144,7 +174,7 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
         return false;
     }
 
-    // Ignore read requests of ZERO bytes 
+    // Ignore write requests of ZERO bytes 
     if ( maxBytes == 0 )
     {
         bytesWritten = 0;
@@ -152,20 +182,22 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     }
 
     // Fail if there was socket error
-    cyw43_arch_lwip_begin();
+    PICO_LOCK();
     if ( fd->lwipPcb == nullptr )
     {
         close();
-        cyw43_arch_lwip_end();
+        PICO_UNLOCK();
         CPL_SYSTEM_TRACE_MSG( SECT_, ("write. fd->lwipPcb is NULL") );
         return false;
     }
 
     // Check if there is any outgoing buffer space
     uint16_t availLen = tcp_sndbuf( fd->lwipPcb );
-    if ( availLen == ERR_MEM )
+    if ( availLen == ERR_MEM || availLen == 0 )
     {
         bytesWritten = 0;
+        PICO_UNLOCK();
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("write. sndbuf is full") );
         return true;
     }
     CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write....  aval=%d, maxBytes=%d", availLen, maxBytes) );
@@ -183,6 +215,7 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
         // If there is out of memory error -->wait for something to free up
         if ( err == ERR_MEM )
         {
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write....  out-of-memory") );
             bytesWritten = 0;
         }
         
@@ -190,7 +223,7 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
         else
         {
             close();
-            cyw43_arch_lwip_end();
+            PICO_UNLOCK();
             CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write. failed. err=%d", err) );
             return false;
         }
@@ -200,8 +233,8 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
         //tcp_output( fd->lwipPcb );
     }
     bytesWritten = maxBytes;
-    cyw43_arch_lwip_end();
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write: out [%.*s]", bytesWritten, buffer) );
+    PICO_UNLOCK();
+    //CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write: out [%.*s]", bytesWritten, buffer) );
 
     return true;
 }
@@ -211,17 +244,17 @@ void InputOutput::flush()
     Socket_T* fd = (Socket_T *) m_fd.m_handlePtr;
     if ( fd != nullptr && fd->lwipPcb )
     {
-        cyw43_arch_lwip_begin();
+        PICO_LOCK();
         tcp_output( fd->lwipPcb );
-        cyw43_arch_lwip_end();
+        PICO_UNLOCK();
     }
 }
 
 bool InputOutput::isEos()
 {
-    cyw43_arch_lwip_begin();
+    PICO_LOCK();
     bool eos = m_eos;
-    cyw43_arch_lwip_end();
+    PICO_UNLOCK();
     return eos;
 }
 
@@ -229,7 +262,7 @@ void InputOutput::close()
 {
     Socket_T* fd = (Socket_T *) m_fd.m_handlePtr;
 
-    cyw43_arch_lwip_begin();
+    PICO_LOCK();
 
     // Throw an error if the socket had already been closed
     if ( fd != nullptr && fd->lwipPcb )
@@ -247,5 +280,5 @@ void InputOutput::close()
     }
 
     m_eos = true;
-    cyw43_arch_lwip_end();
+    PICO_UNLOCK();
 }
