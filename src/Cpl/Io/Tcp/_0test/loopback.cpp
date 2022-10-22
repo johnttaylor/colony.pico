@@ -55,17 +55,17 @@ public:
                     m_totalReadBytes += bytesRead;
                     if ( bytesRead > 0 )
                     {
-                        //CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d [%.*s]", bytesRead, bytesRead, inBuf) );
-                        //int bytesWritten;
-                        //if ( write( inBuf, bytesRead, bytesWritten ) )
-                        //{
-                        //    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
-                        //}
-                        //else
-                        //{
-                        //    CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
-                        //    m_connected = false;
-                        //}
+                        CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d [%.*s]", bytesRead, bytesRead, inBuf) );
+                        int bytesWritten;
+                        if ( write( inBuf, bytesRead, bytesWritten ) )
+                        {
+                            CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST:   echoed: %d", bytesWritten) );
+                        }
+                        else
+                        {
+                            CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: WRITE FAILED") );
+                            m_connected = false;
+                        }
                     }
 
                     CPL_SYSTEM_TRACE_MSG( SECT_, ("LIST: Bytes in: %d (%d)", bytesRead, m_totalReadBytes) );
@@ -202,9 +202,12 @@ ConnectorClient               connectorClient_;
 static void tcpScan_( Cpl::System::ElapsedTime::Precision_T currentTick, bool atLeastOneIntervalExecuted )
 {
     listenerPtr_->poll();
-    connectorPtr_->poll();
     listenClient_.consumeInput();
+
+#ifndef USE_TCP_LOOPBACK_TEST_SERVER_ONLY
+    //connectorPtr_->poll();
     //connectorClient_.consumeInput();
+#endif
 }
 
 static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
@@ -215,12 +218,18 @@ static Cpl::System::PeriodicScheduler::Interval_T intervals_[] =
 static void beginThreadProcessing( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     listenerPtr_->startListening( listenClient_, portNum_ );
-    //connectorPtr_->establish( connectorClient_, "127.0.0.1", portNum_ );
+
+#ifndef USE_TCP_LOOPBACK_TEST_SERVER_ONLY
+    connectorPtr_->establish( connectorClient_, "127.0.0.1", portNum_ );
+#endif
 }
 static void endThreadProcssing( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     listenerPtr_->terminate();
-    //connectorPtr_->terminate();
+
+#ifndef USE_TCP_LOOPBACK_TEST_SERVER_ONLY
+    connectorPtr_->terminate();
+#endif
 }
 
 

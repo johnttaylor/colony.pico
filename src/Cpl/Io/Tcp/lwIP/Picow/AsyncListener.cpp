@@ -42,12 +42,12 @@ bool AsyncListener::startListening( Client& client,
     {
         m_clientPtr = &client;
 
-        cyw43_arch_lwip_begin();
+        //cyw43_arch_lwip_begin();
 
         struct tcp_pcb* pcb = tcp_new_ip_type( IPADDR_TYPE_ANY );
         if ( !pcb )
         {
-            cyw43_arch_lwip_end();
+            //cyw43_arch_lwip_end();
             CPL_SYSTEM_TRACE_MSG( SECT_, ("AsyncListener: failed to create listen pcb") );
             return false;
         }
@@ -55,7 +55,7 @@ bool AsyncListener::startListening( Client& client,
         err_t err = tcp_bind( pcb, NULL, portNumToListenOn );
         if ( err )
         {
-            cyw43_arch_lwip_end();
+            //cyw43_arch_lwip_end();
             CPL_SYSTEM_TRACE_MSG( SECT_, ("AsyncListener: failed to bind to port %d (err=%d)", portNumToListenOn, err) );
             return false;
         }
@@ -68,7 +68,7 @@ bool AsyncListener::startListening( Client& client,
             {
                 tcp_close( pcb );
             }
-            cyw43_arch_lwip_end();
+            //cyw43_arch_lwip_end();
             CPL_SYSTEM_TRACE_MSG( SECT_, ("AsyncListener: failed to listen") );
             return false;
         }
@@ -77,7 +77,7 @@ bool AsyncListener::startListening( Client& client,
         tcp_arg( m_listenerPcb, this );
         tcp_accept( m_listenerPcb, lwIPCb_accept );
 
-        cyw43_arch_lwip_end();
+        //cyw43_arch_lwip_end();
         return true;
     }
 
@@ -106,11 +106,14 @@ err_t AsyncListener::lwIPCb_accept( void* arg, struct tcp_pcb* newpcb, err_t err
     theOne->m_connectionFd.lwipPcb = newpcb;
     Cpl::Io::Descriptor newfd      = (void*) &(theOne->m_connectionFd);
 
+    // Set keep alive for the socket
+    ip_set_option( newpcb, SOF_KEEPALIVE );
+
     // Set the callback function for the connection
     tcp_arg( newpcb, &(theOne->m_connectionFd) );
-    //tcp_sent( newpcb, lwipCb_dataSent_ );
+    tcp_sent( newpcb, lwipCb_dataSent_ );
     tcp_recv( newpcb, lwipCb_dataReceived_ );
-    //tcp_poll( newpcb, lwipCb_poll_, OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS );
+    tcp_poll( newpcb, lwipCb_poll_, OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS );
     tcp_err( newpcb, lwipCb_error_ );
 
     // Inform the client of new connection
@@ -129,7 +132,8 @@ err_t AsyncListener::lwIPCb_accept( void* arg, struct tcp_pcb* newpcb, err_t err
 
 void AsyncListener::poll() noexcept
 {
-    // Not used/needed
+    // Note: this is only needed/meaningful when compiled with: PICO_CYW43_ARCH_POLL=1 
+    cyw43_arch_poll(); 
 }
 
 void AsyncListener::terminate() noexcept
@@ -153,7 +157,7 @@ void AsyncListener::terminate() noexcept
     // Clear my 'started state'
     m_clientPtr = nullptr;
 
-    cyw43_arch_lwip_begin();
+    cyw43_arch_lwip_end();
 }
 
 

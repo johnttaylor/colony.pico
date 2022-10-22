@@ -12,27 +12,12 @@
 #include "Cpl/Io/Tcp/lwIP/Picow/Private_.h"
 #include "Cpl/System/FatalError.h"
 #include "Cpl/System/Private_.h"
-#include "pico/cyw43_arch.h"
-#include <stdio.h>
-
-#include "Cpl/System/Trace.h"
-#define SECT_ "_0test"
-
-#define PICO_LOCK()
-#define PICO_UNLOCK()
 
 
-//#define PICO_LOCK   cyw43_arch_lwip_begin      
-//#define PICO_UNLOCK cyw43_arch_lwip_end
-
-//#include "Cpl/System/GlobalLock.h"
-//#define PICO_LOCK   Cpl::System::GlobalLock::begin      
-//#define PICO_UNLOCK Cpl::System::GlobalLock::end
 
 
 err_t Cpl::Io::Tcp::lwIP::Picow::lwipCb_dataSent_( void* arg, struct tcp_pcb* pcb, uint16_t len )
 {
-    //CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_dataSent_: len=%d", len) );
     // Not used/needed
     return ERR_OK;
 }
@@ -42,13 +27,9 @@ err_t Cpl::Io::Tcp::lwIP::Picow::lwipCb_poll_( void* arg, struct tcp_pcb* pcb )
     Socket_T* fd = (Socket_T *) arg;
 
     // Flush any pending output
-    if ( fd != nullptr && fd->lwipPcb == pcb )
+    if ( fd != nullptr && pcb != nullptr && fd->lwipPcb == pcb )
     {
-        err_t err =  tcp_output( pcb );
-        if ( err )
-        {
-            CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_poll_: tcp_output(), err=%d", err) );
-        }
+        err_t err = tcp_output( pcb );
         return err;
 
     }
@@ -60,12 +41,9 @@ err_t Cpl::Io::Tcp::lwIP::Picow::lwipCb_dataReceived_( void* arg, struct tcp_pcb
     Socket_T* fd     = (Socket_T *) arg;
     err_t     result = ERR_OK;
 
-    PICO_LOCK();
-
     // Fail if no valid upper layer 
     if ( fd == nullptr )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_dataReceived_: fd == nullptr") );
         tcp_abort( pcb );
         result = ERR_ABRT;
     }
@@ -73,7 +51,6 @@ err_t Cpl::Io::Tcp::lwIP::Picow::lwipCb_dataReceived_( void* arg, struct tcp_pcb
     // Trap additional failures
     else if ( pcb == nullptr || err != ERR_OK || fd->lwipPcb != pcb )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_dataReceived_: fd->lwipPcb (%p) != pcb (%p)", fd->lwipPcb, pcb) );
         if ( fd->recvPbuf )
         {
             pbuf_free( fd->recvPbuf );
@@ -113,16 +90,13 @@ err_t Cpl::Io::Tcp::lwIP::Picow::lwipCb_dataReceived_( void* arg, struct tcp_pcb
             fd->recvPbuf = pbuf;
         }
     }
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_dataReceived_: err=%d, len=%d, curLen=%d, off=%u, unread=%u", err, pbuf->tot_len, fd->recvPbuf->tot_len, fd->rxOffset, fd->recvPbuf->tot_len - fd->rxOffset) );
     
-    PICO_UNLOCK();
     return result;
 }
 
 void Cpl::Io::Tcp::lwIP::Picow::lwipCb_error_( void* arg, err_t err )
 {
     Socket_T* fd = (Socket_T *) arg;
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("lwipCb_error_: err=%d", err) );
 
     if ( fd != nullptr )
     {

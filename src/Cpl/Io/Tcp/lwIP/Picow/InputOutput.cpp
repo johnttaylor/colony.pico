@@ -14,23 +14,12 @@
 #include "Cpl/System/FatalError.h"
 #include "pico/cyw43_arch.h"
 
-#include "Cpl/System/Api.h"
-#include "Cpl/System/Trace.h"
-#define SECT_ "Cpl::Io::Tcp::lwIP::Picow"
-
-///
 using namespace Cpl::Io::Tcp;
 using namespace Cpl::Io::Tcp::lwIP::Picow;
 
-#define PICO_LOCK()
-#define PICO_UNLOCK()
+#define PICO_LOCK   cyw43_arch_lwip_begin      
+#define PICO_UNLOCK cyw43_arch_lwip_end
 
-//#define PICO_LOCK   cyw43_arch_lwip_begin      
-//#define PICO_UNLOCK cyw43_arch_lwip_end
-
-//#include "Cpl/System/GlobalLock.h"
-//#define PICO_LOCK   Cpl::System::GlobalLock::begin      
-//#define PICO_UNLOCK Cpl::System::GlobalLock::end
 
 
 /////////////////////
@@ -74,11 +63,10 @@ void InputOutput::activate( Cpl::Io::Descriptor fd )
 bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
 {
     Socket_T* fd = (Socket_T *) m_fd.m_handlePtr;
-    
-        // Throw an error if the socket had already been closed
+
+    // Throw an error if the socket had already been closed
     if ( fd == nullptr )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("read. Stream closed" ) );
         return false;
     }
 
@@ -91,14 +79,11 @@ bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
 
     // Fail if there was socket error
     bool result = false;
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("read. locking...") );
     PICO_LOCK();
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("read. LOCK Aquired") );
 
     if ( fd->lwipPcb == nullptr )
     {
         close();
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("read. fd->lwipPcb is NULL") );
     }
 
     // Check if there is any received data
@@ -113,30 +98,24 @@ bool InputOutput::read( void* buffer, int numBytes, int& bytesRead )
     else
     {
         result = true;
-        
+
         // Determine how much is left in the pbuf
         uint16_t remainingBytes = fd->recvPbuf->tot_len - fd->rxOffset;
         if ( numBytes > remainingBytes )
         {
             numBytes = remainingBytes;
-            CPL_SYSTEM_TRACE_MSG( SECT_, ("read. truncated 'numbytes' %d", numBytes) );
         }
 
         // Copy the data to the caller's buffer
         bytesRead = pbuf_copy_partial( fd->recvPbuf, buffer, numBytes, fd->rxOffset );
-        if ( bytesRead == 0 )
-        {
-            CPL_SYSTEM_TRACE_MSG( SECT_, ("read. pbuf_copy_partial() failed") );
-        }
         tcp_recved( fd->lwipPcb, bytesRead );
 
         // Consumed all of the data -->free the buffer
         if ( fd->recvPbuf->tot_len == bytesRead + fd->rxOffset )
         {
-            CPL_SYSTEM_TRACE_MSG( SECT_, ("read. freed pbuf (%p). offset=%u, bytesRead=%u, tot_len=%u", fd->recvPbuf, fd->rxOffset, bytesRead, fd->recvPbuf->tot_len) );
+            pbuf_free( fd->recvPbuf );
             fd->rxOffset = 0;
             fd->recvPbuf = nullptr;
-            pbuf_free( fd->recvPbuf );
         }
 
         // Adjust the offset to begin at the start of the 'unread data'
@@ -170,7 +149,6 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     // Throw an error if the socket had already been closed
     if ( fd == nullptr )
     {
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("write. Stream closed") );
         return false;
     }
 
@@ -187,7 +165,6 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     {
         close();
         PICO_UNLOCK();
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("write. fd->lwipPcb is NULL") );
         return false;
     }
 
@@ -197,10 +174,8 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
     {
         bytesWritten = 0;
         PICO_UNLOCK();
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("write. sndbuf is full") );
         return true;
     }
-    CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write....  aval=%d, maxBytes=%d", availLen, maxBytes) );
 
     // Adjust how many bytes can be sent
     if ( maxBytes > availLen )
@@ -215,27 +190,20 @@ bool InputOutput::write( const void* buffer, int maxBytes, int& bytesWritten )
         // If there is out of memory error -->wait for something to free up
         if ( err == ERR_MEM )
         {
-            CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write....  out-of-memory") );
             bytesWritten = 0;
         }
-        
+
         // Unrecoverable error
         else
         {
             close();
             PICO_UNLOCK();
-            CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write. failed. err=%d", err) );
             return false;
         }
     }
-    else
-    {
-        //tcp_output( fd->lwipPcb );
-    }
+
     bytesWritten = maxBytes;
     PICO_UNLOCK();
-    //CPL_SYSTEM_TRACE_MSG( SECT_, ("tcp_write: out [%.*s]", bytesWritten, buffer) );
-
     return true;
 }
 

@@ -21,7 +21,7 @@
 
 /// Poll time in .5sec increment
 #ifndef OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS
-#define	OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS		0	
+#define	OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS		1	
 #endif
 
 ///

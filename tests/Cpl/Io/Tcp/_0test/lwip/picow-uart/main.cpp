@@ -19,6 +19,7 @@ int main( void )
 {
     // Initialize CPL
     Cpl::System::Api::initialize();
+    stdio_init_all();
 
     // Enable Tracing
     CPL_SYSTEM_TRACE_ENABLE();
