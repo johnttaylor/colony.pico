@@ -50,8 +50,8 @@ lwip_inc       = f' -I{os.path.join(lwip_src_path,"src","include")}'
 
 # Set project specific 'base' (i.e always used) options
 base_release = BuildValues()        # Do NOT comment out this line
-#cyw43_arch               = '-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1'
-cyw43_arch               = '-DPICO_CYW43_ARCH_POLL=1'
+cyw43_arch               = '-DPICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1'
+#cyw43_arch               = '-DPICO_CYW43_ARCH_POLL=1'
 wifi_firmware            = '43439A0-7.95.49.00.combined'
 wifi_flags               = f' {wifi_ssid} {wifi_pass} -DCYW43_LWIP=1 -DLIB_PICO_CYW43_ARCH=1 {cyw43_arch}'
 common_flags             = f' {wifi_flags} -DPICO_STACK_SIZE=2048 -DPICO_COPY_TO_RAM=0 -DPICO_CXX_ENABLE_EXCEPTIONS=0 -DPICO_NO_FLASH=0 -DPICO_NO_HARDWARE=0 -DPICO_ON_DEVICE=1 -DPICO_USE_BLOCKED_RAM=0 '
