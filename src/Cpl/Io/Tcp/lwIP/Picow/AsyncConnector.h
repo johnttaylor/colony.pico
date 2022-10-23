@@ -61,9 +61,6 @@ protected:
     static err_t lwIPCb_connected( void* arg, struct tcp_pcb* newpcb, err_t err );
 
 protected:
-    /// PCB being used to create the connection
-    struct tcp_pcb* m_connectorPcb;
-
     /// Remote Host address
     ip_addr_t       m_remoteAddr;
 

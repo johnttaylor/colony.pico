@@ -39,8 +39,8 @@ using namespace Cpl::Io::Tcp::lwIP::Picow;
 
 /////////////////////////////////////////////
 AsyncConnector::AsyncConnector()
-    : m_connectorPcb( nullptr )
-    , m_clientPtr( nullptr )
+    : m_clientPtr( nullptr )
+    , m_connectionFd( { 0, } )
 {
 }
 
@@ -64,11 +64,11 @@ bool AsyncConnector::establish( Client&     client,
         ip4addr_aton( remoteHostName, &m_remoteAddr );
         m_clientPtr                        = &client;
         m_connectionFd.connnectorClientPtr = &client;
-        CPL_SYSTEM_TRACE_MSG( SECT_, ("Connecting to %s port %u", ip4addr_ntoa( &m_remoteAddr ), portNumToConnectTo) );
+        CPL_SYSTEM_TRACE_MSG( SECT_, ("Connecting to %s port %u (%p)", ip4addr_ntoa( &m_remoteAddr ), portNumToConnectTo, m_connectionFd.connnectorClientPtr) );
 
         // Create socket
-        m_connectorPcb = tcp_new_ip_type( IP_GET_TYPE( &m_remoteAddr ) );
-        if ( m_connectorPcb == nullptr )
+        m_connectionFd.lwipPcb = tcp_new_ip_type( IP_GET_TYPE( &m_remoteAddr ) );
+        if ( m_connectionFd.lwipPcb == nullptr )
         {
             CPL_SYSTEM_TRACE_MSG( SECT_, ("AsyncConnector: Failed to create PCB") );
         }
@@ -78,21 +78,21 @@ bool AsyncConnector::establish( Client&     client,
         else
         {
             // Set the callback functions for the connection
-            tcp_arg( m_connectorPcb, &m_connectionFd );
-            tcp_poll( m_connectorPcb, lwipCb_poll_, OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS );
-            tcp_sent( m_connectorPcb, lwipCb_dataSent_ );
-            tcp_recv( m_connectorPcb, lwipCb_dataReceived_ );
-            tcp_err( m_connectorPcb, lwipCb_error_ );
+            tcp_poll( m_connectionFd.lwipPcb, lwipCb_poll_, OPTION_CPL_IO_TCP_LWIP_PICOW_POLL_TICKS );
+            tcp_sent( m_connectionFd.lwipPcb, lwipCb_dataSent_ );
+            tcp_recv( m_connectionFd.lwipPcb, lwipCb_dataReceived_ );
+            tcp_err( m_connectionFd.lwipPcb, lwipCb_error_ );
 
             // Initiate the connection sequence
-            err_t err =  tcp_connect( m_connectorPcb, &m_remoteAddr, portNumToConnectTo, lwIPCb_connected );
+            tcp_arg( m_connectionFd.lwipPcb, this );
+            err_t err =  tcp_connect( m_connectionFd.lwipPcb, &m_remoteAddr, portNumToConnectTo, lwIPCb_connected );
             if ( err == ERR_OK )
             {
                 result = true;
             }
             else
             {
-                m_connectorPcb = nullptr;
+                m_connectionFd.lwipPcb = nullptr;
                 CPL_SYSTEM_TRACE_MSG( SECT_, ("AsyncConnector: Failed tcp_connect(): %d", err) );
             }
         }
@@ -102,35 +102,35 @@ bool AsyncConnector::establish( Client&     client,
     return result;
 }
 
-err_t AsyncConnector::lwIPCb_connected( void* arg, struct tcp_pcb* newpcb, err_t err )
+err_t AsyncConnector::lwIPCb_connected( void* arg, struct tcp_pcb* tpcb, err_t err )
 {
-    // Note: Per the LWIP documentation: 'err' arg is unused, i.e. always ERR_OK
+    // Note: Per the LWIP documentation: 'err' argument is unused, i.e. always ERR_OK
 
     AsyncConnector* theOne = (AsyncConnector*) arg;
     err_t           result = ERR_OK;
     PICO_CB_LOCK();
 
     // Trap errors
-    if ( theOne == nullptr || newpcb == nullptr || theOne->m_clientPtr == nullptr )
+    if ( theOne == nullptr )
     {
         result = ERR_VAL;
     }
 
-    // Reject the request if there is already an active connection
-    else if ( theOne->m_connectorPcb != nullptr )
+    // Reject the request if there is already an active stream
+    else if ( theOne->m_connectionFd.lwipPcb != nullptr && theOne->m_connectionFd.connnectorClientPtr == nullptr )
     {
-        tcp_abort( newpcb );
+        tcp_abort( theOne->m_connectionFd.lwipPcb );
         result = ERR_ABRT;
     }
 
     else
     {
         // Set up the new 'file descriptor' for the connection
-        theOne->m_connectionFd.lwipPcb = newpcb;
-        Cpl::Io::Descriptor newfd      = (void*) &(theOne->m_connectionFd);
+        tcp_arg( theOne->m_connectionFd.lwipPcb, &(theOne->m_connectionFd) );
+        Cpl::Io::Descriptor newfd = (void*) &(theOne->m_connectionFd);
 
         // Set keep alive for the connection
-        ip_set_option( newpcb, SOF_KEEPALIVE );
+        ip_set_option( theOne->m_connectionFd.lwipPcb, SOF_KEEPALIVE );
 
         // Inform the client of new connection
         if ( theOne->m_clientPtr->newConnection( newfd ) )
@@ -148,7 +148,7 @@ err_t AsyncConnector::lwIPCb_connected( void* arg, struct tcp_pcb* newpcb, err_t
             memset( &(theOne->m_connectionFd), 0, sizeof( Socket_T ) );
 
             // Cancel the connection
-            tcp_abort( newpcb );
+            tcp_abort( theOne->m_connectionFd.lwipPcb );
             result = ERR_ABRT;
         }
     }
@@ -176,15 +176,14 @@ void AsyncConnector::terminate() noexcept
     }
 
     // Close connector PCB (when there the connection is/was still-in-progress)
-    else if ( m_connectionFd.connnectorClientPtr != nullptr && m_connectorPcb != nullptr )
+    else if ( m_connectionFd.connnectorClientPtr != nullptr && m_connectionFd.lwipPcb != nullptr )
     {
-        tcp_close( m_connectorPcb );
+        tcp_close( m_connectionFd.lwipPcb );
     }
 
 
     // Clear my 'started state'
-    m_clientPtr              = nullptr;
-    m_connectorPcb           = nullptr;
+    m_clientPtr    = nullptr;
     memset( &m_connectionFd, 0, sizeof( Socket_T ) );
     PICO_UNLOCK();
 }

@@ -115,7 +115,7 @@ err_t AsyncListener::lwIPCb_accept( void* arg, struct tcp_pcb* newpcb, err_t err
     PICO_CB_LOCK();
 
     // Trap errors
-    if ( theOne == nullptr || err != ERR_OK || newpcb == nullptr || theOne->m_clientPtr == nullptr )
+    if ( theOne == nullptr || err != ERR_OK || newpcb == nullptr )
     {
         result = ERR_VAL;
     }
