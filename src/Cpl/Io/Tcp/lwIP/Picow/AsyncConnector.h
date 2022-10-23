@@ -13,6 +13,7 @@
 /** @file */
 
 #include "Cpl/Io/Tcp/AsyncConnector.h"
+#include "Cpl/Io/Tcp/lwIP/Picow/Private_.h"
 
 
 ///
@@ -28,31 +29,49 @@ namespace Picow {
 
 
 /** This class implements the Asynchronous Connector.
- */
+
+    The implementation IS thread safe
+*/
 class AsyncConnector: public Cpl::Io::Tcp::AsyncConnector
 
 {
 public:
     /// Constructor
-    AsyncConnector(){}
+    AsyncConnector();
 
     /// Destructor
-    ~AsyncConnector(){}
+    ~AsyncConnector();
 
 public:
     /// See Cpl::Io::Tcp::AsyncConnector
     bool establish( Client&     client,
                     const char* remoteHostName,
-                    int         portNumToConnectTo )
-    {
-        return false;
-    }
+                    int         portNumToConnectTo );
 
     /// See Cpl::Io::Tcp::AsyncConnector
-    void poll() noexcept{}
+    void poll() noexcept;
 
     /// See Cpl::Io::Tcp::AsyncConnector
-    void terminate() noexcept{}
+    void terminate() noexcept;
+
+protected:
+    /** Callback method when connection.  This method can/will-be called from
+        an ISR context
+     */
+    static err_t lwIPCb_connected( void* arg, struct tcp_pcb* newpcb, err_t err );
+
+protected:
+    /// PCB being used to create the connection
+    struct tcp_pcb* m_connectorPcb;
+
+    /// Remote Host address
+    ip_addr_t       m_remoteAddr;
+
+    /// Client
+    Client*         m_clientPtr;
+
+    /// Socket instance for the Stream.  Note: At any given time there is at most only one stream 'active' from a Connector instance
+    Socket_T        m_connectionFd;
 };
 
 

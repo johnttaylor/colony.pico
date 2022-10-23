@@ -91,6 +91,11 @@ public:
 	/// See Cpl::Io::Output
 	void close();
 
+public:
+	/** USE THIS METHOD WITH CAUTION. This method returns the Stream's
+		internal 'file descriptor'
+	 */
+	inline Cpl::Io::Descriptor getDescriptor() { return m_fd; }
 };
 
 };      // end namespaces

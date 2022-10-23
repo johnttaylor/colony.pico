@@ -54,7 +54,7 @@ bool AsyncListener::startListening( Client& client,
         m_fd = socket( AF_INET, SOCK_STREAM, 0 );
         if ( m_fd == INVALID_SOCKET )
         {
-            CPL_SYSTEM_TRACE_MSG( SECT_, ( "Cpl::Io::Tcp::Win32::AsyncListener: Can not create Stream Socket" ));
+            CPL_SYSTEM_TRACE_MSG( SECT_, ("Cpl::Io::Tcp::Win32::AsyncListener: Can not create Stream Socket") );
             return false;
         }
 
@@ -128,12 +128,19 @@ void AsyncListener::poll() noexcept
     if ( m_state == STATE_LISTENING )
     {
         // Monitor the current remote connection 
-        if ( m_clientConnected )
+        if ( m_clientConnected && m_clientPtr )
         {
+            // NOTE: This only works if the server/application attempts to write data 
+            //       to the socket after the remote host has disconnected.  In theory
+            //       I could use WSApoll (Windoze equivalent of poll()) to determine
+            //       the socket state - but WSApoll is apparently broken - google: 
+            //       “Windows 8 Bugs 309411 – WSAPoll does not report failed connections”.
             if ( m_clientPtr->isEos() )
             {
                 // Accept connections again
+                m_clientPtr->close();
                 m_clientConnected = false;
+                CPL_SYSTEM_TRACE_MSG( SECT_, ("Cpl::Io::Tcp::Win32::AsyncListener:: Stream EOS, accepting new connection ...") );
             }
         }
 
@@ -167,7 +174,7 @@ void AsyncListener::poll() noexcept
         {
             closesocket( newfd );       // Connection refused
         }
-        else 
+        else
         {
             m_clientConnected = true;   // Connection accepted
         }

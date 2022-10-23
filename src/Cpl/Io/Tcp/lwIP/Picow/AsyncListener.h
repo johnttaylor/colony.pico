@@ -12,7 +12,6 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
-#include "colony_config.h"
 #include "Cpl/Io/Tcp/AsyncListener.h"
 #include "Cpl/Io/Tcp/lwIP/Picow/Private_.h"
 
@@ -29,6 +28,8 @@ namespace Picow {
 
 
 /** This class implements the Asynchronous Listener.
+
+    The implementation IS thread safe
  */
 class AsyncListener : public Cpl::Io::Tcp::AsyncListener
 
@@ -58,7 +59,7 @@ protected:
     /** Callback method to accept a connection.  This method can/will-be called from
         an ISR context
      */
-    static err_t lwIPCb_accept( void *arg, struct tcp_pcb *newpcb, err_t err );
+    static err_t lwIPCb_accept( void* arg, struct tcp_pcb* newpcb, err_t err );
 
 protected:
     /// connection I am listen on

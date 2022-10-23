@@ -10,11 +10,13 @@
 *----------------------------------------------------------------------------*/
 /** @file */
 
+#include <winsock2.h>
+#include <windows.h>
+#include <ws2tcpip.h>
+#include <stdlib.h>
 #include "AsyncConnector.h"
 #include "Cpl/Text/FString.h"
 #include "Cpl/System/Trace.h"
-#include <windows.h>
-#include <ws2tcpip.h>
 
 
 using namespace Cpl::Io::Tcp::Win32;
@@ -78,6 +80,7 @@ bool AsyncConnector::establish( Client&     client,
 
         // Resolve the server address and port
         struct addrinfo hints;
+
         Cpl::Text::FString<5> port( portNumToConnectTo );
         ZeroMemory( &hints, sizeof( hints ) );
         hints.ai_family   = AF_UNSPEC;

@@ -17,6 +17,7 @@
 #include "lwip/pbuf.h"
 #include "lwip/tcp.h"
 #include "pico/sync.h"
+#include "Cpl/System/Mutex.h"
 #include <stdint.h>
 
 /// Poll time in .5sec increment
@@ -42,9 +43,10 @@ namespace Picow {
  */
 struct Socket_T
 {
-	struct tcp_pcb*		lwipPcb;		//!< Underlying lwIP Protocol Control block. If null, there is no connection or an error occurred
-	struct pbuf*		recvPbuf;		//!< The PBUF pointer to the latest/current Receive data.  If null, then no incoming data.  Note when there is socket error, this field is set to null
-	uint16_t			rxOffset;		//!< Starting offset when copying data from a PBUF into the client's buffer
+	struct tcp_pcb*		lwipPcb;				//!< Underlying lwIP Protocol Control block. If null, there is no connection or an error occurred
+	struct pbuf*		recvPbuf;				//!< The PBUF pointer to the latest/current Receive data.  If null, then no incoming data.  Note when there is socket error, this field is set to null
+	uint16_t			rxOffset;				//!< Starting offset when copying data from a PBUF into the client's buffer
+	void*               connnectorClientPtr;	//!< Pointer to the Connector client.  This field has no meaning if the Socket was created by a 'Listener'
 };
 
 /** This method is PRIVATE to the lwIP namespace and should NOT be used
@@ -86,6 +88,11 @@ err_t lwipCb_poll_( void* arg, struct tcp_pcb* pcb );
 		  can be called from an Interrupt context.
  */
 void lwipCb_error_( void* arg, err_t err );
+
+
+/*---------------------------------------------------------------------------*/
+/// Expose internal mutex when using: PICO_CYW43_ARCH_POLL
+extern Cpl::System::Mutex g_internalLock;
 
 };      // end namespaces
 };
