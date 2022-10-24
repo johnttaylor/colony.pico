@@ -24,78 +24,78 @@ namespace Tcp {
 
 
 /** This concrete class defines a platform independent implementation of an 
-	InputOutput stream used by the Listener and Connector interfaces
+    InputOutput stream used by the Listener and Connector interfaces
 
-	Note: Platform independent is this context is that application can 
-	      instantiate an instance of this class without any platform specific
-		  #include statements.  However, the actual implementation IS platform
-		  specific.
+    Note: Platform independent is this context is that application can 
+          instantiate an instance of this class without any platform specific
+          #include statements.  However, the actual implementation IS platform
+          specific.
  */
 class InputOutput : public Cpl::Io::InputOutput
 {
 protected:
-	/// Protocol Control Block
-	Cpl::Io::Descriptor  m_fd;
+    /// Protocol Control Block
+    Cpl::Io::Descriptor  m_fd;
 
-	/// End-of-Stream status
-	bool				 m_eos;
-
-public:
-	/** Constructor. No 'fd' provided -->the instance MUST be activated prior
-		to use.
-	 */
-	InputOutput();
-
-
-	/** Constructor. 'fd' is a PCB of a existing/opened TCP connection
-	 */
-	InputOutput( Cpl::Io::Descriptor fd );
-
-
-	/// Destructor
-	~InputOutput( void );
-
+    /// End-of-Stream status
+    bool                 m_eos;
 
 public:
-	/** Activates the stream, i.e. initializes the instance's underlying
-		PCB. If the instance's 'fd' is not in the closed state when
-		this method is called a fatal error is generated.
-	 */
-	void activate( Cpl::Io::Descriptor fd );
+    /** Constructor. No 'fd' provided -->the instance MUST be activated prior
+        to use.
+     */
+    InputOutput();
+
+
+    /** Constructor. 'fd' is a PCB of a existing/opened TCP connection
+     */
+    InputOutput( Cpl::Io::Descriptor fd );
+
+
+    /// Destructor
+    ~InputOutput( void );
 
 
 public:
-	/// Pull in overloaded methods from base class
-	using Cpl::Io::InputOutput::read;
-
-	/// See Cpl::Io::Input
-	bool read( void* buffer, int numBytes, int& bytesRead );
-
-	/// See Cpl::Io::Input
-	bool available();
+    /** Activates the stream, i.e. initializes the instance's underlying
+        PCB. If the instance's 'fd' is not in the closed state when
+        this method is called a fatal error is generated.
+     */
+    void activate( Cpl::Io::Descriptor fd );
 
 
 public:
-	/// Pull in overloaded methods from base class
-	using Cpl::Io::InputOutput::write;
+    /// Pull in overloaded methods from base class
+    using Cpl::Io::InputOutput::read;
 
-	/// See Cpl::Io::Output
-	bool write( const void* buffer, int maxBytes, int& bytesWritten );
+    /// See Cpl::Io::Input
+    bool read( void* buffer, int numBytes, int& bytesRead );
 
-	/// See Cpl::Io::Output
-	void flush();
+    /// See Cpl::Io::Input
+    bool available();
 
-	/// See Cpl::Io::IsEos
-	bool isEos();
-
-	/// See Cpl::Io::Output
-	void close();
 
 public:
-	/** USE THIS METHOD WITH CAUTION. This method returns the Stream's
-		internal 'file descriptor'
-	 */
-	inline Cpl::Io::Descriptor getDescriptor() { return m_fd; }
+    /// Pull in overloaded methods from base class
+    using Cpl::Io::InputOutput::write;
+
+    /// See Cpl::Io::Output
+    bool write( const void* buffer, int maxBytes, int& bytesWritten );
+
+    /// See Cpl::Io::Output
+    void flush();
+
+    /// See Cpl::Io::IsEos
+    bool isEos();
+
+    /// See Cpl::Io::Output
+    void close();
+
+public:
+    /** USE THIS METHOD WITH CAUTION. This method returns the Stream's
+        internal 'file descriptor'
+     */
+    inline Cpl::Io::Descriptor getDescriptor() { return m_fd; }
 };
 
 };      // end namespaces

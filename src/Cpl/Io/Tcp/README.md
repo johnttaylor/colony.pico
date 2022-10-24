@@ -4,7 +4,12 @@ This namespace defines interfaces for creating non-blocking `Cpl::Io` streams us
 TCP/IP connections. This provides an alternative non-blocking approach vs. 
 traditional BSD Sockets.  The interfaces are designed to be compatible with the
 `Cpl::System::PeriodicScheduler` and/or _runnable_ objects/threads that 
-support periodic scheduling.
+support periodic scheduling.  
+
+The are three primary interfaces:
+* [Listener](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/Io/Tcp/AsyncListener.h)
+* [Connector](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/Io/Tcp/AsyncConnector.h)
+* [InputOutput](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/Io/Tcp/InputOutput.h) (aka the IO Stream)
 
 The motivation for the non-blocking TCP support comes from wanting to use the [Raspberry PI PicoW's](https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html)
 native WIFI without an RTOS.  However, the interfaces are __not__ specific to the 
