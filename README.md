@@ -10,6 +10,8 @@ The Colony.Pico package is collection of my Raspberry Pico projects that are bui
 
 - See the [Threading Example](#Threading-Example) and [Threading Details](#Threading-Details) sections for details of the example application demonstrating the package's Threading model.
 
+- Stream based IO when using the [PicoW](https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html) native WIFI libraies.  See [TCP Streams](https://github.com/johnttaylor/colony.pico/blob/main/src/Cpl/Io/Tcp/README.md) for more details.
+
 - There is a [Pico-Sketch application](https://github.com/johnttaylor/colony.pico/blob/main/projects/pico-sketch/README.md#GettingStarted) that illustrates who to build a functional simulator.
 
 - A case study of the [*Main Pattern*](https://github.com/johnttaylor/colony.pico/blob/main/projects/Storm/Thermostat/Pico/README.md) by porting the PIM example [Thermostat application](https://github.com/johnttaylor/pim) to the Pico.
@@ -48,8 +50,11 @@ The Colony.Core C++ class library with extensions for the Raspberry RP200 MCU pr
   * Cooperative monotonic periodic scheduling
 * Data Model framework
   * The Data Model software architecture pattern is a data-oriented pattern where
-modules interact with each other via data instances (a.k.a. model points) with
-no direct dependencies between modules.
+    modules interact with each other via data instances (a.k.a. model points) with
+    no direct dependencies between modules.
+* Streams
+  * Platform independent interfaces for operations that would typically be done 
+    using Posix file descriptors or Windows file HANDLEs.
 * A text-based command shell framework that can be used to interact with an application at runtime via an IO stream (e.g. UART, stdio, etc.)
 * Text handling methods and String classes that do not use dynamic memory allocation.
 

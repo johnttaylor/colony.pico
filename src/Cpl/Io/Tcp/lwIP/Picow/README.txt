@@ -11,9 +11,6 @@ dependencies for the implement are:
 - Buildt with the lwIP config:
     NO_SYS=1    
 
-
-NOTE: The implementation of this interface should be consider experimental 
-      until further notice (10-16-2022)
 */  
 
 
