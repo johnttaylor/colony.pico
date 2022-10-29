@@ -207,6 +207,11 @@ bool Processor::writeFrame( const char* text, size_t maxBytes ) noexcept
     return io;
 }
 
+bool Processor::oobRead( void* buffer, int numBytes, int& bytesRead ) noexcept
+{
+    return m_deframer.oobRead( buffer, numBytes, bytesRead );
+}
+
 
 ///////////////////////////////////
 Cpl::Text::String& Processor::getOutputBuffer() noexcept

@@ -59,6 +59,18 @@ public:
 
 
 public:
+	/** This method allows a command access to the input stream, i.e. consume
+		additional input data that is 'out-of-band' of the nominal newline 
+		delineated command syntax.
+	
+		Attempts to read the specified number of bytes from the stream into the
+        supplied buffer.  The actual number of bytes read is returned via
+        'bytesRead'. Returns true if successful, or false if End-of-Stream
+        was encountered.
+	 */
+	virtual bool oobRead( void* buffer, int numBytes, int& bytesRead ) noexcept = 0;
+
+public:
 	/// Virtual destructor
 	virtual ~Context_() {}
 };

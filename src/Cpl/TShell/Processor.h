@@ -168,6 +168,8 @@ public:
 	/// See Cpl::TShell::Context_
 	Cpl::Text::String& getTokenBuffer2() noexcept;
 
+	/// See Cpl::TShell::Context_
+	bool oobRead( void* buffer, int numBytes, int& bytesRead ) noexcept;
 
 protected:
 	/** Helper method that attempts to execute the content of the de-framed/decoded
