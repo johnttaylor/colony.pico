@@ -86,6 +86,7 @@ __Notes:__
 * The `trace here` command routes the printf-tracing output to the command shell's output (instead of STDOUT)
 * The `dm write {name:"delayTime",val:500}` command sets the LED delay time to 500ms, aka 1Hz
 * The `dm write {name:"verbose", val:true}` and `dm write {name:"verbose", val:false}` controls the output messages from the application.
+* The `bye` command exits the command shell and closes the socket connection.  The application will then accept a new connection and restart the command shell.
  
 
 ### Code Snippets
