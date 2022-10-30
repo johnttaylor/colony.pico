@@ -30,7 +30,7 @@ __Note:__ The above settings sets the lwIP configuration to `NO_SYS=1`
 
 The implementation is located in the `src/Cpl/Io/Tcp/lwIP/Picow` directory.
 
-[^1]: In this context _threads_ are the `Cpl::System::Thread` instances.  
+[^1]: In this context _threads_ are the `Cpl::System::Thread` instances and when built with PICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1.  
 
 
 ### Win32 Implementation

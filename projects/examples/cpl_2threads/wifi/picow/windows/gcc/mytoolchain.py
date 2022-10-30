@@ -41,8 +41,8 @@ FINAL_OUTPUT_NAME = 'bob-wifi'
 #
  
 # Wifi credentials
-wifi_ssid      = r'-DWIFI_SSID=\"StarsHallow\"'
-wifi_pass      = r'-DWIFI_PASSWORD=\"Degas12345!\"'
+wifi_ssid      = r'-DWIFI_SSID=\"ssid\"'
+wifi_pass      = r'-DWIFI_PASSWORD=\"passwd\"'
 
 # lwip Header paths
 lwip_src_path  = os.path.join( NQBP_PKG_ROOT(), 'xsrc', 'pico-sdk', 'lib', "lwip" )
