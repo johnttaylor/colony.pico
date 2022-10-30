@@ -29,7 +29,7 @@ namespace Picow {
 
 /** This class implements the Asynchronous Listener.
 
-    The implementation IS thread safe
+    The implementation IS thread safe WHEN building with PICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1
  */
 class AsyncListener : public Cpl::Io::Tcp::AsyncListener
 

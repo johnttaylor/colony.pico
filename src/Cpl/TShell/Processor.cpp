@@ -77,7 +77,7 @@ int Processor::getAndProcessFrame( Cpl::Io::Output& outfd  ) noexcept
     int readResult = readInput( frameSize );
     if ( readResult < 0 )
     {
-        // Input stream error -->exit Command Processor
+        // Input stream error 
         return -1;
     }
     else if ( readResult == 1 )
@@ -89,7 +89,7 @@ int Processor::getAndProcessFrame( Cpl::Io::Output& outfd  ) noexcept
         Command::Result_T result = executeCommand( m_inputBuffer, outfd );
         if ( result == Command::eERROR_IO )
         {
-            // Output stream error -->exit Command Processor
+            // Output stream error 
             return -1;
         }
 
@@ -97,7 +97,7 @@ int Processor::getAndProcessFrame( Cpl::Io::Output& outfd  ) noexcept
         outfd.write( OPTION_CPL_TSHELL_PROCESSOR_PROMPT );
     }
 
-    // If I get here - then no error occurred (and NOT exiting)
+    // If I get here - then no error occurred
     return 0;
 }
 

@@ -34,3 +34,14 @@ int main(void)
     // Start the application
     runApplication();         // This method should never return
 }
+
+// NOT USED
+void platformHook_core0_beginThread()
+{
+}
+void platformHook_core1_beginThread()
+{
+}
+void platformHook_core1_idleThread()
+{
+}

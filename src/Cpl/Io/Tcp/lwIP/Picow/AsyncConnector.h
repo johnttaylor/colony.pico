@@ -30,7 +30,8 @@ namespace Picow {
 
 /** This class implements the Asynchronous Connector.
 
-    The implementation IS thread safe
+    The implementation IS thread safe WHEN building with PICO_CYW43_ARCH_THREADSAFE_BACKGROUND=1
+
 */
 class AsyncConnector: public Cpl::Io::Tcp::AsyncConnector
 

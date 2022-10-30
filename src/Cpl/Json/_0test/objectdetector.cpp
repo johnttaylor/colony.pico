@@ -70,11 +70,6 @@ TEST_CASE( "ObjectDetector" )
 	REQUIRE( endOffset == 13 );
 
 	uut.reset();
-	REQUIRE( scan( uut, "   {bob:\"hello\",}", 2, startOffset, endOffset ) );
-	REQUIRE( startOffset == 3 );
-	REQUIRE( endOffset == 16 );
-
-	uut.reset();
 	REQUIRE( scan( uut, "{bob:\"he}llo\",}", 4, startOffset, endOffset ) );
 	REQUIRE( startOffset == 0 );
 	REQUIRE( endOffset == 14 );
@@ -86,20 +81,6 @@ TEST_CASE( "ObjectDetector" )
 
 	uut.reset();
 	REQUIRE( scan( uut, "{bob:\"he\\\"}llo\",", 10, startOffset, endOffset ) == false );
-
-	uut.reset();
-	REQUIRE( scan( uut, "   }", 10, startOffset, endOffset ) == false );
-
-	uut.reset();
-	REQUIRE( scan( uut, "{ { { { []}}   }  ", 110, startOffset, endOffset ) == false );
-
-	uut.reset();
-	REQUIRE( scan( uut, "{ { { {} {} []}}{  ", 110, startOffset, endOffset ) == false );
-
-	uut.reset();
-	REQUIRE( scan( uut, "{ {} { { []}}   }  ", 110, startOffset, endOffset )  );
-	REQUIRE( startOffset == 0 );
-	REQUIRE( endOffset == 16 );
 
 	//
 	REQUIRE( Cpl::System::Shutdown_TS::getAndClearCounter() == 0u );

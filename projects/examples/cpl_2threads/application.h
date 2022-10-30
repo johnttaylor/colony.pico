@@ -45,4 +45,27 @@ extern Cpl::Io::Output* g_consoleOutputFdPtr;
 void runApplication();
 
 
+/*---------------------------------------------------------------------------*/
+/** This method allows platform specific code to 'hook' into the application
+	processing.
+
+	This method is called from the 'beginThreading' method for core0
+ */
+void platformHook_core0_beginThread();
+
+
+/** This method allows platform specific code to 'hook' into the application
+	processing.
+
+	This method is called from the 'beginThreading' method for core1
+ */
+void platformHook_core1_beginThread();
+
+/** This method allows platform specific code to 'hook' into the application
+	processing.
+
+	This method is called from the 'idleThreading' method for core1
+ */
+void platformHook_core1_idleThread();
+
 #endif  // end header latch

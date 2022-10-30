@@ -5,8 +5,6 @@
 #include "Cpl/System/RP2040/Console.h"
 
 
-
-
 /// Allocate memory for the console stream pointers
 Cpl::Io::Input*  g_consoleInputFdPtr;
 Cpl::Io::Output* g_consoleOutputFdPtr;
@@ -37,4 +35,15 @@ int main(void)
 
     // Start the application
     runApplication();         // This method should never return
+}
+
+// NOT USED
+void platformHook_core0_beginThread()
+{
+}
+void platformHook_core1_beginThread()
+{
+}
+void platformHook_core1_idleThread()
+{
 }

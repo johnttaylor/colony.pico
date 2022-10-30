@@ -52,6 +52,7 @@ static Bob theBob_( core0Mbox_, bobDelayTimeMs_, bobVerbose_ );
 void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
     core0Intervals_[0].context = &theBob_;
+    platformHook_core0_beginThread();
     theBob_.start();
 }
 
@@ -59,6 +60,7 @@ void core0Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 // In thread initialization for code the executes on Core 1
 static void core1Start( Cpl::System::ElapsedTime::Precision_T currentTick )
 {
+    platformHook_core1_beginThread();
     cmdProcessor_.getCommandProcessor().start( *g_consoleInputFdPtr, *g_consoleOutputFdPtr ); // Note: I don't need to set the 'blocking flag' because the processor knows it is non-blocking processor
 }
 
@@ -69,8 +71,16 @@ static Cpl::System::PeriodicScheduler::Interval_T core1Intervals_[] =
 
 static void tshellScan_( Cpl::System::ElapsedTime::Precision_T currentTick, bool atLeastOneIntervalExecuted )
 {
-    cmdProcessor_.getCommandProcessor().poll();
+    platformHook_core1_idleThread();
+    if ( cmdProcessor_.getCommandProcessor().poll() == 1 )
+    {
+        // Restart the shell if it self terminated
+        g_consoleInputFdPtr->close();
+        g_consoleOutputFdPtr->close();
+        cmdProcessor_.getCommandProcessor().start( *g_consoleInputFdPtr, *g_consoleOutputFdPtr );
+    }
 }
+
 
 // Runnable object for Core1 (aka the thread's 'main loop')
 Cpl::Dm::PeriodicScheduler core1Mbox_( core1Intervals_, core1Start, nullptr, nullptr, Cpl::System::ElapsedTime::precision, tshellScan_ );
