@@ -39,7 +39,6 @@ void Bsp_Api_initialize( void )
     if ( err )
     {
         printf( "**ERROR: WiFi init failed: %d", err );
-        return;
     }
 }
 

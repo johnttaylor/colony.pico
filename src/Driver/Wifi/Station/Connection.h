@@ -23,11 +23,10 @@ namespace Wifi {
 namespace Station {
 
 /** This class defines an asynchronous interface for a Station device to
-    connect to a WIFI network. The interface will attempt to reconnect to the
-    WIFI network if/when the connection is dropped.
+    connect to a WIFI network. 
 
-    The interface does NOT define any thread-safe semantics.  All of the interface
-    methods should be called from the SAME thread/core.
+    This interface does NOT define any thread safety semantics, i.e. the 
+    application should assume that the interface is NOT thread safe.
 
     The interface uses polling semantics, i.e. the application is required to
     call the 'poll()' periodically.
@@ -53,7 +52,7 @@ public:
     /// Authorization options
     enum Authentication_T
     {
-        eOPEN,                      //!< No authorization required 
+        eOPEN = 0,                  //!< No authorization required 
         eWPA_TKIP_PSK,              //!< WPA authorization
         eWPA2_AES_PSK,              //!< WPA2 authorization (preferred)
         eWPA2_MIXED_PSK             //!< WPA2/WPA mixed authorization
@@ -61,20 +60,27 @@ public:
 
 public:
     /// Defines the function signature for callbacks
-    typedef void (*StateChangedFunc_T)(State_T currentState) noexcept;
+    typedef void (*StateChangedFunc_T)(State_T currentState);
 
 public:
-    /** This method is used to initialize/restart the interface.  This method
-        ASSUMES that the hardware, WIFI stack, etc. has ALREADY been initialized and
-        is available for use.
+    /** This method is used to initialize the WIFI engine in Station Mode.  It 
+        should only be called ONCE on startup before any other methods in this 
+        interface is called. 
+
+        This method ASSUMES that the hardware, WIFI stack, etc. has ALREADY 
+        been initialized and is available for use.
+     */
+    static void initiailize() noexcept;
+
+    /** This method is used to initiate connecting to a WIFI network.
 
         The method will optionally generate callbacks to the application when
-        the state of the connection changes.  The interface does NOT guarantee
-        that the application will be called back on all changes-of-state - but 
-        it will updated with the latest change when the poll() method executes.
+        the state of the connection changes. Note: Callbacks for EVERY transition
+        is NOT guaranteed. What is guaranteed is that latest state change when 
+        the poll() method is called will trigger a callback
 
         The 'ssid' and 'password' arguments MUST stay in scope until stop() is
-        called (i.e. the application is responsible for the memory of this
+        called (i.e. the application is responsible for the memory of these
         arguments).
      */
     static bool start( const char*         ssid,
@@ -88,15 +94,22 @@ public:
      */
     static void poll() noexcept;
 
-    /** This method returns true if the state of the WIIF connection is in
+    /** This method returns true if the state of the WIFI connection is in
         the eLINK_UP state.
      */
     static bool isConnected() noexcept;
+
+    /** This method returns true the current state of the WIFI connection
+     */
+    static State_T getState() noexcept;
 
     /** This method disconnects the device from the from the WIFI network. The
         Application must call start() again to reconnect to a/the WIFI network
      */
     static void stop() noexcept;
+
+    /// Convience method that convert the binary State_T enum to string
+    static const char* toString( State_T linkStatus ) noexcept;
 };
 
 
