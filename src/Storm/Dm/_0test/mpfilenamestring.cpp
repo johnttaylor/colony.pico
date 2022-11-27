@@ -68,7 +68,7 @@ TEST_CASE( "MpFileNameString" )
 
         const char* mpType = mp_apple_.getTypeAsText();
         CPL_SYSTEM_TRACE_MSG( SECT_, ( "typeText: [%s]", mpType ) );
-        REQUIRE( strcmp( mpType, "Storm::Dm::MpFileNameString" ) == 0 );
+        REQUIRE( strcmp( mpType, "Cpl::Dm::Mp::String" ) == 0 );
     }
 
     SECTION( "read/write" )

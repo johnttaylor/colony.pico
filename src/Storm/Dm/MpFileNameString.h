@@ -34,7 +34,7 @@ namespace Dm {
     The toJSON/fromJSON() format is:
     \code
 
-    { name:"<mpname>", type:"<mptypestring>", valid:true|false, seqnum:nnnn, locked:true|false, val:"xyz.."} }
+    { name:"<mpname>", type:"<mptypestring>", valid:true|false, seqnum:nnnn, locked:true|false, val:{maxLen:nnn,text:"xyz.."}} }
 
     \endcode
 
@@ -42,27 +42,7 @@ namespace Dm {
     NOTE: All methods in this class ARE thread Safe unless explicitly
           documented otherwise.
  */
-class MpFileNameString : public Cpl::Dm::Mp::String_<OPTION_STORM_DM_MAX_FILE_NAME, MpFileNameString>
-{
-public:
-    /** Constructor.  Invalid MP.
-     */
-    MpFileNameString( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
-        : Cpl::Dm::Mp::String_<OPTION_STORM_DM_MAX_FILE_NAME, MpFileNameString>( myModelBase, symbolicName )
-    {
-    }
-
-    ///  See Cpl::Dm::ModelPoint.
-    const char* getTypeAsText() const noexcept
-    {
-        return "Storm::Dm::MpFileNameString";
-    }
-
-    /// Type safe subscriber
-    typedef Cpl::Dm::Subscriber<MpFileNameString> Observer;
-
-};
-
+typedef Cpl::Dm::Mp::String<OPTION_STORM_DM_MAX_FILE_NAME> MpFileNameString;
 
 
 };      // end namespaces
