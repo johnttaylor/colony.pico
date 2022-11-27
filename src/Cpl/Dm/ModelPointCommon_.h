@@ -55,7 +55,7 @@ public:
     uint16_t setInvalid( LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
 
     /// See Cpl::Dm::ModelPoint
-    bool isNotValid() const noexcept;
+    bool isNotValid( uint16_t* seqNumPtr=0 ) const noexcept;
 
     /// See Cpl::Dm::ModelPoint
     bool isLocked() const noexcept;
@@ -80,6 +80,24 @@ public:
 
     /// See Cpl::Dm::ModelPoint
     bool toJSON( char* dst, size_t dstSize, bool& truncated, bool verbose=true, bool pretty=false ) noexcept;
+
+    /** This convenience method is used to test the validate state the MP and
+        synchronize the observer with the current MP contents.  Typically usage
+        is for inspecting the MP valid state when executing the change
+        notification callback.
+
+        Note: The observer will be subscribed for change notifications after
+              this call
+     */
+    template <class OBSERVER>
+    inline bool isNotValidAndSync( OBSERVER& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = isNotValid( &seqNum );
+        attachSubscriber( observerToSync, seqNum );
+        return result;
+    }
+
 
 protected:
     /// See Cpl::Dm::ModelPoint
@@ -112,7 +130,6 @@ protected:
 
     /// See Cpl::Dm::ModelPoint.  
     size_t getInternalDataSize_() const noexcept;
-
 
 public:
     /// See Cpl::Dm::ModelPoint

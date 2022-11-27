@@ -37,6 +37,13 @@ namespace Mp {
 /** This a mostly concrete class provides 'common' implementation for a Model
     Point who's data is a array of elements
 
+    The toJSON()/fromJSON format is:
+    \code
+
+    { name:"<mpname>", type:"<mptypestring>", valid:true|false seqnum:nnnn, locked:true|false, val:{start:<firstIndex>,elems:[<elemN>,<elemN+1>,...]}}" }
+
+    \endcode
+
  */
 class ArrayBase_ : public Cpl::Dm::ModelPointCommon_
 {
@@ -309,6 +316,61 @@ public:
     {
         ArrayBase_::detachSubscriber( observer );
     }
+
+public:
+    /** This convenience method is used to read the MP contents and synchronize
+       the observer with the current MP contents.  Typically usage is for
+       reading the MP value when executing the change notification callback
+
+       Note: The observer will be subscribed for change notifications after
+             this call.
+    */
+    inline bool readAndSync( ELEMTYPE*                    dstArrray, 
+                             size_t                       dstNumElements, 
+                             Cpl::Dm::Subscriber<MPTYPE>& observerToSync, 
+                             size_t                       srcIndex )
+    {
+        uint16_t seqNum;
+        bool result = read( dstArrray, dstNumElements, srcIndex, &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
+
+    /// See Cpl::Dm::ModelPointCommon_
+    inline bool isNotValidAndSync( Cpl::Dm::Subscriber<MPTYPE>& observerToSync )
+    {
+        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Cpl::Dm::Subscriber<MPTYPE>>( observerToSync );
+    }
+};
+
+//////////////////////////////////////////////////////////////////////////////
+/* The following classes provide concrete numeric Array types for basic types
+ */
+
+/// Byte Array
+template <int N>
+class ArrayUint8: public NumericArray_<uint8_t, N, ArrayUint8<N>>
+{
+public:
+    ArrayUint8( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
+        : Mp::NumericArray_<uint8_t, N, ArrayUint8<N>>( myModelBase, symbolicName )
+    {
+    }
+
+    /// Constructor. Valid Point.  Requires an initial value. The array size of 'initialValueArray' must match 'MY_ARRAY_SIZE'
+    ArrayUint8( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName, uint8_t initialValueArray[] )
+        : Mp::NumericArray_<uint8_t, N, ArrayUint8<N>>( myModelBase, symbolicName, initialValueArray )
+    {
+    }
+
+    ///  See Cpl::Dm::ModelPoint.
+    const char* getTypeAsText() const noexcept
+    {
+        return "Cpl::Dm::Mp::ArrayUint8";
+    }
+
+    /// Type safe subscriber
+    typedef Cpl::Dm::Subscriber<ArrayUint8> Observer;
 };
 
 };      // end namespaces

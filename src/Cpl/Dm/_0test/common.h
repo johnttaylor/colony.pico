@@ -117,8 +117,7 @@ public:
         uint16_t prevSeqNum = m_lastSeqNumber;
 
         m_mpNotificationCount1++;
-        uint16_t seqNum;
-        m_lastValid     = modelPointThatChanged.read( m_lastValue, &seqNum );
+        m_lastValid     = modelPointThatChanged.readAndSync( m_lastValue, m_observerMp1 );
         m_lastSeqNumber = m_observerMp1.getSequenceNumber_();
 
         //CPL_SYSTEM_TRACE_MSG( SECT_, ("VIEWER(%p): mp changed (%s), notify count=%d, valid=%d, value=%d",
@@ -140,7 +139,7 @@ public:
         {
             if ( m_done )
             {
-                CPL_SYSTEM_TRACE_MSG( SECT_, ("Viewer::mp1_changed(%p): Received Change notification after signaling the master thread, may or may not be an error. Prev: value=%lu, state=%d, seqNum=%u.  Rcvd: value=%lu, state=%d, seqNum=%u.  read_seq_num=%u, notifyCount=%d", this, prevValue, prevState, prevSeqNum, m_lastValue, m_lastValid, m_lastSeqNumber, seqNum, m_mpNotificationCount1) );
+                CPL_SYSTEM_TRACE_MSG( SECT_, ("Viewer::mp1_changed(%p): Received Change notification after signaling the master thread, may or may not be an error. Prev: value=%lu, state=%d, seqNum=%u.  Rcvd: value=%lu, state=%d, seqNum=%u.  read_seq_num=%u, notifyCount=%d", this, prevValue, prevState, prevSeqNum, m_lastValue, m_lastValid, m_lastSeqNumber, m_lastSeqNumber, m_mpNotificationCount1) );
             }
             else
             {

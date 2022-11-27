@@ -94,7 +94,7 @@ uint16_t StringBase_::write( const char* srcData, size_t srcLenInBytesIncludingN
     return seqNum;
 }
 
-uint16_t StringBase_::copyStringFrom( const StringBase_& src, LockRequest_T lockRequest ) noexcept
+uint16_t StringBase_::copyFrom( const StringBase_& src, LockRequest_T lockRequest ) noexcept
 {
     // Handle the src.invalid case
     if ( src.isNotValid() )
@@ -119,14 +119,21 @@ bool StringBase_::isDataEqual_( const void* otherData ) const noexcept
 
 void StringBase_::setJSONVal( JsonDocument& doc ) noexcept
 {
-    doc["val"] = (char*) m_dataPtr;
+    // Create value object
+    JsonObject valObj = doc.createNestedObject( "val" );
+
+    // Construct the 'val' key/value pair 
+    valObj["maxLen"] = getMaxLength();
+    valObj["text"]   = (char*) m_dataPtr;;
 }
 
 
 bool StringBase_::fromJSON_( JsonVariant& src, LockRequest_T lockRequest, uint16_t& retSequenceNumber, Cpl::Text::String* errorMsg ) noexcept
 {
-    // Does the value key/value pair exist?
-    const char* newValue = src;
+    // Note: Max size is ignored, i.e. do NOT support reallocating sizes via JSON
+
+    // Get the string
+    const char* newValue = src["text"];
     if ( newValue == nullptr )
     {
         if ( errorMsg )

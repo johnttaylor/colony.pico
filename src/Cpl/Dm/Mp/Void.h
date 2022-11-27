@@ -79,6 +79,27 @@ public:
     /// Type safe subscriber
     typedef Cpl::Dm::Subscriber<Void> Observer;
 
+    /** This convenience method is used to read the MP contents and synchronize
+        the observer with the current MP contents.  Typically usage is for
+        reading the MP value when executing the change notification callback
+
+        Note: The observer will be subscribed for change notifications after
+              this call.
+     */
+    inline bool readAndSync( void*& dstData, Observer& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = read( dstData, &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
+
+    /// See Cpl::Dm::ModelPointCommon_
+    inline bool isNotValidAndSync( Observer& observerToSync )
+    {
+        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
+    }
+
     ///  See Cpl::Dm::ModelPoint.
     const char* getTypeAsText() const noexcept
     {

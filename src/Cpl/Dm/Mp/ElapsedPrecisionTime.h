@@ -85,6 +85,37 @@ public:
     /// Type safe un-register observer
     void detach( Observer& observer ) noexcept;
 
+public:
+    /** This convenience method is used to read the MP contents and synchronize
+        the observer with the current MP contents.  Typically usage is for
+        reading the MP value when executing the change notification callback
+
+        Note: The observer will be subscribed for change notifications after
+              this call.
+     */
+    inline bool readAndSync( Cpl::System::ElapsedTime::Precision_T& dstData, Observer& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = read( dstData, &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
+
+    /** This convenience method is used to test the validate state the MP and
+        synchronize the observer with the current MP contents.  Typically usage
+        is for inspecting the MP valid state when executing the change
+        notification callback.
+
+        Note: The observer will be subscribed for change notifications after
+              this call
+     */
+    inline bool isNotValidAndSync( Observer& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = isNotValid( &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
 
 public:
     ///  See Cpl::Dm::ModelPoint.

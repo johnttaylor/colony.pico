@@ -23,14 +23,15 @@ namespace Dm {
 namespace Mp {
 
 
-/** This mostly concrete class provides the base implementation for a Point
-    who's data is a null terminated string.  The concrete child class is
-    responsible for providing the string storage..
+/** This mostly concrete class provides the base implementation for a Point 
+    who's data is a null terminated string.  The concrete child class is 
+    responsible for providing the string storage and the attach/detach
+    methods.
 
     The toJSON()/fromJSON format is:
     \code
 
-    { name:"<mpname>", type:"<mptypestring>", valid:true|false seqnum:nnnn, locked:true|false, maxlen:nnn, val:"<newvalue>" }
+    { name:"<mpname>", type:"<mptypestring>", valid:true|false seqnum:nnnn, locked:true|false, val:{maxLen:<len>,text:"<newvalue>" }
 
     \endcode
 
@@ -60,10 +61,10 @@ protected:
 
 public:
     /// Type safe read. See Cpl::Dm::ModelPoint
-    virtual bool read( Cpl::Text::String& dstData, uint16_t* seqNumPtr=0 ) const noexcept;
+    bool read( Cpl::Text::String& dstData, uint16_t* seqNumPtr=0 ) const noexcept;
 
     /// Type safe read. See Cpl::Dm::ModelPoint
-    virtual bool read( char* dstData, size_t dataSizeInBytesIncludingNullTerminator, uint16_t* seqNumPtr=0 ) const noexcept;
+    bool read( char* dstData, size_t dataSizeInBytesIncludingNullTerminator, uint16_t* seqNumPtr=0 ) const noexcept;
 
     /// Type safe write of a null terminated string. See Cpl::Dm::ModelPoint
     inline uint16_t write( const char* srcNullTerminatedString, LockRequest_T lockRequest = eNO_REQUEST ) noexcept
@@ -72,7 +73,22 @@ public:
     }
 
     /// Same as write(), except only writes at most 'srcLen' bytes
-    virtual uint16_t write( const char* srcData, size_t dataSizeInBytesIncludingNullTerminator, LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
+    uint16_t write( const char* srcData, size_t dataSizeInBytesIncludingNullTerminator, LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
+
+    /// Returns the maximum size WITHOUT the null terminator of the string storage
+    inline size_t getMaxLength() const noexcept
+    {
+        return m_dataSize - 1;
+    }
+
+    /// Updates the MP with the valid-state/data from 'src'. Note: the src.lock state is NOT copied
+    uint16_t copyFrom( const StringBase_& src, LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
+
+    ///  See Cpl::Dm::ModelPoint.
+    const char* getTypeAsText() const noexcept
+    {
+        return "Cpl::Dm::Mp::String";
+    }
 
 public:
     /// See Cpl::Dm::Point.  
@@ -82,58 +98,78 @@ public:
     bool isDataEqual_( const void* otherData ) const noexcept;
 
 protected:
-    /// Updates the MP with the valid-state/data from 'src'. Note: the src.lock state is NOT copied
-    virtual uint16_t copyStringFrom( const StringBase_& src, LockRequest_T lockRequest = eNO_REQUEST ) noexcept;
-
     /// See Cpl::Dm::Point.  
     void setJSONVal( JsonDocument& doc ) noexcept;
 };
 
-/** This mostly concrete template class provides the storage for a Point
-    who's data is a null terminated string.  The template parameter specifies
-    the size of string storage. The child classes must provide the following:
 
-        getTypeAsText() method and a typedef for child specific 'Observer'
+/** This concrete template class provides the storage for a Point
+    who's data is a null terminated string.  
 
     Template Args:
         S:=      Max Size of the String WITHOUT the null terminator!
-        MPTYPE:= Class type of the Child class
  */
-template<int S, class MPTYPE>
-class String_ : public StringBase_
+template<int S>
+class String : public StringBase_
 {
-protected:
+public:
     /** Constructor. Invalid Point.
      */
-    String_( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
+    String( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : StringBase_( myModelBase, symbolicName, m_data, sizeof( m_data ) )
     {
     }
 
     /// Constructor. Valid Point.  Requires an initial value
-    String_( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName, const char* initialValue )
+    String( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName, const char* initialValue )
         : StringBase_( myModelBase, symbolicName, m_data, sizeof( m_data ), initialValue )
     {
     }
 
 public:
-    /// Updates the MP's data/valid-state from 'src'. 
-    inline uint16_t copyFrom( MPTYPE& src, LockRequest_T lockRequest = eNO_REQUEST ) noexcept
-    {
-        return copyStringFrom( src, lockRequest );
-    }
+    /// Type safe subscriber
+    typedef Cpl::Dm::Subscriber<String> Observer;
 
-public:
     /// Type safe register observer
-    inline void attach( Cpl::Dm::Subscriber<MPTYPE>& observer, uint16_t initialSeqNumber=SEQUENCE_NUMBER_UNKNOWN ) noexcept
+    inline void attach( Observer& observer, uint16_t initialSeqNumber=SEQUENCE_NUMBER_UNKNOWN ) noexcept
     {
         attachSubscriber( observer, initialSeqNumber );
     }
 
     /// Type safe un-register observer
-    inline void detach( Cpl::Dm::Subscriber<MPTYPE>& observer ) noexcept
+    inline void detach( Observer& observer ) noexcept
     {
         detachSubscriber( observer );
+    }
+
+    /** This convenience method is used to read the MP contents and synchronize
+        the observer with the current MP contents.  Typically usage is for
+        reading the MP value when executing the change notification callback
+
+        Note: The observer will be subscribed for change notifications after
+              this call.
+     */
+    inline bool readAndSync( Cpl::Text::String& dstData, Observer& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = read( dstData, &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
+
+    /// Same as readAndSync() above, except using a raw char array
+    inline bool readAndSync( char* dstData, size_t dataSizeInBytesIncludingNullTerminator, Observer& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = read( dstData, dataSizeInBytesIncludingNullTerminator, &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
+
+    /// See Cpl::Dm::ModelPointCommon_
+    inline bool isNotValidAndSync( Observer& observerToSync )
+    {
+        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
     }
 
 

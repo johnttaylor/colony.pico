@@ -14,6 +14,7 @@
 
 
 #include "Cpl/Dm/Mp/Numeric.h"
+#include <stdint.h>
 
 ///
 namespace Cpl {
@@ -58,6 +59,17 @@ public:
 	/// Type safe subscriber
 	typedef Cpl::Dm::Subscriber<Uint32> Observer;
 
+	/// See Numeric<double, Double>
+	inline bool readAndSync( uint32_t& dstData, Observer& observerToSync )
+	{
+		return Numeric<uint32_t, Uint32>::readAndSync<Observer>( dstData, observerToSync );
+	}
+
+	/// See Cpl::Dm::ModelPointCommon_
+	inline bool isNotValidAndSync( Observer& observerToSync )
+	{
+		return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
+	}
 
 public:
 	///  See Cpl::Dm::ModelPoint.

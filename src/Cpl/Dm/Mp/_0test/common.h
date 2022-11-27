@@ -14,6 +14,7 @@
 #include "Cpl/Dm/MailboxServer.h"
 #include "Cpl/Dm/SubscriberComposer.h"
 #include "Cpl/Itc/CloseSync.h"
+#include "Catch/catch.hpp"
 
 
 /// Macro to help shutdown the observer thread
@@ -52,7 +53,9 @@ public:
     ///
     void request( Cpl::Itc::OpenRequest::OpenMsg& msg )
     {
-        m_mp.attach( m_observerMp1, m_mp.getSequenceNumber() );
+        // This call will attach the observer to the MP at the MP's
+        // current sequence number, i.e. no immediate call back
+        REQUIRE( m_mp.isNotValidAndSync( m_observerMp1 ) ); 
         msg.returnToSender();
     }
 
@@ -73,5 +76,6 @@ public:
         }
     }
 };
+
 
 #endif // end header latch

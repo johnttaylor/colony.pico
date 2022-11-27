@@ -49,7 +49,7 @@ public:
 
     /// Constructor: Valid MP (requires initial value)
     Enum_( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName, BETTERENUM_TYPE initialValue )
-        :Cpl::Dm::ModelPointCommon_( myModelBase, symbolicName, &m_data, sizeof( m_data ), true )
+        : Cpl::Dm::ModelPointCommon_( myModelBase, symbolicName, &m_data, sizeof( m_data ), true )
         , m_data( BETTERENUM_TYPE::_from_index_unchecked( 0 ) )
     {
         m_data = initialValue;
@@ -86,6 +86,37 @@ public:
         detachSubscriber( observer );
     }
 
+public:
+    /** This convenience method is used to read the MP contents and synchronize
+        the observer with the current MP contents.  Typically usage is for
+        reading the MP value when executing the change notification callback
+
+        Note: The observer will be subscribed for change notifications after
+              this call.
+     */
+    inline bool readAndSync( BETTERENUM_TYPE& dstData, Cpl::Dm::Subscriber<MPTYPE>& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = read( dstData, &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
+
+    /** This convenience method is used to test the validate state the MP and
+        synchronize the observer with the current MP contents.  Typically usage
+        is for inspecting the MP valid state when executing the change
+        notification callback.
+
+        Note: The observer will be subscribed for change notifications after
+              this call
+     */
+    inline bool isNotValidAndSync( Cpl::Dm::Subscriber<MPTYPE>& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = isNotValid( &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
 
 protected:
     /// See Cpl::Dm::Point.  

@@ -38,7 +38,7 @@ protected:
     ModelPoint*                     m_point;
 
     /// Reference to subscriber's EventFlag/Mailbox server
-    Cpl::Dm::EventLoop&            m_eventLoopHdl;
+    Cpl::Dm::EventLoop&             m_eventLoopHdl;
 
     /// Sequence number of the subscriber
     uint16_t                        m_seqNumber;

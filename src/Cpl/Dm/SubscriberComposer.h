@@ -25,8 +25,8 @@ namespace Dm {
 
     A Composer is a structural pattern that may be used to employ composition
     when implementing an interface rather than using multiple inheritance. This
-    allows a single concrete object to receive the RMW callbacks from many
-    Model Points.
+    allows a single concrete object to receive the change notifications callbacks 
+    from many Model Points.
 
     Template Arguments:
         CONTEXT - The class that implements the Callback function
@@ -68,9 +68,9 @@ public:
 /////////////////////////////////////////////////////////////////////////////
 template <class CONTEXT, class MP>
 Cpl::Dm::SubscriberComposer<CONTEXT, MP>::SubscriberComposer( Cpl::Dm::EventLoop&     myEventLoop,
-                                                               CONTEXT&                 context,
-                                                               NotificationFunc_T       notifyCallback )
-    :Subscriber<MP>( myEventLoop )
+                                                              CONTEXT&                context,
+                                                              NotificationFunc_T      notifyCallback )
+    : Subscriber<MP>( myEventLoop )
     , m_context( context )
     , m_notificationCb( notifyCallback )
 {

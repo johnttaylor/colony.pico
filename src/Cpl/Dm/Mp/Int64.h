@@ -58,6 +58,17 @@ public:
 	/// Type safe subscriber
 	typedef Cpl::Dm::Subscriber<Int64> Observer;
 
+	/// See Numeric<double, Double>
+	inline bool readAndSync( int64_t& dstData, Observer& observerToSync )
+	{
+		return Numeric<int64_t, Int64>::readAndSync<Observer>( dstData, observerToSync );
+	}
+
+	/// See Cpl::Dm::ModelPointCommon_
+	inline bool isNotValidAndSync( Observer& observerToSync )
+	{
+		return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
+	}
 
 public:
 	///  See Cpl::Dm::ModelPoint.

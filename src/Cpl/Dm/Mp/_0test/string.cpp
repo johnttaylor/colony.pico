@@ -32,36 +32,6 @@
 
 using namespace Cpl::Dm;
 
-////////////////////////////////////////////////////////////////////////////////
-namespace {
-
-// Define a concrete 'String' child class
-class MyUut : public Mp::String_<MY_UUT_DATA_SIZE,MyUut>
-{
-public:
-    MyUut( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
-        : Mp::String_<MY_UUT_DATA_SIZE, MyUut>( myModelBase, symbolicName )
-    {
-    }
-
-    /// Constructor. Valid Point.  Requires an initial value
-    MyUut( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName, const char* initialValue )
-        : Mp::String_<MY_UUT_DATA_SIZE, MyUut>( myModelBase, symbolicName, initialValue )
-    {
-    }
-
-    ///  See Cpl::Dm::ModelPoint.
-    const char* getTypeAsText() const noexcept
-    {
-        return "Cpl::Dm::Mp::MyUut";
-    }
-
-    /// Type safe subscriber
-    typedef Cpl::Dm::Subscriber<MyUut> Observer;
-};
-
-
-} // end ANONYMOUS namespace
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -69,8 +39,8 @@ public:
 static ModelDatabase    modelDb_( "ignoreThisParameter_usedToInvokeTheStaticConstructor" );
 
 // Allocate my Model Points
-static MyUut       mp_apple_( modelDb_, "APPLE" );
-static MyUut       mp_orange_( modelDb_, "ORANGE", INITIAL_VALUE );
+static Mp::String<MY_UUT_DATA_SIZE> mp_apple_( modelDb_, "APPLE" );
+static Mp::String<MY_UUT_DATA_SIZE> mp_orange_( modelDb_, "ORANGE", INITIAL_VALUE );
 
 // Don't let the Runnable object go out of scope before its thread has actually terminated!
 static MailboxServer         t1Mbox_;
@@ -107,7 +77,7 @@ TEST_CASE( "String" )
 
         const char* mpType = mp_apple_.getTypeAsText();
         CPL_SYSTEM_TRACE_MSG( SECT_, ("typeText: [%s]", mpType) );
-        REQUIRE( strcmp( mpType, "Cpl::Dm::Mp::MyUut" ) == 0 );
+        REQUIRE( strcmp( mpType, "Cpl::Dm::Mp::String" ) == 0 );
     }
 
 
@@ -165,12 +135,13 @@ TEST_CASE( "String" )
         REQUIRE( err == DeserializationError::Ok );
         REQUIRE( doc["locked"] == false );
         REQUIRE( doc["valid"] == true );
-        REQUIRE( STRCMP(doc["val"], "Hi Bob") );
+        REQUIRE( doc["val"]["maxLen"] == MY_UUT_DATA_SIZE );
+        REQUIRE( STRCMP(doc["val"]["text"], "Hi Bob") );
     }
 
     SECTION( "fromJSON" )
     {
-        const char* json = "{name:\"APPLE\", val:\"good bye\"}";
+        const char* json = "{name:\"APPLE\", val:{text:\"good bye\"}}";
         bool result = modelDb_.fromJSON( json );
         REQUIRE( result == true );
         valid = mp_apple_.read( valStr );
@@ -189,7 +160,7 @@ TEST_CASE( "String" )
     SECTION( "observer" )
     {
         CPL_SYSTEM_TRACE_SCOPE( SECT_, "observer test" );
-        Viewer<MyUut>        viewer_apple1( t1Mbox_, Cpl::System::Thread::getCurrent(), mp_apple_ );
+        Viewer<Mp::String<MY_UUT_DATA_SIZE>>  viewer_apple1( t1Mbox_, Cpl::System::Thread::getCurrent(), mp_apple_ );
         Cpl::System::Thread* t1 = Cpl::System::Thread::create( t1Mbox_, "T1" );
 
         // NOTE: The MP MUST be in the INVALID state at the start of this test
