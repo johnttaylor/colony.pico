@@ -14,6 +14,27 @@
 #include "Cpl/Text/strip.h"
 #include "Cpl/System/Assert.h"
 
+#ifdef USE_CPL_TSHELL_PROCESSOR_SILENT_WHEN_PUBLIC
+#define OUTPUT_PROMPT()                     if ( m_userPermLevel != Security::ePUBLIC ) { outfd.write( OPTION_CPL_TSHELL_PROCESSOR_PROMPT ); }
+#define OUTPUT_GREETING()                   if ( m_userPermLevel != Security::ePUBLIC ) { outfd.write( OPTION_CPL_TSHELL_PROCESSOR_GREETING ); }
+#define OUTPUT_FAREWELL()                   if ( m_userPermLevel != Security::ePUBLIC ) { outfd.write( OPTION_CPL_TSHELL_PROCESSOR_FAREWELL ); }
+#define OUTPUT_CMD_ERROR_AND_RETURN()       if ( m_userPermLevel != Security::ePUBLIC ) \
+                                            { \
+                                                return outputCommandError( Command::eERROR_INVALID_CMD, deframedInput ) ? Command::eERROR_INVALID_CMD : Command::eERROR_IO; \
+                                            } \
+                                            else \
+                                            { \
+                                                return Command::eERROR_INVALID_CMD; \
+                                            }
+
+#else
+#define OUTPUT_PROMPT()                     outfd.write( OPTION_CPL_TSHELL_PROCESSOR_PROMPT )
+#define OUTPUT_GREETING()                   outfd.write( OPTION_CPL_TSHELL_PROCESSOR_GREETING )
+#define OUTPUT_FAREWELL()                   outfd.write( OPTION_CPL_TSHELL_PROCESSOR_FAREWELL)
+#define OUTPUT_CMD_ERROR_AND_RETURN()       return outputCommandError( Command::eERROR_INVALID_CMD, deframedInput ) ? Command::eERROR_INVALID_CMD : Command::eERROR_IO;       
+#endif
+
+
 ///
 using namespace Cpl::TShell;
 
@@ -21,20 +42,22 @@ static const char* resultToString_( Command::Result_T errcode );
 
 
 ///////////////////////////////////
-Processor::Processor( Cpl::Container::Map<Command>&     commands,
-                      Cpl::Text::Frame::StreamDecoder&  deframer,
-                      Cpl::Text::Frame::StreamEncoder&  framer,
-                      Cpl::System::Mutex&               outputLock,
+Processor::Processor( Cpl::Container::Map<Command>&commands,
+                      Cpl::Text::Frame::StreamDecoder & deframer,
+                      Cpl::Text::Frame::StreamEncoder & framer,
+                      Cpl::System::Mutex & outputLock,
                       char                              commentChar,
                       char                              argEscape,
                       char                              argDelimiter,
                       char                              argQuote,
-                      char                              argTerminator
+                      char                              argTerminator,
+                      Security::Permission_T            initialPermissionLevel
 )
     :m_commands( commands )
     , m_deframer( deframer )
     , m_framer( framer )
     , m_outLock( outputLock )
+    , m_userPermLevel( initialPermissionLevel )
     , m_comment( commentChar )
     , m_esc( argEscape )
     , m_del( argDelimiter )
@@ -45,7 +68,20 @@ Processor::Processor( Cpl::Container::Map<Command>&     commands,
 }
 
 ///////////////////////////////////
-int Processor::readInput( size_t& frameSize ) noexcept
+Security::Permission_T Processor::getUserPermissionLevel() const noexcept
+{
+    return m_userPermLevel;
+}
+
+/// See Cpl::TShell::Context_
+Security::Permission_T Processor::setUserPermissionLevel( Security::Permission_T newPermissionLevel ) noexcept
+{
+    Security::Permission_T oldLevel = m_userPermLevel;
+    m_userPermLevel = newPermissionLevel;
+    return oldLevel;
+}
+
+int Processor::readInput( size_t & frameSize ) noexcept
 {
     frameSize = 0;
     if ( !m_deframer.scan( OPTION_CPL_TSHELL_PROCESSOR_INPUT_SIZE, m_inputBuffer, frameSize ) )
@@ -57,7 +93,7 @@ int Processor::readInput( size_t& frameSize ) noexcept
     return 1;
 }
 
-int Processor::getAndProcessFrame( Cpl::Io::Output& outfd  ) noexcept
+int Processor::getAndProcessFrame( Cpl::Io::Output & outfd ) noexcept
 {
     // Check for stop request
     Cpl::System::GlobalLock::begin();
@@ -66,7 +102,7 @@ int Processor::getAndProcessFrame( Cpl::Io::Output& outfd  ) noexcept
 
     if ( !run )
     {
-        outfd.write( OPTION_CPL_TSHELL_PROCESSOR_FAREWELL );
+        OUTPUT_FAREWELL();
         Cpl::System::Api::sleep( 250 ); // Allow time for the farewell message to be outputted
         return 1;
     }
@@ -94,7 +130,7 @@ int Processor::getAndProcessFrame( Cpl::Io::Output& outfd  ) noexcept
         }
 
         // Output the prompt
-        outfd.write( OPTION_CPL_TSHELL_PROCESSOR_PROMPT );
+        OUTPUT_PROMPT();
     }
 
     // If I get here - then no error occurred
@@ -110,8 +146,8 @@ bool Processor::start( Cpl::Io::Input & infd, Cpl::Io::Output & outfd, bool bloc
     m_framer.setOutput( outfd );
 
     // Output the greeting message
-    outfd.write( OPTION_CPL_TSHELL_PROCESSOR_GREETING );
-    outfd.write( OPTION_CPL_TSHELL_PROCESSOR_PROMPT );
+    OUTPUT_GREETING();
+    OUTPUT_PROMPT();
     m_deframer.setInput( infd );
 
     // Run until I am requested to stop (or run once if using non-blocking semantics)
@@ -162,14 +198,19 @@ Command::Result_T Processor::executeCommand( char* deframedInput, Cpl::Io::Outpu
     Command*                         cmdPtr;
     if ( (cmdPtr=m_commands.find( verb )) == 0 )
     {
-        return outputCommandError( Command::eERROR_INVALID_CMD, deframedInput ) ? Command::eERROR_INVALID_CMD : Command::eERROR_IO;
+        OUTPUT_CMD_ERROR_AND_RETURN();
     }
 
-    // Execute the found command
-    Command::Result_T result = cmdPtr->execute( *this, (char*) firstToken, outfd );
-    if ( result != Command::eSUCCESS )
+    // Validate the user permissions
+    Command::Result_T result = Command::eERROR_INVALID_CMD;
+    if ( cmdPtr->getMinPermissionRequired() <= m_userPermLevel )
     {
-        return outputCommandError( result, deframedInput ) ? result : Command::eERROR_IO;
+        // Execute the found command
+        result = cmdPtr->execute( *this, (char*) firstToken, outfd );
+        if ( result != Command::eSUCCESS )
+        {
+            return outputCommandError( result, deframedInput ) ? result : Command::eERROR_IO;
+        }
     }
 
     return result;

@@ -56,8 +56,8 @@ public:
 					 char                              argEscape='`',
 					 char                              argDelimiter=' ',
 					 char                              argQuote='"',
-					 char                              argTerminator='\n'
-	);				 
+					 char                              argTerminator='\n',
+					 Security::Permission_T            initialPermissionLevel = Security::ePUBLIC );
 
 
 public:
