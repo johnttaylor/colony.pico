@@ -26,7 +26,7 @@
 using namespace Storm::Dm;
 
 #define STRCMP(s1,s2)       (strcmp(s1,s2)==0)
-#define MAX_STR_LENG        1024
+#define MAX_STR_LENG        (1024*2)
 #define SECT_               "_0test"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ TEST_CASE( "MpSystemConfig" )
         mp_apple_.toJSON( string, MAX_STR_LENG, truncated, true, true );
         CPL_SYSTEM_TRACE_MSG( SECT_, ("toJSON: [%s]", string) );
 
-        StaticJsonDocument<1024> doc;
+        StaticJsonDocument<2*1024> doc;
         DeserializationError err = deserializeJson( doc, string );
         REQUIRE( err == DeserializationError::Ok );
         REQUIRE( doc["locked"] == false );

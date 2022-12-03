@@ -11,6 +11,7 @@
 * Redistributions of the source code must retain the above copyright notice.
 *----------------------------------------------------------------------------*/
 
+#include "Catch/catch.hpp"
 #include "Cpl/Dm/MailboxServer.h"
 #include "Cpl/Dm/SubscriberComposer.h"
 #include "Cpl/Itc/CloseSync.h"
@@ -43,7 +44,9 @@ public:
     ///
     void request( Cpl::Itc::OpenRequest::OpenMsg& msg )
     {
-        m_mp.attach( m_observerMp1 );
+        // This call will attach the observer to the MP at the MP's
+        // current sequence number, i.e. no immediate call back
+        REQUIRE( m_mp.isNotValidAndSync( m_observerMp1 ) );
         msg.returnToSender();
     }
 

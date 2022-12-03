@@ -102,20 +102,10 @@ public:
         return result;
     }
 
-    /** This convenience method is used to test the validate state the MP and
-        synchronize the observer with the current MP contents.  Typically usage
-        is for inspecting the MP valid state when executing the change
-        notification callback.
-
-        Note: The observer will be subscribed for change notifications after
-              this call
-     */
+    /// See Cpl::Dm::ModelPointCommon_
     inline bool isNotValidAndSync( Cpl::Dm::Subscriber<MPTYPE>& observerToSync )
     {
-        uint16_t seqNum;
-        bool result = isNotValid( &seqNum );
-        attach( observerToSync, seqNum );
-        return result;
+        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Cpl::Dm::Subscriber<MPTYPE>>( observerToSync );
     }
 
 protected:

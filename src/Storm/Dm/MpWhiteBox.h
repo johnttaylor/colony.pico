@@ -92,6 +92,27 @@ public:
     /// Type safe un-register observer
     void detach( Observer& observer ) noexcept;
 
+public:
+    /** This convenience method is used to read the MP contents and synchronize
+        the observer with the current MP contents.  Typically usage is for
+        reading the MP value when executing the change notification callback
+
+        Note: The observer will be subscribed for change notifications after
+              this call.
+     */
+    inline bool readAndSync( Storm::Type::WhiteBox_T& dst, Observer& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = read( dst, &seqNum );
+        attach( observerToSync, seqNum );
+        return result;
+    }
+
+    /// See Cpl::Dm::ModelPointCommon_
+    inline bool isNotValidAndSync( Observer& observerToSync )
+    {
+        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
+    }
 
 public:
     /// See Cpl::Dm::ModelPoint.
