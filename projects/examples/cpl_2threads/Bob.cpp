@@ -72,7 +72,7 @@ void Bob::delayModelPointChange( Cpl::Dm::Mp::Uint32 & mp )
     CPL_SYSTEM_TRACE_MSG( "app", ("Bob:delayModelPointChange()") );
 
     uint32_t delayMs;
-    if ( mp.read( delayMs ) )
+    if ( mp.readAndSync( delayMs, m_observerDelay ) )
     {
         m_delayMs = delayMs;
     }
@@ -82,7 +82,7 @@ void Bob::verboseModelPointChange( Cpl::Dm::Mp::Bool & mp )
 {
     CPL_SYSTEM_TRACE_MSG( "app", ("Bob:verboseModelPointChange()") );
     bool verbose;
-    if ( mp.read( verbose ) )
+    if ( mp.readAndSync( verbose, m_observerVerbose ) )
     {
         m_verbose = verbose;
     }

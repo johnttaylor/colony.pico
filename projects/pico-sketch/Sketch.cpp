@@ -79,7 +79,7 @@ public:
     void buttonEventAlt( Cpl::Dm::Mp::Bool& mp )
     {
         bool pressed;
-        if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
+        if ( mp.readAndSync( pressed, m_obAltButton ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
             toggleCursor();
         }
@@ -89,7 +89,7 @@ public:
     void buttonEventRight( Cpl::Dm::Mp::Bool& mp )
     {
         bool pressed;
-        if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
+        if ( mp.readAndSync( pressed, m_obRightButton ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
             deactivateCursor();
             movePencil( 1, 0 );
@@ -100,7 +100,7 @@ public:
     void buttonEventLeft( Cpl::Dm::Mp::Bool& mp )
     {
         bool pressed;
-        if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
+        if ( mp.readAndSync( pressed, m_obLeftButton ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
             deactivateCursor();
             movePencil( -1, 0 );
@@ -111,7 +111,7 @@ public:
     void buttonEventUp( Cpl::Dm::Mp::Bool& mp )
     {
         bool pressed;
-        if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
+        if ( mp.readAndSync( pressed, m_obUpButton ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
             deactivateCursor();
             movePencil( 0, -1 );
@@ -122,7 +122,7 @@ public:
     void buttonEventDown( Cpl::Dm::Mp::Bool& mp )
     {
         bool pressed;
-        if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
+        if ( mp.readAndSync( pressed, m_obDownButton ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
             deactivateCursor();
             movePencil( 0, 1 );
@@ -133,7 +133,7 @@ public:
     void buttonEventSize( Cpl::Dm::Mp::Bool& mp )
     {
         bool pressed;
-        if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
+        if ( mp.readAndSync( pressed, m_obSizeButton ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
 
             deactivateCursor();
@@ -154,7 +154,7 @@ public:
     void buttonEventColor( Cpl::Dm::Mp::Bool& mp )
     {
         bool pressed;
-        if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
+        if ( mp.readAndSync( pressed, m_obColorButton ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
             // Colors: Black, Blue, Green, Cyan, Red, Magenta, Yellow, White }
             const static RGB_T colors[] ={ {0,0,0},         // Black
@@ -181,7 +181,7 @@ public:
     void buttonEventClear( Cpl::Dm::Mp::Bool & mp )
     {
         bool pressed;
-        if ( mp.read( pressed ) && pressed && !consumeAnyKeyWhenWaiting() )
+        if ( mp.readAndSync( pressed, m_obClearButton ) && pressed && !consumeAnyKeyWhenWaiting() )
         {
             drawStartScreen();
             m_waitingAnyKey = true;
