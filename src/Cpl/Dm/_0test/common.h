@@ -119,6 +119,7 @@ public:
         m_mpNotificationCount1++;
         m_lastValid     = modelPointThatChanged.readAndSync( m_lastValue, clientObsever );
         m_lastSeqNumber = m_observerMp1.getSequenceNumber_();
+        REQUIRE( m_observerMp1.getSequenceNumber_() == modelPointThatChanged.getSequenceNumber() );
 
         //CPL_SYSTEM_TRACE_MSG( SECT_, ("VIEWER(%p): mp changed (%s), notify count=%d, valid=%d, value=%d",
         //                               this,
