@@ -81,16 +81,33 @@ public:
     /// See Cpl::Dm::ModelPoint
     bool toJSON( char* dst, size_t dstSize, bool& truncated, bool verbose=true, bool pretty=false ) noexcept;
 
-    /** This convenience method is used to test the validate state the MP and
-        synchronize the observer with the current MP contents.  Typically usage
-        is for inspecting the MP valid state when executing the change
-        notification callback.
+protected:
+    /** This method is used to read the MP contents and synchronize
+        the observer with the current MP contents.  This method should ONLY be
+        used in the notification callback method and the 'observerToSync'
+        argument MUST be the argument provided by the callback method
+
+        Note: The observer will be subscribed for change notifications after
+              this call.
+     */
+    inline bool readAndSync( void* dstData, size_t dstSize, SubscriberApi& observerToSync )
+    {
+        uint16_t seqNum;
+        bool result = readData( dstData, dstSize , &seqNum );
+        attachSubscriber( observerToSync, seqNum );
+        return result;
+    }
+
+public:
+    /** This method is used to test the validate state of the MP and synchronize
+        the observer with the current MP contents.  This method should ONLY be
+        used in the notification callback method and the 'observerToSync'
+        argument MUST be the argument provided by the callback method
 
         Note: The observer will be subscribed for change notifications after
               this call
      */
-    template <class OBSERVER>
-    inline bool isNotValidAndSync( OBSERVER& observerToSync )
+    inline bool isNotValidAndSync( SubscriberApi& observerToSync )
     {
         uint16_t seqNum;
         bool result = isNotValid( &seqNum );

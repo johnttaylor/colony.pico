@@ -113,21 +113,10 @@ public:
         detachSubscriber( observer );
     }
 
-public:
-    /** This convenience method is used to read the MP contents and synchronize
-        the observer with the current MP contents.  Typically usage is for
-        reading the MP value when executing the change notification callback
-
-        Note: The observer will be subscribed for change notifications after
-              this call.
-     */
-    template <class OBSERVER>
-    inline bool readAndSync( ELEMTYPE& dstData, OBSERVER& observerToSync )
+    /// See Cpl::Dm::ModelPointCommon
+    inline bool readAndSync( ELEMTYPE& dstData, SubscriberApi& observerToSync )
     {
-        uint16_t seqNum;
-        bool result = read( dstData, &seqNum );
-        attach( observerToSync, seqNum );
-        return result;
+        return ModelPointCommon_::readAndSync( &dstData, sizeof( ELEMTYPE ), observerToSync );
     }
 
 protected:

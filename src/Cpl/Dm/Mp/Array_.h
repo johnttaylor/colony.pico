@@ -183,6 +183,26 @@ public:
         return ArrayBase_::writeArrayElements( srcArray, srcNumElements, dstIndex, lockRequest );
     }
 
+public:
+    /** This method is used to read the MP contents and synchronize
+        the observer with the current MP contents.  This method should ONLY be
+        used in the notification callback method and the 'observerToSync'
+        argument MUST be the argument provided by the callback method
+
+        Note: The observer will be subscribed for change notifications after
+              this call.
+     */
+    inline bool readAndSync( ELEMTYPE*      dstArrray,
+                             size_t         dstNumElements,
+                             SubscriberApi& observerToSync,
+                             size_t         srcIndex = 0 )
+    {
+        uint16_t seqNum;
+        bool result = read( dstArrray, dstNumElements, srcIndex, &seqNum );
+        ArrayBase_::attachSubscriber( observerToSync, seqNum );
+        return result;
+    }
+
 protected:
     /// See Cpl::Dm::Point.  
     void setJSONVal( JsonDocument& doc ) noexcept
@@ -317,30 +337,6 @@ public:
         ArrayBase_::detachSubscriber( observer );
     }
 
-public:
-    /** This convenience method is used to read the MP contents and synchronize
-       the observer with the current MP contents.  Typically usage is for
-       reading the MP value when executing the change notification callback
-
-       Note: The observer will be subscribed for change notifications after
-             this call.
-    */
-    inline bool readAndSync( ELEMTYPE*                    dstArrray, 
-                             size_t                       dstNumElements, 
-                             Cpl::Dm::Subscriber<MPTYPE>& observerToSync, 
-                             size_t                       srcIndex )
-    {
-        uint16_t seqNum;
-        bool result = read( dstArrray, dstNumElements, srcIndex, &seqNum );
-        attach( observerToSync, seqNum );
-        return result;
-    }
-
-    /// See Cpl::Dm::ModelPointCommon_
-    inline bool isNotValidAndSync( Cpl::Dm::Subscriber<MPTYPE>& observerToSync )
-    {
-        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Cpl::Dm::Subscriber<MPTYPE>>( observerToSync );
-    }
 };
 
 //////////////////////////////////////////////////////////////////////////////

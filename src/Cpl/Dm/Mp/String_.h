@@ -142,34 +142,29 @@ public:
         detachSubscriber( observer );
     }
 
-    /** This convenience method is used to read the MP contents and synchronize
-        the observer with the current MP contents.  Typically usage is for
-        reading the MP value when executing the change notification callback
+    /** This method is used to read the MP contents and synchronize
+        the observer with the current MP contents.  This method should ONLY be
+        used in the notification callback method and the 'observerToSync'
+        argument MUST be the argument provided by the callback method
 
         Note: The observer will be subscribed for change notifications after
               this call.
      */
-    inline bool readAndSync( Cpl::Text::String& dstData, Observer& observerToSync )
+    inline bool readAndSync( Cpl::Text::String& dstData, SubscriberApi& observerToSync )
     {
         uint16_t seqNum;
         bool result = read( dstData, &seqNum );
-        attach( observerToSync, seqNum );
+        attachSubscriber( observerToSync, seqNum );
         return result;
     }
 
     /// Same as readAndSync() above, except using a raw char array
-    inline bool readAndSync( char* dstData, size_t dataSizeInBytesIncludingNullTerminator, Observer& observerToSync )
+    inline bool readAndSync( char* dstData, size_t dataSizeInBytesIncludingNullTerminator, SubscriberApi& observerToSync )
     {
         uint16_t seqNum;
         bool result = read( dstData, dataSizeInBytesIncludingNullTerminator, &seqNum );
-        attach( observerToSync, seqNum );
+        attachSubscriber( observerToSync, seqNum );
         return result;
-    }
-
-    /// See Cpl::Dm::ModelPointCommon_
-    inline bool isNotValidAndSync( Observer& observerToSync )
-    {
-        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
     }
 
 

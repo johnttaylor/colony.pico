@@ -39,7 +39,7 @@ public:
     /** Define a callback method function for the Change Notification callback (See
         Cpl::Dm::Subscriber<MP>::modelPointChanged for additional details)
      */
-    typedef void (CONTEXT::*NotificationFunc_T)(MP& modelPointThatChanged);
+    typedef void (CONTEXT::*NotificationFunc_T)(MP& modelPointThatChanged, SubscriberApi& clientObserver );
 
 
 protected:
@@ -59,7 +59,7 @@ public:
 
 public:
     /// See Cpl::Dm::Subscriber<MP>
-    void modelPointChanged( MP& modelPointThatChanged ) noexcept;
+    void modelPointChanged( MP& modelPointThatChanged, SubscriberApi &clientObserver ) noexcept;
 
 };
 
@@ -78,10 +78,10 @@ Cpl::Dm::SubscriberComposer<CONTEXT, MP>::SubscriberComposer( Cpl::Dm::EventLoop
 
 /////////////////
 template <class CONTEXT, class MP>
-void Cpl::Dm::SubscriberComposer<CONTEXT, MP>::modelPointChanged( MP& modelPointThatChanged ) noexcept
+void Cpl::Dm::SubscriberComposer<CONTEXT, MP>::modelPointChanged( MP& modelPointThatChanged, SubscriberApi& clientObserver ) noexcept
 {
     // Notify context
-    return (m_context.*m_notificationCb)(modelPointThatChanged);
+    return (m_context.*m_notificationCb)(modelPointThatChanged, clientObserver);
 }
 
 

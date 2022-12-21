@@ -25,6 +25,7 @@
 #define MAX_STR_LENG            1024
 #define SECT_                   "_0test"
 
+
 #define MY_ARRAY_SIZE           10
 
 #define INITIAL_VALUE           initValuArray_
@@ -228,7 +229,7 @@ TEST_CASE( "Array" )
     SECTION( "observer" )
     {
         CPL_SYSTEM_TRACE_SCOPE( SECT_, "observer test" );
-        Viewer<Mp::ArrayUint8<MY_ARRAY_SIZE>>        viewer_apple1( t1Mbox_, Cpl::System::Thread::getCurrent(), mp_apple_ );
+        ViewerUint8Array<Mp::ArrayUint8<MY_ARRAY_SIZE>, MY_ARRAY_SIZE>  viewer_apple1( t1Mbox_, Cpl::System::Thread::getCurrent(), mp_apple_, INITIAL_VALUE );
         Cpl::System::Thread* t1 = Cpl::System::Thread::create( t1Mbox_, "T1" );
 
         // NOTE: The MP MUST be in the INVALID state at the start of this test

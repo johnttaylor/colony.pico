@@ -57,18 +57,6 @@ public:
     /// Type safe subscriber
     typedef Cpl::Dm::Subscriber<Double> Observer;
 
-    /// See Numeric<double, Double>
-    inline bool readAndSync( double& dstData, Observer& observerToSync )
-    {
-        return Numeric<double, Double>::readAndSync<Observer>( dstData, observerToSync );
-    }
-
-    /// See Cpl::Dm::ModelPointCommon_
-    inline bool isNotValidAndSync( Observer& observerToSync )
-    {
-        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
-    }
-
 public:
     ///  See Cpl::Dm::ModelPoint.
     const char* getTypeAsText() const noexcept

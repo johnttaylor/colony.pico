@@ -110,26 +110,10 @@ public:
     /// See Cpl::Dm::Point.  
     bool fromJSON_( JsonVariant& src, LockRequest_T lockRequest, uint16_t& retSequenceNumber, Cpl::Text::String* errorMsg ) noexcept;
 
-public:
-    /** This convenience method is used to read the MP contents and synchronize
-        the observer with the current MP contents.  Typically usage is for
-        reading the MP value when executing the change notification callback
-
-        Note: The observer will be subscribed for change notifications after
-              this call.
-     */
-    inline bool readAndSync( uint32_t& dstData, Observer& observerToSync )
+    /// See Cpl::Dm::ModelPointCommon
+    inline bool readAndSync( uint32_t& dstData, SubscriberApi& observerToSync )
     {
-        uint16_t seqNum;
-        bool result = read( dstData, &seqNum );
-        attach( observerToSync, seqNum );
-        return result;
-    }
-
-    /// See Cpl::Dm::ModelPointCommon_
-    inline bool isNotValidAndSync( Observer& observerToSync )
-    {
-        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
+        return ModelPointCommon_::readAndSync( &dstData, sizeof( m_data ), observerToSync );
     }
 
 protected:

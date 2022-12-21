@@ -28,7 +28,7 @@
                                         }
 
 
-template< class MPTYPE>
+template< class MPTYPE, class ELEMTYPE>
 class Viewer : public Cpl::Itc::CloseSync
 {
 public:
@@ -38,14 +38,16 @@ public:
     Cpl::Dm::SubscriberComposer<Viewer, MPTYPE>     m_observerMp1;
     ///
     MPTYPE&                                         m_mp;
-
+    ///
+    ELEMTYPE                                        m_elemValue;
 
     /// Constructor
-    Viewer( Cpl::Dm::MailboxServer& myMbox, Cpl::System::Thread& masterThread, MPTYPE& mpToMonitor )
+    Viewer( Cpl::Dm::MailboxServer& myMbox, Cpl::System::Thread& masterThread, MPTYPE& mpToMonitor, ELEMTYPE elemValue )
         : Cpl::Itc::CloseSync( myMbox )
         , m_masterThread( masterThread )
-        , m_observerMp1( myMbox, *this, &Viewer<MPTYPE>::mp1_changed )
+        , m_observerMp1( myMbox, *this, &Viewer<MPTYPE,ELEMTYPE>::mp1_changed )
         , m_mp( mpToMonitor )
+        , m_elemValue( elemValue )
     {
     }
 
@@ -53,9 +55,7 @@ public:
     ///
     void request( Cpl::Itc::OpenRequest::OpenMsg& msg )
     {
-        // This call will attach the observer to the MP at the MP's
-        // current sequence number, i.e. no immediate call back
-        REQUIRE( m_mp.isNotValidAndSync( m_observerMp1 ) ); 
+        m_mp.attach( m_observerMp1 );
         msg.returnToSender();
     }
 
@@ -68,14 +68,71 @@ public:
 
 
 public:
-    void mp1_changed( MPTYPE& modelPointThatChanged ) noexcept
+    void mp1_changed( MPTYPE& modelPointThatChanged, Cpl::Dm::SubscriberApi& clientObserver ) noexcept
     {
-        if ( modelPointThatChanged.isNotValid() == false )
+        if ( modelPointThatChanged.isNotValidAndSync( clientObserver ) == false )
         {
+            ELEMTYPE elem;
+            REQUIRE( modelPointThatChanged.readAndSync( elem, clientObserver ) );
+            REQUIRE( elem == m_elemValue );
+
             m_masterThread.signal();
         }
     }
 };
 
+
+template< class MPTYPE, int N>
+class ViewerUint8Array : public Cpl::Itc::CloseSync
+{
+public:
+    ///
+    Cpl::System::Thread&                                m_masterThread;
+    ///
+    Cpl::Dm::SubscriberComposer<ViewerUint8Array, MPTYPE>    m_observerMp1;
+    ///
+    MPTYPE&                                             m_mp;
+    ///
+    uint8_t                                             m_val[N];
+
+    /// Constructor
+    ViewerUint8Array( Cpl::Dm::MailboxServer& myMbox, Cpl::System::Thread& masterThread, MPTYPE& mpToMonitor, uint8_t* array )
+        : Cpl::Itc::CloseSync( myMbox )
+        , m_masterThread( masterThread )
+        , m_observerMp1( myMbox, *this, &ViewerUint8Array<MPTYPE,N>::mp1_changed )
+        , m_mp( mpToMonitor )
+    {
+        memcpy( m_val, array, N );
+    }
+
+public:
+    ///
+    void request( Cpl::Itc::OpenRequest::OpenMsg& msg )
+    {
+        m_mp.attach( m_observerMp1 );
+        msg.returnToSender();
+    }
+
+    ///
+    void request( Cpl::Itc::CloseRequest::CloseMsg& msg )
+    {
+        m_mp.detach( m_observerMp1 );
+        msg.returnToSender();
+    }
+
+
+public:
+    void mp1_changed( MPTYPE& modelPointThatChanged, Cpl::Dm::SubscriberApi& clientObserver ) noexcept
+    {
+        if ( modelPointThatChanged.isNotValidAndSync( clientObserver ) == false )
+        {
+            uint8_t val[N] ={ 0, };
+            REQUIRE( modelPointThatChanged.readAndSync( val, N, clientObserver ) );
+            REQUIRE( memcmp( val, m_val, N ) == 0 );
+
+            m_masterThread.signal();
+        }
+    }
+};
 
 #endif // end header latch

@@ -160,12 +160,13 @@ TEST_CASE( "String" )
     SECTION( "observer" )
     {
         CPL_SYSTEM_TRACE_SCOPE( SECT_, "observer test" );
-        Viewer<Mp::String<MY_UUT_DATA_SIZE>>  viewer_apple1( t1Mbox_, Cpl::System::Thread::getCurrent(), mp_apple_ );
+        Cpl::Text::FString<10> expectedVal = "bob";
+        Viewer<Mp::String<MY_UUT_DATA_SIZE>, Cpl::Text::FString<10>>  viewer_apple1( t1Mbox_, Cpl::System::Thread::getCurrent(), mp_apple_, expectedVal );
         Cpl::System::Thread* t1 = Cpl::System::Thread::create( t1Mbox_, "T1" );
 
         // NOTE: The MP MUST be in the INVALID state at the start of this test
         viewer_apple1.open();
-        mp_apple_.write( "bob" );
+        mp_apple_.write( expectedVal );
         Cpl::System::Thread::wait();
         viewer_apple1.close();
 

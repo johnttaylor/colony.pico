@@ -110,14 +110,14 @@ public:
 
 
 public:
-    void mp1_changed( Mp::Uint32& modelPointThatChanged ) noexcept
+    void mp1_changed( Mp::Uint32& modelPointThatChanged, SubscriberApi& clientObsever ) noexcept
     {
         CPL_SYSTEM_TRACE_ALLOCATE( uint32_t, prevValue, m_lastValue );
         CPL_SYSTEM_TRACE_ALLOCATE( int8_t, prevState, m_lastValid );
         uint16_t prevSeqNum = m_lastSeqNumber;
 
         m_mpNotificationCount1++;
-        m_lastValid     = modelPointThatChanged.readAndSync( m_lastValue, m_observerMp1 );
+        m_lastValid     = modelPointThatChanged.readAndSync( m_lastValue, clientObsever );
         m_lastSeqNumber = m_observerMp1.getSequenceNumber_();
 
         //CPL_SYSTEM_TRACE_MSG( SECT_, ("VIEWER(%p): mp changed (%s), notify count=%d, valid=%d, value=%d",
@@ -349,7 +349,7 @@ public:
 
 
 public:
-    void mpChanged( ModelPoint& modelPointThatChanged ) noexcept
+    void mpChanged( ModelPoint& modelPointThatChanged, SubscriberApi& clientObserver  ) noexcept
     {
         m_mpNotificationCount++;
         m_lastValid     = !modelPointThatChanged.isNotValid();
