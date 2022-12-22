@@ -15,11 +15,11 @@
 #include "Cpl/Dm/MailboxServer.h"
 #include "Cpl/Dm/SubscriberComposer.h"
 #include "Cpl/Itc/CloseSync.h"
+#include "Cpl/Text/FString.h"
+#include "Storm/Dm/MpSetpoints.h"
+#include "Cpl/Math/real.h"
 
-
-
-
-template< class MPTYPE>
+template< class MPTYPE, class ELEMTYPE>
 class Viewer : public Cpl::Itc::CloseSync
 {
 public:
@@ -29,14 +29,17 @@ public:
     Cpl::Dm::SubscriberComposer<Viewer, MPTYPE>     m_observerMp1;
     ///
     MPTYPE&                                         m_mp;
+    ///
+    ELEMTYPE                                        m_elemValue;
 
 
     /// Constructor
-    Viewer( Cpl::Dm::MailboxServer& myMbox, Cpl::System::Thread& masterThread, MPTYPE& mpToMonitor )
+    Viewer( Cpl::Dm::MailboxServer& myMbox, Cpl::System::Thread& masterThread, MPTYPE& mpToMonitor, ELEMTYPE elemValue )
         : Cpl::Itc::CloseSync( myMbox )
         , m_masterThread( masterThread )
-        , m_observerMp1( myMbox, *this, &Viewer<MPTYPE>::mp1_changed )
+        , m_observerMp1( myMbox, *this, &Viewer<MPTYPE,ELEMTYPE>::mp1_changed )
         , m_mp( mpToMonitor )
+        , m_elemValue( elemValue )
     {
     }
 
@@ -44,9 +47,7 @@ public:
     ///
     void request( Cpl::Itc::OpenRequest::OpenMsg& msg )
     {
-        // This call will attach the observer to the MP at the MP's
-        // current sequence number, i.e. no immediate call back
-        REQUIRE( m_mp.isNotValidAndSync( m_observerMp1 ) );
+        m_mp.attach( m_observerMp1 );
         msg.returnToSender();
     }
 
@@ -59,13 +60,124 @@ public:
 
 
 public:
-    void mp1_changed( MPTYPE& modelPointThatChanged ) noexcept
+    void mp1_changed( MPTYPE& modelPointThatChanged, Cpl::Dm::SubscriberApi& clientObserver ) noexcept
     {
-        if ( modelPointThatChanged.isNotValid() == false )
+        if ( modelPointThatChanged.isNotValidAndSync( clientObserver ) == false )
         {
+            ELEMTYPE elem;
+            REQUIRE( modelPointThatChanged.readAndSync( elem, clientObserver ) );
+            REQUIRE( memcmp( &elem, &m_elemValue, sizeof(ELEMTYPE) ) == 0 );
+
             m_masterThread.signal();
         }
     }
 };
 
+template< class MPTYPE>
+class ViewerString : public Cpl::Itc::CloseSync
+{
+public:
+    ///
+    Cpl::System::Thread&                            m_masterThread;
+    ///
+    Cpl::Dm::SubscriberComposer<ViewerString, MPTYPE>     m_observerMp1;
+    ///
+    MPTYPE&                                         m_mp;
+    ///
+    Cpl::Text::FString<64>                          m_elemValue;
+
+
+    /// Constructor
+    ViewerString( Cpl::Dm::MailboxServer& myMbox, Cpl::System::Thread& masterThread, MPTYPE& mpToMonitor, const char* elemValue )
+        : Cpl::Itc::CloseSync( myMbox )
+        , m_masterThread( masterThread )
+        , m_observerMp1( myMbox, *this, &ViewerString<MPTYPE>::mp1_changed )
+        , m_mp( mpToMonitor )
+        , m_elemValue( elemValue )
+    {
+    }
+
+public:
+    ///
+    void request( Cpl::Itc::OpenRequest::OpenMsg& msg )
+    {
+        m_mp.attach( m_observerMp1 );
+        msg.returnToSender();
+    }
+
+    ///
+    void request( Cpl::Itc::CloseRequest::CloseMsg& msg )
+    {
+        m_mp.detach( m_observerMp1 );
+        msg.returnToSender();
+    }
+
+
+public:
+    void mp1_changed( MPTYPE& modelPointThatChanged, Cpl::Dm::SubscriberApi& clientObserver ) noexcept
+    {
+        if ( modelPointThatChanged.isNotValidAndSync( clientObserver ) == false )
+        {
+            Cpl::Text::FString<64> elem;
+            REQUIRE( modelPointThatChanged.readAndSync( elem, clientObserver ) );
+            REQUIRE( m_elemValue == elem);
+
+            m_masterThread.signal();
+        }
+    }
+};
+
+class ViewerSetpoint: public Cpl::Itc::CloseSync
+{
+public:
+    ///
+    Cpl::System::Thread&                                                m_masterThread;
+    ///
+    Cpl::Dm::SubscriberComposer<ViewerSetpoint, Storm::Dm::MpSetpoints> m_observerMp1;
+    ///
+    Storm::Dm::MpSetpoints&                                             m_mp;
+    ///
+    Storm::Dm::MpSetpoints::Data                                        m_elemValue;
+
+
+    /// Constructor
+    ViewerSetpoint( Cpl::Dm::MailboxServer& myMbox, Cpl::System::Thread& masterThread, Storm::Dm::MpSetpoints& mpToMonitor, Storm::Dm::MpSetpoints::Data  elemValue )
+        : Cpl::Itc::CloseSync( myMbox )
+        , m_masterThread( masterThread )
+        , m_observerMp1( myMbox, *this, &ViewerSetpoint::mp1_changed )
+        , m_mp( mpToMonitor )
+        , m_elemValue( elemValue )
+    {
+    }
+
+public:
+    ///
+    void request( Cpl::Itc::OpenRequest::OpenMsg& msg )
+    {
+        m_mp.attach( m_observerMp1 );
+        msg.returnToSender();
+    }
+
+    ///
+    void request( Cpl::Itc::CloseRequest::CloseMsg& msg )
+    {
+        m_mp.detach( m_observerMp1 );
+        msg.returnToSender();
+    }
+
+
+public:
+    void mp1_changed( Storm::Dm::MpSetpoints& modelPointThatChanged, Cpl::Dm::SubscriberApi& clientObserver ) noexcept
+    {
+        if ( modelPointThatChanged.isNotValidAndSync( clientObserver ) == false )
+        {
+            Storm::Dm::MpSetpoints::Data elem;
+            REQUIRE( modelPointThatChanged.readAndSync( elem, clientObserver ) );
+            REQUIRE( Cpl::Math::areFloatsEqual( m_elemValue.coolSetpt, elem.coolSetpt ) );
+            REQUIRE( Cpl::Math::areFloatsEqual( m_elemValue.heatSetpt, elem.heatSetpt ) );
+
+            m_masterThread.signal();
+        }
+    }
+};
 #endif // end header latch

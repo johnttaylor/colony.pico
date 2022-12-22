@@ -51,6 +51,24 @@ public:
         bool primaryAck;        //!< When set to true, the primary IDT alarm has been acknowledged.  When primaryAlarm is false, this field has no meaning
         bool secondaryAck;      //!< When set to true, the secondary IDT alarm has been acknowledged.  When secondaryAlarm is false, this field has no meaning
         bool critical;          //!< When set to true, there is no valid IDT source and the system is/was forced to the its 'off state'
+
+        /// Constructor (to ensure any pad bytes get zero'd)
+        Data()
+        {
+            memset( (void*) this, 0, sizeof( Data ) );
+        }
+
+        /// Constructor (to ensure any pad bytes get zero'd)
+        Data( bool primaryAlarm, bool secondaryAlarm, bool primaryAck, bool secondaryAck, bool critical )
+        {
+            memset( (void*) this, 0, sizeof( Data ) );
+            this->primaryAlarm   = primaryAlarm;
+            this->secondaryAlarm = secondaryAlarm;
+            this->primaryAck     = primaryAck;
+            this->secondaryAck   = secondaryAck;
+            this->critical       = critical;
+        }
+
     };
 
 protected:
@@ -102,26 +120,10 @@ public:
     /// Type safe un-register observer
     void detach( Observer& observer ) noexcept;
 
-public:
-    /** This convenience method is used to read the MP contents and synchronize
-        the observer with the current MP contents.  Typically usage is for
-        reading the MP value when executing the change notification callback
-
-        Note: The observer will be subscribed for change notifications after
-              this call.
-     */
-    inline bool readAndSync( Data& dst, Observer& observerToSync )
+    /// See Cpl::Dm::ModelPointCommon
+    inline bool readAndSync( Data& dstData, Cpl::Dm::SubscriberApi& observerToSync )
     {
-        uint16_t seqNum;
-        bool result = read( dst, &seqNum );
-        attach( observerToSync, seqNum );
-        return result;
-    }
-
-    /// See Cpl::Dm::ModelPointCommon_
-    inline bool isNotValidAndSync( Observer& observerToSync )
-    {
-        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
+        return ModelPointCommon_::readAndSync( &dstData, sizeof( Data ), observerToSync );
     }
 
 public:

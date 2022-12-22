@@ -172,8 +172,10 @@ TEST_CASE( "String" )
 
         // Shutdown threads
         t1Mbox_.pleaseStop();
-        WAIT_FOR_THREAD_TO_STOP( t1 );
+        Cpl::System::Api::sleep( 100 ); // allow time for threads to stop
+        REQUIRE( t1->isRunning() == false );
         Cpl::System::Thread::destroy( *t1 );
+        Cpl::System::Api::sleep( 100 ); // allow time for threads to stop BEFORE the runnable object goes out of scope
     }
 
     REQUIRE( Cpl::System::Shutdown_TS::getAndClearCounter() == 0u );

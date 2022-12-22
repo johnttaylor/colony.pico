@@ -53,6 +53,21 @@ public:
         bool active;        //!< When set to true, the alarm is 'active'
         bool acked;         //!< When set to true, the alarm has been acknowledged.  When active is false, this field has no meaning
         bool critical;      //!< When set to true, the system is/was forced to the its 'off state'
+
+        /// Constructor (to ensure any pad bytes get zero'd)
+        Data()
+        {
+            memset( (void*) this, 0, sizeof( Data ) );
+        }
+
+        /// Constructor (to ensure any pad bytes get zero'd)
+        Data( bool active, bool acked, bool critical )
+        {
+            memset( (void*) this, 0, sizeof( Data ) );
+            this->active   = active;
+            this->acked    = acked;
+            this->critical = critical;
+        }
     };
 
 protected:
@@ -100,26 +115,10 @@ public:
     /// Type safe un-register observer
     void detach( Observer& observer ) noexcept;
 
-public:
-    /** This convenience method is used to read the MP contents and synchronize
-        the observer with the current MP contents.  Typically usage is for
-        reading the MP value when executing the change notification callback
-
-        Note: The observer will be subscribed for change notifications after
-              this call.
-     */
-    inline bool readAndSync( Data& dst, Observer& observerToSync )
+    /// See Cpl::Dm::ModelPointCommon
+    inline bool readAndSync( Data& dstData, Cpl::Dm::SubscriberApi& observerToSync )
     {
-        uint16_t seqNum;
-        bool result = read( dst, &seqNum );
-        attach( observerToSync, seqNum );
-        return result;
-    }
-
-    /// See Cpl::Dm::ModelPointCommon_
-    inline bool isNotValidAndSync( Observer& observerToSync )
-    {
-        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
+        return ModelPointCommon_::readAndSync( &dstData, sizeof( Data ), observerToSync );
     }
 
 public:

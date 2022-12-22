@@ -79,5 +79,26 @@ TEST_CASE( "MpFileNameString" )
         REQUIRE( strcmp( valString, "bob" ) == 0 );
     }
 
+    SECTION( "observer" )
+    {
+        CPL_SYSTEM_TRACE_SCOPE( SECT_, "observer test" );
+        const char* expectedVal = "bob";
+        ViewerString<MpFileNameString>  viewer_apple1( t1Mbox_, Cpl::System::Thread::getCurrent(), mp_apple_, expectedVal );
+        Cpl::System::Thread* t1 = Cpl::System::Thread::create( t1Mbox_, "T1" );
+
+        // NOTE: The MP MUST be in the INVALID state at the start of this test
+        viewer_apple1.open();
+        mp_apple_.write( expectedVal );
+        Cpl::System::Thread::wait();
+        viewer_apple1.close();
+
+        // Shutdown threads
+        t1Mbox_.pleaseStop();
+        Cpl::System::Api::sleep( 100 ); // allow time for threads to stop
+        REQUIRE( t1->isRunning() == false );
+        Cpl::System::Thread::destroy( *t1 );
+        Cpl::System::Api::sleep( 100 ); // allow time for threads to stop BEFORE the runnable object goes out of scope
+    }
+
     REQUIRE( Cpl::System::Shutdown_TS::getAndClearCounter() == 0u );
 }

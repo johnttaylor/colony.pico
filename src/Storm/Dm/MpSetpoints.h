@@ -99,6 +99,13 @@ public:
 public:
     /** Type safe read of the Cooling & Heating set-point
      */
+    inline bool read( Data& dst, uint16_t* seqNumPtr=0 ) const noexcept
+    {
+        return readData( &dst, sizeof( Data ), seqNumPtr );
+    }
+
+    /** Type safe read of the Cooling & Heating set-point
+     */
     inline bool read( float& currentCoolSetpoint, float& currentHeatSetpoint, uint16_t* seqNumPtr=0 ) const noexcept
     {
         Data dst;
@@ -197,26 +204,20 @@ public:
     /// Type safe un-register observer
     void detach( Observer& observer ) noexcept;
 
-public:
-    /** This convenience method is used to read the MP contents and synchronize
-        the observer with the current MP contents.  Typically usage is for
-        reading the MP value when executing the change notification callback
-
-        Note: The observer will be subscribed for change notifications after
-              this call.
-     */
-    inline bool readAndSync( float& currentCoolSetpoint, float& currentHeatSetpoint, Observer& observerToSync )
+    /// See Cpl::Dm::ModelPointCommon
+    inline bool readAndSync( Data& currentSetpoints, Cpl::Dm::SubscriberApi& observerToSync )
     {
-        uint16_t seqNum;
-        bool result = read( currentCoolSetpoint, currentHeatSetpoint, &seqNum );
-        attach( observerToSync, seqNum );
-        return result;
+        return ModelPointCommon_::readAndSync( &currentSetpoints, sizeof( Data ), observerToSync );
     }
 
-    /// See Cpl::Dm::ModelPointCommon_
-    inline bool isNotValidAndSync( Observer& observerToSync )
+    /// See Cpl::Dm::ModelPointCommon
+    inline bool readAndSync( float& currentCoolSetpoint, float& currentHeatSetpoint, Cpl::Dm::SubscriberApi& observerToSync )
     {
-        return Cpl::Dm::ModelPointCommon_::isNotValidAndSync<Observer>( observerToSync );
+        Data dst;
+        bool valid = readAndSync( dst, observerToSync );
+        currentCoolSetpoint = dst.coolSetpt;
+        currentHeatSetpoint = dst.heatSetpt;
+        return valid;
     }
 
 public:

@@ -55,7 +55,7 @@ void Record::start( Cpl::Dm::MailboxServer& myMbox ) noexcept
             CPL_SYSTEM_TRACE_MSG( SECT_, ( "Initial loadData() failed. mp[0]=%s", m_items[0].mpPtr->getName() ) );
             if ( resetData() )
             {
-                dataChanged( *( m_items[0].mpPtr ) );  // Write the new/reset data to storage. Note: The model point argument to the function is NOT used by the called method
+                updateNVRAM();
             }
 
             // The Record has requested that NO UPDATES to persistence storage occur -->so we prevent the subscriptions
@@ -211,10 +211,25 @@ bool Record::putData( const void* src, size_t srcLen ) noexcept
     return true;
 }
 
-void Record::dataChanged( Cpl::Dm::ModelPoint& point ) noexcept
+void Record::dataChanged( Cpl::Dm::ModelPoint& point, Cpl::Dm::SubscriberApi& observer ) noexcept
 {
-    // NOTE: If the write to the storage media failed -->the RAM contents are still valid so no immediate issue.  However, on the next power cycle the record will be defaulted since the CRC is going to be bad
     CPL_SYSTEM_TRACE_MSG( SECT_, ( "Record Changed: mp=%s", point.getName() ) );
+
+    // NOTE: The observer instance is NOT synchronized with the read of the MP data.
+    //       This means that there could be 'double' updates to NVRAM if the 
+    //       source MP data is changed during this call.  If the double
+    //       update is not acceptable for the application - then the Application
+    //       is required to extend this class to provide the desire behavior (e.g.
+    //       have this call start/restart a SW timer in this method, and then 
+    //       in the timer-expired method call updateData() on the chunk handler.
+    updateNVRAM();
+}
+
+void Record::updateNVRAM() noexcept
+{
+    // NOTE: If the write to the storage media failed -->the RAM contents are 
+    // still valid so no immediate issue.  However, on the next power cycle the 
+    // record will be defaulted since the CRC is going to be bad
     m_chunkHandler.updateData( *this );
 }
 

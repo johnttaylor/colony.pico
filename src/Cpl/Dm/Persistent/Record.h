@@ -137,8 +137,10 @@ protected:
 
 protected:
     /// Callback method for Model Point change notifications
-    virtual void dataChanged( Cpl::Dm::ModelPoint& point ) noexcept;
+    virtual void dataChanged( Cpl::Dm::ModelPoint& point, Cpl::Dm::SubscriberApi& observer ) noexcept;
 
+    /// Helper method that is used to initiate the update to the NVRAM
+    void updateNVRAM() noexcept;
 
 protected:
     /// List of model points
