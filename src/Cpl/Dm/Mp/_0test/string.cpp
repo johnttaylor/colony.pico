@@ -18,7 +18,7 @@
 #include "Cpl/Text/FString.h"
 #include "Cpl/Text/DString.h"
 #include "Cpl/Dm/ModelDatabase.h"
-#include "Cpl/Dm/Mp/String_.h"
+#include "Cpl/Dm/Mp/String.h"
 #include "Cpl/Itc/CloseSync.h"
 #include <string.h>
 

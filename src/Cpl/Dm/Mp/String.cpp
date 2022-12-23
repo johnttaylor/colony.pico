@@ -11,7 +11,7 @@
 /** @file */
 
 
-#include "String_.h"
+#include "String.h"
 #include "Cpl/System/Assert.h"
 #include "Cpl/System/FatalError.h"
 #include <string.h>

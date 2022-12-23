@@ -11,7 +11,7 @@
 /** @file */
 
 
-#include "Array_.h"
+#include "Array.h"
 #include "Cpl/System/Assert.h"
 #include "Cpl/System/FatalError.h"
 #include <memory.h>

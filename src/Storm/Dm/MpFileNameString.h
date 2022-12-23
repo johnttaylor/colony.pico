@@ -14,7 +14,7 @@
 
 
 
-#include "Cpl/Dm/Mp/String_.h"
+#include "Cpl/Dm/Mp/String.h"
 
 /** Maximum file name length (in bytes not including the null terminator)
  */
