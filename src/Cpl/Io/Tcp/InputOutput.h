@@ -28,7 +28,7 @@ namespace Tcp {
 
     Note: Platform independent is this context is that application can 
           instantiate an instance of this class without any platform specific
-          #include statements.  However, the actual implementation IS platform
+          `#include` statements.  However, the actual implementation IS platform
           specific.
  */
 class InputOutput : public Cpl::Io::InputOutput

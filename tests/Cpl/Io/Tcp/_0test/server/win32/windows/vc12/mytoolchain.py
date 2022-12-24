@@ -64,7 +64,7 @@ debug_cpp11    = BuildValues()
 
 
 # Set 'base' options
-base_cpp11.cflags     = '/W3 /WX /EHsc /D CATCH_CONFIG_FAST_COMPILE'  # /EHsc enables exceptions
+base_cpp11.cflags     = '/W3 /WX /EHsc /D CATCH_CONFIG_FAST_COMPILE /D _WINSOCK_DEPRECATED_NO_WARNINGS'  # /EHsc enables exceptions
 base_cpp11.linklibs   = 'ws2_32.lib' 
 
 # Set 'Optimized' options

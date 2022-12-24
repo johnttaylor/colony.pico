@@ -348,6 +348,7 @@ template <int N>
 class ArrayUint8: public NumericArray_<uint8_t, N, ArrayUint8<N>>
 {
 public:
+    /// Constructor. Invalid Point
     ArrayUint8( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : Mp::NumericArray_<uint8_t, N, ArrayUint8<N>>( myModelBase, symbolicName )
     {
@@ -374,6 +375,7 @@ template <int N>
 class ArrayUint32 : public NumericArray_<uint32_t, N, ArrayUint32<N>>
 {
 public:
+    /// Constructor. Invalid Point
     ArrayUint32( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : Mp::NumericArray_<uint8_t, N, ArrayUint32<N>>( myModelBase, symbolicName )
     {
@@ -400,6 +402,7 @@ template <int N>
 class ArrayUint64 : public NumericArray_<uint64_t, N, ArrayUint64<N>>
 {
 public:
+    /// Constructor. Invalid Point
     ArrayUint64( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : Mp::NumericArray_<uint8_t, N, ArrayUint64<N>>( myModelBase, symbolicName )
     {
@@ -426,6 +429,7 @@ template <int N>
 class ArrayInt8 : public NumericArray_<int8_t, N, ArrayInt8<N>>
 {
 public:
+    /// Constructor. Invalid Point
     ArrayInt8( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : Mp::NumericArray_<int8_t, N, ArrayInt8<N>>( myModelBase, symbolicName )
     {
@@ -452,6 +456,7 @@ template <int N>
 class ArrayInt32 : public NumericArray_<int32_t, N, ArrayInt32<N>>
 {
 public:
+    /// Constructor. Invalid Point
     ArrayInt32( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : Mp::NumericArray_<int8_t, N, ArrayInt32<N>>( myModelBase, symbolicName )
     {
@@ -478,6 +483,7 @@ template <int N>
 class ArrayInt64 : public NumericArray_<int64_t, N, ArrayInt64<N>>
 {
 public:
+    /// Constructor. Invalid Point
     ArrayInt64( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : Mp::NumericArray_<int8_t, N, ArrayInt64<N>>( myModelBase, symbolicName )
     {
@@ -504,6 +510,7 @@ template <int N>
 class ArrayFloat : public NumericArray_<float, N, ArrayFloat<N>>
 {
 public:
+    /// Constructor. Invalid Point
     ArrayFloat( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : Mp::NumericArray_<float, N, ArrayFloat<N>>( myModelBase, symbolicName )
     {
@@ -530,6 +537,7 @@ template <int N>
 class ArrayDouble : public NumericArray_<double, N, ArrayDouble<N>>
 {
 public:
+    /// Constructor. Invalid Point
     ArrayDouble( Cpl::Dm::ModelDatabase& myModelBase, const char* symbolicName )
         : Mp::NumericArray_<double, N, ArrayDouble<N>>( myModelBase, symbolicName )
     {
