@@ -131,6 +131,23 @@
           "type": "git",
           "origin": "https://github.com/johnttaylor"
         }
+      },
+      {
+        "pkgname": "colony.arduino",
+        "pkgtype": "overlay",
+        "virtualAdoption": true,
+        "adoptedDate": "Sun Feb 19 14:30:16 2023",
+        "parentDir": null,
+        "version": {
+          "semanticVersion": "1.0.6",
+          "branch": null,
+          "tag": "OUTCAST2-main-1.0.6"
+        },
+        "repo": {
+          "name": "colony.arduino",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
       }
     ]
   },
