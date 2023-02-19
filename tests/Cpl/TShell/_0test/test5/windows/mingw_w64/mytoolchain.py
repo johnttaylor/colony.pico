@@ -29,14 +29,12 @@ from nqbplib.base import BuildValues
 #---------------------------------------------------
 
 # Set the name for the final output item
-FINAL_OUTPUT_NAME = 'bb.exe'
-
+FINAL_OUTPUT_NAME = 'b.exe'
 
 # Set project specific 'base' (i.e always used) options
 base_release = BuildValues()        # Do NOT comment out this line
 base_release.cflags    = '-m32 -std=c++11 -Wall -Werror -x c++ '
 base_release.linkflags = '-m32'
-base_release.linklibs  = '-lws2_32'
 
 # Set project specific 'optimized' options
 optimzed_release = BuildValues()    # Do NOT comment out this line
@@ -62,7 +60,6 @@ debug_cpp11    = BuildValues()
 # Set 'base' options
 base_cpp11.cflags     = '-m64 -std=c++11 -Wall -Werror -x c++ '
 base_cpp11.linkflags  = '-m64'
-base_cpp11.linklibs   = '-lws2_32'
 
 # Set 'Optimized' options
 optimzed_cpp11.cflags = '-O3'
@@ -80,9 +77,8 @@ optimzed_win64 = BuildValues()
 debug_win64    = BuildValues()
 
 # Set 'base' options
-base_win64.cflags     = '-m64 -std=c++11 -Wall -Werror -x c++ '
+base_win64.cflags     = '-m64 -std=c++11 -Wall -Werror -x c++'
 base_win64.linkflags  = '-m64'
-base_win64.linklibs   = '-lws2_32'
 
 # Set 'Optimized' options
 optimzed_cpp11.cflags = '-O3'

@@ -11,6 +11,7 @@
 
 #include "colony_config.h"
 #include "statics.h"
+#include <new>
 
 #include "Cpl/TShell/Socket.h"
 

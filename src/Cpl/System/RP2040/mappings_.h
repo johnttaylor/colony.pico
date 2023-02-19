@@ -62,6 +62,12 @@
 #define CPL_IO_NEW_LINE_NATIVE_MAP                  "\n"
 
 
+/// Mapping
+inline unsigned long CplSystemElapsedTime_getTimeInMilliseconds_MAP()
+{
+    return to_ms_since_boot( get_absolute_time() );
+}
+
 /// Thread Priorities (has no meaning since each thread is one-to-one with a core)
 #define CPL_SYSTEM_THREAD_PRIORITY_HIGHEST_MAP      0
 

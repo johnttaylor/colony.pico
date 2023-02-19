@@ -16,22 +16,6 @@
 #include "Cpl/TShell/Cmd/Command.h"
 
 
-/** Command
-                                    "         1         2         3         4         5         6         7         8"
-                                    "12345678901234567890123456789012345678901234567890123456789012345678901234567890"
-*/
-#define CPLTSHELLCMD_CMD_USER_	    "user"
-/// Usage
-#define CPLTSHELLCMD_USAGE_USER_    "user login <username> <password>\n" \
-                                    "user logout"
-
-/// Detailed Help text
-#ifndef CPLTSHELLCMD_DETAIL_USER_
-#define CPLTSHELLCMD_DETAIL_USER_   "  Used to login/logout a user"
-
-#endif // ifndef allows detailed help to be compacted down to a single character if FLASH/code space is an issue
-
-
 ///
 namespace Cpl {
 ///
@@ -46,11 +30,26 @@ namespace Cmd {
 class User : public Command
 {
 public:
+    /// The command verb/identifier
+    static constexpr const char* verb = "user";
+
+    /// The command usage string
+    static constexpr const char* usage = "user login <username> <password>\n" 
+                                         "user logout";
+
+    /** The command detailed help string (recommended that lines do not exceed 80 chars)
+                                                          1         2         3         4         5         6         7         8
+                                                 12345678901234567890123456789012345678901234567890123456789012345678901234567890
+     */
+    static constexpr const char* detailedHelp = "  Logs a user in and out of the shell.";
+
+
+public:
     /// See Cpl::TShell::Command
-    const char* getUsage() const noexcept { return CPLTSHELLCMD_USAGE_USER_; }
+    const char* getUsage() const noexcept { return usage; }
 
     /// See Cpl::TShell::Command
-    const char* getHelp() const noexcept { return CPLTSHELLCMD_DETAIL_USER_; }
+    const char* getHelp() const noexcept { return detailedHelp; }
 
 
 public:
