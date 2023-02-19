@@ -96,9 +96,6 @@ tests/Cpl/TShell/_0test/test4/RP2040/pico-uart0/windows/gcc
 tests/Cpl/TShell/_0test/test5
 tests/Cpl/TShell/_0test/test5/RP2040/pico-uart0
 tests/Cpl/TShell/_0test/test5/RP2040/pico-uart0/windows/gcc
-tests/Cpl/TShell/_0test/test5/windows
-tests/Cpl/TShell/_0test/test5/windows/mingw_w64
-tests/Cpl/TShell/_0test/test5/windows/vc12
 tests/Driver/I2C/_0test/master-eeprom
 tests/Driver/I2C/_0test/master-eeprom/RP2040
 tests/Driver/I2C/_0test/master-eeprom/RP2040/pico-uart0

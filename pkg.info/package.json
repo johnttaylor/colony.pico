@@ -176,13 +176,20 @@
   },
   "publish": {
     "current": {
-      "comment": "Initial published package version",
-      "version": "0.1.0",
-      "date": "Sun Jan 22 17:38:25 2023",
-      "timestamp": 1674409105,
+      "comment": "Latest CPL updates. Updates to RP2040 OSAL (for ElapsedTime)",
+      "version": "0.2.0",
+      "date": "Sun Feb 19 14:33:39 2023",
+      "timestamp": 1676817219,
       "changes": null
     },
     "history": [
+      {
+        "comment": "Initial published package version",
+        "version": "0.1.0",
+        "date": "Sun Jan 22 17:38:25 2023",
+        "timestamp": 1674409105,
+        "changes": null
+      },
       {}
     ]
   }
