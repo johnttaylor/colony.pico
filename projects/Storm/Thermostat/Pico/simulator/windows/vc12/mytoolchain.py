@@ -32,7 +32,7 @@ from nqbplib.my_globals import NQBP_PKG_ROOT
 #---------------------------------------------------
 
 # Set the name for the final output item
-FINAL_OUTPUT_NAME = 'thermostat-simulation.exe'
+FINAL_OUTPUT_NAME = 'thermostat-sim.exe'
 
 # Additional Header paths for PIMORONI supplied code
 pimoroni_src_path = os.path.join( NQBP_PKG_ROOT(), 'xsrc', 'pimoroni' )

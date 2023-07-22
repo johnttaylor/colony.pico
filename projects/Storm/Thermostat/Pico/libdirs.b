@@ -3,7 +3,7 @@ src/Storm/Thermostat/Main < modelpoints.cpp
 src/Storm/Thermostat/Main/_pico
 
 # UI
-src/Storm/Thermostat/Ui
+#src/Storm/Thermostat/Ui
 src/Storm/Thermostat/Ui/PicoDisplay
 
 # Platform independent driver(s)
