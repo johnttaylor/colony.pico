@@ -34,8 +34,6 @@ Master::Master( i2c_inst_t* i2cInstance,
 //////////////////////////////////////////////////////////////////////////////
 bool Master::start() noexcept
 {
-    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
-
     if ( !m_started )
     {
         m_started = true;
@@ -48,8 +46,6 @@ bool Master::start() noexcept
 
 void Master::stop() noexcept
 {
-    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
- 
     if ( m_started )
     {
         m_started = false;
@@ -63,8 +59,6 @@ Driver::I2C::Master::Result_T Master::writeToDevice( uint8_t     device7BitAddre
                                                      const void* srcData,
                                                      bool        noStop ) noexcept
 {
-    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
-
     // Fail if not started
     if ( !m_started )
     {
@@ -85,8 +79,6 @@ Driver::I2C::Master::Result_T Master::readFromDevice( uint8_t   device7BitAddres
                                                       void*     dstData,
                                                       bool      noStop )
 {
-    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
-
     // Fail if not started
     if ( !m_started )
     {
@@ -106,8 +98,6 @@ Driver::I2C::Master::Result_T Master::readFromDevice( uint8_t   device7BitAddres
 
 size_t Master::setBaudRate( size_t newBaudRateHz ) noexcept
 {
-    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
-
     size_t prevBaud = m_baudrate;
     m_baudrate      = newBaudRateHz;
     i2c_init( m_i2cDevice, m_baudrate );
@@ -116,8 +106,6 @@ size_t Master::setBaudRate( size_t newBaudRateHz ) noexcept
 
 size_t Master::setTransactionTimeout( size_t maxTimeMs ) noexcept
 {
-    Cpl::System::Mutex::ScopeBlock criticalSection( m_lock );
-
     size_t prevTimeout = m_timeoutMs;
     m_timeoutMs        = maxTimeMs;
     return prevTimeout;

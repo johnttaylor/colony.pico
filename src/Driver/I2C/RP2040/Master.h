@@ -16,7 +16,6 @@
 #include "Driver/I2C/Master.h"
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
-#include "Cpl/System/Mutex.h"
 
 ///
 namespace Driver {
@@ -86,9 +85,6 @@ public:
     size_t setTransactionTimeout( size_t maxTimeMs ) noexcept;
 
 protected:
-    /// Mutex for ensuring atomic transactions
-    Cpl::System::Mutex m_lock;
-
     /// Handle the low-level SDK driver instance
     i2c_inst_t*         m_i2cDevice;
 
