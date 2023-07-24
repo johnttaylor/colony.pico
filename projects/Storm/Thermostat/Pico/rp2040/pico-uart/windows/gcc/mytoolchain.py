@@ -52,13 +52,13 @@ sdk_inc       = f' -I{os.path.join(sdk_src_path,"rp2_common","hardware_i2c","inc
                 f' -I{os.path.join(sdk_src_path,"rp2_common","hardware_dma","include")}' 
 
 # Additional Header paths for PIMORONI supplied code
-pimoroni_src_path = os.path.join( NQBP_PKG_ROOT(), 'xsrc', 'pimoroni-pico' )
+pimoroni_src_path = os.path.join( NQBP_PKG_ROOT(), 'xsrc', 'pimoroni' )
 pimoroni_inc      = f' -I{pimoroni_src_path}' + \
                     f' -I{os.path.join(pimoroni_src_path,"common")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"drivers","rgbled")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"drivers","st7789")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"libraries","pico_display")}' +\
-                    f' -I{os.path.join(pimoroni_src_path,"libraries","pico_graphcis")}' +\
+                    f' -I{os.path.join(pimoroni_src_path,"libraries","pico_graphics")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"libraries","pico_bitmap_fonts")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"libraries","pico_hershey_fonts")}' 
 

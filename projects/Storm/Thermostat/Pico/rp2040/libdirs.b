@@ -3,9 +3,11 @@ src/Storm/Thermostat/_file_logger
 src/Storm/Thermostat/SimHouse
 src/Storm/Thermostat/Main/_simulation
 
-# pimoroni libraries
-xsrc/pimoroni-pico/drivers/rgbled
-xsrc/pimoroni-pico/drivers/st7789
+# pimoroni (generic) libraries
+xsrc/pimoroni/drivers/rgbled
+xsrc/pimoroni/drivers/st7789
+src/Driver/DIO/RP2040
+src/Driver/SPI/RP2040
 
 # Platform specific driver(s)
 src/Driver/Button/RP2040

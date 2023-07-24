@@ -4,6 +4,9 @@
 /////////////////////////
 // CPL Stuff....
 
+// Drivers
+#include "Driver/DIO/RP2040/mappings_.h"
+
 // OSAL mapping
 #include "Cpl/System/RP2040/mappings_.h"
 

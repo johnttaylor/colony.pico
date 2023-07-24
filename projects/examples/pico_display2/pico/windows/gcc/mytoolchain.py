@@ -59,7 +59,7 @@ pimoroni_inc      = f' -I{pimoroni_src_path}' + \
                     f' -I{os.path.join(pimoroni_src_path,"drivers","button")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"drivers","st7789")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"libraries","pico_display")}' +\
-                    f' -I{os.path.join(pimoroni_src_path,"libraries","pico_graphcis")}' +\
+                    f' -I{os.path.join(pimoroni_src_path,"libraries","pico_graphics")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"libraries","pico_bitmap_fonts")}' +\
                     f' -I{os.path.join(pimoroni_src_path,"libraries","pico_hershey_fonts")}' 
 
