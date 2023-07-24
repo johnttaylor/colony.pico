@@ -15,6 +15,10 @@
 #include "Driver/PicoDisplay/Api.h"
 #include "Driver/LED/PimoroniPico/RedGreenBlue.h"
 #include "Driver/Button/RP2040/Hal.h"
+#include "Driver/DIO/Out.h"
+#include "Driver/DIO/Pwm.h"
+#include "Driver/SPI/RP2040/Master.h"
+#include "Cpl/System/Api.h"
 
 
 
@@ -23,21 +27,40 @@ static Driver::Button::PolledDebounced buttonB_( { OPTION_DRIVER_PICO_DISPLAY_RP
 static Driver::Button::PolledDebounced buttonX_( { OPTION_DRIVER_PICO_DISPLAY_RP2040_BUTTON_X_PIN, true } );
 static Driver::Button::PolledDebounced buttonY_( { OPTION_DRIVER_PICO_DISPLAY_RP2040_BUTTON_Y_PIN, true } );
 
+static DriverDioPwmRP2040Config_T    ledRPwm_( OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_RED_PIN );
+static DriverDioPwmRP2040Config_T    ledGPwm_( OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_GREEN_PIN );
+static DriverDioPwmRP2040Config_T    ledBPwm_( OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_BLUE_PIN );
+static Driver::DIO::Pwm              pwmLedRDriver_( ledRPwm_ );
+static Driver::DIO::Pwm              pwmLedGDriver_( ledGPwm_ );
+static Driver::DIO::Pwm              pwmLedBDriver_( ledBPwm_ );
 
-static Driver::LED::PimoroniPico::RedGreenBlue rgbLEDDriver_( OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_RED_PIN, 
-                                                              OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_GREEN_PIN, 
-                                                              OPTION_DRIVER_PICO_DISPLAY_RP2040_RGB_BLUE_PIN );
+static Driver::LED::PimoroniPico::RedGreenBlue rgbLEDDriver_( pwmLedRDriver_,
+                                                              pwmLedGDriver_,
+                                                              pwmLedBDriver_ );
 
-pimoroni::ST7789 st7789_( OPTION_DRIVER_PICO_DISPLAY_LCD_WIDTH, 
-                          OPTION_DRIVER_PICO_DISPLAY_LCD_HEIGHT, 
-                          OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_ROTATION, 
-                          false, 
-                          OPTION_DRIVER_PICO_DISPLAY_RP2040_LCD_PINS );
+static DriverDioPwmRP2040Config_T    backlightPwm_( OPTION_DRIVER_PICO_DISPLAY_RP2040_BACKLIGHT_PWM );
+static DriverDioOutRP2040PinConfig_T chipSelectDriver_( OPTION_DRIVER_PICO_DISPLAY_RP2040_SPI_CS );
+static DriverDioOutRP2040PinConfig_T dataSelectDriver_( OPTION_DRIVER_PICO_DISPLAY_RP2040_SPI_DC );
+static Driver::DIO::Out              csDriver_( chipSelectDriver_, false );
+static Driver::DIO::Out              dcDriver_( dataSelectDriver_, false );
+static Driver::DIO::Pwm              pwmDriver_( backlightPwm_ );
+static Driver::SPI::RP2040::Master   spiDriver_( OPTION_DRIVER_PICO_DISPLAY_RP2040_SPI_BUS,
+                                                 OPTION_DRIVER_PICO_DISPLAY_RP2040_SPI_SCK, 
+                                                 OPTION_DRIVER_PICO_DISPLAY_RP2040_SPI_MOSI,
+                                                 OPTION_DRIVER_PICO_DISPLAY_RP2040_SPI_MISO );
+
+
+
+pimoroni::ST7789 st7789_( pimoroni::PicoDisplay::WIDTH, pimoroni::PicoDisplay::HEIGHT, pimoroni::ROTATE_0, false, spiDriver_, csDriver_, dcDriver_, pwmDriver_ );
+
 
 
 /////////////////////////////////////////////
 void Driver::PicoDisplay::RP2040::initialize()
 {
+    st7789_.start();
+    rgbLEDDriver_.setRgb( 0, 0, 0 );
+
     driverButtonHalRP2040_initialize( buttonA_.getHandle() );
     driverButtonHalRP2040_initialize( buttonB_.getHandle() );
     driverButtonHalRP2040_initialize( buttonX_.getHandle() );

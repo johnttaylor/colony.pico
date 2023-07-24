@@ -62,7 +62,7 @@ public:
      */
     virtual bool  transfer( size_t      numBytes,
                             const void* srcData,
-                            void*       dstData ) noexcept = 0;
+                            void*       dstData = nullptr ) noexcept = 0;
                             
 public:
     /// Virtual destructor

@@ -3,11 +3,14 @@
 #include <cstdlib>
 #include <math.h>
 
+#include "Cpl/System/Api.h"
+
+
 namespace pimoroni {
 
-uint8_t madctl;
-uint16_t caset[2] ={ 0, 0 };
-uint16_t raset[2] ={ 0, 0 };
+static uint8_t madctl;
+static uint16_t caset[2] ={ 0, 0 };
+static uint16_t raset[2] ={ 0, 0 };
 
 enum MADCTL : uint8_t {
     ROW_ORDER   = 0b10000000,
@@ -47,26 +50,21 @@ enum reg {
     PWMFRSEL  = 0xCC
 };
 
+void ST7789::start(){
+    // configure spi interface and pins
+    spi.start( SPI_BAUD );
+    cs.start();
+    dc.start();
+    bl.start( 0 );
+
+    common_init();
+}
+
 void ST7789::common_init() {
-    gpio_set_function( dc, GPIO_FUNC_SIO );
-    gpio_set_dir( dc, GPIO_OUT );
-
-    gpio_set_function( cs, GPIO_FUNC_SIO );
-    gpio_set_dir( cs, GPIO_OUT );
-
-    // if a backlight pin is provided then set it up for
-    // pwm control
-    if ( bl != PIN_UNUSED ) {
-        pwm_config cfg = pwm_get_default_config();
-        pwm_set_wrap( pwm_gpio_to_slice_num( bl ), 65535 );
-        pwm_init( pwm_gpio_to_slice_num( bl ), &cfg, true );
-        gpio_set_function( bl, GPIO_FUNC_PWM );
-        set_backlight( 0 ); // Turn backlight off initially to avoid nasty surprises
-    }
 
     command( reg::SWRESET );
 
-    sleep_ms( 150 );
+    Cpl::System::Api::sleep( 150 );
 
     // Common init
     command( reg::TEON );  // enable frame sync signal if used
@@ -99,29 +97,20 @@ void ST7789::common_init() {
     command( reg::SLPOUT );  // leave sleep mode
     command( reg::DISPON );  // turn display on
 
-    sleep_ms( 100 );
+    Cpl::System::Api::sleep( 100 );
 
     configure_display( rotation );
 
-    if ( bl != PIN_UNUSED ) {
-        //update(); // Send the new buffer to the display to clear any previous content
-        sleep_ms( 50 ); // Wait for the update to apply
-        set_backlight( 255 ); // Turn backlight on now surprises have passed
-    }
+    //update(); // Send the new buffer to the display to clear any previous content
+    Cpl::System::Api::sleep( 50 ); // Wait for the update to apply
+    set_backlight( 255 ); // Turn backlight on now surprises have passed
 }
 
 void ST7789::cleanup() {
-    if ( spi ) return; // SPI mode needs no tear down
-    if ( dma_channel_is_claimed( parallel_dma ) ) {
-        dma_channel_abort( parallel_dma );
-        dma_channel_unclaim( parallel_dma );
-    }
-
-    if ( pio_sm_is_claimed( parallel_pio, parallel_sm ) ) {
-        pio_sm_set_enabled( parallel_pio, parallel_sm, false );
-        pio_sm_drain_tx_fifo( parallel_pio, parallel_sm );
-        pio_sm_unclaim( parallel_pio, parallel_sm );
-    }
+    dc.stop();
+    cs.stop();
+    bl.stop();
+    spi.stop();
 }
 
 void ST7789::configure_display( Rotation rotate ) {
@@ -225,17 +214,17 @@ void ST7789::configure_display( Rotation rotate ) {
 }
 
 void ST7789::command( uint8_t command, size_t len, const char *data ) {
-    gpio_put( dc, 0 ); // command mode
+    dc.assertOutput(); // command mode
+    cs.assertOutput();
 
-    gpio_put( cs, 0 );
-    spi_write_blocking( spi, &command, 1 );
+    spi.transfer( 1, &command );
 
     if ( data ) {
-        gpio_put( dc, 1 ); // data mode
-        spi_write_blocking( spi, (const uint8_t*) data, len );
+        dc.deassertOutput(); // data mode
+        spi.transfer( len, data );
     }
 
-    gpio_put( cs, 1 );
+    cs.deassertOutput();
 }
 
 void ST7789::update( PicoGraphics *graphics ) {
@@ -244,17 +233,16 @@ void ST7789::update( PicoGraphics *graphics ) {
     if ( graphics->pen_type == PicoGraphics::PEN_RGB565 ) { // Display buffer is screen native
         command( cmd, width * height * sizeof( uint16_t ), (const char*) graphics->frame_buffer );
     }
-    else { // SPI Bus
-        gpio_put( dc, 0 ); // command mode
-        gpio_put( cs, 0 );
-        spi_write_blocking( spi, &cmd, 1 );
-        gpio_put( dc, 1 ); // data mode
+    else {
+        dc.assertOutput();      // command mode
+        cs.assertOutput();
+        spi.transfer( 1, &cmd );
+        dc.deassertOutput();    // data mode
 
         graphics->scanline_convert( PicoGraphics::PEN_RGB565, [this]( void *data, size_t length ) {
-            spi_write_blocking( spi, (const uint8_t*) data, length );
-                                    } );
+            spi.transfer( length, data ); } );
 
-        gpio_put( cs, 1 );
+        cs.deassertOutput();
     }
 }
 
@@ -263,7 +251,7 @@ void ST7789::set_backlight( uint8_t brightness ) {
     // 0-65535 range for the pwm counter
     float gamma = 2.8;
     uint16_t value = (uint16_t) (pow( (float) (brightness) / 255.0f, gamma ) * 65535.0f + 0.5f);
-    pwm_set_gpio_level( bl, value );
+    bl.setDutyCycle( value );
 }
 
 }   // end namespace

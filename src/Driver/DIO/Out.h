@@ -15,7 +15,7 @@
 #include "colony_map.h"
 
 /// Defer the definition of the pin configuration to the application's 'platform'
-#define Driver_Dio_Out_PinConfig_T          Driver_Dio_Out_PinConfig_T_MAP
+#define DriverDioOutPinConfig_T          DriverDioOutPinConfig_T_MAP
 
 
 ///
@@ -31,8 +31,10 @@ namespace DIO {
 class Out
 {
 public:
-    /// Constructor
-    Out( const Driver_Dio_Out_PinConfig_T& pinConfig, bool assertedHigh );
+    /** Constructor.  Note: the 'pinConfig' struct MUST stay in scope as long
+        as the driver is in scope.
+     */
+    Out( const DriverDioOutPinConfig_T& pinConfig, bool assertedHigh );
 
 public:
     /** Starts the driver.
@@ -75,10 +77,13 @@ public:
 
 protected:
     /// PIN info
-    Driver_Dio_Out_PinConfig_T  m_pin;
+    const DriverDioOutPinConfig_T&  m_pin;
 
     /// Polarity of the output ping
-    bool                        m_assertedHigh;
+    bool                            m_assertedHigh;
+
+    /// Started flag
+    bool                            m_started;
 };
 
 } // End namespace(s)

@@ -1,6 +1,8 @@
 # pimoroni libraries
-xsrc/pimoroni-pico/drivers/rgbled
-xsrc/pimoroni-pico/drivers/st7789
+xsrc/pimoroni/drivers/rgbled
+xsrc/pimoroni/drivers/st7789
+src/Driver/DIO/RP2040
+src/Driver/SPI/RP2040
 
 # Platform specific driver(s)
 src/Driver/Button/RP2040

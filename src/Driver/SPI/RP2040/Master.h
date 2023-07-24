@@ -42,23 +42,14 @@ public:
         the SPI pins.
      */
     Master( spi_inst_t* spiInstance,
+            unsigned    sclk = PICO_DEFAULT_SPI_SCK_PIN,
+            unsigned    mosi = PICO_DEFAULT_SPI_TX_PIN,
+            unsigned    miso = PICO_DEFAULT_SPI_RX_PIN,
             size_t      baudrate  = 8 * 1000 * 1000, // 8MHz
             uint        dataBits  = 8,               // 8bits, 
             spi_cpol_t  cpol      = SPI_CPOL_0,      // Clock Polarity = clock high 
             spi_cpha_t  cpha      = SPI_CPHA_0 );    // Clock Phase = data transmission begins on the falling edge of the slave select signal
 
-public:
-    /** Helper method to configure the SPI Pins.  See the constructor
-        comments for additional details.
-     */
-    inline static void configureSPIPins( unsigned sclk = PICO_DEFAULT_SPI_SCK_PIN,
-                                         unsigned mosi = PICO_DEFAULT_SPI_TX_PIN,
-                                         unsigned miso = PICO_DEFAULT_SPI_RX_PIN )
-    {
-        gpio_set_function( sclk, GPIO_FUNC_SPI );
-        gpio_set_function( mosi, GPIO_FUNC_SPI );
-        gpio_set_function( miso, GPIO_FUNC_SPI );
-    }
 
 public:
     /// See Driver::SPI::Master
@@ -70,7 +61,7 @@ public:
     /// See Driver::SPI::Master
     bool  transfer( size_t      numBytes,
                     const void* srcData,
-                    void*       dstData ) noexcept;
+                    void*       dstData = nullptr ) noexcept;
 
 protected:
 

@@ -15,34 +15,53 @@
 using namespace Driver::DIO;
 
     
-Out::Out( const Driver_Dio_Out_PinConfig_T& pinConfig, bool assertedHigh )
+Out::Out( const DriverDioOutPinConfig_T& pinConfig, bool assertedHigh )
     : m_pin( pinConfig )
     , m_assertedHigh( assertedHigh )
+    , m_started( false )
 {
 }
 bool Out::start()
 {
-    gpio_init( m_pin.pinNum );
-    gpio_set_dir( m_pin.pinNum, GPIO_OUT );
-    gpio_set_drive_strength( m_pin.pinNum, m_pin.driveStrength );
-    gpio_set_pulls( m_pin.pinNum, m_pin.pullUp, m_pin.pullDown );
-    return true;
+    if ( !m_started )
+    {
+        m_started = true;
+        gpio_init( m_pin.pinNum );
+        gpio_set_dir( m_pin.pinNum, GPIO_OUT );
+        gpio_set_drive_strength( m_pin.pinNum, m_pin.driveStrength );
+        gpio_set_pulls( m_pin.pinNum, m_pin.pullUp, m_pin.pullDown );
+        return true;
+    }
+
+    return false;
 }
 
 void Out::stop()
 {
-    gpio_deinit( m_pin.pinNum );
+    if ( m_started )
+    {
+        m_started = false;
+        gpio_deinit( m_pin.pinNum );
+    }
 }
 
 bool Out::getOutput() const
 {
-    bool phy = gpio_get_out_level( m_pin.pinNum );
-    return m_assertedHigh ? phy : !phy;
+    if ( m_started )
+    {
+        bool phy = gpio_get_out_level( m_pin.pinNum );
+        return m_assertedHigh ? phy : !phy;
+    }
+
+    return false;
 }
 
 void Out::setOutput( bool asserted )
 {
-    gpio_put( m_assertedHigh ? asserted : !asserted );
+    if ( m_started )
+    {
+        gpio_put( m_pin.pinNum, m_assertedHigh ? asserted : !asserted );
+    }
 }
 
 

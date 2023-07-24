@@ -20,8 +20,8 @@ src/Cpl/Io
 src/Driver/Button
 
 # pimoroni libraries
-xsrc/pimoroni-pico/common
-xsrc/pimoroni-pico/libraries/pico_graphics
-xsrc/pimoroni-pico/libraries/pico_display
-xsrc/pimoroni-pico/libraries/hershey_fonts
-xsrc/pimoroni-pico/libraries/bitmap_fonts
+xsrc/pimoroni/common
+xsrc/pimoroni/libraries/pico_graphics
+xsrc/pimoroni/libraries/pico_display
+xsrc/pimoroni/libraries/hershey_fonts
+xsrc/pimoroni/libraries/bitmap_fonts

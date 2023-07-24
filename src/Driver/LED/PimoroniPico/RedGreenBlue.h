@@ -15,6 +15,7 @@
 #include "rgbled.hpp"
 #include "pimoroni_common.hpp"
 #include "Driver/LED/RedGreenBlue.h"
+#include "Driver/DIO/Pwm.h"
 
 ///
 namespace Driver {
@@ -29,7 +30,7 @@ class RedGreenBlue: public Driver::LED::RedGreenBlue, public pimoroni::RGBLED
 {
 public:
     /// Constructor
-    RedGreenBlue( unsigned pin_r, unsigned pin_g, unsigned pin_b, pimoroni::Polarity polarity=pimoroni::Polarity::ACTIVE_LOW, uint8_t brightness=255 )
+    RedGreenBlue( Driver::DIO::Pwm& pin_r, Driver::DIO::Pwm& pin_g, Driver::DIO::Pwm& pin_b, pimoroni::Polarity polarity=pimoroni::Polarity::ACTIVE_LOW, uint8_t brightness=255 )
         : pimoroni::RGBLED( pin_r, pin_g, pin_b, polarity, brightness )
     {
     }

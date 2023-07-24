@@ -13,10 +13,14 @@
 #include "Master.h"
 #include "Cpl/System/Assert.h"
 
+
 using namespace Driver::SPI::RP2040;
 
 //////////////////////////////////////////////////////////////////////////////
 Master::Master( spi_inst_t* spiInstance,
+                unsigned    sclk,
+                unsigned    mosi,
+                unsigned    miso, 
                 size_t      baudrate,
                 uint        dataBits,
                 spi_cpol_t  cpol,
@@ -29,6 +33,10 @@ Master::Master( spi_inst_t* spiInstance,
     , m_started( false )
 {
     CPL_SYSTEM_ASSERT( spiInstance == spi0 || spiInstance == spi1 );
+    gpio_set_function( sclk, GPIO_FUNC_SPI );
+    gpio_set_function( mosi, GPIO_FUNC_SPI );
+    gpio_set_function( miso, GPIO_FUNC_SPI );
+
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -37,7 +45,7 @@ bool Master::start( size_t newBaudRateHz ) noexcept
     if ( !m_started )
     {
         m_started = true;
-        spi_init( newBaudRateHz ? newBaudRateHz : m_baudrate );
+        spi_init( m_spiDevice, newBaudRateHz ? newBaudRateHz : m_baudrate );
         spi_set_format( m_spiDevice, m_dataBits, m_cpol, m_cpha, SPI_MSB_FIRST );
         return true;
     }
@@ -55,21 +63,26 @@ void Master::stop() noexcept
 }
 
 
-bool  Master::transfer( size_t      numBytes,
-                        const void* srcData,
-                        void*       dstData ) noexcept
+bool Master::transfer( size_t      numBytes,
+                       const void* srcData,
+                       void*       dstData ) noexcept
 {
-    int r = 0;
-    if ( dstData == nullptr )
+    if ( m_started )
     {
-        r = spi_write_blocking( m_spiDevice, (const uint8_t*) srcData, numBytes );
-    }
-    else
-    {
-        r = spi_write_read_blocking( m_spiDevice, (const uint8_t*) srcData, (uint8_t*) dstData, numBytes );
+        int r = 0;
+        if ( dstData == nullptr )
+        {
+            r = spi_write_blocking( m_spiDevice, (const uint8_t*) srcData, numBytes );
+        }
+        else
+        {
+            r = spi_write_read_blocking( m_spiDevice, (const uint8_t*) srcData, (uint8_t*) dstData, numBytes );
+        }
+
+        return (size_t) r == numBytes;
     }
 
-    return r == numBytes;
+    return false;
 }
 
 
