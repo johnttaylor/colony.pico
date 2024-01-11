@@ -1,5 +1,5 @@
-#ifndef Driver_LED_PimoroniPico_RedGreeBlue_h_
-#define Driver_LED_PimoroniPico_RedGreeBlue_h_
+#ifndef Driver_LED_Pimoroni_RedGreeBlue_h_
+#define Driver_LED_Pimoroni_RedGreeBlue_h_
 /*-----------------------------------------------------------------------------
 * This file is part of the Colony.Core Project.  The Colony.Core Project is an
 * open source project with a BSD type of licensing agreement.  See the license
@@ -22,9 +22,9 @@ namespace Driver {
 ///
 namespace LED {
 ///
-namespace PimoroniPico {
+namespace Pimoroni {
 
-/** This concrete class is wrapper to the pimoroni RGBLED class
+/** This concrete class is wrapper to the GENERIC pimoroni RGBLED class
  */
 class RedGreenBlue: public Driver::LED::RedGreenBlue, public pimoroni::RGBLED
 {

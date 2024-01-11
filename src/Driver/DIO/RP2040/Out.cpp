@@ -21,7 +21,7 @@ Out::Out( const DriverDioOutPinConfig_T& pinConfig, bool assertedHigh )
     , m_started( false )
 {
 }
-bool Out::start()
+bool Out::start( bool initialState )
 {
     if ( !m_started )
     {
@@ -30,6 +30,7 @@ bool Out::start()
         gpio_set_dir( m_pin.pinNum, GPIO_OUT );
         gpio_set_drive_strength( m_pin.pinNum, m_pin.driveStrength );
         gpio_set_pulls( m_pin.pinNum, m_pin.pullUp, m_pin.pullDown );
+        setOutput( initialState );
         return true;
     }
 

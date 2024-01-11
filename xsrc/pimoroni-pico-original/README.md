@@ -1,3 +1,11 @@
+# CHANGES
+This repository is port of the Pimoroni Pico libraries and drivers to be 
+**independent** of the RP2040 hardware and/or Pico C/C++ SDK.  The port is
+done **just-in-time**, i.e.  I have only ported libraries/drivers that I have 
+needed on projects.  Or said another way - only a small subset of the libraries
+/drivers have been ported.
+
+
 # Pimoroni Pico Libraries and Examples <!-- omit in toc -->
 
 Welcome to the brave new world of Pico!

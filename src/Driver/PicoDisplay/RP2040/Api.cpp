@@ -13,7 +13,7 @@
 #include "drivers/st7789/st7789.hpp"
 #include "pico/stdlib.h"
 #include "Driver/PicoDisplay/Api.h"
-#include "Driver/LED/PimoroniPico/RedGreenBlue.h"
+#include "Driver/LED/Pimoroni/RedGreenBlue.h"
 #include "Driver/Button/RP2040/Hal.h"
 #include "Driver/DIO/Out.h"
 #include "Driver/DIO/Pwm.h"
@@ -34,9 +34,9 @@ static Driver::DIO::Pwm              pwmLedRDriver_( ledRPwm_ );
 static Driver::DIO::Pwm              pwmLedGDriver_( ledGPwm_ );
 static Driver::DIO::Pwm              pwmLedBDriver_( ledBPwm_ );
 
-static Driver::LED::PimoroniPico::RedGreenBlue rgbLEDDriver_( pwmLedRDriver_,
-                                                              pwmLedGDriver_,
-                                                              pwmLedBDriver_ );
+static Driver::LED::Pimoroni::RedGreenBlue rgbLEDDriver_( pwmLedRDriver_,
+                                                          pwmLedGDriver_,
+                                                          pwmLedBDriver_ );
 
 static DriverDioPwmRP2040Config_T    backlightPwm_( OPTION_DRIVER_PICO_DISPLAY_RP2040_BACKLIGHT_PWM );
 static DriverDioOutRP2040PinConfig_T chipSelectDriver_( OPTION_DRIVER_PICO_DISPLAY_RP2040_SPI_CS );

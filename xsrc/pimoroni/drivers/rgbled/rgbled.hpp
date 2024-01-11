@@ -24,7 +24,10 @@ public:
         CPL_SYSTEM_ASSERT( pin_r.getMaxDutyCycle() == 0xFFFF );
         CPL_SYSTEM_ASSERT( pin_g.getMaxDutyCycle() == 0xFFFF );
         CPL_SYSTEM_ASSERT( pin_b.getMaxDutyCycle() == 0xFFFF );
+    };
 
+    void start()
+    {
         uint16_t p = 0;
         if ( polarity == Polarity::ACTIVE_LOW ) {
             p = UINT16_MAX - p;
@@ -32,7 +35,8 @@ public:
         pin_r.start( p );
         pin_g.start( p );
         pin_b.start( p );
-    };
+    }
+
 
     ~RGBLED() {
         pin_r.stop();

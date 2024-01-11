@@ -35,11 +35,6 @@ public:
     /** Constructor.
 
         The 'spiInstance' argument must be either 'spi0' or 'spi1'
-
-        The application is responsible for configuring GPIO pins used by the
-        'spiInstance' PRIOR to calling start().  The configSPIPins() method is
-        an optional helper function available to the application for configuring
-        the SPI pins.
      */
     Master( spi_inst_t* spiInstance,
             unsigned    sclk = PICO_DEFAULT_SPI_SCK_PIN,
