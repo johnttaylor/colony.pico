@@ -163,13 +163,20 @@
   },
   "publish": {
     "current": {
-      "comment": "adopt new version of colony core (4.4.0) and deprecated bsp package",
-      "version": "0.2.3",
-      "date": "Thu Apr 27 01:19:26 2023",
-      "timestamp": 1682558366,
+      "comment": "Update to latest CPL package",
+      "version": "0.2.4",
+      "date": "Sun Oct 20 14:48:20 2024",
+      "timestamp": 1729435700,
       "changes": null
     },
     "history": [
+      {
+        "comment": "adopt new version of colony core (4.4.0) and deprecated bsp package",
+        "version": "0.2.3",
+        "date": "Thu Apr 27 01:19:26 2023",
+        "timestamp": 1682558366,
+        "changes": null
+      },
       {
         "comment": "Fix build errors from latest DataModel refactoring",
         "version": "0.2.2",
