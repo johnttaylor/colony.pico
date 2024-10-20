@@ -18,23 +18,6 @@
         }
       },
       {
-        "pkgname": "colony.core",
-        "pkgtype": "overlay",
-        "virtualAdoption": false,
-        "adoptedDate": "Thu Apr 27 00:38:06 2023",
-        "parentDir": null,
-        "version": {
-          "semanticVersion": "4.4.0",
-          "branch": null,
-          "tag": "OUTCAST2-main-4.4.0"
-        },
-        "repo": {
-          "name": "colony.core",
-          "type": "git",
-          "origin": "https://github.com/johnttaylor"
-        }
-      },
-      {
         "pkgname": "colony.apps",
         "pkgtype": "overlay",
         "virtualAdoption": false,
@@ -64,6 +47,23 @@
         },
         "repo": {
           "name": "pico-sdk",
+          "type": "git",
+          "origin": "https://github.com/johnttaylor"
+        }
+      },
+      {
+        "pkgname": "colony.core",
+        "pkgtype": "overlay",
+        "virtualAdoption": false,
+        "adoptedDate": "Sun Oct 20 14:25:35 2024",
+        "parentDir": null,
+        "version": {
+          "semanticVersion": "4.4.3",
+          "branch": null,
+          "tag": "OUTCAST2-main-4.4.3"
+        },
+        "repo": {
+          "name": "colony.core",
           "type": "git",
           "origin": "https://github.com/johnttaylor"
         }
